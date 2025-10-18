@@ -1,4 +1,3 @@
-
 body {
   font-family: "Inter", sans-serif;
   background-color: #ffffff;
@@ -9,23 +8,39 @@ body {
 .navbar-brand {
   font-size: 1.4rem;
 }
-
+.navbar-brand img {
+  height: 80px; 
+  width: auto;
+}
 /* ===========================
    SEÇÃO CENTRAL
 =========================== */
+
 .hero {
-  background-color: #e9f5ee;
-  padding: 80px 0;
+  position: relative;
+  background: url("../img/banner.png") center center/cover no-repeat;
+  height: 100vh; 
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
 }
 
 .hero h1 {
   font-weight: 700;
+  font-size: 2.5rem;
   color: #28a745;
 }
 
 .hero p {
-  color: #333;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  color: white;
 }
 
 /* ===========================
@@ -35,18 +50,102 @@ section {
   padding: 60px 0;
 }
 
+
+
 /* ===========================
    CARDS DE DESTAQUE
 =========================== */
+.feature-top {
+  
+  height: 120px;
+  position: relative;
+  border-radius: 10px;
+  margin-left: -1.5rem;  
+  margin-right: -1.5rem;
+  width: calc(100% + 3rem); 
+  margin-bottom: 50px;
+}   
+
+
+.feature-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 20px;
+  left:50%;
+  transform: translateX(-50%);
+}
+
+.feature-icon img {
+  width: 32px;
+  height: 32px;
+}
+
 .feature-card {
   background-color: #fff;
   border-radius: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s;
 }
+.icon-lilas .feature-top {
+  background-color: #e6d9eb;
+}
+.icon-lilas .feature-icon {
+  background-color: #d4c0e0;
+}
+
+.icon-verde .feature-top {
+  background-color: #d2f4e3;
+}
+.icon-verde .feature-icon {
+  background-color: #04140a;
+}
+
+.icon-azul .feature-top{
+  background-color: #dae3ef;
+}
+.icon-azul .feature-icon {
+  background-color: #bdd2ef;
+}
 
 .feature-card:hover {
   transform: translateY(-5px);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.card-body a.btn {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+
+.card {
+  position: relative;
+}
+.perfil-logo img {
+  position: absolute;
+  width: 50px;
+  height: auto;
+  top: 90px; 
+  left: 20px; 
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-body {
+  padding-top: 50px !important; 
 }
 
 /* ===========================
