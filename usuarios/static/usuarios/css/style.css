@@ -1,0 +1,125 @@
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #ffffff;
+  color: #333;
+}
+
+/* NAVEGADORES */
+.navbar-brand {
+  font-size: 1.4rem;
+}
+
+/* ===========================
+   SEÇÃO CENTRAL
+=========================== */
+.hero {
+  background-color: #e9f5ee;
+  padding: 80px 0;
+}
+
+.hero h1 {
+  font-weight: 700;
+  color: #28a745;
+}
+
+.hero p {
+  color: #333;
+  font-size: 1.1rem;
+}
+
+/* ===========================
+   SEÇÕES PADRÃO
+=========================== */
+section {
+  padding: 60px 0;
+}
+
+/* ===========================
+   CARDS DE DESTAQUE
+=========================== */
+.feature-card {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+/* ===========================
+   SEÇÃO DUPLA (ESTUDANTES / EMPRESAS)
+=========================== */
+.section-dupla {
+  background: #c8f5dc;
+}
+
+.section-dupla:nth-of-type(even) {
+  background: #ffffff;
+}
+
+.section-dupla img {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(33, 33, 33, 0.12);
+}
+
+.section-dupla h3 {
+  font-weight: 800;
+  color: #241056;
+  margin-bottom: 10px;
+}
+
+.section-dupla p.sub {
+  color: #6b6b6b;
+  margin-bottom: 26px;
+  font-size: 0.98rem;
+}
+
+.section-dupla ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 22px;
+}
+
+.section-dupla li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  color: #2f2f2f;
+  font-size: 0.98rem;
+}
+
+.section-dupla li span.icon {
+  flex: 0 0 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e8fbef;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===========================
+   BOTÕES CHECK
+=========================== */
+.btn-dupla {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: #6de0b9;
+  color: #03402a;
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(44, 160, 130, 0.18);
+  text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: 0.3s;
+}
+
+.btn-dupla:hover {
+  background: #5cd3aa;
+  color: #01331e;
+}
