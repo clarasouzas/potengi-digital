@@ -42,6 +42,9 @@ body {
   margin-top: 10px;
   color: white;
 }
+.hero .btn{
+  background-color: #0F0261;
+}
 
 /* ===========================
    SEÇÕES PADRÃO
@@ -222,3 +225,55 @@ section {
   background: #5cd3aa;
   color: #01331e;
 }
+
+footer {
+      background-color: #c8ffe0;
+      padding: 40px 0 20px;
+      color: #0b1a33;
+    }
+.footer-logo img {
+      height: 50px;
+      margin-bottom: 10px;
+    }
+.footer-logo p {
+      font-size: 0.9rem;
+      color: #0b1a33;
+      max-width: 250px;
+    }
+.footer-links a {
+      display: block;
+      color: #0b1a33;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+.footer-links a:hover {
+      text-decoration: underline;
+    }
+
+.footer-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #0b1a33;
+    }
+
+.footer-bottom {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #0b1a33;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      padding-top: 10px;
+    }
+
+.footer-social i {
+      font-size: 1.2rem;
+      margin-right: 8px;
+      color: #0b1a33;
+    }
+
+.footer-social a {
+      text-decoration: none;
+      color: #0b1a33;
+      font-size: 0.9rem;
+    }

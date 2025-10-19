@@ -146,9 +146,7 @@
   </div>
 </section>
 
-    </div>
-  </section>
-
+ 
   
   <!-- Para Estudantes -->
   
@@ -204,6 +202,86 @@
       </div>
     </div>
   </section>
+
+  <div class="contato container py-4">
+    <h3  class="text-center " style="color: #241056; margin-bottom: 30px; font-weight: 800; margin-top: 40px">Contato</h3>
+    <div class="row g-4">
+      
+      <!-- Formulário -->
+      <div contato class="col-md-6" >
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Nome</label>
+            <input type="text" class="form-control" placeholder="Digite seu Nome">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">E-mail</label>
+            <input type="email" class="form-control" placeholder="Digite seu E-mail">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Tipo de Usuário</label>
+            <select class="form-select">
+              <option selected>Selecione o Tipo de Usuário</option>
+              <option>Aluno</option>
+              <option>Servidor</option>
+              <option>Visitante</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Mensagem</label>
+            <textarea class="form-control" rows="3" placeholder="Como Podemos Ajudar?"></textarea>
+          </div>
+        </form>
+      </div>
+
+      <!-- Informações -->
+      <div class="col-md-6" >
+        <p class="info-title">IFRN - Campus São Paulo do Potengi</p>
+        <p><i class="bi bi-geo-alt-fill text-primary"></i> Av. Potengi, São Paulo do Potengi - RN, 59460-000</p>
+        <p><i class="bi bi-telephone-fill text-primary"></i> (84) 98888-8888</p>
+        <p><i class="bi bi-envelope-fill text-primary"></i> iiiiiiiiiiii@gmail.com</p>
+        <img src="https://via.placeholder.com/300x200.png?text=Mapa" alt="Mapa" class="img-fluid rounded mt-3">
+      </div>
+    </div>
+</div>
+<footer>
+    <div class="container">
+      <div class="row text-start">
+        <div class="col-md-4 mb-3 footer-logo">
+          <img src="{% static 'img/logo-linkif.png' %}" alt="Logo LinkIF">
+          <p>
+            Conectando talentos técnicos do IFRN às melhores oportunidades profissionais. 
+            Construindo pontes entre a academia e o mercado de trabalho.
+          </p>
+          <div class="footer-social">
+            <i class="bi bi-instagram"></i>
+            <a href="#">LinkIF</a>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3 footer-links">
+          <h6 class="footer-title">Links Úteis</h6>
+          <a href="#">Portal IFRN</a>
+          <a href="#">Política de Privacidade</a>
+          <a href="#">Acessibilidade</a>
+        </div>
+
+        <div class="col-md-4 mb-3 footer-links">
+          <h6 class="footer-title">Suporte</h6>
+          <a href="#">Fale Conosco</a>
+          <a href="#">FAQ</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 LinkIF - IFRN. Todos os direitos reservados.
+      </div>
+    </div>
+</footer>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
