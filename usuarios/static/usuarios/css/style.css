@@ -6,9 +6,7 @@ body {
   color: #5E6468;
 }
 
-/* ===========================
-   NAVBAR
-=========================== */
+/*NAVBAR*/
 .navbar-brand {
   font-size: 1.4rem;
 }
@@ -18,9 +16,7 @@ body {
   width: auto;
 }
 
-/* ===========================
-   HERO / BANNER
-=========================== */
+/*BANNER*/
 .hero {
   position: relative;
   background: url("../img/banner.png") center center/cover no-repeat;
@@ -64,16 +60,12 @@ body {
   background-color: #0F0261;
 }
 
-/* ===========================
-   SEÇÕES PADRÃO
-=========================== */
+/*SEÇÕES PADRÃO*/
 section {
   padding: 60px 0;
 }
 
-/* ===========================
-   CARDS DE DESTAQUE
-=========================== */
+/*CARDS DE DESTAQUE*/
 .feature-top {
   height: 160px;
   position: relative;
@@ -121,9 +113,7 @@ section {
 .icon-azul .feature-top { background-color: #dae3ef; }
 .icon-azul .feature-icon { background-color: #93b9ee; }
 
-/* ===========================
-   PERFIS DE FORMAÇÃO
-=========================== */
+/*PERFIS DE FORMAÇÃO*/
 .card {
   position: relative;
 }
@@ -149,9 +139,7 @@ section {
   height: 70px;
 }
 
-/* ===========================
-   SEÇÕES DUPLAS
-=========================== */
+/*SEÇÕES DUPLAS*/
 .section-dupla {
   background: #c8f5dc;
 }
@@ -203,9 +191,7 @@ section {
   justify-content: center;
 }
 
-/* ===========================
-   BOTÕES
-=========================== */
+/*BOTÕES*/
 .btn-dupla {
   display: inline-block;
   padding: 10px 18px;

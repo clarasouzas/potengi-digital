@@ -10,9 +10,7 @@
 </head>
 
 <body>
-  <!-- =======================
-       NAVBAR
-  ======================= -->
+  <!-- NAVEGADORES-->
   <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #C2FFDA;">
     <div class="container">
       <a class="navbar-brand" href="#">
@@ -31,16 +29,14 @@
           <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
         </ul>
         <div class="ms-3">
-          <a href="#" class="btn btn-outline-success me-2" style="color: #5E6468;">Entrar</a>
+          <a href="{% url 'login' %}" class="btn btn-outline-success me-2" style="color: #5E6468;">Entrar</a>
           <a href="#" class="btn" style="background-color:#0F0261; color:white;">Cadastre-se</a>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- =======================
-       HERO
-  ======================= -->
+  <!--Banner-->
   <section class="hero">
     <div class="overlay"></div>
     <div class="container text-center text-md-start">
@@ -54,9 +50,7 @@
     </div>
   </section>
 
-  <!-- =======================
-       O QUE É O LINKIF
-  ======================= -->
+  <!-- O QUE É O LINKIF-->
   <section class="py-5 bg-white" id="sobre">
     <div class="container text-center">
       <h2 class="fw-bold" style="color: #1b1f5b;">O que é o LinkIF?</h2>
@@ -108,9 +102,7 @@
     </div>
   </section>
 
-  <!-- =======================
-       PERFIS DE FORMAÇÃO
-  ======================= -->
+  <!-- PERFIS DE FORMAÇÃO-->
   <section class="py-5" style="background-color: #C2FFDA;">
     <div class="container text-center">
       <h2 class="fw-bold" style="color: #1b1f5b;">Perfis de Formação</h2>
@@ -167,9 +159,7 @@
     </div>
   </section>
 
-  <!-- =======================
-       PARA ESTUDANTES
-  ======================= -->
+  <!-- PARA ESTUDANTES-->
   <section class="section-dupla" id="estudante">
     <div class="container" style="max-width:980px;">
       <div class="text-center mb-4">
@@ -195,9 +185,7 @@
     </div>
   </section>
 
-  <!-- =======================
-       PARA EMPRESAS
-  ======================= -->
+  <!--PARA EMPRESAS-->
   <section class="section-dupla" id="empresas">
     <div class="container" style="max-width:980px;">
       <div class="text-center mb-4">
@@ -223,9 +211,7 @@
     </div>
   </section>
 
-  <!-- =======================
-       CONTATO
-  ======================= -->
+  <!-- CONTATO-->
   <div class="contato container py-4" id="contato">
     <h3 class="text-center" style="color:#241056; margin:40px 0 30px; font-weight:800;">Contato</h3>
     <div class="row g-4">
@@ -269,13 +255,11 @@
     </div>
   </div>
 
-  <!-- =======================
-       RODAPÉ
-  ======================= -->
-  <footer>
-    <div class="container" style="background-color:#C2FFDA;">
+  <!--RODAPÉ-->
+  <footer style="background-color:#C2FFDA;">
+    <div class="container">
       <div class="row text-start">
-        <div class="col-md-4 mb-3 footer-logo">
+        <div class="col-md-4 mb-3 footer-logo" style="margin: 0px">
           <img src="{% static 'usuarios/img/logo.png' %}" alt="Logo LinkIF">
           <p>Conectando talentos técnicos do IFRN às melhores oportunidades profissionais. 
              Construindo pontes entre a academia e o mercado de trabalho.</p>
