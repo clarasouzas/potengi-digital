@@ -1,29 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
 body {
-  font-family: "Inter", sans-serif;
-  background-color: #ffffff;
-  color: #333;
+  font-family: "Montserrat", sans-serif;
+  background-color: #f6f2f2;
+  color: #5E6468;
 }
 
-/* NAVEGADORES */
+/* ===========================
+   NAVBAR
+=========================== */
 .navbar-brand {
   font-size: 1.4rem;
 }
+
 .navbar-brand img {
-  height: 80px; 
+  height: 80px;
   width: auto;
 }
-/* ===========================
-   SEÇÃO CENTRAL
-=========================== */
 
+/* ===========================
+   HERO / BANNER
+=========================== */
 .hero {
   position: relative;
   background: url("../img/banner.png") center center/cover no-repeat;
-  height: 100vh; 
+  height: 100vh;
   display: flex;
   align-items: center;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 .hero .container {
@@ -32,17 +47,20 @@ body {
 }
 
 .hero h1 {
-  font-weight: 700;
-  font-size: 2.5rem;
-  color: #28a745;
+  background: linear-gradient(to right, #a8ff78, #12e771);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 1000;
+  text-shadow: none;
 }
 
-.hero p {
+.hero p a {
   font-size: 1.2rem;
   margin-top: 10px;
   color: white;
 }
-.hero .btn{
+
+.hero .btn {
   background-color: #0F0261;
 }
 
@@ -53,39 +71,34 @@ section {
   padding: 60px 0;
 }
 
-
-
 /* ===========================
    CARDS DE DESTAQUE
 =========================== */
 .feature-top {
-  
-  height: 120px;
+  height: 160px;
   position: relative;
   border-radius: 10px;
-  margin-left: -1.5rem;  
-  margin-right: -1.5rem;
-  width: calc(100% + 3rem); 
-  margin-bottom: 50px;
-}   
-
+  margin: -1.5rem -1.5rem 50px;
+  width: calc(100% + 3rem);
+}
 
 .feature-icon {
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 20px;
-  left:50%;
+  top: 30px;
+  left: 50%;
   transform: translateX(-50%);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
 .feature-icon img {
-  width: 32px;
-  height: 32px;
+  width: 45px;
+  height: 45px;
 }
 
 .feature-card {
@@ -94,29 +107,25 @@ section {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s;
 }
-.icon-lilas .feature-top {
-  background-color: #e6d9eb;
-}
-.icon-lilas .feature-icon {
-  background-color: #d4c0e0;
-}
-
-.icon-verde .feature-top {
-  background-color: #d2f4e3;
-}
-.icon-verde .feature-icon {
-  background-color: #04140a;
-}
-
-.icon-azul .feature-top{
-  background-color: #dae3ef;
-}
-.icon-azul .feature-icon {
-  background-color: #bdd2ef;
-}
 
 .feature-card:hover {
   transform: translateY(-5px);
+}
+
+.icon-lilas .feature-top { background-color: #e6d9eb; }
+.icon-lilas .feature-icon { background-color: #d4adea; }
+
+.icon-verde .feature-top { background-color: #d2f4e3; }
+.icon-verde .feature-icon { background-color: #96f6b9; }
+
+.icon-azul .feature-top { background-color: #dae3ef; }
+.icon-azul .feature-icon { background-color: #93b9ee; }
+
+/* ===========================
+   PERFIS DE FORMAÇÃO
+=========================== */
+.card {
+  position: relative;
 }
 
 .card-body {
@@ -124,6 +133,7 @@ section {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  padding-top: 50px !important;
 }
 
 .card-body a.btn {
@@ -131,28 +141,16 @@ section {
   margin-top: auto;
 }
 
-
-.card {
-  position: relative;
-}
 .perfil-logo img {
   position: absolute;
-  width: 50px;
-  height: auto;
-  top: 90px; 
-  left: 20px; 
+  top: 90px;
+  left: 20px;
   width: 70px;
   height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.card-body {
-  padding-top: 50px !important; 
 }
 
 /* ===========================
-   SEÇÃO DUPLA (ESTUDANTES / EMPRESAS)
+   SEÇÕES DUPLAS
 =========================== */
 .section-dupla {
   background: #c8f5dc;
@@ -206,7 +204,7 @@ section {
 }
 
 /* ===========================
-   BOTÕES CHECK
+   BOTÕES
 =========================== */
 .btn-dupla {
   display: inline-block;
@@ -216,8 +214,8 @@ section {
   color: #03402a;
   font-weight: 600;
   box-shadow: 0 8px 18px rgba(44, 160, 130, 0.18);
-  text-decoration: none;
   border: 1px solid rgba(0, 0, 0, 0.04);
+  text-decoration: none;
   transition: 0.3s;
 }
 
@@ -226,54 +224,61 @@ section {
   color: #01331e;
 }
 
+/* ===========================
+   RODAPÉ
+=========================== */
 footer {
-      background-color: #c8ffe0;
-      padding: 40px 0 20px;
-      color: #0b1a33;
-    }
+  padding: 40px 0 20px;
+  color: #0b1a33;
+  border-top: 4px solid #0F0261;
+}
+
 .footer-logo img {
-      height: 50px;
-      margin-bottom: 10px;
-    }
+  height: 70px;
+  margin-bottom: 10px;
+}
+
 .footer-logo p {
-      font-size: 0.9rem;
-      color: #0b1a33;
-      max-width: 250px;
-    }
+  font-size: 0.9rem;
+  color: #0b1a33;
+  max-width: 250px;
+}
+
 .footer-links a {
-      display: block;
-      color: #0b1a33;
-      text-decoration: none;
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-    }
+  display: block;
+  color: #0b1a33;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
 .footer-links a:hover {
-      text-decoration: underline;
-    }
+  text-decoration: underline;
+}
 
 .footer-title {
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: #0b1a33;
-    }
-
-.footer-bottom {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #0b1a33;
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
-      margin-top: 20px;
-      padding-top: 10px;
-    }
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #0b1a33;
+}
 
 .footer-social i {
-      font-size: 1.2rem;
-      margin-right: 8px;
-      color: #0b1a33;
-    }
+  font-size: 1.2rem;
+  margin-right: 8px;
+  color: #0b1a33;
+}
 
 .footer-social a {
-      text-decoration: none;
-      color: #0b1a33;
-      font-size: 0.9rem;
-    }
+  text-decoration: none;
+  color: #0b1a33;
+  font-size: 0.9rem;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #0b1a33;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  padding-top: 10px;
+}
