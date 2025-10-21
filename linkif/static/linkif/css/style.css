@@ -5,8 +5,31 @@ body {
   background-color: #f6f2f2;
   color: #5E6468;
 }
+.cor{
+  background-color: rgba(98, 255, 0, 0.25);
+}
 
 /*NAVBAR*/
+
+.navbar-nav .nav-link {
+  position: relative;
+  color: #5E6468; /* cor padrão do texto */
+  font-weight: 400;
+}
+
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;              /* altura da linha */
+  background-color: #0F0261; /* cor da linha */
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 100%; /* linha completa ao passar o mouse */
+}
 .navbar-brand {
   font-size: 1.4rem;
 }
@@ -157,16 +180,68 @@ section {
 .icon-azul .feature-icon { background-color: #93b9ee; }
 
 /*PERFIS DE FORMAÇÃO*/
-.card {
+.carousel-wrapper {
   position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.5s;
+}
+
+.perfil-card {
+  flex: 0 0 200px;
+  height: 360px;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: #fff;
+  text-align: start;
+  transition: all 0.5s ease;
+  opacity: 0.6;
+  transform: scale(0.85);
+  z-index: 1;
+  position: relative;
+}
+
+.perfil-card.central {
+  transform: scale(1.15);
+  opacity: 1;
+  z-index: 3;
+}
+
+.perfil-card[data-pos="-1"], 
+.perfil-card[data-pos="1"] {
+  transform: scale(0.95);
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.perfil-card img {
+  height: 140px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.perfil-logo img {
+  position: absolute;
+  top: 70px;
+  left: 15px;
+  width: 60px;
+  height: 60px;
 }
 
 .card-body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 50px 15px 15px;
   height: 100%;
-  padding-top: 50px !important;
 }
 
 .card-body a.btn {
@@ -174,17 +249,173 @@ section {
   margin-top: auto;
 }
 
-.perfil-logo img {
-  position: absolute;
-  top: 90px;
-  left: 20px;
-  width: 70px;
-  height: 70px;
+/* Botões */
+.btn-prev, .btn-next {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.8;
+  border: none;
+}
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
+.carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.5s;
+}
+
+.perfil-card {
+  flex: 0 0 200px;
+  height: 360px;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: #fff;
+  text-align: start;
+  transition: all 0.5s ease;
+  opacity: 0.6;
+  transform: scale(0.85);
+  z-index: 1;
+  position: relative;
+}
+
+.perfil-card.central {
+  transform: scale(1.15);
+  opacity: 1;
+  z-index: 3;
+}
+
+.perfil-card[data-pos="-1"], 
+.perfil-card[data-pos="1"] {
+  transform: scale(0.95);
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.perfil-card img {
+  height: 140px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.perfil-logo img {
+  position: absolute;
+  top: 70px;
+  left: 15px;
+  width: 60px;
+  height: 60px;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 50px 15px 15px;
+  height: 100%;
+}
+
+/* Botões */
+.btn-prev, .btn-next {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.8;
+  border: none;
+}
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.5s;
+}
+
+.perfil-card {
+  flex: 0 0 200px;
+  height: 360px;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: #fff;
+  text-align: start;
+  transition: all 0.5s ease;
+  opacity: 0.6;
+  transform: scale(0.85);
+  z-index: 1;
+  position: relative;
+}
+
+.perfil-card.central {
+  transform: scale(1.15);
+  opacity: 1;
+  z-index: 3;
+}
+
+.perfil-card[data-pos="-1"], 
+.perfil-card[data-pos="1"] {
+  transform: scale(0.95);
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.perfil-card img {
+  height: 140px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.perfil-logo img {
+  position: absolute;
+  top: 70px;
+  left: 15px;
+  width: 60px;
+  height: 60px;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 50px 15px 15px;
+  height: 100%;
+}
+
+/* Botões */
+.btn-prev, .btn-next {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.8;
+  border: none;
+}
 /*SEÇÕES DUPLAS*/
 .section-dupla {
-  background: #c8f5dc;
+  background-color: rgba(98, 255, 0, 0.25);;
 }
 
 .section-dupla:nth-of-type(even) {
