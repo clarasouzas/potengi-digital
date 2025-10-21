@@ -102,102 +102,87 @@
     </div>
   </section>
 
-<!-- PERFIS DE FORMAÇÃO -->
-
-<section class="cor py-5">
-  <div class="container text-center">
-    <h2 class="fw-bold" style="color: #1b1f5b;">Perfis de Formação</h2>
-    <p class="mb-5 text-secondary">
-      Conheça as áreas de formação dos alunos e egressos do IFRN – Campus São Paulo do Potengi.
-    </p>
-
-    <div class="carousel-wrapper position-relative">
-
-      <!-- Botões -->
-      <button class="btn btn-dark btn-prev position-absolute top-50 start-0 translate-middle-y">‹</button>
-      <button class="btn btn-dark btn-next position-absolute top-50 end-0 translate-middle-y">›</button>
-
-      <!-- Container dos cards -->
-      <div class="carousel-container d-flex justify-content-center align-items-center gap-3">
-
-        <!-- Card 1 -->
-        <div class="card perfil-card" data-index="0">
-          <img src="{% static 'linkif/img/perfil_edificações.png' %}" alt="Edificações">
-          <div class="card-body">
-            <div class="perfil-logo">
-              <img src="{% static 'linkif/img/logo_edificacoes.png' %}" alt="Logo">
+<!-- PERFIS DE FORMAÇÃO--> <section class=" cor py-5">
+   <div class="container text-center"> 
+    <h2 class="fw-bold" style="color: #1b1f5b;">Perfis de Formação</h2> 
+    <p class="mb-5 text-secondary"> Conheça as áreas de formação dos alunos e egressos do IFRN – Campus São Paulo do Potengi. </p>
+     <div class="row g-4 justify-content-center align-items-stretch"> 
+      <!-- Edificações --> <div class="col-md-4 d-flex"> 
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100"> 
+          <img src="{% static 'linkif/img/perfil_edificações.png' %}" alt="Edificações" style="height:160px; object-fit:cover;">
+           <div class="card-body text-start p-4">
+             <div class="perfil-logo"> <img src="{% static 'linkif/img/logo_edificacoes.png' %}" alt="Logo"> 
+            </div> <h5 class="fw-bold text-danger">Edificações</h5>
+             <p>Planejamento, execução e manutenção de obras.</p> 
+             <a href="#" class="btn btn-sm text-white px-3 mt-2" style="background-color:#F25720;">Ver Mais</a>
+             </div> 
             </div>
-            <h5 class="fw-bold text-danger">Edificações</h5>
-            <p>Planejamento, execução e manutenção de obras.</p>
-          </div>
-        </div>
+           </div> <!-- Informática --> <div class="col-md-4 d-flex"> 
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100"> <img src="{% static 'linkif/img/perfil_informatica.png' %}" alt="Informática" style="height:160px; object-fit:cover;"> <div class="card-body text-start p-4"> <div class="perfil-logo"> <img src="{% static 'linkif/img/logo_informatica.png' %}" alt="Logo"> </div> <h5 class="fw-bold text-primary">Informática para Internet</h5> <p>Desenvolvimento web, banco de dados e UX/UI.</p> <a href="#" class="btn btn-sm text-white px-3 mt-2" style="background-color:#0F0261;">Ver Mais</a> </div> </div> </div> <!-- Meio Ambiente --> <div class="col-md-4 d-flex"> <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100"> <img src="{% static 'linkif/img/perfil_meioambiente.png' %}" alt="Meio Ambiente" style="height:160px; object-fit:cover;"> <div class="card-body text-start p-4"> <div class="perfil-logo"> <img src="{% static 'linkif/img/logo_meioambiente.png' %}" alt="Logo"> </div> <h5 class="fw-bold text-success" style="margin-top: 15px;">Meio Ambiente</h5> <p>Gestão ambiental e sustentabilidade.</p> <a href="#" class="btn btn-sm text-white px-3 mt-2" style="background-color:#368C01;">Ver Mais</a> </div> </div> </div> </div> </div> </section>
 
-        <!-- Card 2 -->
-        <div class="card perfil-card" data-index="1">
-          <img src="{% static 'linkif/img/perfil_informatica.png' %}" alt="Informática">
-          <div class="card-body">
-            <div class="perfil-logo">
-              <img src="{% static 'linkif/img/logo_informatica.png' %}" alt="Logo">
-            </div>
-            <h5 class="fw-bold text-primary">Informática para Internet</h5>
-            <p>Desenvolvimento web, banco de dados e UX/UI.</p>
-          </div>
-        </div>
+ <!-- PARA ESTUDANTES-->
+<section class="section-dupla" id="estudante">
+  <div class="container" style="max-width:980px;">
+    <div class="text-center mb-4">
+      <h3>Para Estudantes</h3>
+      <p class="sub">
+        Mostre suas habilidades, monte seu perfil e encontre oportunidades que combinam com você.
+      </p>
+    </div>
 
-        <!-- Card 3 -->
-        <div class="card perfil-card" data-index="2">
-          <img src="{% static 'linkif/img/perfil_meioambiente.png' %}" alt="Meio Ambiente">
-          <div class="card-body">
-            <div class="perfil-logo">
-              <img src="{% static 'linkif/img/logo_meioambiente.png' %}" alt="Logo">
-            </div>
-            <h5 class="fw-bold text-success">Meio Ambiente</h5>
-            <p>Gestão ambiental e sustentabilidade.</p>
-          </div>
-        </div>
+    <div class="row align-items-center g-4">
+      <div class="col-md-6 text-center">
+        <img src="{% static 'linkif/img/estudante.png' %}" alt="Estudante">
+      </div>
 
-        <!-- Card 4 -->
-        <div class="card perfil-card" data-index="3">
-          <img src="{% static 'linkif/img/perfil_matematica.png' %}" alt="Licenciatura em Matemática">
-          <div class="card-body">
-            <div class="perfil-logo">
-              <img src="{% static 'linkif/img/logo_matematica.png' %}" alt="Logo">
-            </div>
-            <h5 class="fw-bold text-warning">Licenciatura em Matemática</h5>
-            <p>Formação de professores e desenvolvimento de raciocínio lógico.</p>
-          </div>
-        </div>
-
+      <div class="col-md-6">
+        <ul>
+          <li>
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
+                   style="background-color: rgba(98, 255, 0, 0.25); border-radius: 50%; padding: 2px;">
+                <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+              </svg>
+            </span>
+            Vagas e estágios alinhados ao seu perfil.
+          </li>
+          <li>
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
+                   style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
+                <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+              </svg>
+            </span>
+            Perfil inteligente com destaque para suas competências.
+          </li>
+          <li>
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
+                   style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
+                <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+              </svg>
+            </span>
+            Contato direto com empresas da região.
+          </li>
+          <li>
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
+                   style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
+                <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+              </svg>
+            </span>
+            Certificados e experiências que impulsionam sua trajetória.
+          </li>
+        </ul>
+        <a href="vagas.html" class="btn-dupla">Ver Vagas</a>
       </div>
     </div>
   </div>
 </section>
-
-  <!-- PARA ESTUDANTES-->
-  <section class="section-dupla" id="estudante">
-    <div class="container" style="max-width:980px;">
-      <div class="text-center mb-4">
-        <h3>Para Estudantes</h3>
-        <p class="sub">Mostre suas habilidades, monte seu perfil e encontre oportunidades que combinam com você.</p>
-      </div>
-
-      <div class="row align-items-center g-4">
-        <div class="col-md-6 text-center">
-          <img src="{% static 'linkif/img/estudante.png' %}" alt="Estudante">
-        </div>
-
-        <div class="col-md-6">
-          <ul>
-            <li><span class="icon">✓</span>Vagas e estágios alinhados ao seu perfil.</li>
-            <li><span class="icon">✓</span>Perfil inteligente com destaque para suas competências.</li>
-            <li><span class="icon">✓</span>Contato direto com empresas da região.</li>
-            <li><span class="icon">✓</span>Certificados e experiências que impulsionam sua trajetória.</li>
-          </ul>
-          <a href="vagas.html" class="btn-dupla">Ver Vagas</a>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!--PARA EMPRESAS-->
 <section class="cor section-dupla" id="empresas">
@@ -345,29 +330,3 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-<script>
-  const container = document.querySelector('.carousel-container');
-  const cards = document.querySelectorAll('.perfil-card');
-  const btnNext = document.querySelector('.btn-next');
-  const btnPrev = document.querySelector('.btn-prev');
-
-  btnNext.addEventListener('click', () => {
-    rotateCards(1);
-  });
-
-  btnPrev.addEventListener('click', () => {
-    rotateCards(-1);
-  });
-
-  function rotateCards(direction) {
-    cards.forEach(card => {
-      let pos = parseInt(card.getAttribute('data-pos'));
-      pos -= direction; // mover sentido das setas
-      if (pos < -1) pos = cards.length - 2; // loop left
-      if (pos > cards.length - 2) pos = -1; // loop right
-      card.setAttribute('data-pos', pos);
-      card.classList.remove('central');
-      if (pos === 0) card.classList.add('central');
-    });
-  }
-</script>
