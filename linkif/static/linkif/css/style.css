@@ -97,7 +97,7 @@ body {
   background-color: #100088; /* escurece ao passar o mouse */
 }
 /*BANNER*/
-.hero {
+.hero  {
   position: relative;
   background: url("../img/banner.png") center center/cover no-repeat;
   height: 100vh;
@@ -105,6 +105,24 @@ body {
   align-items: center;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+.vagas{
+  position: relative;
+  background: url("../img/banner.png") center center/cover no-repeat;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  text-align: left;
+  justify-content: center;
+}
+.vagas h1{
+  text-align: right;
+  font-size:1.5rem;
+margin-right: 0%;
+  margin-left: 150vh;
+ 
 }
 
 .hero .overlay {
@@ -127,7 +145,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 1000; /* mais grosso */
-  font-size: 3.rem; /* maior tamanho */
+  font-size: 1.rem; /* maior tamanho */
   text-shadow: none;
   line-height: 1.2; /* opcional para melhor espaçamento */
 }
