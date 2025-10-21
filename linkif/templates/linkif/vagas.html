@@ -9,76 +9,7 @@
   <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
 </head>
   <style>
-    /* Filtros */
-    .filtro-box {
-      background-color: #fff;
-      border: 1px solid #d7e4da;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      padding: 15px 25px;
-      margin: 30px auto;
-      width: 90%;
-      max-width: 950px;
-    }
 
-    .filtro-box select,
-    .filtro-box input {
-      border: 1px solid #c5e0cb;
-      border-radius: 8px;
-      color: #333;
-    }
-
-    .filtro-box button {
-      background-color: #0b1b4d;
-      color: #fff;
-      border-radius: 8px;
-      font-weight: 600;
-      padding: 6px 22px;
-      border: none;
-    }
-
-    /* Cards */
-    .vaga-card {
-      background-color: #fff;
-      border: 1px solid #b9e2c3;
-      border-radius: 10px;
-      padding: 18px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      transition: transform 0.15s ease;
-    }
-
-    .vaga-card:hover {
-      transform: translateY(-3px);
-    }
-
-    .vaga-card h5 {
-      color: #0b1b4d;
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .vaga-card p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #555;
-      line-height: 1.4;
-    }
-
-    .btn-detalhes {
-      background-color: #fff;
-      color: #0b1b4d;
-      border: 2px solid #4cd38d;
-      border-radius: 6px;
-      font-weight: 600;
-      margin-top: 10px;
-      transition: background 0.2s ease;
-    }
-
-    .btn-detalhes:hover {
-      background-color: #4cd38d;
-      color: #fff;
-    }
   </style>
 </head>
 <body>
@@ -132,6 +63,7 @@
       <option>Informática</option>
       <option>Edificações</option>
       <option>Meio Ambiente</option>
+      <option>Licenciatura de Mátematica</option>
     </select>
 
     <select class="form-select" style="width:150px;">
@@ -139,6 +71,7 @@
       <option>1º Ano</option>
       <option>2º Ano</option>
       <option>3º Ano</option>
+      <option>4º Ano</option>
     </select>
 
     <select class="form-select" style="width:150px;">
@@ -153,7 +86,7 @@
   </div>
 
   <!-- Cards -->
-  <div class="container mt-4">
+  <div class="container mt-4" style="margin-bottom: 30px">
     <div class="row g-4 justify-content-center">
       
       <!-- Card 1 -->
@@ -212,32 +145,7 @@
         </div>
       </div>
 
-      <!-- Card 5 -->
-      <div class="col-md-3">
-        <div class="vaga-card">
-          <h5>Estágio em Edificações</h5>
-          <p><b>Curso:</b> Edificações</p>
-          <p><b>Ano:</b> 3º Ano Técnico</p>
-          <p><b>Turno:</b> Tarde</p>
-          <p><b>Local:</b> São Paulo do Potengi - RN</p>
-          <p><b>Horário:</b> 13h às 17h</p>
-          <p><b>Bolsa:</b> R$ 750,00</p>
-          <button class="btn btn-detalhes w-100">Ver detalhes</button>
-        </div>
-      </div>
-
-      <!-- Card 6 -->
-      <div class="col-md-3">
-        <div class="vaga-card">
-          <h5>Estágio em Meio Ambiente</h5>
-          <p><b>Curso:</b> Meio Ambiente</p>
-          <p><b>Ano:</b> 3º Ano Técnico</p>
-          <p><b>Turno:</b> Tarde</p>
-          <p><b>Local:</b> São Paulo do Potengi - RN</p>
-          <p><b>Horário:</b> 13h às 17h</p>
-          <p><b>Bolsa:</b> R$ 750,00</p>
-          <button class="btn btn-detalhes w-100">Ver detalhes</button>
-        </div>
+   
       </div>
 
     </div>
