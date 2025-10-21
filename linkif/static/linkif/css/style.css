@@ -6,7 +6,7 @@ body {
   color: #5E6468;
 }
 .cor{
-  background-color: rgba(98, 255, 0, 0.25);
+  background-color: rgba(98, 255, 0, 0.13);
 }
 
 /*NAVBAR*/
@@ -107,8 +107,8 @@ body {
   background: linear-gradient(to right, #a8ff78, #12e771);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 900; /* mais grosso */
-  font-size: 3.5rem; /* maior tamanho */
+  font-weight: 1000; /* mais grosso */
+  font-size: 3.8rem; /* maior tamanho */
   text-shadow: none;
   line-height: 1.2; /* opcional para melhor espaçamento */
 }
@@ -416,7 +416,7 @@ section {
 }
 /*SEÇÕES DUPLAS*/
 .section-dupla {
-  background-color: rgba(98, 255, 0, 0.25);;
+  background-color: rgba(98, 255, 0, 0.13);
 }
 
 .section-dupla:nth-of-type(even) {
