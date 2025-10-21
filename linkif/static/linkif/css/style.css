@@ -15,7 +15,45 @@ body {
   height: 80px;
   width: auto;
 }
+.navbar-nav {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 
+.navbar-nav .nav-item {
+  padding: 0 3px; /* espaço entre os itens */
+}
+.btn-entrar {
+  color: #0F0261;             /* cor da borda e do texto */
+  border: 2px solid #0F0261;  /* borda da mesma cor */
+  background-color: transparent; /* vazado */
+  border-radius: 5px;
+  padding: 8px 20px;          /* mesma altura que o outro botão */
+  font-weight: 600;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.btn-entrar:hover {
+  background-color: #0F0261;
+  color: white;
+}
+
+.btn-cadastrese {
+  background-color: #0F0261;  /* preenchido */
+  color: white;
+  border: 2px solid #0F0261;
+  border-radius: 5px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.btn-cadastrese:hover {
+  background-color: #100088; /* escurece ao passar o mouse */
+}
 /*BANNER*/
 .hero {
   position: relative;
@@ -46,14 +84,18 @@ body {
   background: linear-gradient(to right, #a8ff78, #12e771);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 1000;
+  font-weight: 900; /* mais grosso */
+  font-size: 3.5rem; /* maior tamanho */
   text-shadow: none;
+  line-height: 1.2; /* opcional para melhor espaçamento */
 }
-
 .hero p a {
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   margin-top: 10px;
   color: white;
+}
+.hero p{
+  font-size: 1.5rem;
 }
 
 .hero .btn {
@@ -67,32 +109,33 @@ section {
 
 /*CARDS DE DESTAQUE*/
 .feature-top {
-  height: 160px;
+  height: 150px;
   position: relative;
-  border-radius: 10px;
+  border-top-left-radius: 16px;   
+  border-top-right-radius: 16px;  
+  border-bottom-left-radius: 0;   
+  border-bottom-right-radius: 0;  
   margin: -1.5rem -1.5rem 50px;
   width: calc(100% + 3rem);
 }
 
 .feature-icon {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 30px;
+  top: 50%;               /* central vertical */
   left: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  transform: translate(-50%, -50%); /* centraliza exato */
+  box-shadow: 0 8px 12px -4px rgba(0,0,0,0.4); /* sombra só embaixo */
 }
-
 .feature-icon img {
-  width: 45px;
-  height: 45px;
+  width: 70px;  /* maior */
+  height: 70px;
 }
-
 .feature-card {
   background-color: #fff;
   border-radius: 16px;
@@ -101,7 +144,7 @@ section {
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
 }
 
 .icon-lilas .feature-top { background-color: #e6d9eb; }
