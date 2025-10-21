@@ -9,6 +9,25 @@ body {
   background-color: rgba(98, 255, 0, 0.13);
 }
 
+.botao {
+  width: 250px;
+  height: 60px;
+  background-color: #0F0261;  /* preenchido */
+  color: white;
+  border: 2px solid #0F0261;
+  border-radius: 5px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: 0.3s;
+  text-decoration: none;
+}
+.botao a{
+  margin: 25px;
+}
+
+.botao:hover {
+  background-color: #100088; /* escurece ao passar o mouse */
+}
 /*NAVBAR*/
 
 .navbar-nav .nav-link {
@@ -108,7 +127,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 1000; /* mais grosso */
-  font-size: 3.8rem; /* maior tamanho */
+  font-size: 3.rem; /* maior tamanho */
   text-shadow: none;
   line-height: 1.2; /* opcional para melhor espaçamento */
 }
