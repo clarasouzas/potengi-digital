@@ -552,7 +552,7 @@ footer {
   }
 }
    .perfill .hero {
-      background-image: url('coloque-sua-imagem-aqui.jpg');
+      background-image: url("../img/pm.png");
       background-size: cover;
       background-position: center;
       height: 320px;
