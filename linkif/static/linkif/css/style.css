@@ -480,4 +480,68 @@ footer {
     max-width: 100%;
   }
 }
-/* Página de vagas */ .filtro-box { background-color: #fff; border: 1px solid #d7e4da; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); padding: 15px 25px; margin: 30px auto; width: 90%; max-width: 950px; } .filtro-box select, .filtro-box input { border: 1px solid #c5e0cb; border-radius: 8px; color: #333; } .filtro-box button { background-color: #0b1b4d; color: #fff; border-radius: 8px; font-weight: 600; padding: 6px 22px; border: none; } /* Cards */ .vaga-card { background-color: #fff; border: 1px solid #b9e2c3; border-radius: 10px; padding: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.15s ease; } .vaga-card:hover { transform: translateY(-3px); } .vaga-card h5 { color: #0b1b4d; font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; } .vaga-card p { margin: 0; font-size: 0.9rem; color: #555; line-height: 1.4; } .btn-detalhes { background-color: #fff; color: #0b1b4d; border: 2px solid #4cd38d; border-radius: 6px; font-weight: 600; margin-top: 10px; transition: background 0.2s ease; } .btn-detalhes:hover { background-color: #4cd38d; color: #fff; }
+/* Fundo geral da página de vagas */
+.vagas-section {
+  background: linear-gradient(to bottom, #e8fff0, #ffffff);
+}
+
+/* Filtro lateral */
+.filtro-card {
+  border-radius: 10px;
+}
+.filtro-card label {
+  font-size: 0.9rem;
+  color: #333;
+}
+.filtro-card input,
+.filtro-card select {
+  font-size: 0.9rem;
+}
+
+/* Cards das vagas */
+.card {
+  border-radius: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+.vaga-status {
+  display: inline-block;
+  background-color: rgba(98, 255, 0, 0.13);
+  color: #0F0261;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+
+/* Paginação */
+.pagination .page-link {
+  color: #0F0261;
+  border: none;
+  margin: 0 3px;
+  border-radius: 8px;
+}
+.pagination .page-link:hover {
+  background-color: #96f6b9;
+  color: rgb(89, 89, 89);
+}
+.pagination .active {
+  background-color: #0F0261;
+  color: white !important;
+}
+
+/* Botões */
+.btn {
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+/* Ajuste responsivo */
+@media (max-width: 991px) {
+  .filtro-card {
+    margin-bottom: 20px;
+  }
+}

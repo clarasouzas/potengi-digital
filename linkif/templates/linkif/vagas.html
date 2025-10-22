@@ -4,29 +4,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LinkIF - Início</title>
+  <title>LinkIF - Vagas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
 </head>
-  <style>
 
-  </style>
-</head>
 <body>
-<body>
-  <!-- NAVEGADORES-->
-  <nav class=" cor navbar navbar-expand-lg shadow-sm">
+  <!-- NAV -->
+  <nav class="cor navbar navbar-expand-lg shadow-sm">
     <div class="container">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="{% url 'index' %}">
         <img src="{% static 'linkif/img/logo.png' %}" alt="Logo LinkIF">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="#">Início</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Início</a></li>
           <li class="nav-item"><a class="nav-link" href="#estudante">Para Você</a></li>
           <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
           <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
@@ -39,151 +34,126 @@
       </div>
     </div>
   </nav>
-  <section class="vagas">
-    <div class="overlay"></div>
-    <div class="container ">
-      <div class="row ">
-        <div class="col-md-8">
-          <h1 style="font-size: 30px; font-weight: 900; ;">Da ideia à prática, do campus à carreira.</h1>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <section class="vagas-section py-5">
+    <div class="container">
+      <h2 class="fw-bold text-center mb-4" style="color:#1b1f5b;">Conectamos você às melhores vagas do mercado!</h2>
+
+      <div class="row g-4">
+        <!-- FILTRO LATERAL -->
+        <div class="col-lg-3">
+          <div class="filtro-card p-4 rounded shadow-sm bg-white">
+            <h6 class="fw-bold mb-3" style="color:#0F0261;">Personalize sua pesquisa</h6>
+            <form>
+              <div class="mb-3">
+                <label class="form-label">Busque pelo nome da vaga</label>
+                <input type="text" class="form-control" placeholder="Digite sua pesquisa">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Localização ideal</label>
+                <input type="text" class="form-control" placeholder="Digite cidade ou estado">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Tipo de Vaga</label>
+                <select class="form-select">
+                  <option>Selecione um tipo de vaga</option>
+                  <option>Estágio</option>
+                  <option>Jovem Aprendiz</option>
+                  <option>Efetivo</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Curso</label>
+                <select class="form-select">
+                  <option>Selecione um curso</option>
+                  <option>Informática</option>
+                  <option>Edificações</option>
+                  <option>Meio Ambiente</option>
+                  <option>Licenciatura em Matemática</option>                 
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Modalidade</label>
+                <select class="form-select">
+                  <option>Selecione uma modalidade</option>
+                  <option>Presencial</option>
+                  <option>Remoto</option>
+                  <option>Híbrido</option>
+                </select>
+              </div>
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="pcd">
+                <label class="form-check-label" for="pcd">Exclusivo PCD</label>
+              </div>
+              <button type="button" class="btn w-100 text-white" style="background-color:#0F0261;">Filtrar</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- LISTA DE VAGAS -->
+        <div class="col-lg-9">
+          <div class="row g-4">
+            {% for i in "12345678" %}
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+                <div class="vaga-status">Vaga disponível</div>
+                <h6 class="fw-bold mt-2">ESTÁGIO - ADMINISTRAÇÃO</h6>
+                <p class="text-secondary mb-1"><i class="bi bi-geo-alt-fill"></i> Natal/RN</p>
+                <p class="text-secondary"><i class="bi bi-building"></i> Presencial</p>
+                <p class="fw-bold" style="color:#0F0261;">R$ 750,00</p>
+                <button class="btn btn-sm w-100 mt-auto" style="background-color:#96f6b9; color:#0F0261;">Quero esta vaga</button>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- PAGINAÇÃO -->
+          <nav aria-label="Navegação de páginas" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
+              <li class="page-item"><a class="page-link active" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item"><a class="page-link" href="#">»</a></li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Filtros -->
-  <div class="filtro-box d-flex flex-wrap align-items-center justify-content-center gap-2">
-    <select class="form-select" style="width:150px;">
-      <option>Tipo de vaga</option>
-      <option>Estágio</option>
-      <option>Emprego</option>
-    </select>
-
-    <select class="form-select" style="width:150px;">
-      <option>Curso</option>
-      <option>Informática</option>
-      <option>Edificações</option>
-      <option>Meio Ambiente</option>
-      <option>Licenciatura de Mátematica</option>
-    </select>
-
-    <select class="form-select" style="width:150px;">
-      <option>Ano/Nível</option>
-      <option>1º Ano</option>
-      <option>2º Ano</option>
-      <option>3º Ano</option>
-      <option>4º Ano</option>
-    </select>
-
-    <select class="form-select" style="width:150px;">
-      <option>Turno</option>
-      <option>Manhã</option>
-      <option>Tarde</option>
-    </select>
-
-    <input type="text" class="form-control" style="width:180px;" placeholder="Informe a cidade">
-
-    <button class="btn">Buscar</button>
-  </div>
-
-  <!-- Cards -->
-  <div class="container mt-4" style="margin-bottom: 30px">
-    <div class="row g-4 justify-content-center">
-      
-      <!-- Card 1 -->
-      <div class="col-md-3">
-        <div class="vaga-card">
-          <h5>Estágio em Informática</h5>
-          <p><b>Curso:</b> Informática</p>
-          <p><b>Ano:</b> 3º Ano Técnico</p>
-          <p><b>Turno:</b> Tarde</p>
-          <p><b>Local:</b> São Paulo do Potengi - RN</p>
-          <p><b>Horário:</b> 13h às 17h</p>
-          <p><b>Bolsa:</b> R$ 750,00</p>
-          <a href="{% url 'detalhar' %}" class="btn btn-detalhes w-100">Ver detalhes</a>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="col-md-3">
-        <div class="vaga-card">
-          <h5>Estágio em Edificações</h5>
-          <p><b>Curso:</b> Edificações</p>
-          <p><b>Ano:</b> 3º Ano Técnico</p>
-          <p><b>Turno:</b> Tarde</p>
-          <p><b>Local:</b> São Paulo do Potengi - RN</p>
-          <p><b>Horário:</b> 13h às 17h</p>
-          <p><b>Bolsa:</b> R$ 750,00</p>
-          <button class="btn btn-detalhes w-100">Ver detalhes</button>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="col-md-3">
-        <div class="vaga-card">
-          <h5>Estágio em Meio Ambiente</h5>
-          <p><b>Curso:</b> Meio Ambiente</p>
-          <p><b>Ano:</b> 3º Ano Técnico</p>
-          <p><b>Turno:</b> Tarde</p>
-          <p><b>Local:</b> São Paulo do Potengi - RN</p>
-          <p><b>Horário:</b> 13h às 17h</p>
-          <p><b>Bolsa:</b> R$ 750,00</p>
-          <button class="btn btn-detalhes w-100">Ver detalhes</button>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="col-md-3">
-        <div class="vaga-card">
-          <h5>Estágio em Informática</h5>
-          <p><b>Curso:</b> Informática</p>
-          <p><b>Ano:</b> 3º Ano Técnico</p>
-          <p><b>Turno:</b> Tarde</p>
-          <p><b>Local:</b> São Paulo do Potengi - RN</p>
-          <p><b>Horário:</b> 13h às 17h</p>
-          <p><b>Bolsa:</b> R$ 750,00</p>
-          <button class="btn btn-detalhes w-100">Ver detalhes</button>
-        </div>
-      </div>
-
-   
-      </div>
-
-    </div>
-  </div>
+  <!-- FOOTER -->
   <footer class="cor">
     <div class="container">
       <div class="row text-start">
-        <div class="col-md-4 mb-3 footer-logo" style="margin: 0px">
+        <div class="col-md-4 mb-3 footer-logo">
           <img src="{% static 'linkif/img/logo.png' %}" alt="Logo LinkIF">
-          <p>Conectando talentos técnicos do IFRN às melhores oportunidades profissionais. 
-             Construindo pontes entre a academia e o mercado de trabalho.</p>
+          <p>Conectando talentos técnicos do IFRN às melhores oportunidades profissionais.</p>
           <div class="footer-social">
-            <i class="bi bi-instagram"></i>
-            <a href="#">LinkIF</a>
+            <i class="bi bi-instagram"></i> <a href="#">LinkIF</a>
           </div>
         </div>
-
         <div class="col-md-4 mb-3 footer-links">
           <h6 class="footer-title">Links Úteis</h6>
           <a href="#">Portal IFRN</a>
           <a href="#">Política de Privacidade</a>
           <a href="#">Acessibilidade</a>
         </div>
-
         <div class="col-md-4 mb-3 footer-links">
           <h6 class="footer-title">Suporte</h6>
           <a href="#">Fale Conosco</a>
           <a href="#">FAQ</a>
         </div>
       </div>
-
       <div class="footer-bottom">
         © 2025 LinkIF - IFRN. Todos os direitos reservados.
       </div>
     </div>
   </footer>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
