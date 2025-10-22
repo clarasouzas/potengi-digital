@@ -12,3 +12,7 @@ def vagas(request):
     return render(request, "linkif/vagas.html")
 def perfil_cursos(request):
     return render(request, "linkif/perfil_cursos.html")
+def vagas(request):
+    return render(request, 'linkif/vagas.html')
+def detalhar(request):
+    return render(request, 'linkif/detalhar.html')
