@@ -1,18 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
+/* ================================
+   BASE GERAL
+================================ */
 body {
   font-family: "Montserrat", sans-serif;
   background-color: #ffffff;
   color: #5E6468;
 }
-.cor{
+
+.cor {
   background-color: rgba(98, 255, 0, 0.13);
 }
 
+/* ================================
+   BOTÕES GERAIS
+================================ */
 .botao {
   width: 250px;
   height: 60px;
-  background-color: #0F0261;  /* preenchido */
+  background-color: #0F0261;
   color: white;
   border: 2px solid #0F0261;
   border-radius: 5px;
@@ -21,18 +28,21 @@ body {
   transition: 0.3s;
   text-decoration: none;
 }
-.botao a{
+
+.botao a {
   margin: 25px;
 }
 
 .botao:hover {
-  background-color: #100088; /* escurece ao passar o mouse */
+  background-color: #100088;
 }
-/*NAVBAR*/
 
+/* ================================
+   NAVBAR
+================================ */
 .navbar-nav .nav-link {
   position: relative;
-  color: #5E6468; /* cor padrão do texto */
+  color: #5E6468;
   font-weight: 400;
 }
 
@@ -42,13 +52,15 @@ body {
   left: 0;
   bottom: 0;
   width: 0;
-  height: 2px;              /* altura da linha */
-  background-color: #0F0261; /* cor da linha */
+  height: 2px;
+  background-color: #0F0261;
+  transition: width 0.3s ease;
 }
 
 .navbar-nav .nav-link:hover::after {
-  width: 100%; /* linha completa ao passar o mouse */
+  width: 100%;
 }
+
 .navbar-brand {
   font-size: 1.4rem;
 }
@@ -57,6 +69,7 @@ body {
   height: 80px;
   width: auto;
 }
+
 .navbar-nav {
   margin-left: auto;
   margin-right: auto;
@@ -64,17 +77,22 @@ body {
 }
 
 .navbar-nav .nav-item {
-  padding: 0 3px; /* espaço entre os itens */
+  padding: 0 3px;
 }
-.btn-entrar {
-  color: #0F0261;             /* cor da borda e do texto */
-  border: 2px solid #0F0261;  /* borda da mesma cor */
-  background-color: transparent; /* vazado */
+
+.btn-entrar,
+.btn-cadastrese {
   border-radius: 5px;
-  padding: 8px 20px;          /* mesma altura que o outro botão */
+  padding: 8px 20px;
   font-weight: 600;
   transition: 0.3s;
   text-decoration: none;
+}
+
+.btn-entrar {
+  color: #0F0261;
+  border: 2px solid #0F0261;
+  background-color: transparent;
 }
 
 .btn-entrar:hover {
@@ -83,21 +101,19 @@ body {
 }
 
 .btn-cadastrese {
-  background-color: #0F0261;  /* preenchido */
+  background-color: #0F0261;
   color: white;
   border: 2px solid #0F0261;
-  border-radius: 5px;
-  padding: 8px 20px;
-  font-weight: 600;
-  transition: 0.3s;
-  text-decoration: none;
 }
 
 .btn-cadastrese:hover {
-  background-color: #100088; /* escurece ao passar o mouse */
+  background-color: #100088;
 }
-/*BANNER*/
-.hero  {
+
+/* ================================
+   BANNER (HERO)
+================================ */
+.hero {
   position: relative;
   background: url("../img/banner.png") center center/cover no-repeat;
   height: 100vh;
@@ -105,24 +121,6 @@ body {
   align-items: center;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
-.vagas{
-  position: relative;
-  background: url("../img/banner-vagas.png") center center/cover no-repeat;
-  height: 40vh;
-  display: flex;
-  align-items: center;
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  text-align: left;
-  justify-content: center;
-}
-.vagas h1{
-  text-align: right;
-  font-size:1.5rem;
-  margin-right: 0%;
-  margin-left: 120vh;
- 
 }
 
 .hero .overlay {
@@ -144,81 +142,55 @@ body {
   background: linear-gradient(to right, #a8ff78, #12e771);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 1000; /* mais grosso */
-  font-size: 1.rem; /* maior tamanho */
+  font-weight: 1000;
+  font-size: 1.8rem;
   text-shadow: none;
-  line-height: 1.2; /* opcional para melhor espaçamento */
+  line-height: 1.2;
 }
-.hero p a {
-  font-size: 1.0rem;
-  margin-top: 10px;
-  color: white;
-}
-.hero p{
+
+.hero p {
   font-size: 1.5rem;
 }
 
-.hero .btn {
-  background-color: #0F0261;
+.hero p a {
+  font-size: 1rem;
+  color: white;
 }
 
-/*SEÇÕES PADRÃO*/
+/* ================================
+   VAGAS BANNER
+================================ */
+.vagas {
+  position: relative;
+  background: url("../img/banner-vagas.png") center center/cover no-repeat;
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  justify-content: center;
+}
+
+.vagas h1 {
+  text-align: right;
+  font-size: 1.5rem;
+  margin-left: 120vh;
+}
+
+/* ================================
+   SEÇÕES PADRÃO
+================================ */
 section {
   padding: 60px 0;
 }
 
-/*CARDS DE DESTAQUE*/
-.feature-top {
-  height: 150px;
-  position: relative;
-  border-top-left-radius: 16px;   
-  border-top-right-radius: 16px;  
-  border-bottom-left-radius: 0;   
-  border-bottom-right-radius: 0;  
-  margin: -1.5rem -1.5rem 50px;
-  width: calc(100% + 3rem);
-}
-
-.feature-icon {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 50%;               /* central vertical */
-  left: 50%;
-  transform: translate(-50%, -50%); /* centraliza exato */
-  box-shadow: 0 8px 12px -4px rgba(0,0,0,0.4); /* sombra só embaixo */
-}
-.feature-icon img {
-  width: 70px;  /* maior */
-  height: 70px;
-}
-.feature-card {
-  margin: auto;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s;
-}
-
-.feature-card:hover {
-  transform: translateY(-2px);
-}
-
-.icon-lilas .feature-top { background-color: #e6d9eb; }
-.icon-lilas .feature-icon { background-color: #d4adea; }
-
-.icon-verde .feature-top { background-color: #d2f4e3; }
-.icon-verde .feature-icon { background-color: #96f6b9; }
-
-.icon-azul .feature-top { background-color: #dae3ef; }
-.icon-azul .feature-icon { background-color: #93b9ee; }
-
-/*PERFIS DE FORMAÇÃO*/
-
+/* ================================
+   CARDS DE DESTAQUE
+================================ */
+.feature-top { height: 150px; position: relative; border-top-left-radius: 16px; border-top-right-radius: 16px; border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin: -1.5rem -1.5rem 50px; width: calc(100% + 3rem); } .feature-icon { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; top: 50%; /* central vertical */ left: 50%; transform: translate(-50%, -50%); /* centraliza exato */ box-shadow: 0 8px 12px -4px rgba(0,0,0,0.4); /* sombra só embaixo */ } .feature-icon img { width: 70px; /* maior */ height: 70px; } .feature-card { margin: auto; background-color: #fff; border-radius: 16px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); transition: transform 0.3s; } .feature-card:hover { transform: translateY(-2px); } .icon-lilas .feature-top { background-color: #e6d9eb; } .icon-lilas .feature-icon { background-color: #d4adea; } .icon-verde .feature-top { background-color: #d2f4e3; } .icon-verde .feature-icon { background-color: #96f6b9; } .icon-azul .feature-top { background-color: #dae3ef; } .icon-azul .feature-icon { background-color: #93b9ee; }
+/* ================================
+   PERFIS DE FORMAÇÃO
+================================ */
 .card {
   position: relative;
 }
@@ -227,8 +199,8 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
-  padding-top: 50px !important;
+  height: auto;
+   padding: 0.4rem 0.75rem 0.6rem; /* 🔹 menos parte branca */
 }
 
 .card-body a.btn {
@@ -236,222 +208,29 @@ section {
   margin-top: auto;
 }
 
-.perfil-logo img {
-  position: absolute;
-  top: 90px;
-  left: 20px;
-  width: 70px;
-  height: 70px;
-}
-.perfil-card {
-  flex: 0 0 200px;
-  height: 360px;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  background: #fff;
-  text-align: start;
-  transition: all 0.5s ease;
-  opacity: 0.6;
-  transform: scale(0.85);
-  z-index: 1;
-  position: relative;
-}
-
-.perfil-card.central {
-  transform: scale(1.15);
-  opacity: 1;
-  z-index: 3;
-}
-
-.perfil-card[data-pos="-1"], 
-.perfil-card[data-pos="1"] {
-  transform: scale(0.95);
-  opacity: 0.8;
-  z-index: 2;
-}
-
-.perfil-card img {
-  height: 140px;
-  width: 100%;
-  object-fit: cover;
-}
-
-.perfil-logo img {
-  position: absolute;
-  top: 70px;
-  left: 15px;
-  width: 60px;
-  height: 60px;
-}
-
-
-
-/* Botões */
-.btn-prev, .btn-next {
-  width: 40px;
-  height: 40px;
+.perfil-logo {
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  font-size: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.8;
-  border: none;
-}
-.carousel-wrapper {
-  position: relative;
-  width: 100%;
   overflow: hidden;
-}
-
-.carousel-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  transition: transform 0.5s;
-}
-
-.perfil-card {
-  flex: 0 0 200px;
-  height: 360px;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  background: #fff;
-  text-align: start;
-  transition: all 0.5s ease;
-  opacity: 0.6;
-  transform: scale(0.85);
-  z-index: 1;
-  position: relative;
-}
-
-.perfil-card.central {
-  transform: scale(1.15);
-  opacity: 1;
-  z-index: 3;
-}
-
-.perfil-card[data-pos="-1"], 
-.perfil-card[data-pos="1"] {
-  transform: scale(0.95);
-  opacity: 0.8;
-  z-index: 2;
-}
-
-.perfil-card img {
-  height: 140px;
-  width: 100%;
-  object-fit: cover;
+  justify-content: center;
+  background-color: #ffffff;
+  margin-bottom: 15px;
+  margin-top: -65px;
 }
 
 .perfil-logo img {
-  position: absolute;
-  top: 70px;
-  left: 15px;
-  width: 60px;
-  height: 60px;
-}
-
-.card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 50px 15px 15px;
+  width: 100%;
   height: 100%;
-}
-
-/* Botões */
-.btn-prev, .btn-next {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.8;
-  border: none;
-}
-.carousel-wrapper {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-}
-
-.carousel-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  transition: transform 0.5s;
-}
-
-.perfil-card {
-  flex: 0 0 200px;
-  height: 360px;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  background: #fff;
-  text-align: start;
-  transition: all 0.5s ease;
-  opacity: 0.6;
-  transform: scale(0.85);
-  z-index: 1;
-  position: relative;
-}
-
-.perfil-card.central {
-  transform: scale(1.15);
-  opacity: 1;
-  z-index: 3;
-}
-
-.perfil-card[data-pos="-1"], 
-.perfil-card[data-pos="1"] {
-  transform: scale(0.95);
-  opacity: 0.8;
-  z-index: 2;
-}
-
-.perfil-card img {
-  height: 140px;
-  width: 100%;
   object-fit: cover;
-}
-
-.perfil-logo img {
-  position: absolute;
-  top: 70px;
-  left: 15px;
-  width: 60px;
-  height: 60px;
-}
-
-.card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 50px 15px 15px;
-  height: 100%;
-}
-
-/* Botões */
-.btn-prev, .btn-next {
-  width: 40px;
-  height: 40px;
   border-radius: 50%;
-  font-size: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.8;
-  border: none;
 }
-/*SEÇÕES DUPLAS*/
+
+/* ================================
+   SEÇÕES DUPLAS
+================================ */
 .section-dupla {
   background-color: rgba(98, 255, 0, 0.13);
 }
@@ -503,7 +282,6 @@ section {
   justify-content: center;
 }
 
-/*BOTÕES*/
 .btn-dupla {
   display: inline-block;
   padding: 10px 18px;
@@ -523,9 +301,9 @@ section {
   color: #ffffff;
 }
 
-/* ===========================
+/* ================================
    RODAPÉ
-=========================== */
+================================ */
 footer {
   padding: 40px 0 20px;
   color: #0b1a33;
@@ -581,15 +359,17 @@ footer {
   margin-top: 20px;
   padding-top: 10px;
 }
-/* CONTATO */
+
+/* ================================
+   CONTATO
+================================ */
 .contato {
-  background-color: rgb(255, 255, 255); /* fundo suave */
+  background-color: #fff;
   padding: 60px 20px;
   border-radius: 10px;
 }
 
 .contato h3 {
-  font-family: "Montserrat", sans-serif;
   font-weight: 800;
   color: #241056;
   margin-bottom: 40px;
@@ -600,7 +380,7 @@ footer {
   flex-direction: column;
   gap: 15px;
   max-width: 500px;
-  margin: 0 auto; /* centraliza horizontalmente */
+  margin: 0 auto;
 }
 
 .contato .form-label {
@@ -639,77 +419,75 @@ footer {
     max-width: 100%;
   }
 }
-  /* Página de vagas */
-  .filtro-box {
-    background-color: #fff;
-    border: 1px solid #d7e4da;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    padding: 15px 25px;
-    margin: 30px auto;
-    width: 90%;
-    max-width: 950px;
-  }
 
-  .filtro-box select,
-  .filtro-box input {
-    border: 1px solid #c5e0cb;
-    border-radius: 8px;
-    color: #333;
-  }
+/* ================================
+   PÁGINA DE VAGAS
+================================ */
+.filtro-box {
+  background-color: #fff;
+  border: 1px solid #d7e4da;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 15px 25px;
+  margin: 30px auto;
+  width: 90%;
+  max-width: 950px;
+}
 
-  .filtro-box button {
-    background-color: #0b1b4d;
-    color: #fff;
-    border-radius: 8px;
-    font-weight: 600;
-    padding: 6px 22px;
-    border: none;
-  }
+.filtro-box select,
+.filtro-box input {
+  border: 1px solid #c5e0cb;
+  border-radius: 8px;
+  color: #333;
+}
 
-  /* Cards */
-  .vaga-card {
-    background-color: #fff;
-    border: 1px solid #b9e2c3;
-    border-radius: 10px;
-    padding: 18px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    transition: transform 0.15s ease;
-  }
+.filtro-box button {
+  background-color: #0b1b4d;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 6px 22px;
+  border: none;
+}
 
-  .vaga-card:hover {
-    transform: translateY(-3px);
-  }
+.vaga-card {
+  background-color: #fff;
+  border: 1px solid #b9e2c3;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease;
+}
 
-  .vaga-card h5 {
-    color: #0b1b4d;
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
+.vaga-card:hover {
+  transform: translateY(-3px);
+}
 
-  .vaga-card p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #555;
-    line-height: 1.4;
-  }
+.vaga-card h5 {
+  color: #0b1b4d;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
 
-  .btn-detalhes {
-    background-color: #fff;
-    color: #0b1b4d;
-    border: 2px solid #4cd38d;
-    border-radius: 6px;
-    font-weight: 600;
-    margin-top: 10px;
-    transition: background 0.2s ease;
-  }
+.vaga-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+}
 
-  .btn-detalhes:hover {
-    background-color: #4cd38d;
-    color: #fff;
-  }
-  
+.btn-detalhes {
+  background-color: #fff;
+  color: #0b1b4d;
+  border: 2px solid #4cd38d;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: background 0.2s ease;
+}
 
-  
-  
+.btn-detalhes:hover {
+  background-color: #4cd38d;
+  color: #fff;
+}
