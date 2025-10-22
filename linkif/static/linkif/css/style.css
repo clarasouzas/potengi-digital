@@ -697,3 +697,56 @@ footer {
   background-color: #d4dcf7e5;
   padding: 50px;
 }
+
+.detalhar body {
+  background-color: #f8f9fa;
+  font-family: "Arial", sans-serif;
+}
+
+.detalhar .navbar {
+  background-color: #e9f4e3 !important;
+}
+
+.detalhar .navbar-brand span {
+  font-size: 22px;
+}
+
+.detalhar .card {
+  max-width: 900px;
+  margin: auto;
+  background-color: #e3f1e8ff;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0,0.3);
+}
+
+.detalhar .card img {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.detalhar .card-body {
+  padding: 25px;
+}
+
+.detalhar h4 {
+  color: #241056;
+  margin-bottom: 20px;
+}
+
+.detalhar .btn-primary {
+  background-color: #241056;
+  border: none;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.detalhar .btn-primary:hover {
+  background-color: #001bcc;
+
+}
+.detalhar .conteudo{
+  background-color: #66676eff;
+
+}
