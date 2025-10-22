@@ -97,12 +97,15 @@
             {% for i in "12345678" %}
             <div class="col-md-4">
               <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
-                <div class="vaga-status">Vaga disponível</div>
+                <div class="vaga-status-container">
+                <div class="vaga-status col-md-4 me-1">Disponível</div>
+                <div class="vaga-status col-md-4">Empresa</div>
+                </div>
                 <h6 class="fw-bold mt-2">ESTÁGIO - ADMINISTRAÇÃO</h6>
                 <p class="text-secondary mb-1"><i class="bi bi-geo-alt-fill"></i> Natal/RN</p>
                 <p class="text-secondary"><i class="bi bi-building"></i> Presencial</p>
                 <p class="fw-bold" style="color:#0F0261;">R$ 750,00</p>
-                <button class="btn btn-sm w-100 mt-auto" style="background-color:#96f6b9; color:#0F0261;">Quero esta vaga</button>
+                <button class="btn btn-sm w-100 mt-auto" style="background-color:#56c596; color:#ffffff;">Quero esta vaga</button>
               </div>
             </div>
             {% endfor %}
