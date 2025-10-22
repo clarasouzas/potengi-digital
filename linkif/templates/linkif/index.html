@@ -10,8 +10,8 @@
 </head>
 
 <body>
-  <!-- NAVEGADORES-->
-  <nav class=" cor navbar navbar-expand-lg shadow-sm">
+  <!-- NAVEGAÇÃO -->
+  <nav class="cor navbar navbar-expand-lg shadow-sm">
     <div class="container">
       <a class="navbar-brand" href="#">
         <img src="{% static 'linkif/img/logo.png' %}" alt="Logo LinkIF">
@@ -36,7 +36,7 @@
     </div>
   </nav>
 
-  <!--Banner-->
+  <!-- BANNER -->
   <section class="hero">
     <div class="overlay"></div>
     <div class="container text-center text-md-start">
@@ -50,7 +50,7 @@
     </div>
   </section>
 
-  <!-- O QUE É O LINKIF-->
+  <!-- O QUE É O LINKIF -->
   <section class="py-5 bg-white" id="sobre">
     <div class="container text-center">
       <h2 class="fw-bold" style="color: #1b1f5b;">O que é o LinkIF?</h2>
@@ -102,153 +102,186 @@
     </div>
   </section>
 
-<!-- PERFIS DE FORMAÇÃO--> <section class=" cor py-5" id="perfis">
-   <div class="container text-center"> 
-    <h2 class="fw-bold" style="color: #1b1f5b;">Perfis de Formação</h2> 
-    <p class="mb-5 text-secondary"> Conheça as áreas de formação dos alunos e egressos do IFRN – Campus São Paulo do Potengi. </p>
-     <div class="row g-4 justify-content-center align-items-stretch"> 
-      <!-- Edificações --> <div class="col-md-4 d-flex"> 
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100"> 
-          <img src="{% static 'linkif/img/perfil_edificações.png' %}" alt="Edificações" style="height:160px; object-fit:cover;">
-           <div class="card-body text-start p-4">
-             <div class="perfil-logo"> <img src="{% static 'linkif/img/logo_edificacoes.png' %}" alt="Logo"> 
-            </div> <h5 class="fw-bold text-danger">Edificações</h5>
-             <p>Planejamento, execução e manutenção de obras.</p> 
-             <a href="{% url 'perfil_cursos' %}" class="btn btn-sm text-white px-3 mt-2" style="background-color:#F25720;">Ver Mais</a>
-             </div> 
+  <!-- PERFIS DE FORMAÇÃO -->
+  <section class="cor py-5" id="perfis">
+    <div class="container text-center">
+      <h2 class="fw-bold" style="color: #1b1f5b;">Perfis de Formação</h2>
+      <p class="mb-5 text-secondary">Conheça as áreas de formação dos alunos e egressos do IFRN – Campus São Paulo do Potengi.</p>
+
+      <div class="row g-4 justify-content-center align-items-stretch">
+        <!-- Edificações -->
+        <div class="col-md-4 d-flex">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100">
+            <img src="{% static 'linkif/img/perfil_edificações.png' %}" alt="Edificações" style="height:140px; object-fit:cover;">
+            <div class="card-body text-start p-4">
+              <div class="perfil-logo">
+                <img src="{% static 'linkif/img/logo_edificacoes.png' %}" alt="Logo">
+              </div>
+              <h5 class="fw-bold text-danger">Edificações</h5>
+              <p>Planejamento, execução e manutenção de obras.</p>
+              <a href="{% url 'perfil_cursos' %}" class="btn btn-sm text-white px-3 mt-2" style="background-color:#F25720;">Ver Mais</a>
             </div>
-           </div> <!-- Informática --> <div class="col-md-4 d-flex"> 
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100"> <img src="{% static 'linkif/img/perfil_informatica.png' %}" alt="Informática" style="height:160px; object-fit:cover;"> <div class="card-body text-start p-4"> <div class="perfil-logo"> <img src="{% static 'linkif/img/logo_informatica.png' %}" alt="Logo"> </div> <h5 class="fw-bold text-primary">Informática para Internet</h5> <p>Desenvolvimento web, banco de dados e UX/UI.</p> <a href="#" class="btn btn-sm text-white px-3 mt-2" style="background-color:#0F0261;">Ver Mais</a> </div> </div> </div> <!-- Meio Ambiente --> <div class="col-md-4 d-flex"> <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100"> <img src="{% static 'linkif/img/perfil_meioambiente.png' %}" alt="Meio Ambiente" style="height:160px; object-fit:cover;"> <div class="card-body text-start p-4"> <div class="perfil-logo"> <img src="{% static 'linkif/img/logo_meioambiente.png' %}" alt="Logo"> </div> <h5 class="fw-bold text-success" style="margin-top: 15px;">Meio Ambiente</h5> <p>Gestão ambiental e sustentabilidade.</p> <a href="#" class="btn btn-sm text-white px-3 mt-2" style="background-color:#368C01;">Ver Mais</a> </div> </div> </div> </div> </div> </section>
+          </div>
+        </div>
 
- <!-- PARA ESTUDANTES-->
-<section class="section-dupla" id="estudante">
-  <div class="container" style="max-width:980px;">
-    <div class="text-center mb-4">
-      <h3>Para Estudantes</h3>
-      <p class="sub">
-        Mostre suas habilidades, monte seu perfil e encontre oportunidades que combinam com você.
-      </p>
-    </div>
+        <!-- Informática -->
+        <div class="col-md-4 d-flex">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100">
+            <img src="{% static 'linkif/img/perfil_informatica.png' %}" alt="Informática" style="height:140px; object-fit:cover;">
+            <div class="card-body text-start p-4">
+              <div class="perfil-logo">
+                <img src="{% static 'linkif/img/logo_informatica.png' %}" alt="Logo">
+              </div>
+              <h5 class="fw-bold text-primary">Informática para Internet</h5>
+              <p>Desenvolvimento web, banco de dados e UX/UI.</p>
+              <a href="#" class="btn btn-sm text-white px-3 mt-2" style="background-color:#0F0261;">Ver Mais</a>
+            </div>
+          </div>
+        </div>
 
-    <div class="row align-items-center g-4">
-      <div class="col-md-6 text-center">
-        <img src="{% static 'linkif/img/estudante.png' %}" alt="Estudante">
-      </div>
-
-      <div class="col-md-6">
-        <ul>
-          <li>
-            <span class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
-                   style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
-                <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
-              </svg>
-            </span>
-            Vagas e estágios alinhados ao seu perfil.
-          </li>
-          <li>
-            <span class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
-                   style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
-                <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
-              </svg>
-            </span>
-            Perfil inteligente com destaque para suas competências.
-          </li>
-          <li>
-            <span class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
-                   style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
-                <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
-              </svg>
-            </span>
-            Contato direto com empresas da região.
-          </li>
-          <li>
-            <span class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
-                   style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
-                <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
-              </svg>
-            </span>
-            Certificados e experiências que impulsionam sua trajetória.
-          </li>
-        </ul>
-        <a href="{% url 'vagas' %}"class="btn-dupla">Ver Vagas</a>
+        <!-- Meio Ambiente -->
+        <div class="col-md-4 d-flex">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100">
+            <img src="{% static 'linkif/img/perfil_meioambiente.png' %}" alt="Meio Ambiente" style="height:140px; object-fit:cover;">
+            <div class="card-body text-start p-4">
+              <div class="perfil-logo">
+                <img src="{% static 'linkif/img/logo_meioambiente.png' %}" alt="Logo">
+              </div>
+              <h5 class="fw-bold text-success" style="margin-top: 15px;">Meio Ambiente</h5>
+              <p>Gestão ambiental e sustentabilidade.</p>
+              <a href="#" class="btn btn-sm text-white px-3 mt-2" style="background-color:#368C01;">Ver Mais</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-  <!--PARA EMPRESAS-->
-<section class="cor section-dupla" id="empresas">
-  <div class="container" style="max-width:980px;">
-    <div class="text-center mb-4">
-      <h3>Para Empresas</h3>
-      <p class="sub">
-        Encontre os talentos que fazem a diferença e fortaleça sua equipe com jovens qualificados do IFRN.
-      </p>
-    </div>
-
-    <div class="row align-items-center g-4 flex-row-reverse">
-      <div class="col-md-6 text-center">
-        <img src="{% static 'linkif/img/empresa.png' %}" alt="empresa">
+  <!-- PARA ESTUDANTES -->
+  <section class="section-dupla" id="estudante">
+    <div class="container" style="max-width:980px;">
+      <div class="text-center mb-4">
+        <h3>Para Estudantes</h3>
+        <p class="sub">Mostre suas habilidades, monte seu perfil e encontre oportunidades que combinam com você.</p>
       </div>
 
-      <div class="col-md-6">
-        <ul>
-          <li>
-            <span class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
-              style="background-color:rgba(98, 255, 0, 0.13);; border-radius: 50%; padding: 2px;">
-              <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
-              </svg>
-            </span>
-            Divulgue vagas de estágio e jovem aprendiz.
-          </li>
-          <li>
-            <span class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
-              style="background-color:rgba(98, 255, 0, 0.13);; border-radius: 50%; padding: 2px;">
-              <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
-              </svg>
-            </span>
-            Acesse perfis de alunos e ex-alunos do IFRN.
-          </li>
-          <li>
-            <span class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
-              style="background-color:rgba(98, 255, 0, 0.13);; border-radius: 50%; padding: 2px;">
-              <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
-              </svg>
-            </span>
-            Encontre candidatos com as habilidades que o mercado precisa.
-          </li>
-          <li>
-            <span class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" 
-                   style="background-color:rgba(98, 255, 0, 0.13);; border-radius: 50%; padding: 2px;">
-                <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
-              </svg>
-            </span>
-            Fortaleça parcerias com o IFRN e incentive o desenvolvimento local.
-          </li>
-        </ul>
-        <a href="#perfis" class="btn-dupla" >Explorar Perfis</a>
+      <div class="row align-items-center g-4">
+        <div class="col-md-6 text-center">
+          <img src="{% static 'linkif/img/estudante.png' %}" alt="Estudante">
+        </div>
+
+        <div class="col-md-6">
+          <ul>
+            <li>
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"
+                     style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
+                  <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+                </svg>
+              </span>
+              Vagas e estágios alinhados ao seu perfil.
+            </li>
+            <li>
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"
+                     style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
+                  <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+                </svg>
+              </span>
+              Perfil inteligente com destaque para suas competências.
+            </li>
+            <li>
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"
+                     style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
+                  <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+                </svg>
+              </span>
+              Contato direto com empresas da região.
+            </li>
+            <li>
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"
+                     style="background-color: rgba(255, 255, 255, 1); border-radius: 50%; padding: 2px;">
+                  <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+                </svg>
+              </span>
+              Certificados e experiências que impulsionam sua trajetória.
+            </li>
+          </ul>
+          <a href="{% url 'vagas' %}" class="btn-dupla">Ver Vagas</a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-  <!-- CONTATO-->
+  <!-- PARA EMPRESAS -->
+  <section class="cor section-dupla" id="empresas">
+    <div class="container" style="max-width:980px;">
+      <div class="text-center mb-4">
+        <h3>Para Empresas</h3>
+        <p class="sub">Encontre os talentos que fazem a diferença e fortaleça sua equipe com jovens qualificados do IFRN.</p>
+      </div>
+
+      <div class="row align-items-center g-4 flex-row-reverse">
+        <div class="col-md-6 text-center">
+          <img src="{% static 'linkif/img/empresa.png' %}" alt="empresa">
+        </div>
+
+        <div class="col-md-6">
+          <ul>
+            <li>
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"
+                     style="background-color:rgba(98, 255, 0, 0.13); border-radius: 50%; padding: 2px;">
+                  <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+                </svg>
+              </span>
+              Divulgue vagas de estágio e jovem aprendiz.
+            </li>
+            <li>
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"
+                     style="background-color:rgba(98, 255, 0, 0.13); border-radius: 50%; padding: 2px;">
+                  <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+                </svg>
+              </span>
+              Acesse perfis de alunos e ex-alunos do IFRN.
+            </li>
+            <li>
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"
+                     style="background-color:rgba(98, 255, 0, 0.13); border-radius: 50%; padding: 2px;">
+                  <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+                </svg>
+              </span>
+              Encontre candidatos com as habilidades que o mercado precisa.
+            </li>
+            <li>
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"
+                     style="background-color:rgba(98, 255, 0, 0.13); border-radius: 50%; padding: 2px;">
+                  <path fill="none" stroke="#0F0261" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+                </svg>
+              </span>
+              Fortaleça parcerias com o IFRN e incentive o desenvolvimento local.
+            </li>
+          </ul>
+          <a href="#perfis" class="btn-dupla">Explorar Perfis</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
   <div class="contato container py-4" id="contato">
     <h3 class="text-center" style="color:#241056; margin:40px 0 30px; font-weight:800;">Contato</h3>
     <div class="row g-4">
@@ -278,9 +311,8 @@
             <label class="form-label">Mensagem</label>
             <textarea class="form-control" rows="3" placeholder="Como Podemos Ajudar?"></textarea>
           </div>
-         
         </form>
-        <button type="button" class="btn btn" style="background-color:; color:white;">Enviar</button>
+        <button type="button" class="btn btn ms-4 mt-2" style="background-color:; color:white;">Enviar</button>
       </div>
 
       <!-- Informações -->
@@ -294,7 +326,7 @@
     </div>
   </div>
 
-  <!--RODAPÉ-->
+  <!-- RODAPÉ -->
   <footer class="cor">
     <div class="container">
       <div class="row text-start">

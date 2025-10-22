@@ -26,6 +26,9 @@ body {
   padding: 8px 20px;
   font-weight: 600;
   transition: 0.3s;
+  display: flex;          /* adiciona flex */
+  align-items: center;    /* centraliza verticalmente */
+  justify-content: center;
   text-decoration: none;
 }
 
@@ -139,7 +142,7 @@ body {
 }
 
 .hero h1 {
-  background: linear-gradient(to right, #a8ff78, #12e771);
+   background: linear-gradient(to right, #a8ff78, #12e771);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 1000;
@@ -157,37 +160,75 @@ body {
   color: white;
 }
 
-/* ================================
-   VAGAS BANNER
-================================ */
-.vagas {
-  position: relative;
-  background: url("../img/banner-vagas.png") center center/cover no-repeat;
-  height: 40vh;
-  display: flex;
-  align-items: center;
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  justify-content: center;
-}
+@media (max-width: 992px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
 
-.vagas h1 {
-  text-align: right;
-  font-size: 1.5rem;
-  margin-left: 120vh;
+  .hero p {
+    font-size: 1.2rem;
+  }
 }
 
 /* ================================
    SEÇÕES PADRÃO
 ================================ */
 section {
-  padding: 60px 0;
+  padding: 50px 0;
 }
 
 /* ================================
    CARDS DE DESTAQUE
 ================================ */
-.feature-top { height: 150px; position: relative; border-top-left-radius: 16px; border-top-right-radius: 16px; border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin: -1.5rem -1.5rem 50px; width: calc(100% + 3rem); } .feature-icon { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; top: 50%; /* central vertical */ left: 50%; transform: translate(-50%, -50%); /* centraliza exato */ box-shadow: 0 8px 12px -4px rgba(0,0,0,0.4); /* sombra só embaixo */ } .feature-icon img { width: 70px; /* maior */ height: 70px; } .feature-card { margin: auto; background-color: #fff; border-radius: 16px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); transition: transform 0.3s; } .feature-card:hover { transform: translateY(-2px); } .icon-lilas .feature-top { background-color: #e6d9eb; } .icon-lilas .feature-icon { background-color: #d4adea; } .icon-verde .feature-top { background-color: #d2f4e3; } .icon-verde .feature-icon { background-color: #96f6b9; } .icon-azul .feature-top { background-color: #dae3ef; } .icon-azul .feature-icon { background-color: #93b9ee; }
+.feature-top {
+  height: 150px;
+  position: relative;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  margin: -1rem -1rem 30px;
+  width: calc(100% + 2rem);
+}
+
+.feature-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 8px 12px -4px rgba(0,0,0,0.4);
+}
+
+.feature-icon img {
+  width: 70px;
+  height: 70px;
+}
+
+.feature-card {
+  margin: auto;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+}
+
+.icon-lilas .feature-top { background-color: #e6d9eb; }
+.icon-lilas .feature-icon { background-color: #d4adea; }
+
+.icon-verde .feature-top { background-color: #d2f4e3; }
+.icon-verde .feature-icon { background-color: #96f6b9; }
+
+.icon-azul .feature-top { background-color: #dae3ef; }
+.icon-azul .feature-icon { background-color: #93b9ee; }
+
 /* ================================
    PERFIS DE FORMAÇÃO
 ================================ */
@@ -200,7 +241,7 @@ section {
   flex-direction: column;
   justify-content: space-between;
   height: auto;
-   padding: 0.4rem 0.75rem 0.6rem; /* 🔹 menos parte branca */
+  padding: 0.4rem 0.75rem 0.6rem;
 }
 
 .card-body a.btn {
@@ -299,6 +340,13 @@ section {
 .btn-dupla:hover {
   background: #140094;
   color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .btn-dupla {
+    margin-left: 0;
+    margin-top: 15px;
+  }
 }
 
 /* ================================
@@ -401,13 +449,26 @@ footer {
 .contato .form-control:focus,
 .contato .form-select:focus,
 .contato textarea:focus {
-  border-color: #241056;
-  box-shadow: 0 0 5px rgba(36, 16, 86, 0.3);
+  border-color: #4444fa; /* borda mais clara */
   outline: none;
 }
 
 .contato textarea {
   resize: vertical;
+}
+
+.contato button {
+  background-color: #0F0261;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.contato button:hover {
+  background-color: #140094;
 }
 
 @media (max-width: 768px) {
@@ -418,76 +479,4 @@ footer {
   .contato form {
     max-width: 100%;
   }
-}
-
-/* ================================
-   PÁGINA DE VAGAS
-================================ */
-.filtro-box {
-  background-color: #fff;
-  border: 1px solid #d7e4da;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  padding: 15px 25px;
-  margin: 30px auto;
-  width: 90%;
-  max-width: 950px;
-}
-
-.filtro-box select,
-.filtro-box input {
-  border: 1px solid #c5e0cb;
-  border-radius: 8px;
-  color: #333;
-}
-
-.filtro-box button {
-  background-color: #0b1b4d;
-  color: #fff;
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 6px 22px;
-  border: none;
-}
-
-.vaga-card {
-  background-color: #fff;
-  border: 1px solid #b9e2c3;
-  border-radius: 10px;
-  padding: 18px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  transition: transform 0.15s ease;
-}
-
-.vaga-card:hover {
-  transform: translateY(-3px);
-}
-
-.vaga-card h5 {
-  color: #0b1b4d;
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.vaga-card p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #555;
-  line-height: 1.4;
-}
-
-.btn-detalhes {
-  background-color: #fff;
-  color: #0b1b4d;
-  border: 2px solid #4cd38d;
-  border-radius: 6px;
-  font-weight: 600;
-  margin-top: 10px;
-  transition: background 0.2s ease;
-}
-
-.btn-detalhes:hover {
-  background-color: #4cd38d;
-  color: #fff;
 }
