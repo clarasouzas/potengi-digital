@@ -93,8 +93,8 @@ body {
 }
 
 .btn-entrar {
-  color: #0F0261;
-  border: 2px solid #0F0261;
+  color: #205072;
+  border: 2px solid #205072;
   background-color: transparent;
 }
 
@@ -104,9 +104,9 @@ body {
 }
 
 .btn-cadastrese {
-  background-color: #0F0261;
+  background-color: #205072;
   color: white;
-  border: 2px solid #0F0261;
+  border: 2px solid #205072;
 }
 
 .btn-cadastrese:hover {
