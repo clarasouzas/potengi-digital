@@ -987,3 +987,113 @@ a:hover {
     font-size: 0.9rem;
   }
 }
+
+/* ================================
+   LOGIN
+================================ */
+
+ :root {
+      --azul-escuro: #0d3b66;
+      --verde-claro: #9fe6a0;
+      --card-radius: 12px;
+    }
+
+    html, body {
+      height: 100%;
+    }
+    
+    .login{
+      font-family: 'Inter', sans-serif;
+      background: #f6f8fb;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-container {
+      max-width: 1100px;
+      width: 100%;
+      margin-top:35px;
+      margin-bottom:40px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(13,59,102,0.12);
+      background: white;
+    }
+
+    .left-side {
+      background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .left-side::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(13,59,102,0.75);
+    }
+
+    .left-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .login .login-card {
+      padding: 3rem 2.5rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .btn-primary-custom {
+      background: var(--azul-escuro);
+      border-color: var(--azul-escuro);
+    }
+
+    .btn-primary-custom:hover {
+      background: #0b2f54;
+      border-color: #0b2f54;
+    }
+
+    .btn-back {
+      background: transparent;
+      border: 2px solid var(--azul-escuro);
+      color: var(--azul-escuro);
+      border-radius: 10px;
+      padding: .4rem .8rem;
+      font-weight: 500;
+    }
+
+    .signup-link {
+      color: var(--azul-escuro);
+      font-weight: 600;
+    }
+
+    @media (max-width: 992px) {
+      .login-container {
+        max-width: 90%;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .login-container {
+        flex-direction: column;
+      }
+      .left-side {
+        min-height: 250px;
+      }
+      .login-card {
+        padding: 2rem;
+      }
+    }
