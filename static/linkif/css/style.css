@@ -116,7 +116,6 @@ body {
 ================================ */
 .hero {
   position: relative;
-  background: url("../img/banner.png") center center/cover no-repeat;
   height: 100vh;
   display: flex;
   align-items: center;
