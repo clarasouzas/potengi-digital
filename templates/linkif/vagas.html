@@ -14,19 +14,25 @@
   <nav class="cor navbar navbar-expand-lg shadow-sm">
     <div class="container">
       <a class="navbar-brand" href="{% url 'index' %}">
-        <img src="{% static 'assets/img/logo.png' %}" alt="Logo LinkIF">
+        <img src="{{ site_config.get_logo_url }}" alt="Logo LinkIF">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
-          
-        </ul>
-        <div class="ms-3">
-          <a href="{% url 'login' %}" class="btn-entrar me-2">Entrar</a>
-          <a href="#" class="btn-cadastrese">Cadastre-se</a>
-        </div>
+        <ul class="navbar-nav mx-auto"></ul>
+
+        {% if user.is_authenticated %}
+          <div class="ms-3">
+            <a href="{% url 'logout' %}" class="btn-entrar me-2">Sair</a>
+            <a href="{% url 'notificacoes' %}" class="btn-cadastrese">Notificações</a>
+          </div>
+        {% else %}
+          <div class="ms-3">
+            <a href="{% url 'login' %}" class="btn-entrar me-2">Entrar</a>
+            <a href="{% url 'cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
+          </div>
+        {% endif %}
       </div>
     </div>
   </nav>
@@ -34,55 +40,48 @@
   <!-- CONTEÚDO PRINCIPAL -->
   <section class="vagas-section py-5">
     <div class="container">
-      <h2 class="fw-bold text-center mb-4" style="color:#1b1f5b;">Conectamos você às melhores vagas do mercado!</h2>
+      <h2 class="fw-bold text-center mb-4" style="color:#1b1f5b;">
+        Conectamos você às melhores vagas do mercado!
+      </h2>
 
       <div class="row g-4">
         <!-- FILTRO LATERAL -->
         <div class="col-lg-3">
           <div class="filtro-card p-4 rounded shadow-sm bg-white">
             <h6 class="fw-bold mb-3" style="color:#0F0261;">Personalize sua pesquisa</h6>
-            <form>
+
+            <form method="get">
               <div class="mb-3">
                 <label class="form-label">Busque pelo nome da vaga</label>
-                <input type="text" class="form-control" placeholder="Digite sua pesquisa">
+                <input type="text" name="titulo" class="form-control" placeholder="Digite sua pesquisa" value="{{ request.GET.titulo }}">
               </div>
+
               <div class="mb-3">
                 <label class="form-label">Localização ideal</label>
-                <input type="text" class="form-control" placeholder="Digite cidade ou estado">
+                <input type="text" name="cidade" class="form-control" placeholder="Digite cidade ou estado" value="{{ request.GET.cidade }}">
               </div>
+
               <div class="mb-3">
                 <label class="form-label">Tipo de Vaga</label>
-                <select class="form-select">
-                  <option>Selecione um tipo de vaga</option>
-                  <option>Estágio</option>
-                  <option>Jovem Aprendiz</option>
-                  <option>Efetivo</option>
+                <select name="tipo" class="form-select">
+                  <option value="">Selecione um tipo de vaga</option>
+                  <option value="estagio">Estágio</option>
+                  <option value="emprego">Emprego</option>
+                  <option value="bolsa">Bolsa</option>
                 </select>
               </div>
+
               <div class="mb-3">
-                <label class="form-label">Curso</label>
-                <select class="form-select">
-                  <option>Selecione um curso</option>
-                  <option>Informática</option>
-                  <option>Edificações</option>
-                  <option>Meio Ambiente</option>
-                  <option>Licenciatura em Matemática</option>                 
+                <label class="form-label">Área de Atuação</label>
+                <select name="area" class="form-select">
+                  <option value="">Selecione uma área</option>
+                  {% for area in areas %}
+                    <option value="{{ area.nome }}">{{ area.nome }}</option>
+                  {% endfor %}
                 </select>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Modalidade</label>
-                <select class="form-select">
-                  <option>Selecione uma modalidade</option>
-                  <option>Presencial</option>
-                  <option>Remoto</option>
-                  <option>Híbrido</option>
-                </select>
-              </div>
-              <div class="form-check form-switch mb-3">
-                <input class="form-check-input" type="checkbox" id="pcd">
-                <label class="form-check-label" for="pcd">Exclusivo PCD</label>
-              </div>
-              <button type="button" class="btn w-100 text-white" style="background-color:#205072;">Filtrar</button>
+
+              <button type="submit" class="btn w-100 text-white" style="background-color:#205072;">Filtrar</button>
             </form>
           </div>
         </div>
@@ -90,36 +89,28 @@
         <!-- LISTA DE VAGAS -->
         <div class="col-lg-9">
           <div class="row g-4">
-            {% for i in "123456789" %}
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
-                <div class="vaga-status-container">
-                <div class="vaga-status col-md-4 me-1">Disponível</div>
-                <div class="vaga-status col-md-4">Empresa</div>
+            {% for vaga in vagas %}
+              <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+                  <div class="vaga-status-container d-flex justify-content-between">
+                    <div class="vaga-status">Disponível</div>
+                    <div class="vaga-status">{{ vaga.empresa.nome_fantasia }}</div>
+                  </div>
+                  <h6 class="fw-bold mt-2">{{ vaga.titulo }}</h6>
+                  <p class="text-secondary mb-1"><i class="bi bi-geo-alt-fill"></i> {{ vaga.cidade }}/{{ vaga.estado }}</p>
+                  <p class="text-secondary"><i class="bi bi-building"></i> {{ vaga.get_tipo_display }}</p>
+                  {% if vaga.remuneracao %}
+                    <p class="fw-bold" style="color:#0F0261;">R$ {{ vaga.remuneracao }}</p>
+                  {% endif %}
+                  <a href="{% url 'detalhar_vaga' vaga.id %}" class="btn btn-detalhes w-100" style="background-color:#205072; color:#ffffff;">Quero esta vaga</a>
                 </div>
-                <h6 class="fw-bold mt-2">ESTÁGIO - ADMINISTRAÇÃO</h6>
-                <p class="text-secondary mb-1"><i class="bi bi-geo-alt-fill"></i> Natal/RN</p>
-                <p class="text-secondary"><i class="bi bi-building"></i> Presencial</p>
-                <p class="fw-bold" style="color:#0F0261;">R$ 750,00</p>
-                <a href="{% url 'detalhar' %}" class="btn btn-detalhes w-100" style="background-color:#205072; color:#ffffff;">Quero esta vaga</a>
-
               </div>
-            </div>
+            {% empty %}
+              <p class="text-center mt-4">Nenhuma vaga encontrada no momento.</p>
             {% endfor %}
           </div>
 
-          <!-- PAGINAÇÃO -->
-          <nav aria-label="Navegação de páginas" class="mt-4">
-            <ul class="pagination justify-content-center">
-              <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-              <li class="page-item"><a class="page-link active" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">4</a></li>
-              <li class="page-item"><a class="page-link" href="#">5</a></li>
-              <li class="page-item"><a class="page-link" href="#">»</a></li>
-            </ul>
-          </nav>
+          <!-- PAGINAÇÃO (se quiser implementar depois) -->
         </div>
       </div>
     </div>
@@ -130,24 +121,28 @@
     <div class="container">
       <div class="row text-start">
         <div class="col-md-4 mb-3 footer-logo">
-          <img src="{% static 'assets/img/logo.png' %}" alt="Logo LinkIF">
-          <p>Conectando talentos técnicos do IFRN às melhores oportunidades profissionais.</p>
+          <img src="{{ site_config.get_logo_url }}" alt="Logo LinkIF">
+          <p>{{ site_config.descricao_curta }}</p>
           <div class="footer-social">
-            <i class="bi bi-instagram"></i> <a href="#">LinkIF</a>
+            <i class="bi bi-instagram"></i> 
+            <a href="{{ site_config.instagram|default:'#' }}">@LinkIF</a>
           </div>
         </div>
+
         <div class="col-md-4 mb-3 footer-links">
           <h6 class="footer-title">Links Úteis</h6>
           <a href="#">Portal IFRN</a>
           <a href="#">Política de Privacidade</a>
           <a href="#">Acessibilidade</a>
         </div>
+
         <div class="col-md-4 mb-3 footer-links">
           <h6 class="footer-title">Suporte</h6>
           <a href="#">Fale Conosco</a>
           <a href="#">FAQ</a>
         </div>
       </div>
+
       <div class="footer-bottom">
         © 2025 LinkIF - IFRN. Todos os direitos reservados.
       </div>

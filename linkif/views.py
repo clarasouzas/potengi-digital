@@ -1,17 +1,216 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils import timezone
+
+from .models import (
+    Vaga,
+    Candidatura,
+    Notificacao,
+    Mensagem,
+    SiteConfig,
+    HomeContent,
+    AreaAtuacao,
+    PerfilFormacao,
+)
+from .forms import VagaForm, CandidaturaForm, MensagemForm
+
+# =====================================================
+# FUNÇÕES AUXILIARES (controle de acesso)
+# =====================================================
+
+def is_coordenador(user):
+    return user.is_authenticated and user.tipo == "coordenador"
+
+def is_empresa(user):
+    return user.is_authenticated and user.tipo == "empresa"
+
+def is_aluno(user):
+    return user.is_authenticated and user.tipo == "aluno"
+
+# =====================================================
+# INDEX (home) — dinâmico com SiteConfig e HomeContent
+# =====================================================
 
 def index(request):
-    return render(request, "linkif/index.html")
-def login(request):
-    return render(request, "linkif/login.html")
-def cadastro(request):
-    return render(request, "linkif/cadastro.html")
+    site = SiteConfig.objects.first()
+    home = HomeContent.objects.first()
+    vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")[:6]
 
-def vagas(request):
-    return render(request, "linkif/vagas.html")
+    context = {
+        "site": site,
+        "home": home,
+        "vagas": vagas,
+    }
+    return render(request, "linkif/index.html", context)
+
+# =====================================================
+# VAGAS — listagem, detalhes e criação
+# =====================================================
+
+def listar_vagas(request):
+    vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
+    areas = AreaAtuacao.objects.all()
+
+    # filtros GET
+    area = request.GET.get("area")
+    cidade = request.GET.get("cidade")
+    tipo = request.GET.get("tipo")
+
+    if area:
+        vagas = vagas.filter(area__nome__icontains=area)
+    if cidade:
+        vagas = vagas.filter(cidade__icontains=cidade)
+    if tipo:
+        vagas = vagas.filter(tipo__iexact=tipo)
+
+    context = {"vagas": vagas, "areas": areas}
+    return render(request, "linkif/vagas.html", context)
+
+
+def detalhar_vaga(request, vaga_id):
+    vaga = get_object_or_404(Vaga, id=vaga_id, status="aprovada")
+    context = {"vaga": vaga}
+    return render(request, "linkif/detalhar.html", context)
+
+
+@login_required
+@user_passes_test(is_empresa)
+def criar_vaga(request):
+    if request.method == "POST":
+        form = VagaForm(request.POST)
+        if form.is_valid():
+            vaga = form.save(commit=False)
+            vaga.empresa = request.user.empresa  # FK automática do AbstractUser → Empresa
+            vaga.status = "pendente"
+            vaga.save()
+
+            messages.info(request, "Vaga enviada para aprovação da coordenação.")
+            return redirect("listar_vagas")
+    else:
+        form = VagaForm()
+
+    return render(request, "linkif/criar_vaga.html", {"form": form})
+
+
+@login_required
+@user_passes_test(is_coordenador)
+def aprovar_vaga(request, vaga_id):
+    vaga = get_object_or_404(Vaga, id=vaga_id)
+    vaga.status = "aprovada"
+    vaga.aprovado_por = request.user.coordenador
+    vaga.save()
+
+    Notificacao.objects.create(
+        tipo="Vaga aprovada",
+        mensagem=f"Sua vaga '{vaga.titulo}' foi aprovada e publicada.",
+        usuario_destino=vaga.empresa.usuario,
+    )
+
+    messages.success(request, f"Vaga '{vaga.titulo}' aprovada com sucesso.")
+    return redirect("listar_vagas")
+
+# =====================================================
+# CANDIDATURA
+# =====================================================
+
+@login_required
+@user_passes_test(is_aluno)
+def candidatar_vaga(request, vaga_id):
+    vaga = get_object_or_404(Vaga, id=vaga_id, status="aprovada")
+    aluno = request.user.aluno
+
+    if Candidatura.objects.filter(vaga=vaga, aluno=aluno).exists():
+        messages.warning(request, "Você já se candidatou a esta vaga.")
+        return redirect("detalhar_vaga", vaga_id=vaga.id)
+
+    if request.method == "POST":
+        form = CandidaturaForm(request.POST)
+        if form.is_valid():
+            candidatura = form.save(commit=False)
+            candidatura.vaga = vaga
+            candidatura.aluno = aluno
+            candidatura.data_candidatura = timezone.now()
+            candidatura.status = "em_analise"
+            candidatura.save()
+
+            # notifica empresa
+            Notificacao.objects.create(
+                tipo="Nova candidatura",
+                mensagem=f"O aluno {aluno.usuario.get_full_name()} se candidatou à vaga '{vaga.titulo}'.",
+                usuario_destino=vaga.empresa.usuario,
+            )
+
+            messages.success(request, "Candidatura enviada com sucesso!")
+            return redirect("listar_vagas")
+    else:
+        form = CandidaturaForm()
+
+    return render(request, "linkif/candidatar.html", {"form": form, "vaga": vaga})
+
+
+@login_required
+@user_passes_test(is_empresa)
+def atualizar_status_candidatura(request, candidatura_id, status):
+    candidatura = get_object_or_404(Candidatura, id=candidatura_id)
+    candidatura.status = status
+    candidatura.save()
+
+    Notificacao.objects.create(
+        tipo="Atualização de candidatura",
+        mensagem=f"Sua candidatura na vaga '{candidatura.vaga.titulo}' foi marcada como {status}.",
+        usuario_destino=candidatura.aluno.usuario,
+    )
+
+    messages.info(request, "Status da candidatura atualizado.")
+    return redirect("listar_vagas")
+
+# =====================================================
+# NOTIFICAÇÕES E MENSAGENS
+# =====================================================
+
+@login_required
+def notificacoes(request):
+    notificacoes = Notificacao.objects.filter(usuario_destino=request.user).order_by("-data_envio")
+    notificacoes.filter(lida=False).update(lida=True)
+    return render(request, "linkif/notificacoes.html", {"notificacoes": notificacoes})
+
+
+@login_required
+def mensagens(request):
+    recebidas = Mensagem.objects.filter(destinatario=request.user).order_by("-data_envio")
+    enviadas = Mensagem.objects.filter(remetente=request.user).order_by("-data_envio")
+
+    if request.method == "POST":
+        form = MensagemForm(request.POST)
+        if form.is_valid():
+            msg = form.save(commit=False)
+            msg.remetente = request.user
+            msg.data_envio = timezone.now()
+            msg.save()
+
+            messages.success(request, "Mensagem enviada com sucesso!")
+            return redirect("mensagens")
+    else:
+        form = MensagemForm()
+
+    context = {
+        "recebidas": recebidas,
+        "enviadas": enviadas,
+        "form": form,
+    }
+    return render(request, "linkif/mensagens.html", context)
 def perfil_cursos(request):
-    return render(request, "linkif/perfil_cursos.html")
-def vagas(request):
-    return render(request, 'linkif/vagas.html')
-def detalhar(request):
-    return render(request, 'linkif/detalhar.html')
+    site_config = SiteConfig.objects.first()
+    perfis = PerfilFormacao.objects.all()
+    return render(request, "linkif/perfil_cursos.html", {
+        "perfis": perfis,
+        "site_config": site_config,
+    })
+def perfil_detalhe(request, perfil_id):
+    site_config = SiteConfig.objects.first()
+    perfil = get_object_or_404(PerfilFormacao, id=perfil_id)
+    return render(request, "linkif/perfil_detalhe.html", {
+        "perfil": perfil,
+        "site_config": site_config,
+    })

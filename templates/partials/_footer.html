@@ -1,0 +1,33 @@
+<footer class="cor mt-5">
+  <div class="container">
+    <div class="row text-start">
+      <div class="col-md-4 mb-3 footer-logo">
+        <img src="{{ site_config.get_logo_url }}" alt="Logo LinkIF">
+        <p>{{ site_config.descricao_curta }}</p>
+        {% if site_config.instagram %}
+          <div class="footer-social">
+            <i class="bi bi-instagram"></i>
+            <a href="{{ site_config.instagram }}">Instagram</a>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="col-md-4 mb-3 footer-links">
+        <h6 class="footer-title">Links Úteis</h6>
+        <a href="#">Portal IFRN</a>
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Acessibilidade</a>
+      </div>
+
+      <div class="col-md-4 mb-3 footer-links">
+        <h6 class="footer-title">Suporte</h6>
+        <a href="#">Fale Conosco</a>
+        <a href="#">FAQ</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 {{ site_config.nome_site }} - IFRN. Todos os direitos reservados.
+    </div>
+  </div>
+</footer>
