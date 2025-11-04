@@ -1,7 +1,8 @@
+{% load static %}
 <nav class="cor navbar navbar-expand-lg shadow-sm">
   <div class="container">
     <a class="navbar-brand" href="{% url 'index' %}">
-      <img src="{{ site_config.get_logo_url }}" alt="Logo LinkIF">
+      <img src="{% static 'assets/img/logo.png' %}" alt="Logo LinkIF">
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -24,8 +25,8 @@
         </div>
       {% else %}
         <div class="ms-3">
-          <a href="{% url 'login' %}" class="btn-entrar me-2">Entrar</a>
-          <a href="{% url 'cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
+          <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">Entrar</a>
+          <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
         </div>
       {% endif %}
     </div>

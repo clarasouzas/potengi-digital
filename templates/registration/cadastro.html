@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static crispy_forms_tags %}
+
+{% block title %}Criar Conta{% endblock title %}
+
+{% block content %}
+<!-- CARD DE CADASTRO -->
+<div class="cardll d-flex justify-content-center bg-light">
+  <div class="col-md-10 shadow-sm mt-5 mb-5 p-4 form-card animate-fade">
+    <h5 class="fw-semibold mb-2">Criar Conta</h5>
+    <p class="text-secondary small mb-4">Selecione o tipo de usuário e preencha seus dados</p>
+
+    <!-- Abas -->
+    <ul class="nav user-tabs-wrapper" id="userTabs">
+      <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#aluno">Aluno</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#empresa">Empresa</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#coordenacao">Coordenação</button>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- Formulário Aluno -->
+      <div class="tab-pane fade show active animate-fade" id="aluno">
+        <h6 class="fw-semibold mb-3 text-primary">Cadastro de Aluno</h6>
+        <form method="POST" action="{% url 'usuarios:cadastro' %}">
+          {% csrf_token %}
+          {{ form_aluno|crispy }}
+          <button type="submit" class="btn btn-primary w-100 mt-2">Cadastrar como Aluno</button>
+        </form>
+        <p class="text-center mt-3 small">Já possui uma conta? 
+          <a href="{% url 'usuarios:login' %}" class="text-decoration-none">Faça login</a>
+        </p>
+      </div>
+
+      <!-- Formulário Empresa -->
+      <div class="tab-pane fade animate-fade" id="empresa">
+        <h6 class="fw-semibold mb-3 text-primary">Cadastro de Empresa</h6>
+        <form method="POST" action="{% url 'usuarios:cadastro' %}">
+          {% csrf_token %}
+          {{ form_empresa|crispy }}
+          <button type="submit" class="btn btn-primary w-100 mt-2">Cadastrar como Empresa</button>
+        </form>
+        <p class="text-center mt-3 small">Já possui uma conta? 
+          <a href="{% url 'usuarios:login' %}" class="text-decoration-none">Faça login</a>
+        </p>
+      </div>
+
+      <!-- Formulário Coordenação -->
+      <div class="tab-pane fade animate-fade" id="coordenacao">
+        <h6 class="fw-semibold mb-3 text-primary">Cadastro de Coordenação</h6>
+        <form method="POST" action="{% url 'usuarios:cadastro' %}">
+          {% csrf_token %}
+          {{ form_coord|crispy }}
+          <button type="submit" class="btn btn-primary w-100 mt-2">Cadastrar como Coordenação</button>
+        </form>
+        <p class="text-center mt-3 small">Já possui uma conta? 
+          <a href="{% url 'usuarios:login' %}" class="text-decoration-none">Faça login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

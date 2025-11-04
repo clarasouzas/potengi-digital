@@ -39,7 +39,7 @@ def cadastro(request):
         form_aluno = AlunoForm()
         form_empresa = EmpresaForm()
 
-    return render(request, "usuarios/cadastro.html", {
+    return render(request, "registration/cadastro.html", {
         "form_usuario": form_usuario,
         "form_aluno": form_aluno,
         "form_empresa": form_empresa,
