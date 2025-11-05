@@ -2,7 +2,18 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UsuarioForm, AlunoForm, EmpresaForm
 from .models import Usuario
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
+
+# =====================================================
+# LOGOUT
+# =====================================================
+@login_required
+def logout_view(request):
+    logout(request)
+    messages.info(request, "Você saiu da sua conta.")
+    return redirect("index")
 
 # =====================================================
 # CADASTRO DE USUÁRIO (Aluno, Empresa, Coordenação)

@@ -19,10 +19,25 @@
       </ul>
 
       {% if user.is_authenticated %}
-        <div class="ms-3 d-flex align-items-center">
-          <a href="{% url 'notificacoes' %}" class="btn btn-outline-secondary me-2">Notificações</a>
-          <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>
-        </div>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              👋 Bem-vindo, {{ user.first_name|default:user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              {% if user.tipo == "aluno" %}
+                <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
+                <li><a class="dropdown-item" href="#">Minhas Candidaturas</a></li>
+              {% elif user.tipo == "empresa" %}
+                <li><a class="dropdown-item" href="#">Perfil da Empresa</a></li>
+                <li><a class="dropdown-item" href="#">Cadastrar Vaga</a></li>
+              {% endif %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'notificacoes' %}">🔔 Notificações</a></li>
+              <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Sair</a></li>
+            </ul>
+          </li>
+        </ul>
       {% else %}
         <div class="ms-3">
           <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">Entrar</a>

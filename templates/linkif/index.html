@@ -11,31 +11,60 @@
 
 <body>
   <!-- NAVEGAÇÃO -->
-   <div class="inicial"></div>
-  <nav class="cor navbar navbar-expand-lg shadow-sm">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="{{ site_config.get_logo_url }}" alt="Logo {{ site_config.nome_site }}">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <div class="inicial"></div>
+ <nav class="cor navbar navbar-expand-lg shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'index' %}">
+      <img src="{% static 'assets/img/logo.png' %}" alt="Logo LinkIF">
+    </a>
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="#">Início</a></li>
-          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>          
-          <li class="nav-item"><a class="nav-link" href="#estudante">Para Você</a></li>
-          <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+        <li class="nav-item"><a class="nav-link" href="#estudante">Para Você</a></li>
+        <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+      </ul>
+
+      {% if user.is_authenticated %}
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              👋 Bem-vindo, {{ user.first_name|default:user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              {% if user.tipo == "aluno" %}
+                <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
+                <li><a class="dropdown-item" href="#">Minhas Candidaturas</a></li>
+              {% elif user.tipo == "empresa" %}
+                <li><a class="dropdown-item" href="#">Perfil da Empresa</a></li>
+                <li><a class="dropdown-item" href="#">Cadastrar Vaga</a></li>
+              {% endif %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'notificacoes' %}">🔔 Notificações</a></li>
+                <li>
+                <form action="{% url 'usuarios:logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item text-danger">Sair</button>
+                </form>
+                </li>
+            </ul>
+          </li>
         </ul>
+      {% else %}
         <div class="ms-3">
           <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">Entrar</a>
           <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
         </div>
-      </div>
+      {% endif %}
     </div>
-  </nav>
+  </div>
+</nav>
 
 <div class="inicial">
     <!-- BANNER -->
