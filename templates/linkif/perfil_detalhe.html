@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% block title %}{{ perfil.nome }} - {{ site_config.nome_site }}{% endblock %}
 {% block content %}
@@ -38,3 +39,61 @@
   </div>
 </div>
 {% endblock %}
+=======
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ perfil.nome }} - {{ site_config.nome_site }}{% endblock %}
+
+{% block content %}
+  <!-- HERO -->
+  <section class="hero text-center text-white"
+           style="background: url('{{ perfil.imagem.url|default:"/static/assets/img/perfil_meioambiente.png" }}') center center / cover no-repeat; padding: 120px 0;">
+    <div class="overlay" style="background-color: rgba(0,0,0,0.4); position:absolute; top:0; left:0; right:0; bottom:0;"></div>
+    <div class="container position-relative">
+      <h1 class="fw-bold">{{ perfil.nome }}</h1>
+      <p class="lead">{{ perfil.descricao_curta|default:"Formação técnica de excelência." }}</p>
+    </div>
+  </section>
+
+  <!-- PERFIL -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <div class="card p-4 shadow-sm mb-4">
+        <h4 class="fw-bold" style="color:{{ perfil.cor_titulo }}">Perfil</h4>
+        <p>{{ perfil.descricao }}</p>
+      </div>
+
+      <div class="card p-4 shadow-sm mb-4">
+        <h4 class="fw-bold" style="color:{{ perfil.cor_titulo }}">Competências e Habilidades</h4>
+        <p>Ao concluir o curso, o estudante estará apto a:</p>
+        <div class="row g-3">
+          {% for comp in perfil.competencias.all %}
+          <div class="col-md-6">
+            <div class="p-3 border rounded-3 bg-white h-100">{{ comp.texto }}</div>
+          </div>
+          {% empty %}
+          <p class="text-muted">Nenhuma competência cadastrada.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="card p-4 shadow-sm">
+        <h4 class="fw-bold" style="color:{{ perfil.cor_titulo }}">Áreas de Atuação</h4>
+        <div class="row g-3 mt-3">
+          {% for area in perfil.areas.all %}
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white h-100 text-center">
+              <h6 class="fw-bold">{{ area.titulo }}</h6>
+              <p class="mb-0">{{ area.descricao }}</p>
+            </div>
+          </div>
+          {% empty %}
+          <p class="text-muted">Nenhuma área de atuação cadastrada.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+>>>>>>> 87e4c4f27eb4729525f3eeae4a9921ff6dfb8a60

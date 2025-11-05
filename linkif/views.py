@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
+from .forms import VagaForm
+from .models import Vaga
+from usuarios.models import Empresa
 
 from .models import (
     Vaga,
@@ -74,6 +77,9 @@ def detalhar_vaga(request, vaga_id):
     context = {"vaga": vaga}
     return render(request, "linkif/detalhar.html", context)
 
+# ==============================================================
+# EMPRESA: CRUD DE VAGAS
+# ==============================================================
 
 @login_required
 @user_passes_test(is_empresa)
@@ -82,17 +88,51 @@ def criar_vaga(request):
         form = VagaForm(request.POST)
         if form.is_valid():
             vaga = form.save(commit=False)
-            vaga.empresa = request.user.empresa  # FK automática do AbstractUser → Empresa
+            vaga.empresa = request.user.empresa
             vaga.status = "pendente"
             vaga.save()
-
-            messages.info(request, "Vaga enviada para aprovação da coordenação.")
-            return redirect("listar_vagas")
+            messages.info(request, "✅ Vaga enviada para aprovação da coordenação.")
+            return redirect("listar_vagas_empresa")
     else:
         form = VagaForm()
+    return render(request, "linkif/templates/dashboard/empresas/criar_vaga.html", {"form": form})
 
-    return render(request, "linkif/criar_vaga.html", {"form": form})
 
+@login_required
+@user_passes_test(is_empresa)
+def listar_vagas_empresa(request):
+    vagas = Vaga.objects.filter(empresa=request.user.empresa)
+    return render(request, "linkif/templates/dashboard/empresas/listar_vagas_empresa.html", {"vagas": vagas})
+
+
+@login_required
+@user_passes_test(is_empresa)
+def editar_vaga(request, id):
+    vaga = get_object_or_404(Vaga, id=id, empresa=request.user.empresa)
+    if request.method == "POST":
+        form = VagaForm(request.POST, instance=vaga)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "✅ Vaga atualizada com sucesso.")
+            return redirect("listar_vagas_empresa")
+    else:
+        form = VagaForm(instance=vaga)
+    return render(request, "linkif/templates/dashboard/empresas/editar_vaga.html", {"form": form})
+
+
+@login_required
+@user_passes_test(is_empresa)
+def excluir_vaga(request, id):
+    vaga = get_object_or_404(Vaga, id=id, empresa=request.user.empresa)
+    vaga.delete()
+    messages.warning(request, "🚫 Vaga excluída com sucesso.")
+    return redirect("listar_vagas_empresa")
+
+
+
+def listar_vagas_publicas(request):
+    vagas = Vaga.objects.filter(status="aprovada", ativa=True)
+    return render(request, "linkif/templates/dashboard/empresas/listar_vagas_publicas.html", {"vagas": vagas})
 
 @login_required
 @user_passes_test(is_coordenador)
@@ -110,6 +150,7 @@ def aprovar_vaga(request, vaga_id):
 
     messages.success(request, f"Vaga '{vaga.titulo}' aprovada com sucesso.")
     return redirect("listar_vagas")
+
 
 # =====================================================
 # CANDIDATURA

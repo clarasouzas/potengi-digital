@@ -1,51 +1,154 @@
-{% extends "base.html" %}
-{% block title %}Vagas - {{ site_config.nome_site }}{% endblock %}
-{% block content %}
-<section class="vagas-section py-5">
-  <div class="container">
-    <h2 class="fw-bold text-center mb-4" style="color:#1b1f5b;">Conectamos você às melhores vagas do mercado!</h2>
-    <div class="row g-4">
-      <div class="col-lg-3">
-        <form method="get" class="p-4 bg-white shadow-sm rounded">
-          <h6 class="fw-bold mb-3 text-primary">Personalize sua pesquisa</h6>
-          <input type="text" name="titulo" placeholder="Nome da vaga" class="form-control mb-3" value="{{ request.GET.titulo }}">
-          <input type="text" name="cidade" placeholder="Cidade ou estado" class="form-control mb-3" value="{{ request.GET.cidade }}">
-          <select name="tipo" class="form-select mb-3">
-            <option value="">Tipo</option>
-            <option value="estagio">Estágio</option>
-            <option value="emprego">Emprego</option>
-            <option value="bolsa">Bolsa</option>
-          </select>
-          <select name="area" class="form-select mb-3">
-            <option value="">Área</option>
-            {% for area in areas %}
-              <option value="{{ area.nome }}">{{ area.nome }}</option>
-            {% endfor %}
-          </select>
-          <button type="submit" class="btn w-100 text-white" style="background-color:#205072;">Filtrar</button>
-        </form>
-      </div>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LinkIF - Vagas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
+</head>
 
-      <div class="col-lg-9">
-        <div class="row g-4">
-          {% for vaga in vagas %}
-          <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
-              <h6 class="fw-bold">{{ vaga.titulo }}</h6>
-              <p class="text-secondary small"><i class="bi bi-geo-alt-fill"></i> {{ vaga.cidade }}/{{ vaga.estado }}</p>
-              <p class="text-secondary small"><i class="bi bi-building"></i> {{ vaga.get_tipo_display }}</p>
-              {% if vaga.remuneracao %}
-                <p class="fw-bold">R$ {{ vaga.remuneracao }}</p>
-              {% endif %}
-              <a href="{% url 'detalhar_vaga' vaga.id %}" class="btn btn-primary w-100 mt-2">Quero esta vaga</a>
-            </div>
+<body>
+  <!-- NAV -->
+  <nav class="cor navbar navbar-expand-lg shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{{ site_config.get_logo_url }}" alt="Logo LinkIF">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto"></ul>
+
+        {% if user.is_authenticated %}
+          <div class="ms-3">
+            <a href="{% url 'logout' %}" class="btn-entrar me-2">Sair</a>
+            <a href="{% url 'notificacoes' %}" class="btn-cadastrese">Notificações</a>
           </div>
-          {% empty %}
-          <p class="text-center mt-4">Nenhuma vaga encontrada no momento.</p>
-          {% endfor %}
+        {% else %}
+          <div class="ms-3">
+            <a href="{% url 'login' %}" class="btn-entrar me-2">Entrar</a>
+            <a href="{% url 'cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <section class="vagas-section py-5">
+    <div class="container">
+      <h2 class="fw-bold text-center mb-4" style="color:#1b1f5b;">
+        Conectamos você às melhores vagas do mercado!
+      </h2>
+
+      <div class="row g-4">
+        <!-- FILTRO LATERAL -->
+        <div class="col-lg-3">
+          <div class="filtro-card p-4 rounded shadow-sm bg-white">
+            <h6 class="fw-bold mb-3" style="color:#0F0261;">Personalize sua pesquisa</h6>
+
+            <form method="get">
+              <div class="mb-3">
+                <label class="form-label">Busque pelo nome da vaga</label>
+                <input type="text" name="titulo" class="form-control" placeholder="Digite sua pesquisa" value="{{ request.GET.titulo }}">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Localização ideal</label>
+                <input type="text" name="cidade" class="form-control" placeholder="Digite cidade ou estado" value="{{ request.GET.cidade }}">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Tipo de Vaga</label>
+                <select name="tipo" class="form-select">
+                  <option value="">Selecione um tipo de vaga</option>
+                  <option value="estagio">Estágio</option>
+                  <option value="emprego">Emprego</option>
+                  <option value="bolsa">Bolsa</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Área de Atuação</label>
+                <select name="area" class="form-select">
+                  <option value="">Selecione uma área</option>
+                  {% for area in areas %}
+                    <option value="{{ area.nome }}">{{ area.nome }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <button type="submit" class="btn w-100 text-white" style="background-color:#205072;">Filtrar</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- LISTA DE VAGAS -->
+        <div class="col-lg-9">
+          <div class="row g-4">
+            {% for vaga in vagas %}
+              <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+                  <div class="vaga-status-container d-flex justify-content-between">
+                    <div class="vaga-status">Disponível</div>
+                    <div class="vaga-status">{{ vaga.empresa.nome_fantasia }}</div>
+                  </div>
+                  <h6 class="fw-bold mt-2">{{ vaga.titulo }}</h6>
+                  <p class="text-secondary mb-1"><i class="bi bi-geo-alt-fill"></i> {{ vaga.cidade }}/{{ vaga.estado }}</p>
+                  <p class="text-secondary"><i class="bi bi-building"></i> {{ vaga.get_tipo_display }}</p>
+                  {% if vaga.remuneracao %}
+                    <p class="fw-bold" style="color:#0F0261;">R$ {{ vaga.remuneracao }}</p>
+                  {% endif %}
+                  <a href="{% url 'detalhar_vaga' vaga.id %}" class="btn btn-detalhes w-100" style="background-color:#205072; color:#ffffff;">Quero esta vaga</a>
+                </div>
+              </div>
+            {% empty %}
+              <p class="text-center mt-4">Nenhuma vaga encontrada no momento.</p>
+            {% endfor %}
+          </div>
+
+          <!-- PAGINAÇÃO (se quiser implementar depois) -->
         </div>
       </div>
     </div>
-  </div>
-</section>
-{% endblock %}
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="cor">
+    <div class="container">
+      <div class="row text-start">
+        <div class="col-md-4 mb-3 footer-logo">
+          <img src="{{ site_config.get_logo_url }}" alt="Logo LinkIF">
+          <p>{{ site_config.descricao_curta }}</p>
+          <div class="footer-social">
+            <i class="bi bi-instagram"></i> 
+            <a href="{{ site_config.instagram|default:'#' }}">@LinkIF</a>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3 footer-links">
+          <h6 class="footer-title">Links Úteis</h6>
+          <a href="#">Portal IFRN</a>
+          <a href="#">Política de Privacidade</a>
+          <a href="#">Acessibilidade</a>
+        </div>
+
+        <div class="col-md-4 mb-3 footer-links">
+          <h6 class="footer-title">Suporte</h6>
+          <a href="#">Fale Conosco</a>
+          <a href="#">FAQ</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 LinkIF - IFRN. Todos os direitos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

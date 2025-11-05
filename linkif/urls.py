@@ -12,7 +12,6 @@ urlpatterns = [
     # ==========================
     path("vagas/", views.listar_vagas, name="listar_vagas"),
     path("vagas/<int:vaga_id>/", views.detalhar_vaga, name="detalhar_vaga"),
-    path("vagas/criar/", views.criar_vaga, name="criar_vaga"),
     path("vagas/<int:vaga_id>/aprovar/", views.aprovar_vaga, name="aprovar_vaga"),
 
     # ==========================
@@ -31,4 +30,13 @@ urlpatterns = [
     # ==========================
     path("notificacoes/", views.notificacoes, name="notificacoes"),
     path("mensagens/", views.mensagens, name="mensagens"),
+
+    # ==========================
+    # CADASTRAR VAGgAS
+    # ==========================
+    path("vagas/cadastrar/", views.criar_vaga, name="criar_vaga"),
+    path("vagas/minhas/", views.listar_vagas_empresa, name="listar_vagas_empresa"),
+    path("vagas/editar/<int:id>/", views.editar_vaga, name="editar_vaga"),
+    path("vagas/excluir/<int:id>/", views.excluir_vaga, name="excluir_vaga"),
 ]
+   
