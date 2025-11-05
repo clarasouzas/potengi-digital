@@ -1,5 +1,7 @@
 {% load static %}
-<nav class="cor navbar navbar-expand-lg shadow-sm">
+<!-- NAVEGAÇÃO -->
+  <div class="inicial"></div>
+ <nav class="cor navbar navbar-expand-lg shadow-sm">
   <div class="container">
     <a class="navbar-brand" href="{% url 'index' %}">
       <img src="{% static 'assets/img/logo.png' %}" alt="Logo LinkIF">
@@ -34,7 +36,12 @@
               {% endif %}
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{% url 'notificacoes' %}">🔔 Notificações</a></li>
-              <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Sair</a></li>
+                <li>
+                <form action="{% url 'usuarios:logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item text-danger">Sair</button>
+                </form>
+                </li>
             </ul>
           </li>
         </ul>
