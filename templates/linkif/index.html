@@ -39,8 +39,11 @@
 
 <div class="inicial">
     <!-- BANNER -->
-  <section class="hero" style="background: url('{{ home.imagem_banner.url|default:"/static/assets/img/banner.png" }}') center center / cover no-repeat;">
-    <div class="overlay"></div>
+{% if home.imagem_banner %}
+  <section class="hero" style="background: url('{{ home.imagem_banner.url }}') center center / cover no-repeat;">
+{% else %}
+  <section class="hero" style="background: url('{% static "assets/img/banner.png" %}') center center / cover no-repeat;">
+{% endif %}    <div class="overlay"></div>
     <div class="container text-center text-md-start">
       <div class="row align-items-center">
         <div class="col-md-8">
@@ -66,8 +69,11 @@
           <div class="feature-card p-4 text-center h-100 icon-azul">
             <div class="feature-top">
               <div class="feature-icon">
-                <img src="{{ home.card1_icon.url|default:'/static/assets/img/icon1.png' }}" alt="ícone">
-              </div>
+{% if home.card1_icon %}
+  <img src="{{ home.card1_icon.url }}" alt="ícone">
+{% else %}
+  <img src="{% static 'assets/img/icon1.png' %}" alt="ícone">
+{% endif %}              </div>
             </div>
             <h5 class="fw-bold mt-3">{{ home.card1_titulo }}</h5>
             <p>{{ home.card1_texto }}</p>
@@ -79,8 +85,11 @@
           <div class="feature-card p-4 text-center h-100 icon-verde">
             <div class="feature-top">
               <div class="feature-icon">
-                <img src="{{ home.card2_icon.url|default:'/static/assets/img/icon2.png' }}" alt="ícone">
-              </div>
+{% if home.card1_icon %}
+  <img src="{{ home.card2_icon.url }}" alt="ícone">
+{% else %}
+  <img src="{% static 'assets/img/icon2.png' %}" alt="ícone">
+{% endif %}              </div>
             </div>
             <h5 class="fw-bold mt-3">{{ home.card2_titulo }}</h5>
             <p>{{ home.card2_texto }}</p>
@@ -92,8 +101,11 @@
           <div class="feature-card p-4 text-center h-100 icon-lilas">
             <div class="feature-top">
               <div class="feature-icon">
-                <img src="{{ home.card3_icon.url|default:'/static/assets/img/icon3.png' }}" alt="ícone">
-              </div>
+{% if home.card1_icon %}
+  <img src="{{ home.card3_icon.url }}" alt="ícone">
+{% else %}
+  <img src="{% static 'assets/img/icon3.png' %}" alt="ícone">
+{% endif %}              </div>
             </div>
             <h5 class="fw-bold mt-3">{{ home.card3_titulo }}</h5>
             <p>{{ home.card3_texto }}</p>
@@ -103,33 +115,60 @@
     </div>
   </section>
 
-  <!-- PERFIS DE FORMAÇÃO -->
-  <section class="cor py-5" id="perfis">
-    <div class="container text-center">
-      <h2 class="fw-bold" style="color: #1b1f5b;">Perfis de Formação</h2>
-      <p class="mb-5 text-secondary">Conheça as áreas de formação dos alunos e egressos do IFRN – Campus São Paulo do Potengi.</p>
+ <!-- PERFIS DE FORMAÇÃO -->
+<section class="cor py-5" id="perfis">
+  <div class="container text-center">
+    <h2 class="fw-bold" style="color: #1b1f5b;">Perfis de Formação</h2>
+    <p class="mb-5 text-secondary">
+      Conheça as áreas de formação dos alunos e egressos do IFRN – Campus São Paulo do Potengi.
+    </p>
 
-      <div class="row g-4 justify-content-center align-items-stretch">
+    <div id="perfilCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
         {% for perfil in perfis %}
-        <div class="col-md-4 d-flex">
-          <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100">
-            <img src="{{ perfil.imagem.url|default:'/static/assets/img/perfil_informatica.png' }}" alt="{{ perfil.nome }}" style="height:140px; object-fit:cover;">
-            <div class="card-body text-start p-4">
-              {% if perfil.logo %}
-              <div class="perfil-logo">
-                <img src="{{ perfil.logo.url }}" alt="Logo">
+        {% if forloop.counter0|divisibleby:3 %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="row justify-content-center">
+        {% endif %}
+            <div class="col-md-4 d-flex justify-content-center">
+              <div class="perfil-card card border-0 shadow-sm rounded-4 overflow-hidden">
+                <img
+                  src="{{ perfil.imagem.url|default:'/static/assets/img/perfil_informatica.png' }}"
+                  alt="{{ perfil.nome }}"
+                  class="perfil-img"
+                />
+                <div class="card-body text-start p-4">
+                  <h5 class="fw-bold" style="color:{{ perfil.cor_titulo }}">{{ perfil.nome }}</h5>
+                  <p class="mb-2">{{ perfil.descricao|truncatewords:20 }}</p>
+                  <a
+                    href="{% url 'perfil_detalhe' perfil.id %}"
+                    class="btn btn-sm text-white px-3"
+                    style="background-color:{{ perfil.cor_titulo }}"
+                    >Ver Mais</a
+                  >
+                </div>
               </div>
-              {% endif %}
-              <h5 class="fw-bold" style="color:{{ perfil.cor_titulo }}">{{ perfil.nome }}</h5>
-              <p>{{ perfil.descricao }}</p>
-              <a href="{% url 'perfil_cursos' %}" class="btn btn-sm text-white px-3 mt-2" style="background-color:{{ perfil.cor_titulo }}">Ver Mais</a>
             </div>
+        {% if forloop.counter|divisibleby:3 or forloop.last %}
           </div>
         </div>
+        {% endif %}
         {% endfor %}
       </div>
+
+      <!-- Botões -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#perfilCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#perfilCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+        <span class="visually-hidden">Próximo</span>
+      </button>
     </div>
-  </section>
+  </div>
+</section>
+
 
  <!-- PARA ESTUDANTES -->
 <section class="section-dupla" id="estudante">
