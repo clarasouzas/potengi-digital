@@ -49,22 +49,114 @@ class Aluno(models.Model):
 # =====================================================
 # PERFIL DA EMPRESA
 # =====================================================
-class Empresa(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name="empresa")
-    nome_fantasia = models.CharField("Nome Fantasia", max_length=150)
-    cnpj = models.CharField("CNPJ", max_length=18, unique=True)
-    area_atuacao = models.CharField("Área de Atuação", max_length=150, blank=True)
-    endereco = models.CharField("Endereço", max_length=255, blank=True)
-    telefone = models.CharField("Telefone", max_length=50, blank=True)
-    site = models.URLField("Site", blank=True, null=True)
-    criado_em = models.DateTimeField(default=timezone.now)
 
-    def __str__(self):
-        return self.nome_fantasia
+class Empresa(models.Model):
+    nome_empresa = models.CharField(
+        max_length=100,
+        verbose_name="Nome da Empresa",
+        help_text="Nome público da empresa (ex: Tech Solutions)"
+    )
+    razao_social = models.CharField(
+        max_length=150,
+        verbose_name="Razão Social",
+        help_text="Nome jurídico completo (ex: Tech Solutions LTDA)"
+    )
+    cnpj = models.CharField(
+        max_length=18,
+        unique=True,
+        verbose_name="CNPJ",
+        help_text="Digite apenas números ou use o formato 00.000.000/0000-00"
+    )
+    telefone = models.CharField(
+        max_length=20,
+        verbose_name="Telefone de Contato",
+        help_text="Inclua o DDD (ex: (84) 99999-9999)"
+    )
+    email = models.EmailField(
+        unique=True,
+        verbose_name="Email Corporativo",
+        help_text="Email institucional usado para login"
+    )
+    site = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="Site da Empresa",
+        help_text="Opcional — ex: https://empresa.com.br"
+    )
+    descricao = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Descrição da Empresa",
+        help_text="Fale brevemente sobre a atuação, missão ou área de interesse"
+    )
+
+    # Endereço
+    logradouro = models.CharField(
+        max_length=100,
+        verbose_name="Logradouro",
+        help_text="Rua, avenida ou local onde a empresa está localizada"
+    )
+    bairro = models.CharField(
+        blank=True,
+        max_length=100,
+        verbose_name="Bairro"
+    )
+    cidade = models.CharField(
+        max_length=100,
+        verbose_name="Cidade"
+    )
+    estado = models.CharField(
+        max_length=2,
+        verbose_name="Estado (UF)",
+        help_text="Use a sigla — ex: RN"
+    )
+    cep = models.CharField(
+        blank=True,
+        max_length=10,
+        verbose_name="CEP",
+        help_text="Ex: 59000-000"
+    )
+
+    # Informações adicionais
+    setor = models.CharField(
+        max_length=80,
+        blank=True,
+        null=True,
+        verbose_name="Setor de Atuação",
+        help_text="Ex: Tecnologia da Informação, Educação, Comércio..."
+    )
+    tamanho_empresa = models.CharField(
+        max_length=20,
+        choices=[
+            ('pequena', 'Pequena'),
+            ('media', 'Média'),
+            ('grande', 'Grande')
+        ],
+        blank=True,
+        null=True,
+        verbose_name="Porte da Empresa"
+    )
+    logo = models.ImageField(
+        upload_to="empresas/logos/",
+        blank=True,
+        null=True,
+        verbose_name="Logo da Empresa",
+        help_text="Imagem em formato PNG ou JPG"
+    )
+
+    data_cadastro = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Data de Cadastro"
+    )
 
     class Meta:
         verbose_name = "Empresa"
         verbose_name_plural = "Empresas"
+        ordering = ["-data_cadastro"]
+
+    def __str__(self):
+        return self.nome_empresa
+
 
 
 # =====================================================

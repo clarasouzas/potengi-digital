@@ -18,17 +18,10 @@
         <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
       </ul>
 
-      {% if user.is_authenticated %}
-        <div class="ms-3 d-flex align-items-center">
-          <a href="{% url 'notificacoes' %}" class="btn btn-outline-secondary me-2">Notificações</a>
-          <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>
-        </div>
-      {% else %}
-        <div class="ms-3">
-          <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">Entrar</a>
-          <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
-        </div>
-      {% endif %}
+      <div class="ms-3">
+        <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">Entrar</a>
+        <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
+      </div>
     </div>
   </div>
 </nav>

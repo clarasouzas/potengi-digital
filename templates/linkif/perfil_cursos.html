@@ -1,33 +1,24 @@
 {% extends 'base.html' %}
-{% block title %}Perfis de Formação - LinkIF{% endblock %}
+{% block title %}Perfis de Formação - {{ site_config.nome_site }}{% endblock %}
 {% block content %}
-
 <div class="container py-5 text-center">
   <h2 class="fw-bold mb-4">Perfis de Formação</h2>
-  <p class="text-secondary mb-5">Conheça os cursos e áreas de formação do IFRN - Campus São Paulo do Potengi</p>
-
+  <p class="text-secondary mb-5">Conheça os cursos e áreas do IFRN - Campus São Paulo do Potengi</p>
   <div class="row g-4 justify-content-center">
     {% for perfil in perfis %}
-      <div class="col-md-4 d-flex">
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden w-100">
-          {% if perfil.imagem %}
-            <img src="{{ perfil.imagem.url }}" alt="{{ perfil.nome }}" style="height:140px; object-fit:cover;">
-          {% endif %}
-          <div class="card-body text-start p-4">
-            {% if perfil.logo %}
-              <div class="perfil-logo mb-2">
-                <img src="{{ perfil.logo.url }}" alt="{{ perfil.nome }}">
-              </div>
-            {% endif %}
-            <h5 class="fw-bold" style="color: {{ perfil.cor_titulo }}">{{ perfil.nome }}</h5>
-            <p>{{ perfil.descricao }}</p>
-          </div>
+    <div class="col-md-4 d-flex">
+      <div class="card border-0 shadow-sm rounded-4 w-100">
+        <img src="{{ perfil.imagem.url|default:'/static/assets/img/perfil_informatica.png' }}" style="height:140px;object-fit:cover;">
+        <div class="card-body text-start p-4">
+          <h5 class="fw-bold" style="color:{{ perfil.cor_titulo }}">{{ perfil.nome }}</h5>
+          <p>{{ perfil.descricao|truncatechars:150 }}</p>
+          <a href="{% url 'perfil_detalhe' perfil.id %}" class="btn btn-sm text-white" style="background-color:{{ perfil.cor_titulo }}">Ver Detalhes</a>
         </div>
       </div>
+    </div>
     {% empty %}
-      <p>Nenhum perfil cadastrado ainda.</p>
+    <p>Nenhum perfil cadastrado ainda.</p>
     {% endfor %}
   </div>
 </div>
-
 {% endblock %}

@@ -7,7 +7,9 @@ urlpatterns = [
     # CADASTRO PERSONALIZADO
     # =============================
     path("cadastro/", views.cadastro, name="cadastro"),
-
+    path('cadastro/aluno/', views.cadastro_aluno, name='cadastro_aluno'),
+    path('cadastro/empresa/', views.cadastro_empresa, name='cadastro_empresa'),
+    path('cadastro/coord/', views.cadastro_coord, name='cadastro_coord'),
     # =============================
     # AUTENTICAÇÃO (PADRÃO DJANGO)
     # =============================

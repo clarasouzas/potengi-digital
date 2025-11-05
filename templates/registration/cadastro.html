@@ -1,68 +1,172 @@
-{% extends "base.html" %}
 {% load static crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro</title>
 
-{% block title %}Criar Conta{% endblock title %}
+    <!-- Bootstrap e ícones -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
 
-{% block content %}
-<!-- CARD DE CADASTRO -->
-<div class="cardll d-flex justify-content-center bg-light">
-  <div class="col-md-10 shadow-sm mt-5 mb-5 p-4 form-card animate-fade">
-    <h5 class="fw-semibold mb-2">Criar Conta</h5>
-    <p class="text-secondary small mb-4">Selecione o tipo de usuário e preencha seus dados</p>
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
 
-    <!-- Abas -->
-    <ul class="nav user-tabs-wrapper" id="userTabs">
-      <li class="nav-item">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#aluno">Aluno</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#empresa">Empresa</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#coordenacao">Coordenação</button>
-      </li>
-    </ul>
+  <body>
+    <div class="cadastro-bg">
+      <div class="container d-flex justify-content-center align-items-center">
+        <div class="cadastro-card p-4">
+          <!-- Título -->
+          <div class="text-center mb-4">
+            <h3 class="fw-bold">Criar Conta</h3>
+            <p class="text-muted">
+              Selecione o tipo de usuário e preencha seus dados
+            </p>
+          </div>
 
-    <div class="tab-content">
-      <!-- Formulário Aluno -->
-      <div class="tab-pane fade show active animate-fade" id="aluno">
-        <h6 class="fw-semibold mb-3 text-primary">Cadastro de Aluno</h6>
-        <form method="POST" action="{% url 'usuarios:cadastro' %}">
-          {% csrf_token %}
-          {{ form_aluno|crispy }}
-          <button type="submit" class="btn btn-primary w-100 mt-2">Cadastrar como Aluno</button>
-        </form>
-        <p class="text-center mt-3 small">Já possui uma conta? 
-          <a href="{% url 'usuarios:login' %}" class="text-decoration-none">Faça login</a>
-        </p>
-      </div>
+          <!-- Abas -->
+          <div class="abas-wrapper">
+            <ul class="nav abas" id="cadastroTabs" role="tablist">
+              <li class="nav-item flex-fill">
+                <button
+                  class="nav-link active"
+                  id="aluno-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#aluno"
+                  type="button"
+                >
+                  <i class="bi bi-mortarboard-fill"></i> Aluno
+                </button>
+              </li>
+              <li class="nav-item flex-fill">
+                <button
+                  class="nav-link"
+                  id="empresa-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#empresa"
+                  type="button"
+                >
+                  <i class="bi bi-building"></i> Empresa
+                </button>
+              </li>
+              <li class="nav-item flex-fill">
+                <button
+                  class="nav-link"
+                  id="coord-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#coord"
+                  type="button"
+                >
+                  <i class="bi bi-people-fill"></i> Coordenação
+                </button>
+              </li>
+            </ul>
+          </div>
 
-      <!-- Formulário Empresa -->
-      <div class="tab-pane fade animate-fade" id="empresa">
-        <h6 class="fw-semibold mb-3 text-primary">Cadastro de Empresa</h6>
-        <form method="POST" action="{% url 'usuarios:cadastro' %}">
-          {% csrf_token %}
-          {{ form_empresa|crispy }}
-          <button type="submit" class="btn btn-primary w-100 mt-2">Cadastrar como Empresa</button>
-        </form>
-        <p class="text-center mt-3 small">Já possui uma conta? 
-          <a href="{% url 'usuarios:login' %}" class="text-decoration-none">Faça login</a>
-        </p>
-      </div>
+          <!-- Conteúdo das abas -->
+          <div class="tab-content mt-3">
+            <!-- Aba Aluno -->
+            <div class="tab-pane fade show active" id="aluno">
+              <h6 class="fw-semibold text-primary mb-3">
+                <i class="bi bi-person-fill me-1"></i> Cadastro de Aluno
+              </h6>
+              <form
+                method="POST"
+                action="{% url 'usuarios:cadastro_aluno' %}"
+              >
+                {% csrf_token %}
+                <div class="row g-3">
+                  <div class="col-md-12">{{ form_aluno.nome|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_aluno.matricula|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_aluno.curso|as_crispy_field }}</div>
+                  <div class="col-md-12">{{ form_aluno.email|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_aluno.senha|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_aluno.confirmar_senha|as_crispy_field }}</div>
+                </div>
+                <button type="submit" class="btn-cadastro aluno mt-3">
+                  Cadastrar como Aluno
+                </button>
+              </form>
+            </div>
 
-      <!-- Formulário Coordenação -->
-      <div class="tab-pane fade animate-fade" id="coordenacao">
-        <h6 class="fw-semibold mb-3 text-primary">Cadastro de Coordenação</h6>
-        <form method="POST" action="{% url 'usuarios:cadastro' %}">
-          {% csrf_token %}
-          {{ form_coord|crispy }}
-          <button type="submit" class="btn btn-primary w-100 mt-2">Cadastrar como Coordenação</button>
-        </form>
-        <p class="text-center mt-3 small">Já possui uma conta? 
-          <a href="{% url 'usuarios:login' %}" class="text-decoration-none">Faça login</a>
-        </p>
+            <!-- Aba Empresa -->
+            <div class="tab-pane fade" id="empresa">
+              <h6 class="fw-semibold text-success mb-3">
+                <i class="bi bi-building-fill me-1"></i> Cadastro de Empresa
+              </h6>
+              <form
+                method="POST"
+                action="{% url 'usuarios:cadastro_empresa' %}"
+                enctype="multipart/form-data"
+              >
+                {% csrf_token %}
+                <div class="row g-3">
+                  <div class="col-md-6">{{ form_empresa.nome_empresa|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.razao_social|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.cnpj|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.setor|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.tamanho_empresa|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.telefone|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.email|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.site|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.logradouro|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.bairro|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.cidade|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.estado|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_empresa.cep|as_crispy_field }}</div>
+                  <div class="col-md-12">{{ form_empresa.descricao|as_crispy_field }}</div>
+                  <div class="col-md-12">{{ form_empresa.logo|as_crispy_field }}</div>
+                </div>
+                <button type="submit" class="btn-cadastro empresa mt-3">
+                  Cadastrar Empresa
+                </button>
+              </form>
+            </div>
+
+            <!-- Aba Coordenação -->
+            <div class="tab-pane fade" id="coord">
+              <h6 class="fw-semibold text-secondary mb-3">
+                <i class="bi bi-person-gear-fill me-1"></i> Cadastro de Coordenação
+              </h6>
+              <form
+                method="POST"
+                action="{% url 'usuarios:cadastro_coord' %}"
+              >
+                {% csrf_token %}
+                <div class="row g-3">
+                  <div class="col-md-6">{{ form_coord.nome|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_coord.cargo|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_coord.departamento|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_coord.email|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_coord.senha|as_crispy_field }}</div>
+                  <div class="col-md-6">{{ form_coord.confirmar_senha|as_crispy_field }}</div>
+                </div>
+                <button type="submit" class="btn-cadastro coord mt-3">
+                  Cadastrar Coordenação
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Link para login -->
+          <div class="text-center mt-4">
+            <p class="small">
+              Já possui uma conta?
+              <a href="{% url 'usuarios:login' %}" class="fw-semibold">Faça login</a>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-{% endblock content %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

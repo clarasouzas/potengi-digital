@@ -36,14 +36,15 @@ def index(request):
     site = SiteConfig.objects.first()
     home = HomeContent.objects.first()
     vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")[:6]
+    perfis = PerfilFormacao.objects.all()  # busca todos os perfis cadastrados
 
     context = {
         "site": site,
         "home": home,
         "vagas": vagas,
+        "perfis": perfis,  # adiciona no contexto
     }
     return render(request, "linkif/index.html", context)
-
 # =====================================================
 # VAGAS — listagem, detalhes e criação
 # =====================================================

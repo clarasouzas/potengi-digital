@@ -42,35 +42,41 @@ body {
 /* ================================
    NAVBAR
 ================================ */
+.navbar {
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
 .navbar-nav .nav-link {
+  color: #205072;
+  font-weight: 500;
   position: relative;
-  color: #5E6468;
-  font-weight: 400;
+  text-decoration: none !important; /* remove underline padrão */
+  transition: color 0.3s ease;
+  padding-bottom: 4px;
 }
 
+/* linha animada (apenas uma) */
 .navbar-nav .nav-link::after {
   content: "";
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 0;
+  width: 0%;
   height: 2px;
-  background-color: #404f68;
+  background-color: #205072;
+  transition: width 0.3s ease;
+}
+
+/* hover bonito e sem repetição */
+.navbar-nav .nav-link:hover {
+  color: #0b1a33;
+  text-decoration: none !important; /* garante sem underline */
 }
 
 .navbar-nav .nav-link:hover::after {
   width: 100%;
 }
-
-.navbar-brand {
-  font-size: 1.4rem;
-}
-
-.navbar-brand img {
-  height: 80px;
-  width: auto;
-}
-
+/* espaçamento */
 .navbar-nav {
   margin-left: auto;
   margin-right: auto;
@@ -78,7 +84,17 @@ body {
 }
 
 .navbar-nav .nav-item {
-  padding: 0 3px;
+  padding: 0 8px;
+}
+
+/* logo */
+.navbar-brand {
+  font-size: 1.4rem;
+}
+
+.navbar-brand img {
+  height: 80px;
+  width: auto;
 }
 
 .btn-entrar,
@@ -749,47 +765,158 @@ footer {
 
 }
 
-/* cartão central */
+/* ================================
+   FORMULÁRIOS (CADASTRO / LOGIN)
+================================ */
+
+/* Container principal do card */
 .form-card {
-  padding: auto;
+  max-width: 950px;
   width: 100%;
-  max-width: 880px;
-  border-radius: 10px;
+  margin: 60px auto;
   background: #fff;
+  border-radius: 14px;
+  padding: 40px 35px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   animation: fadeIn 0.5s ease;
 }
 
-/* abas */
-.nav-tabs {
-  border-bottom: none;
+/* Título e subtítulo */
+.form-card h5 {
+  font-weight: 700;
+  color: #1b1f5b;
+  margin-bottom: 8px;
+}
+
+.form-card p {
+  color: #6c757d;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+/* Abas de usuário */
+.user-tabs-wrapper {
+  background-color: #2a5a76;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  gap: 6px;
+  padding: 6px;
+  margin-bottom: 25px;
+}
+
+.user-tabs-wrapper .nav-item {
+  flex: 1;
+}
+
+.user-tabs-wrapper .nav-link {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background-color: #d4e5f5;
+  color: #425466;
+  font-weight: 600;
+  transition: all 0.3s;
+  height: 38px;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-.nav-tabs .nav-link {
-  border: none;
-  color: #6c757d;
-  background-color: #f1f3f6;
-  border-radius: 6px;
-  margin: 0 4px;
-  padding: 6px 18px;
-  transition: 0.3s;
-}
-
-.nav-tabs .nav-link.active {
+.user-tabs-wrapper .nav-link.active {
+  background-color: #205072;
   color: #fff;
-  background-color: #0d6efd;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* inputs */
-.form-label {
+.user-tabs-wrapper .nav-link:hover {
+  background-color: #92b2be;
+  color: #fff;
+}
+
+/* Formulário geral */
+form .form-label {
   font-weight: 500;
   color: #343a40;
   font-size: 0.9rem;
 }
 
-.form-control, .form-select {
-  border-radius: 6px;
-  padding: 8px 10px;
+form .form-control,
+form .form-select {
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 1px solid #dee2e6;
+  transition: 0.2s;
+}
+
+form .form-control:focus,
+form .form-select:focus {
+  border-color: #205072;
+  box-shadow: 0 0 6px rgba(13, 110, 253, 0.25);
+}
+
+/* Duas colunas reais nos formulários */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 768px) {
+  .form-grid,
+  .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Descrição longa */
+textarea.form-control {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Botões */
+.btn-primary {
+  background-color: #205072;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+/* Link de login abaixo */
+.text-center a {
+  color: #0d6efd;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
+}
+
+/* Animação suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* botão */
@@ -1096,3 +1223,609 @@ a:hover {
         padding: 2rem;
       }
     }
+/* ================================
+   PÁGINA DE CADASTRO — UI DESIGN
+================================ */
+/* ================================
+   PÁGINA DE CADASTRO — MODERNA
+================================ */
+
+.cadastro-bg {
+  background: radial-gradient(#cde7dc, #f0fff8);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 10px;
+}
+
+.cadastro-card {
+  background-color: #fff;
+  border-radius: 14px;
+  padding: 40px 35px;
+  max-width: 950px;
+  width: 100%;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.cadastro-card:hover {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== TÍTULO E DESCRIÇÃO ===== */
+.cadastro-card h3 {
+  color: #205072;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 5px;
+}
+
+.cadastro-card p {
+  color: #6c757d;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+/* ===== ABAS ===== */
+.nav-tabs {
+  border: none;
+  background-color: #eef2f4;
+  border-radius: 10px;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+}
+
+.nav-tabs .nav-item {
+  flex: 1;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  border-radius: 8px;
+  background-color: #e1e8eb;
+  color: #5e6468;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.nav-tabs .nav-link i {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* Ativos */
+.nav-tabs .nav-link.active {
+  color: #fff;
+  background-color: #205072;
+  box-shadow: 0 3px 10px rgba(32, 80, 114, 0.25);
+}
+
+.nav-tabs .nav-link.active i {
+  opacity: 1;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: #c5d6db;
+  color: #205072;
+}
+
+/* ===== FORMULÁRIOS ===== */
+form .form-label {
+  font-weight: 500;
+  color: #343a40;
+  font-size: 0.9rem;
+}
+
+form .form-control,
+form .form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+form .form-control:focus,
+form .form-select:focus {
+  border-color: #205072;
+  box-shadow: 0 0 6px rgba(32, 80, 114, 0.3);
+}
+
+/* ===== GRID DE CAMPOS ===== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 768px) {
+  .form-grid,
+  .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== TEXTAREA ===== */
+textarea.form-control {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* ===== BOTÕES DE CADASTRO ===== */
+.btn-cadastro {
+  width: 100%;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 12px;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-cadastro:active {
+  transform: scale(0.98);
+}
+
+/* Cores específicas de cada aba */
+.btn-cadastro.aluno {
+  background-color: #205072;
+}
+.btn-cadastro.aluno:hover {
+  background-color: #1b4060;
+}
+
+.btn-cadastro.empresa {
+  background-color: #2cb67d;
+}
+.btn-cadastro.empresa:hover {
+  background-color: #229765;
+}
+
+.btn-cadastro.coord {
+  background-color: #6c757d;
+}
+.btn-cadastro.coord:hover {
+  background-color: #5a6268;
+}
+
+/* ===== LINKS ===== */
+.cadastro-card .small a {
+  color: #205072;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.cadastro-card .small a:hover {
+  text-decoration: underline;
+}
+
+/* ===== ANIMAÇÃO DAS ABAS ===== */
+.tab-pane {
+  animation: fadeSlide 0.4s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== PLACEHOLDER ===== */
+::placeholder {
+  color: #b0b7bb;
+  opacity: 1;
+}
+/* ================================
+   ABAS DE CADASTRO (estilo soft)
+================================ */
+.tabs-wrapper {
+  background-color: #233348; /* fundo leve cinza */
+  border-radius: 12px;
+  padding: 6px;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #e2e6ea;
+}
+
+.user-tabs-wrapper .nav-item {
+  flex: 1;
+  margin: 0 4px;
+}
+
+.user-tabs-wrapper .nav-link {
+  width: 100%;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  color: #2d3a4b;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  transition: all 0.25s ease-in-out;
+}
+
+.user-tabs-wrapper .nav-link i {
+  font-size: 1.1rem;
+}
+
+.user-tabs-wrapper .nav-link:hover {
+  background-color: #e8ecf1;
+  color: #205072;
+}
+
+.user-tabs-wrapper .nav-link.active {
+  background-color: #ffffff;
+  color: #000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.abas-wrappe{
+  background-color: #0b2f54 !important;
+}
+/* ====== FUNDO ====== */
+.cadastro-bg {
+  background-color: #f7f9fc;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ====== CARD ====== */
+.cadastro-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 700px;
+  border: 1px solid #e5e7eb;
+}
+
+/* ====== TÍTULOS ====== */
+.cadastro-card h3 {
+  color: #111827;
+}
+
+.cadastro-card p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 0;
+}
+
+/* ====== ABAS ====== */
+.abas-wrapper {
+  background-color: #f3f4f6;
+  border-radius: 10px;
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.abas {
+  width: 100%;
+  display: flex;
+}
+
+.abas .nav-link {
+  border: none;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #6b7280;
+  font-weight: 500;
+  width: 100%;
+  padding: 10px 0;
+  transition: all 0.25s ease;
+  font-size: 15px;
+}
+
+.abas .nav-link i {
+  margin-right: 6px;
+  font-size: 16px;
+}
+
+.abas .nav-link.active {
+  background-color: #ffffff;
+  color: #111827;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ====== FORM ====== */
+form label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #374151;
+}
+
+input, select, textarea {
+  border-radius: 8px !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+  font-size: 14px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* ====== BOTÕES DE CADASTRO ====== */
+.btn-cadastro {
+  width: 100%;
+  padding: 11px 0;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-cadastro.aluno {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+.btn-cadastro.aluno:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-cadastro.empresa {
+  background-color: #16a34a;
+  color: #fff;
+}
+
+.btn-cadastro.empresa:hover {
+  background-color: #15803d;
+}
+
+.btn-cadastro.coord {
+  background-color: #6b7280;
+  color: #fff;
+}
+
+.btn-cadastro.coord:hover {
+  background-color: #4b5563;
+}
+
+/* ====== RODAPÉ ====== */
+.text-center p {
+  font-size: 13.5px;
+}
+
+.text-center a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 576px) {
+  .cadastro-card {
+    margin: 10px;
+    padding: 20px;
+  }
+  .abas .nav-link {
+    font-size: 14px;
+    padding: 8px 0;
+  }
+}
+/* ====== FUNDO ====== */
+.cadastro-bg {
+  background-color: #f7f9fc;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ====== CARD ====== */
+.cadastro-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 700px;
+  border: 1px solid #e5e7eb;
+}
+
+/* ====== TÍTULOS ====== */
+.cadastro-card h3 {
+  color: #111827;
+}
+
+.cadastro-card p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 0;
+}
+
+/* ====== ABAS ====== */
+.abas-wrapper {
+  background-color: #f3f4f6;
+  border-radius: 10px;
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.abas {
+  width: 100%;
+  display: flex;
+}
+
+.abas .nav-link {
+  border: none;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #6b7280;
+  font-weight: 500;
+  width: 100%;
+  padding: 10px 0;
+  transition: all 0.25s ease;
+  font-size: 15px;
+}
+
+.abas .nav-link i {
+  margin-right: 6px;
+  font-size: 16px;
+}
+
+.abas .nav-link.active {
+  background-color: #ffffff;
+  color: #111827;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ====== FORM ====== */
+form label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #374151;
+}
+
+input, select, textarea {
+  border-radius: 8px !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+  font-size: 14px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* ====== BOTÕES DE CADASTRO ====== */
+.btn-cadastro {
+  width: 100%;
+  padding: 11px 0;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-cadastro.aluno {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+.btn-cadastro.aluno:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-cadastro.empresa {
+  background-color: #16a34a;
+  color: #fff;
+}
+
+.btn-cadastro.empresa:hover {
+  background-color: #15803d;
+}
+
+.btn-cadastro.coord {
+  background-color: #6b7280;
+  color: #fff;
+}
+
+.btn-cadastro.coord:hover {
+  background-color: #4b5563;
+}
+
+/* ====== RODAPÉ ====== */
+.text-center p {
+  font-size: 13.5px;
+}
+
+.text-center a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 576px) {
+  .cadastro-card {
+    margin: 10px;
+    padding: 20px;
+  }
+  .abas .nav-link {
+    font-size: 14px;
+    padding: 8px 0;
+  }
+}
+/* ====== CARROSSEL PERFIS ====== */
+#perfilCarousel .carousel-inner {
+  padding: 10px 0;
+}
+
+.perfil-card {
+  width: 95%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: scale(0.95);
+  opacity: 0.9;
+}
+
+#perfilCarousel .carousel-item.active .perfil-card {
+  transform: scale(1);
+  opacity: 1;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-img {
+  height: 150px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-size: 60%;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 6%;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .perfil-card {
+    transform: scale(1);
+    opacity: 1;
+  }
+  .carousel-control-prev,
+  .carousel-control-next {
+    display: none;
+  }
+}
