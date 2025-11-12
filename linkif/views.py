@@ -2,9 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
-from .forms import VagaForm
-from .models import Vaga
-from usuarios.models import Empresa
 
 from .models import (
     Vaga,
@@ -16,51 +13,67 @@ from .models import (
     AreaAtuacao,
     PerfilFormacao,
 )
-from .forms import VagaForm, CandidaturaForm, MensagemForm
+from .forms import VagaForm, CandidaturaForm, ContatoForm
+from usuarios.models import Empresa
 
 # =====================================================
 # FUNÇÕES AUXILIARES (controle de acesso)
 # =====================================================
 
 def is_coordenador(user):
-    return user.is_authenticated and user.tipo == "coordenador"
+    return user.is_authenticated and getattr(user, "tipo", None) == "coordenador"
 
 def is_empresa(user):
-    return user.is_authenticated and user.tipo == "empresa"
+    return user.is_authenticated and getattr(user, "tipo", None) == "empresa"
 
 def is_aluno(user):
-    return user.is_authenticated and user.tipo == "aluno"
+    return user.is_authenticated and getattr(user, "tipo", None) == "aluno"
 
 # =====================================================
 # INDEX (home) — dinâmico com SiteConfig e HomeContent
 # =====================================================
-
 def index(request):
     site = SiteConfig.objects.first()
     home = HomeContent.objects.first()
     vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")[:6]
-    perfis = PerfilFormacao.objects.all()  # busca todos os perfis cadastrados
+
+    # garante ordem previsível (pelo campo 'ordem' definido no model)
+    perfis = list(PerfilFormacao.objects.all().order_by("ordem", "nome"))
+
+    # duplica pra deixar o carrossel circular sem corte
+    if len(perfis) > 3:
+        perfis = perfis + perfis[:2]
+
+    # formulário de contato
+    form = ContatoForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Mensagem enviada com sucesso! Entraremos em contato em breve.")
+        return redirect("index")
 
     context = {
         "site": site,
         "home": home,
         "vagas": vagas,
-        "perfis": perfis,  # adiciona no contexto
+        "perfis": perfis,
+        "form": form,
     }
     return render(request, "linkif/index.html", context)
+
 # =====================================================
 # VAGAS — listagem, detalhes e criação
 # =====================================================
-
 def listar_vagas(request):
     vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
     areas = AreaAtuacao.objects.all()
 
-    # filtros GET
+    titulo = request.GET.get("titulo")
     area = request.GET.get("area")
     cidade = request.GET.get("cidade")
     tipo = request.GET.get("tipo")
 
+    if titulo:
+        vagas = vagas.filter(titulo__icontains=titulo)
     if area:
         vagas = vagas.filter(area__nome__icontains=area)
     if cidade:
@@ -68,18 +81,10 @@ def listar_vagas(request):
     if tipo:
         vagas = vagas.filter(tipo__iexact=tipo)
 
-    context = {"vagas": vagas, "areas": areas}
-    return render(request, "linkif/vagas.html", context)
-
-
-def detalhar_vaga(request, vaga_id):
-    vaga = get_object_or_404(Vaga, id=vaga_id, status="aprovada")
-    context = {"vaga": vaga}
-    return render(request, "linkif/detalhar.html", context)
-
-# ==============================================================
+    return render(request, "linkif/vagas.html", {"vagas": vagas, "areas": areas})
+# =====================================================
 # EMPRESA: CRUD DE VAGAS
-# ==============================================================
+# =====================================================
 
 @login_required
 @user_passes_test(is_empresa)
@@ -95,14 +100,14 @@ def criar_vaga(request):
             return redirect("listar_vagas_empresa")
     else:
         form = VagaForm()
-    return render(request, "linkif/templates/dashboard/empresas/criar_vaga.html", {"form": form})
+    return render(request, "dashboard/empresas/criar_vaga.html", {"form": form})
 
 
 @login_required
 @user_passes_test(is_empresa)
 def listar_vagas_empresa(request):
     vagas = Vaga.objects.filter(empresa=request.user.empresa)
-    return render(request, "linkif/templates/dashboard/empresas/listar_vagas_empresa.html", {"vagas": vagas})
+    return render(request, "dashboard/empresas/listar_vagas_empresa.html", {"vagas": vagas})
 
 
 @login_required
@@ -117,7 +122,7 @@ def editar_vaga(request, id):
             return redirect("listar_vagas_empresa")
     else:
         form = VagaForm(instance=vaga)
-    return render(request, "linkif/templates/dashboard/empresas/editar_vaga.html", {"form": form})
+    return render(request, "dashboard/empresas/editar_vaga.html", {"form": form})
 
 
 @login_required
@@ -129,10 +134,10 @@ def excluir_vaga(request, id):
     return redirect("listar_vagas_empresa")
 
 
-
 def listar_vagas_publicas(request):
     vagas = Vaga.objects.filter(status="aprovada", ativa=True)
-    return render(request, "linkif/templates/dashboard/empresas/listar_vagas_publicas.html", {"vagas": vagas})
+    return render(request, "dashboard/empresas/listar_vagas_publicas.html", {"vagas": vagas})
+
 
 @login_required
 @user_passes_test(is_coordenador)
@@ -150,7 +155,6 @@ def aprovar_vaga(request, vaga_id):
 
     messages.success(request, f"Vaga '{vaga.titulo}' aprovada com sucesso.")
     return redirect("listar_vagas")
-
 
 # =====================================================
 # CANDIDATURA
@@ -230,7 +234,6 @@ def mensagens(request):
             msg.remetente = request.user
             msg.data_envio = timezone.now()
             msg.save()
-
             messages.success(request, "Mensagem enviada com sucesso!")
             return redirect("mensagens")
     else:
@@ -242,6 +245,11 @@ def mensagens(request):
         "form": form,
     }
     return render(request, "linkif/mensagens.html", context)
+
+# =====================================================
+# PERFIS DE FORMAÇÃO
+# =====================================================
+
 def perfil_cursos(request):
     site_config = SiteConfig.objects.first()
     perfis = PerfilFormacao.objects.all()
@@ -249,10 +257,30 @@ def perfil_cursos(request):
         "perfis": perfis,
         "site_config": site_config,
     })
+
+
 def perfil_detalhe(request, perfil_id):
     site_config = SiteConfig.objects.first()
     perfil = get_object_or_404(PerfilFormacao, id=perfil_id)
     return render(request, "linkif/perfil_detalhe.html", {
         "perfil": perfil,
         "site_config": site_config,
+    })
+from django.shortcuts import render
+from .models import HomeContent, Feature
+
+def para_estudantes(request):
+    home = HomeContent.objects.first()
+    features = Feature.objects.filter(tipo='estudante')
+    return render(request, 'linkif/para_estudantes.html', {
+        'home': home,
+        'features': features
+    })
+
+def para_empresas(request):
+    home = HomeContent.objects.first()
+    features = Feature.objects.filter(tipo='empresa')
+    return render(request, 'linkif/para_empresas.html', {
+        'home': home,
+        'features': features
     })

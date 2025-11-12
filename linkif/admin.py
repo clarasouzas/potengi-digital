@@ -10,6 +10,7 @@ from .models import (
     PerfilFormacao,
     Competencia,
     AreaAtuacaoPerfil,
+    MensagemContato,
 )
 admin.site.register(Competencia)
 admin.site.register(AreaAtuacaoPerfil)
@@ -21,3 +22,5 @@ admin.site.register(Notificacao)
 admin.site.register(Mensagem)
 admin.site.register(SiteConfig)
 admin.site.register(HomeContent)
+admin.site.register(MensagemContato)
+

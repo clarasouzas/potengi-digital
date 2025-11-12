@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
-from .models import Vaga, Candidatura, Mensagem
+from .models import Vaga, Candidatura, MensagemContato
 
 
 # =====================================================
@@ -89,28 +89,20 @@ class CandidaturaForm(forms.ModelForm):
 # FORMULÁRIO DE MENSAGEM (para comunicação interna)
 # =====================================================
 
-class MensagemForm(forms.ModelForm):
+from django import forms
+from .models import MensagemContato
+
+class ContatoForm(forms.ModelForm):
     class Meta:
-        model = Mensagem
-        fields = ["destinatario", "conteudo"]
-        widgets = {
-            "conteudo": forms.Textarea(
-                attrs={"rows": 3, "placeholder": "Digite sua mensagem..."}
-            ),
+        model = MensagemContato
+        fields = ['nome', 'email', 'mensagem']
+
+        labels = {
+            'nome': 'Nome',
+            'email': 'E-mail',
+            'mensagem': 'Mensagem',
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["destinatario"].label = "Enviar para"
-        self.fields["conteudo"].label = "Mensagem"
-        self.helper = FormHelper()
-        self.helper.form_method = "post"
-        self.helper.layout = Layout(
-            Row(
-                Column("destinatario", css_class="col-md-6"),
-            ),
-            Row(
-                Column("conteudo", css_class="col-12"),
-            ),
-            Submit("submit", "Enviar", css_class="btn btn-primary mt-3"),
-        )
+        widgets = {
+            'mensagem': forms.Textarea(attrs={'rows': 3}),
+        }

@@ -1,36 +1,33 @@
 {% load static %}
-<!-- NAVEGAÇÃO -->
-  <div class="inicial"></div>
- <nav class="cor navbar navbar-expand-lg shadow-sm">
+
+<nav class="cor navbar navbar-expand-lg shadow-sm fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="{% url 'index' %}">
-      <img src="{% static 'assets/img/logo.png' %}" alt="Logo LinkIF">
-    </a>
+   <a class="navbar-brand" href="/">
+  <img src="{% static 'assets/img/logo.png' %}" alt="Logo LinkIF">
+</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+ 
 
+    <!-- LINKS -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto">
-        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
         <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
         <li class="nav-item"><a class="nav-link" href="#estudante">Para Você</a></li>
         <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
         <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
       </ul>
 
-      {% if user.is_authenticated %}
-        <div class="ms-3 d-flex align-items-center">
-          <a href="{% url 'notificacoes' %}" class="btn btn-outline-secondary me-2">Notificações</a>
-          <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>
-        </div>
-      {% else %}
-        <div class="ms-3">
+      <!-- BOTÕES DIREITA -->
+      <div class="ms-3 d-flex">
+        {% if user.is_authenticated %}
+          <a href="{% url 'usuarios:logout' %}" class="btn-entrar me-2">Sair</a>
+          <a href="{% url 'index' %}" class="btn-cadastrese">Dashboard</a>
+        {% else %}
           <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">Entrar</a>
           <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
     </div>
   </div>
 </nav>

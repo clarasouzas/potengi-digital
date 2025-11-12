@@ -1,45 +1,55 @@
-{% extends "base.html" %}
 {% load static crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entrar — LinkIF</title>
 
-{% block title %}Entrar{% endblock title %}
+    <!-- Bootstrap e ícones -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-{% block content %}
-<div class="login">
-  <div class="login-container d-flex flex-lg-row flex-column">
+    <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
+  </head>
 
-    <!-- LADO ESQUERDO (banner com frase e imagem) -->
-    <div class="left-side col-lg-6 d-flex align-items-center justify-content-center">
-      <div class="left-content text-center">
-        <h2 class="fw-bold mb-3">Bem-vinda(o) ao LinkIF!</h2>
-        <p class="mb-4">
-          Conecte-se com oportunidades, desenvolva seu futuro e<br />
-          mostre seu potencial para o mundo.
-        </p>
-        <a href="{% url 'index' %}" class="btn-back">Voltar ao início</a>
+  <body>
+    <section class="login-linkif">
+      <div class="login-container">
+
+        <!-- LADO ESQUERDO - FORM -->
+        <div class="login-left">
+          <div class="form-box">
+            <h3 class="fw-bold mb-2 " style='color: #205072;'>Login</h3>
+            <p class="text-secondary">Acesse sua conta no LinkIF</p>
+
+            <form method="POST" action="{% url 'usuarios:login' %}">
+              {% csrf_token %}
+              {{ form|crispy }}
+
+              <button type="submit" class="btn-login-linkif w-100 mt-2">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Entrar
+              </button>
+            </form>
+
+            <div class="text-center mt-3">
+              <p class="text-secondary">
+                Ainda não tem uma conta?
+                <a href="{% url 'usuarios:cadastro' %}" class="fw-semibold link-cadastro">Cadastre-se</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- LADO DIREITO - LOGO -->
+        <div class="login-right d-flex align-items-center justify-content-center">
+          <img src="{% static 'assets/img/logo.png' %}" alt="LinkIF" class="logo-login">
+        </div>
+
       </div>
-    </div>
+    </section>
 
-    <!-- LADO DIREITO (formulário de login) -->
-    <div class="col-lg-6 bg-white login-card">
-      <h4 class="fw-bold mb-3 text-primary">Entrar na sua conta</h4>
-      <p class="text-secondary small mb-4">Acesse com seu email e senha cadastrados.</p>
-
-      <form method="POST" action="{% url 'usuarios:login' %}">
-        {% csrf_token %}
-        {{ form|crispy }}
-
-        <button type="submit" class="btn btn-primary-custom w-100 mt-3">
-          Entrar
-        </button>
-      </form>
-
-      <div class="text-center mt-3">
-        <p class="small">
-          Ainda não tem uma conta?
-          <a href="{% url 'usuarios:cadastro' %}" class="signup-link">Cadastre-se</a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock content %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

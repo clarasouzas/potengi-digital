@@ -113,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'usuarios.Usuario'# Internationalization
 
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -138,10 +137,11 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'index'
-LOGIN_URL = "usuarios:login"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+LOGIN_REDIRECT_URL = 'usuarios:dashboard'
+LOGOUT_REDIRECT_URL = 'index'
+AUTH_USER_MODEL = "usuarios.Usuario"
+LOGIN_REDIRECT_URL = "usuarios:dashboard"
+LOGIN_URL = "usuarios:login"

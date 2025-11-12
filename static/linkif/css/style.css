@@ -1,211 +1,1325 @@
-
-/* ================================
+/* =======================================
    BASE GERAL
-================================ */
+======================================= */
 body {
   font-family: "Montserrat", sans-serif;
-  background-color: #ffffff;
+  background-color: #fff;
   color: #5E6468;
 }
-
 .cor {
-  background-color: rgba(98, 255, 0, 0.13);
-}
+  background-color: rgba(221, 255, 225, 0.97);
+}section { padding: 50px 0; }
+a { color: #0d6efd; text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-/* ================================
-   BOTÕES GERAIS
+
+
+/* ===============================
+   NAVBAR — LINKS DO MENU
 ================================ */
-.botao {
-  width: 250px;
-  height: 45px;
-  background-color: #205072;
-  color: white;
-  border: 2px solid  #205072;
-  border-radius: 5px;
-  padding: 8px 20px;
-  font-weight: 600;
-  transition: 0.3s;
-  display: flex;          /* adiciona flex */
-  align-items: center;    /* centraliza verticalmente */
-  justify-content: center;
-  text-decoration: none;
-}
 
-.botao a {
-  margin: 25px;
-}
-
-.botao:hover {
-  background-color: #404f68;
-}
-
-/* ================================
-   NAVBAR
-================================ */
-.navbar {
-  background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-}
-.navbar-nav .nav-link {
-  color: #205072;
-  font-weight: 500;
-  position: relative;
-  text-decoration: none !important; /* remove underline padrão */
-  transition: color 0.3s ease;
-  padding-bottom: 4px;
-}
-
-/* linha animada (apenas uma) */
-.navbar-nav .nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 2px;
-  background-color: #205072;
-  transition: width 0.3s ease;
-}
-
-/* hover bonito e sem repetição */
-.navbar-nav .nav-link:hover {
-  color: #0b1a33;
-  text-decoration: none !important; /* garante sem underline */
-}
-
-.navbar-nav .nav-link:hover::after {
-  width: 100%;
-}
-/* espaçamento */
 .navbar-nav {
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   text-align: center;
+}
+.navbar {
+   background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand img {
+  max-height: 70px; /* aumenta visualmente a logo */
+  transform: scale(1.7); /* “engrossa” o tamanho sem empurrar a barra */
+  transform-origin: left center; /* mantém alinhado à esquerda */
+  margin-top: -3px; /* corrige pequeno desalinhamento */
 }
 
 .navbar-nav .nav-item {
   padding: 0 8px;
 }
 
-/* logo */
-.navbar-brand {
-  font-size: 1.4rem;
+/* Links padrão */
+.navbar-nav .nav-link {
+  position: relative;
+  color: #205072;
+  font-weight: 500;
+  padding: 6px 0;
+  text-decoration: none !important;
+  background: none !important;
+  border: none;
+  transition: color 0.3s ease;
 }
 
-.navbar-brand img {
-  height: 80px;
-  width: auto;
+/* Linha animada no hover */
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: #205072;
+  transition: width 0.3s ease;
 }
 
+/* Hover e foco */
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: #0b1a33;
+  background: none !important;
+  text-decoration: none !important;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+
+/* Remove qualquer cor azul padrão de clique */
+.navbar-nav .nav-link:active,
+.navbar-nav .nav-link.show {
+  background: none !important;
+  color: #0b1a33;
+}
+/* ===============================
+   BOTÕES DIREITA (Entrar / Cadastre-se)
+   — versão azul unificada com contraste elegante
+================================ */
+
+/* base geral */
 .btn-entrar,
 .btn-cadastrese {
-  border-radius: 5px;
-  padding: 8px 20px;
+  border-radius: 40px;
+  padding: 8px 22px;
   font-weight: 600;
-  transition: 0.3s;
-  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  font-size: 0.95rem;
 }
 
+/* botão “Entrar” — vazado (outline) azul petróleo */
 .btn-entrar {
   color: #205072;
-  border: 2px solid #205072;
-  background-color: transparent;
+  background: transparent;
+  border-color: #205072;
 }
-
 .btn-entrar:hover {
-  background-color: #404f68;
-  color: white;
+  background: #205072;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(32,80,114,0.25);
 }
 
+/* botão “Cadastre-se” — azul petróleo sólido degradê */
 .btn-cadastrese {
-  background-color: #205072;
-  color: white;
+  background: linear-gradient(135deg, #205072, #356e8c);
+  color: #fff;
   border: 2px solid #205072;
 }
-
 .btn-cadastrese:hover {
-  background-color: #404f68;
+  background: linear-gradient(135deg, #173c54, #2a5b70);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(32,80,114,0.25);
+  color: #fff;
 }
 
-/* ================================
-   BANNER (HERO)
-================================ */
+/* ícones opcionais */
+.btn-entrar i,
+.btn-cadastrese i {
+  font-size: 1.1rem;
+  margin-right: 6px;
+}
+
+/* =======================================
+   HERO (BANNER) — versão refinada LinkIF
+   Equilíbrio imagem x texto
+======================================= */
 .hero {
   position: relative;
-  height: 100vh;
   display: flex;
   align-items: center;
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  justify-content: flex-start;
+  overflow: hidden;
+  min-height: 75vh; /* levemente menor que tela cheia */
+  background: linear-gradient(to right, #eafbf2 0%, #f4fff8 20%, #fff 100%);
+  padding: 100px 0 80px 0;
 }
 
-.hero .overlay {
+/* IMAGEM DO HERO */
+.hero-art {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.248);
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 58%;              /* imagem cobre metade + um pouco */
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
   z-index: 1;
 }
 
+/* camada de contraste para texto */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(221, 255, 225, 0.97) 45%, rgba(255,255,255,0) 75%);
+  z-index: 1;
+}
+
+/* container de texto */
 .hero .container {
   position: relative;
   z-index: 2;
+  margin-top: 50px;
+  color: #1b1f5b;
+  max-width:72%;       /* mais espaço para respirar */
+  margin-left: 6%;
 }
 
-.inicial .hero h1 {
-   background: linear-gradient(to right, #a8ff78, #12e771);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* textos */
+.hero h1 {
+  font-size: 3.4rem;
   font-weight: 800;
-  font-size: 1.5rem;
-  text-shadow: none;
   line-height: 1.2;
+  margin-bottom: 16px;
 }
 
 .hero p {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+  color: #333;
+  line-height: 1.5;
+  max-width: 90%;
+  margin-bottom: 35px;
+}
+/* BOTÕES REESTILIZADOS */
+.botoes {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-.hero p a {
-  font-size: 1rem;
-  color: white;
+.botoes a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 40px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: none;
 }
 
+/* botão verde petróleo (para estudantes) */
+.botao-estudante {
+  background: linear-gradient(135deg, #205072, #356e8c);
+  color: #fff;
+}
+.botao-estudante:hover {
+  background: linear-gradient(135deg, #173c54, #2a5b70);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(32,80,114,0.25);
+}
+
+/* botão verde claro (para empresas) */
+.botao-empresa {
+  background: linear-gradient(135deg, #2cb67d, #32d896);
+  color: #fff;
+}
+.botao-empresa:hover {
+  background: linear-gradient(135deg, #239264, #2cb67d);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(44,182,125,0.25);
+}
+
+/* ícones */
+.botoes i {
+  font-size: 1.2rem;
+}
+
+
+/* ===== RESPONSIVO ===== */
 @media (max-width: 992px) {
+  .hero {
+    flex-direction: column;
+    min-height: auto;
+    padding: 40px 0;
+    text-align: center;
+  }
+
+  .hero-art {
+    position: static;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    transform: none;
+    margin-top: 20px;
+  }
+
+  .hero::before {
+    background: rgba(255,255,255,0.95);
+  }
+
+  .hero .container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
   .hero h1 {
-    font-size: 2rem;
+    font-size: 2.3rem;
   }
 
   .hero p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 }
 
-/* ================================
-   SEÇÕES PADRÃO
-================================ */
-section {
-  padding: 50px 0;
-}
 
-/* ================================
+/* =======================================
    CARDS DE DESTAQUE
-================================ */
+======================================= */
+.feature-card {
+  background: #fff; border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.3s; margin: auto;
+}
+.feature-card:hover { transform: translateY(-2px); }
 .feature-top {
-  height: 150px;
-  position: relative;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  margin: -1rem -1rem 30px;
+  height: 150px; border-radius: 16px 16px 0 0;
+  position: relative; margin: -1rem -1rem 30px;
   width: calc(100% + 2rem);
 }
-
 .feature-icon {
-  width: 100px;
-  height: 100px;
+  width: 100px; height: 100px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 8px 12px -4px rgba(0,0,0,0.4);
+}
+.feature-icon img { width: 70px; height: 70px; }
+.icon-lilas .feature-top { background: #e6d9eb; }
+.icon-lilas .feature-icon { background: #d4adea; }
+.icon-verde .feature-top { background: #d2f4e3; }
+.icon-verde .feature-icon { background: #96f6b9; }
+.icon-azul .feature-top { background: #dae3ef; }
+.icon-azul .feature-icon { background: #93b9ee; }
+/* === PERFIL CARROSSEL === */
+.perfil-carousel-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.perfil-carousel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 30px;
+  transition: transform 0.6s ease;
+  will-change: transform;
+}
+
+/* === CARD BASE === */
+.perfil-card {
+  flex: 0 0 300px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.4s ease;
+  transform: scale(0.88);
+  opacity: 0.5;
+  filter: blur(1px);
+}
+
+.perfil-card.active {
+  transform: scale(1.08);
+  opacity: 1;
+  filter: blur(0);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  z-index: 3;
+}
+
+
+
+/* === TOPO DO CARD === */
+.perfil-top {
+  position: relative;
+  height: 140px;
+  overflow: hidden;
+}
+
+.perfil-top img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* === ÍCONE SOBREPOSTO === */
+.perfil-icon {
+  position: absolute;
+  bottom: -35px;
+  left: 20px;
+  background: #fff;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  border: 5px solid #fff;
+  z-index: 2;
+}
+
+.perfil-icon i {
+  color: #205072;
+  font-size: 1.8rem;
+}
+
+/* === CONTEÚDO DO CARD === */
+.perfil-body {
+  padding: 55px 22px 25px 22px;
+  text-align: left;
+}
+
+.perfil-body h5 {
+  color: #1b1f5b;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.perfil-body p {
+  color: #555;
+  font-size: 0.92rem;
+  min-height: 60px;
+}
+
+.btn-ver-mais {
+  background: #205072;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-ver-mais:hover {
+  background: #2cb67d;
+  transform: translateY(-2px);
+}
+
+/* === BOTÕES === */
+.perfil-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #205072;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: 0.3s ease;
+}
+
+.perfil-btn:hover {
+  background: #2cb67d;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.perfil-prev { left: 0; }
+.perfil-next { right: 0; }
+
+/* === SOMBRA NAS LATERAIS === */
+.perfil-carousel-container::before,
+.perfil-carousel-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.perfil-carousel-container::before {
+  left: 0;
+  background: linear-gradient(to right, #d7ffe4 40%, transparent 100%);
+}
+
+.perfil-carousel-container::after {
+  right: 0;
+  background: linear-gradient(to left, #d7ffe4 40%, transparent 100%);
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 992px) {
+  .perfil-card { flex: 0 0 260px; }
+}
+
+@media (max-width: 768px) {
+  .perfil-card { flex: 0 0 80%; }
+}
+
+/* =======================================
+   SEÇÕES DUPLAS (Estudantes / Empresas)
+======================================= */
+
+/* verde clarinha — 'Para Estudantes' */
+.section-dupla {
+  padding: 60px 0; /* altura boa pra imagem grande */
+}
+
+/* branca — 'Para Empresas' */
+.section-dupla:nth-of-type(even) {
+  background: #fff;
+}
+
+/* layout base */
+.section-dupla .row {
+  align-items: center;  /* centraliza imagem e texto verticalmente */
+  --bs-gutter-x: 2rem;  /* espaço horizontal equilibrado */
+}
+
+/* imagem — grande, mas sem cortar */
+.section-dupla img {
+  width: 100%;
+  max-width: 600px;      /* controla largura máxima */
+  height: auto;
+  max-height: 480px;     /* garante altura elegante */
+  object-fit: contain;   /* preserva a imagem inteira (PNG ok) */
+  display: block;
+  margin: 0 auto;
+}
+
+/* conteúdo (texto) */
+.section-dupla .col-md-6 {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* título e subtítulo */
+.section-dupla h3 {
+  font-weight: 900;
+  color: #241056;
+  margin-bottom: 4px;
+}
+
+.section-dupla p.sub {
+  color: #6b6b6b;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+/* lista */
+.section-dupla ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 15px;
+}
+
+.section-dupla li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  color: #2f2f2f;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* botão */
+.btn-dupla {
+  display: inline-block;
+  padding: 12px 26px;
+  background: linear-gradient(135deg, #205072, #356e8c);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(32, 80, 114, 0.2);
+}
+
+/* hover com efeito flutuante e brilho */
+.btn-dupla:hover {
+  background: linear-gradient(135deg, #173c54, #2a5b70);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(32, 80, 114, 0.25);
+  text-decoration: none;
+  color: #fff;
+}
+
+/* ajuste responsivo */
+@media (max-width: 576px) {
+  .btn-dupla {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+/* ======== RESPONSIVO ======== */
+@media (max-width: 992px) {
+  .section-dupla {
+    padding: 50px 0;
+  }
+
+  .section-dupla img {
+    max-width: 500px;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-dupla {
+    padding: 40px 0;
+    text-align: center;
+  }
+
+  .section-dupla img {
+    width: 80%;
+    max-width: 380px;
+    max-height: 300px;
+  }
+
+  .section-dupla li {
+    justify-content: center;
+  }
+}
+
+/* =======================================
+   RODAPÉ
+======================================= */
+footer {
+  padding: 40px 0 20px; color: #0b1a33; border-top: 2px solid #0F0261;
+}
+.footer-logo img { max-height: 90px; /* aumenta visualmente a logo */
+  transform: scale(1.3); /* “engrossa” o tamanho sem empurrar a barra */
+  transform-origin: left center; /* mantém alinhado à esquerda */
+  margin-top: -6px; /* corrige pequeno desalinhamento */ }
+.footer-links a {
+  display: block; color: #0b1a33; font-size: 0.9rem; margin-bottom: 5px;
+}
+.footer-links a:hover { text-decoration: underline; }
+.footer-title { font-weight: 600; margin-bottom: 10px; color: #0b1a33; }
+.footer-social i { font-size: 1.2rem; margin-right: 8px; color: #0b1a33; }
+.footer-bottom {
+  text-align: center; font-size: 0.85rem; color: #0b1a33;
+  border-top: 1px solid rgba(0,0,0,0.1); margin-top: 20px; padding-top: 10px;
+}/* =======================================
+   CADASTRO - LINKIF CLEAN
+======================================= */
+
+.cadastro-bg {
+  background: linear-gradient(to right, #dff9f2 0%, #f4fffa 30%, #dff9f2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 20px;
+}
+
+/* CARD PRINCIPAL */
+.cadastro-card {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1300px;
+  padding: 60px 70px;
+  animation: fadeIn 0.6s ease;
+  position: relative;
+  z-index: 10;
+   padding: 3rem 2.5rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* CABEÇALHO */
+.cadastro-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.cadastro-header h3 {
+  font-weight: 800;
+  color: #205072;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.cadastro-header p {
+  color: #6c757d;
+  font-size: 1rem;
+}
+
+/* ABAS */
+.abas-wrapper {
+  background: #f5f8fa;
+  border-radius: 14px;
+  padding: 8px 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.abas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px; /* espaçamento entre abas */
+  flex-wrap: wrap;
+}
+
+/* cada item da aba */
+.abas .nav-item {
+  flex: 1;
+  max-width: 280px; /* largura do retângulo */
+}
+
+/* botão da aba */
+.abas .nav-link {
+  border: none;
+  border-radius: 10px;
+  background: #ffffffbb;
+  color: #205072;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 0;
+  height: 45px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+}
+
+/* ícone */
+.abas .nav-link i {
+  font-size: 1.2rem;
+}
+
+/* estado hover */
+.abas .nav-link:hover {
+  background: #e9f3f0;
+  transform: translateY(-1px);
+}
+
+/* estado ativo */
+.abas .nav-link.active {
+  background: #bfd2d9
+;   color: #1b1f5b;
+
+  box-shadow: 0 4px 12px rgba(102, 102, 102, 0.137);
+  transform: translateY(-1px);
+}
+/* CAMPOS DE FORMULÁRIO */
+.cadastro-card .form-label {
+  font-weight: 600;
+  color: #205072;
+  font-size: 0.95rem;
+}
+
+.cadastro-card .form-control,
+.cadastro-card .form-select {
+  border-radius: 12px;
+  border: 1px solid #e1e6ea;
+  background: #fafbfc;
+  color: #333;
+  font-size: 0.95rem;
+  padding: 12px 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
+}
+
+.cadastro-card .form-control:hover,
+.cadastro-card .form-select:hover {
+  border-color: #bfd2d9;
+}
+
+.cadastro-card .form-control:focus,
+.cadastro-card .form-select:focus {
+  background: #fff;
+  border-color: #2cb67d;
+  box-shadow: 0 0 0 0.15rem rgba(44,182,125,0.25);
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+  border-radius: 12px;
+}
+
+/* BOTÕES */
+.btn-cadastro {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 14px;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+}
+
+.btn-cadastro.aluno {
+  background: #205072;
+  color: #fff;
+}
+.btn-cadastro.aluno:hover {
+  background-color: #205072;
+  box-shadow: 0 4px 15px rgba(32, 80, 114, 0.25);
+}
+
+.btn-cadastro.empresa {
+  background-color: #205072;
+  color: #fff;
+}
+.btn-cadastro.empresa:hover {
+  background: #249965;
+  box-shadow: 0 4px 15px rgba(44, 182, 125, 0.25);
+}
+
+.btn-cadastro.coord {
+  background-color: #205072;
+  color: #fff;
+}
+.btn-cadastro.coord:hover {
+  background-color: #205072;
+  box-shadow: 0 4px 15px rgba(107, 114, 128, 0.25);
+}
+
+/* LINK FINAL */
+.cadastro-card .small {
+  margin-top: 30px;
+  color: #5e6468;
+}
+.cadastro-card .small a {
+  color: #205072;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+.cadastro-card .small a:hover {
+  color: #18435d;
+  text-decoration: underline;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .cadastro-card {
+    padding: 40px 25px;
+  }
+  .abas {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .abas .nav-link {
+    font-size: 0.95rem;
+    padding: 12px 0;
+  }
+}
+
+
+/* =======================================
+   RESPONSIVO
+======================================= */
+@media (max-width: 768px) {
+  .cadastro-card {
+    padding: 40px 25px;
+  }
+
+  .abas-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .abas .nav-link {
+    font-size: 0.95rem;
+    padding: 12px 0;
+  }
+}
+
+
+.cadastro-header { margin-bottom: 2rem; }
+.abas-wrapper { margin-bottom: 2.5rem; }
+.tab-content { padding: 0 1rem 1rem 1rem; }
+/* =======================================
+   LOGIN PAGE - LINKIF STYLE 
+======================================= */
+
+.login-linkif {
+  min-height: 100vh;
+  background: #eaf3ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* CARD PRINCIPAL */
+.login-container {
+  display: flex;
+  width: 950px;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 45px rgba(0, 0, 0, 0.25); /* sombra em todo redor */
+  transition: 0.3s ease;
+}
+
+/* ===== LADO ESQUERDO (FORM) ===== */
+.login-left {
+  flex: 1;
+  color: #616161;
+  background: linear-gradient(135deg, #bcc1ff 0%, #c8d6fd 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+}
+
+.form-box {
+  width: 100%;
+  max-width: 360px;
+}
+* Campo padrão */
+.login-container .form-control,
+.cadastro-card .form-control,
+.cadastro-card .form-select {
+  border: 1px solid #d9e3ea;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  color: #333;
+  background: #fdfdfd;
+  transition: all 0.25s ease;
+}
+
+/* Efeito no foco */
+.login-container .form-control:focus,
+.cadastro-card .form-control:focus,
+.login-container .form-select:focus,
+.cadastro-card .form-select:focus {
+  background: #fff;
+  border-color: #2cb67d; /* verde institucional */
+  box-shadow: 0 0 0 0.15rem rgba(44,182,125,0.25); /* glow suave */
+  outline: none;
+}
+
+/* Placeholder e tipografia */
+.login-container input::placeholder,
+.cadastro-card input::placeholder {
+  color: #999;
+  font-size: 0.92rem;
+}
+
+/* Labels */
+.cadastro-card .form-label,
+.login-container .form-label {
+  font-weight: 500;
+  color: #205072;
+  font-size: 0.9rem;
+}
+.btn-login-linkif {
+  background: #2cb67d;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-login-linkif:hover {
+  background: #27a06f;
+  transform: translateY(-2px);
+}
+
+.link-cadastro {
+  color: #205072;
+  text-decoration: none;
+}
+
+.link-cadastro:hover {
+  text-decoration: underline;
+}
+
+/* ===== LADO DIREITO (LOGO) ===== */
+.login-right {
+  flex: 1;
+  background: #f8fbff;
+}
+
+.logo-login {
+  width: 280px;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.15));
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 991px) {
+  .login-container {
+    flex-direction: column;
+    width: 95%;
+  }
+
+  .login-left {
+    padding: 2rem;
+  }
+
+  .login-right {
+    padding: 2rem;
+  }
+
+  .logo-login {
+    width: 180px;
+  }
+}
+
+
+
+/* =======================================
+   VAGAS / CARDS / PAGINAÇÃO
+======================================= */
+/* PÁGINA DE VAGAS */
+.vagas-section {
+  background-color: #f9f9f9;
+}
+
+.filtro-card {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.vaga-status-container {
+  font-size: 0.85rem;
+}
+
+.vaga-status {
+  font-weight: 600;
+}
+
+.card .btn-detalhes {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.card .btn-detalhes:hover {
+  background-color: #183e5a;
+}
+
+@media (max-width: 768px) {
+  .vagas-section h2 {
+    font-size: 1.5rem;
+  }
+  .filtro-card {
+    margin-bottom: 25px;
+  }
+}
+
+/* =======================================
+   SEÇÃO DE CONTATO — estilo LinkIF
+======================================= */
+.contato {
+  background: #ffffff;
+  padding: 60px 20px;
+  border-radius: 10px;
+}
+
+.contato h3 {
+  font-weight: 800;
+  color: #205072;
+  margin-bottom: 40px;
+}
+
+.contato .form-control,
+.contato textarea {
+  border-radius: 8px;
+  border: 1px solid #c6e2d5;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+}
+
+.contato .form-control:focus,
+.contato textarea:focus {
+  border-color: #2cb67d;
+  box-shadow: 0 0 0 0.15rem rgba(44,182,125,0.25);
+}
+
+.btn-enviar {
+  background: linear-gradient(135deg, #205072, #356e8c);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 40px;
+  padding: 10px 22px;
+  transition: all 0.3s ease;
+}
+
+.btn-enviar:hover {
+  background: linear-gradient(135deg, #173c54, #2a5b70);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(32,80,114,0.25);
+  color: #fff;
+}
+
+/* animação de fade */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade {
+  animation: fadeIn 0.5s ease;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .contato {
+    padding: 40px 15px;
+    text-align: center;
+  }
+  .btn-enviar {
+    width: 100%;
+    justify-content: center;
+  }
+}
+.alert {
+  animation: fadeIn 0.4s ease;
+  border-radius: 8px;
+  font-weight: 500;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* =====================================================
+   HERO — ESTUDANTES E EMPRESAS
+===================================================== */
+/* =======================================
+   HERO — ESTUDANTES E EMPRESAS (mesmo estilo do geral)
+======================================= */
+
+/* === ESTUDANTES === */
+.hero-estudante {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  min-height: 75vh;
+  background: linear-gradient(to right, #e8e5ff 0%, #f5f4ff 30%,  #e8e5ff 100%);
+  padding: 100px 0 80px 0;
+}
+
+.hero-estudante::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(15, 2, 97, 0.08) 35%, rgba(255,255,255,0) 80%);
+  z-index: 1;
+}
+
+.hero-estudante .container {
+  position: relative;
+  z-index: 2;
+  color: #1b1f5b;
+  max-width: 72%;
+  margin-left: 6%;
+}
+
+.hero-estudante h1 {
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.hero-estudante p {
+  font-size: 1.3rem;
+  color: #333;
+  line-height: 1.5;
+  max-width: 90%;
+  margin-bottom: 35px;
+}
+
+/* === EMPRESAS === */
+.hero-empresas {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  min-height: 75vh;
+  background: linear-gradient(to right, #dff9f2 0%, #f4fffa 30%, #dff9f2 100%);
+  padding: 100px 0 80px 0;
+}
+
+.hero-empresas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(32, 80, 114, 0.12) 35%, rgba(255,255,255,0) 80%);
+  z-index: 1;
+}
+
+.hero-empresas .container {
+  position: relative;
+  z-index: 2;
+  color: #205072;
+  max-width: 72%;
+  margin-left: 6%;
+}
+
+.hero-empresas h1 {
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.hero-empresas p {
+  font-size: 1.3rem;
+  color: #333;
+  line-height: 1.5;
+  max-width: 90%;
+  margin-bottom: 35px;
+}
+
+/* === IMAGEM (hero-art) === */
+.hero-estudante .hero-art,
+.hero-empresas .hero-art {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 58%;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* === BOTÕES IGUAL AO HERO BASE === */
+.botoes {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.botoes a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 40px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: none;
+}
+
+/* botão principal (verde) */
+.botao-principal {
+  background: linear-gradient(135deg, #205072, #356e8c);
+  color: #ffffff;
+}
+
+.botao-principal:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #205072, #356e8c);
+  color: #fff;
+}
+
+/* botão secundário (azul petróleo) */
+.botao-secundario {
+  background: linear-gradient(135deg, #205072, #356e8c);
+  color: #fff;
+}
+
+.botao-secundario:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #173c54, #2a5b70);
+}
+
+/* =======================================
+   FEATURE CARDS - ESTUDANTES
+======================================= */
+.feature-estudante-card,
+.feature-empresa-card {
+  height: 300px;
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.3s;
+  overflow: hidden;
+}
+
+.feature-estudante-card:hover,
+.feature-empresa-card:hover {
+  transform: translateY(-3px);
+}
+
+.feature-estudante-top,
+.feature-empresa-top {
+  height: 120px;
+  width: 88%;
+  margin: 19px auto 25px auto;
+  border-radius: 14px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+
+  border-bottom: 0;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* ícones circulares */
+.feature-estudante-icon,
+.feature-empresa-icon {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -213,1619 +1327,105 @@ section {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 8px 12px -4px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 12px -4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
 }
 
-.feature-icon img {
-  width: 70px;
-  height: 70px;
+.feature-estudante-icon i,
+.feature-empresa-icon i {
+  font-size: 2rem;
+  color: #0F0261;
 }
 
-.feature-card {
-  margin: auto;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s;
-}
 
-.feature-card:hover {
-  transform: translateY(-2px);
-}
+/* cores estudantes */
+.icon-estudante-lilas .feature-estudante-top { background: #e6d9eb; }
+.icon-estudante-lilas .feature-estudante-icon { background: #d4adea; }
 
-.icon-lilas .feature-top { background-color: #e6d9eb; }
-.icon-lilas .feature-icon { background-color: #d4adea; }
+.icon-estudante-verde .feature-estudante-top { background: #d2f4e3; }
+.icon-estudante-verde .feature-estudante-icon { background: #96f6b9; }
 
-.icon-verde .feature-top { background-color: #d2f4e3; }
-.icon-verde .feature-icon { background-color: #96f6b9; }
+.icon-estudante-azul .feature-estudante-top { background: #dae3ef; }
+.icon-estudante-azul .feature-estudante-icon { background: #93b9ee; }
 
-.icon-azul .feature-top { background-color: #dae3ef; }
-.icon-azul .feature-icon { background-color: #93b9ee; }
+.icon-estudante-rosa .feature-estudante-top { background: #f6daec; }
+.icon-estudante-rosa .feature-estudante-icon { background: #f2a6d2; }
 
-/* ================================
-   PERFIS DE FORMAÇÃO
-================================ */
-.card {
-  position: relative;
-}
+/* cores empresas */
+.icon-empresa-azul .feature-empresa-top { background: #e2f1ff; }
+.icon-empresa-azul .feature-empresa-icon { background: #9dd4ff; }
 
-.card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: auto;
-  padding: 0.4rem 0.75rem 0.6rem;
-}
+.icon-empresa-verde .feature-empresa-top { background: #d5fff1; }
+.icon-empresa-verde .feature-empresa-icon { background: #7dfcc4; }
 
-.card-body a.btn {
-  align-self: flex-start;
-  margin-top: auto;
-}
+.icon-empresa-lilas .feature-empresa-top { background: #ede8ff; }
+.icon-empresa-lilas .feature-empresa-icon { background: #c5b9ff; }
 
-.perfil-logo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ffffff;
-  margin-bottom: 15px;
-  margin-top: -65px;
-}
+.icon-empresa-rosa .feature-empresa-top { background: #fff0f5; }
+.icon-empresa-rosa .feature-empresa-icon { background: #ffb6c1; }
 
-.perfil-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-/* ================================
-   SEÇÕES DUPLAS
-================================ */
-.section-dupla {
-  background-color: rgba(98, 255, 0, 0.13);
-}
-
-.section-dupla:nth-of-type(even) {
-  background: #ffffff;
-}
-
-.section-dupla img {
-  width: 100%;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(33, 33, 33, 0.12);
-}
-
-.section-dupla h3 {
-  font-weight: 800;
-  color: #241056;
-  margin-bottom: 10px;
-}
-
-.section-dupla p.sub {
-  color: #6b6b6b;
-  margin-bottom: 26px;
-  font-size: 0.98rem;
-}
-
-.section-dupla ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 22px;
-}
-
-.section-dupla li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 14px;
-  color: #2f2f2f;
-  font-size: 0.98rem;
-}
-
-.section-dupla li span.icon {
-  flex: 0 0 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #e8fbef;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-dupla {
-  display: inline-block;
-  padding: 10px 18px;
-  border-radius: 5px;
-  background:  #205072;
-  color: #ffffff;
-  font-weight: 600;
-  margin-left: 35px;
-  margin-top: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.btn-dupla:hover {
-  background: #404f68;
-  color: #ffffff;
-}
-
-@media (max-width: 768px) {
-  .btn-dupla {
-    margin-left: 0;
-    margin-top: 15px;
-  }
-}
-
-/* ================================
-   RODAPÉ
-================================ */
-footer {
-  padding: 40px 0 20px;
-  color: #0b1a33;
-  border-top: 4px solid #0F0261;
-}
-
-.footer-logo img {
-  height: 70px;
-  margin-bottom: 10px;
-}
-
-.footer-logo p {
-  font-size: 0.9rem;
-  color: #0b1a33;
-  max-width: 250px;
-}
-
-.footer-links a {
-  display: block;
-  color: #0b1a33;
-  text-decoration: none;
-  font-size: 0.9rem;
-  margin-bottom: 5px;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-.footer-title {
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #0b1a33;
-}
-
-.footer-social i {
-  font-size: 1.2rem;
-  margin-right: 8px;
-  color: #0b1a33;
-}
-
-.footer-social a {
-  text-decoration: none;
-  color: #0b1a33;
-  font-size: 0.9rem;
-}
-
-.footer-bottom {
+/* =======================================
+   CTA FINAL
+======================================= */
+.cta-estudante,
+.cta-empresas {
   text-align: center;
-  font-size: 0.85rem;
-  color: #0b1a33;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  padding-top: 10px;
 }
 
-/* ================================
-   CONTATO
-================================ */
-.contato {
-  background-color: #fff;
-  padding: 60px 20px;
-  border-radius: 10px;
-}
 
-.contato h3 {
+.cta-estudante h3,
+.cta-empresas h3 {
   font-weight: 800;
-  color: #0b1a33;
-  margin-bottom: 40px;
+  font-size: 1.8rem;
+  color: #0F0261;
 }
 
-.contato form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 500px;
-  margin: 0 auto;
+.cta-empresas h3 {
+  color: #205072;
 }
 
-.contato .form-label {
-  font-weight: 600;
-  color: #0b1a33;
+.cta-estudante p,
+.cta-empresas p {
+  color: #333;
+  margin-bottom: 20px;
 }
 
-.contato .form-control,
-.contato .form-select,
-.contato textarea {
-  border-radius: 8px;
-  border: 1px solid #0F0261;
-  padding: 10px 12px;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-}
-
-.contato .form-control:focus,
-.contato .form-select:focus,
-.contato textarea:focus {
-  border-color: #4444fa; /* borda mais clara */
-  outline: none;
-}
-
-.contato textarea {
-  resize: vertical;
-}
-
-.contato button {
+.btn-cta {
   background-color: #0F0261;
   color: #fff;
-  border: none;
-  padding: 10px 18px;
   font-weight: 600;
-  border-radius: 5px;
+  padding: 12px 32px;
+  border-radius: 8px;
+  text-decoration: none;
   transition: 0.3s;
 }
 
-.contato button:hover {
-  background-color:#404f68;
-}
-
-@media (max-width: 768px) {
-  .contato {
-    padding: 40px 15px;
-  }
-
-  .contato form {
-    max-width: 100%;
-  }
-}
-/* Fundo geral da página de vagas */
-.vagas-section {
-  background: linear-gradient(to bottom, #e8fff0, #ffffff);
-}
-
-/* Filtro lateral */
-.filtro-card {
-  border-radius: 10px;
-}
-.filtro-card label {
-  font-size: 0.9rem;
-  color: #333;
-}
-.filtro-card input,
-.filtro-card select {
-  font-size: 0.9rem;
-}
-
-/* Cards das vagas */
-.card {
-  border-radius: 5px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-}
-.vaga-status {
-  display: inline-block;
-  background-color:#cff4d2;
-  color: #1a1a1a;
-  font-weight: 200;
-  font-size: 0.6rem;
-  padding: 4px 10px;
-  border-radius: 5px;
-  
-}
-.vaga-status-container {
-  display: flex;
-  justify-content:left;
-  align-items: center;
-}
-
-
-/* Paginação */
-.pagination .page-link {
-  color: #0F0261;
-  border: none;
-  margin: 0 3px;
-  border-radius: 5px;
-}
-.pagination .page-link:hover {
-  background-color: #404f68;
-  color: rgb(255, 255, 255);
-}
-.pagination .active {
-  background-color: #205072;
-  color: white !important;
-}
-
-/* Botões */
-.btn {
-  border-radius: 5px;
-  font-weight: 500;
-}
-
-/* Ajuste responsivo */
-@media (max-width: 991px) {
-  .filtro-card {
-    margin-bottom: 20px;
-  }
-}
-   .perfill .hero {
-      background-image: url("../img/pm.png");
-      background-size: cover;
-      background-position: center;
-      height: 320px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #fff;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    .perfil h1 {
-      font-weight: 700;
-      font-size: 2.4rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero p {
-      font-size: 1.05rem;
-      line-height: 1.4;
-      font-weight: 500;
-    }
-
-    /* ===== CARD GERAL ===== */
-    .perfill .card-section {
-      background: #f1faf3;
-      border-radius: 10px;
-      padding: 30px;
-      margin-bottom: 0px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      margin-top: -10px; 
-    }
-
-    .card-section h3 {
-      font-weight: 700;
-      font-size: 1.4rem;
-      color: #1d4929;
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-      position: relative;
-    }
-
-    .card-section h3::before {
-      content: "";
-      width: 6px;
-      height: 28px;
-      background-color: #28a745;
-      border-radius: 3px;
-      margin-right: 10px;
-    }
-
-    .card-section p {
-      color: #333;
-      font-size: 1rem;
-      margin-bottom: 0.8rem;
-    }
-
-    /* ===== COMPETÊNCIAS ===== */
-    .competencias .btn-custom {
-      border: 1.5px solid #28a745;
-      background: #fff;
-      color: #1d4929;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      padding: 8px 18px;
-      margin: 6px;
-      font-weight: 500;
-      transition: all 0.3s;
-    }
-
-    
-    .competencias .btn-custom:hover {
-      background: #28a745;
-      color: #fff;
-    }
-
-    /* ===== ÁREAS DE ATUAÇÃO ===== */
-    .areas .area-card {
-      background: #fff;
-      border: 1.5px solid #28a745;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      padding: 25px;
-      text-align: center;
-      height: 100%;
-      transition: transform 0.3s;
-    }
-
-    .areas .area-card:hover {
-      transform: translateY(-4px);
-    }
-
-    .areas .area-card img {
-      width: 55px;
-      height: 55px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-
-    .areas .area-card h5 {
-      font-weight: 700;
-      color: #1d4929;
-      margin-bottom: 8px;
-      font-size: 1.05rem;
-    }
-
-    .areas .area-card p {
-      font-size: 0.95rem;
-      color: #333;
-    }
-
-    /* ===== RESPONSIVIDADE ===== */
-    @media (max-width: 767px) {
-      .hero {
-        height: 260px;
-      }
-      .hero h1 {
-        font-size: 1.9rem;
-      }
-      .card-section {
-        padding: 20px;
-      }
-    }
-    .perfill section {
-      margin: 0px;
-      padding: 30px;
-}
-.detalhar{
-  background-color: #d4dcf7e5;
-  padding: 50px;
-}
-
-.detalhar body {
-  background-color: #f8f9fa;
-  font-family: "Arial", sans-serif;
-}
-
-.detalhar .navbar {
-  background-color: #e9f4e3 !important;
-}
-
-.detalhar .navbar-brand span {
-  font-size: 22px;
-}
-
-.detalhar .card {
-  max-width: 900px;
-  margin: auto;
-  background-color: #e3f1e8ff;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0,0.3);
-}
-
-.detalhar .card img {
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  height: 250px;
-  object-fit: cover;
-}
-
-.detalhar .card-body {
-  padding: 25px;
-}
-
-.detalhar h4 {
-  color: #241056;
-  margin-bottom: 20px;
-}
-
-.detalhar .btn-primary {
+.btn-cta:hover {
   background-color: #241056;
-  border: none;
-  border-radius: 8px;
-  transition: 0.3s;
 }
 
-.detalhar .btn-primary:hover {
-  background-color: #001bcc;
 
-}
-.detalhar .conteudo{
-  background-color: #66676eff;
-
-}
-
-/* ================================
-   FORMULÁRIOS (CADASTRO / LOGIN)
-================================ */
-
-/* Container principal do card */
-.form-card {
-  max-width: 950px;
-  width: 100%;
-  margin: 60px auto;
-  background: #fff;
-  border-radius: 14px;
-  padding: 40px 35px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  animation: fadeIn 0.5s ease;
-}
-
-/* Título e subtítulo */
-.form-card h5 {
+.titulo-formulario {
+  color: #205072; /* cor institucional LinkIF */
   font-weight: 700;
-  color: #1b1f5b;
-  margin-bottom: 8px;
-}
-
-.form-card p {
-  color: #6c757d;
-  font-size: 0.95rem;
-  margin-bottom: 25px;
-}
-
-/* Abas de usuário */
-.user-tabs-wrapper {
-  background-color: #2a5a76;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  gap: 6px;
-  padding: 6px;
-  margin-bottom: 25px;
-}
-
-.user-tabs-wrapper .nav-item {
-  flex: 1;
-}
-
-.user-tabs-wrapper .nav-link {
-  width: 100%;
-  border: none;
-  border-radius: 8px;
-  background-color: #d4e5f5;
-  color: #425466;
-  font-weight: 600;
-  transition: all 0.3s;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.user-tabs-wrapper .nav-link.active {
-  background-color: #205072;
-  color: #fff;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-}
-
-.user-tabs-wrapper .nav-link:hover {
-  background-color: #92b2be;
-  color: #fff;
-}
-
-/* Formulário geral */
-form .form-label {
-  font-weight: 500;
-  color: #343a40;
-  font-size: 0.9rem;
-}
-
-form .form-control,
-form .form-select {
-  border-radius: 8px;
-  padding: 10px 12px;
+  font-size: 1.2rem;
   margin-bottom: 15px;
-  border: 1px solid #dee2e6;
-  transition: 0.2s;
-}
-
-form .form-control:focus,
-form .form-select:focus {
-  border-color: #205072;
-  box-shadow: 0 0 6px rgba(13, 110, 253, 0.25);
-}
-
-/* Duas colunas reais nos formulários */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-}
-
-.form-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-
-@media (max-width: 768px) {
-  .form-grid,
-  .form-grid-3 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Descrição longa */
-textarea.form-control {
-  min-height: 90px;
-  resize: vertical;
-}
-
-/* Botões */
-.btn-primary {
-  background-color: #205072;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 12px;
-  transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #0b5ed7;
-}
-
-/* Link de login abaixo */
-.text-center a {
-  color: #0d6efd;
-  font-weight: 500;
-  transition: 0.2s;
-}
-
-.text-center a:hover {
-  text-decoration: underline;
-}
-
-/* Animação suave */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* botão */
-.btn-primary {
-  background-color: #205072;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  padding: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #0b5ed7;
-}
-
-a {
-  color: #0d6efd;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* animação suave ao trocar abas */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade {
-  animation: fadeIn 0.4s ease;
-}
-/* ================================
-   FORMULÁRIOS PADRÃO (UNIFICADO)
-================================ */
-.form-card,
-.cadastro-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 30px 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  animation: cadastroFade 0.5s ease;
-}
-
-/* Títulos e descrições */
-.form-card h5,
-.cadastro-card h5 {
-  font-weight: 700;
-  color: #1b1f5b;
-  margin-bottom: 10px;
-}
-
-.form-card p,
-.cadastro-card p {
-  color: #6c757d;
-  font-size: 0.95rem;
-  margin-bottom: 20px;
-}
-
-/* ================================
-   ABAS DE USUÁRIO
-================================ */
-.user-tabs-wrapper {
-  background-color: #dedede6a; /* retângulo maior cinza suave */
-  border-radius: 10px;
-  display: flex;
-  gap: 6px;
-  padding: 6px;
-  margin-bottom: 30px;
-  height: 45px;
-}
-
-.user-tabs-wrapper .nav-item {
-  flex: 1;
-}
-
-.user-tabs-wrapper .nav-link {
-  width: 100%;
-  height: 30px;
-  border-radius: 8px;
-  border: none;
-  background-color: #d4e5f56d; /* cor padrão das abas */
-  color: #5E6468;
-  font-weight: 500;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
+  gap: 6px;
 }
-
-.user-tabs-wrapper .nav-link.active {
-  background-color: #9eb5c6c3; /* aba ativa */
-  color: #ffffff;
-}
-
-.user-tabs-wrapper .nav-link:hover {
-  background-color: #c0d3df;
+.titulo-formulario i {
+  font-size: 1.3rem;
   color: #205072;
 }
-
-/* ================================
-   FORMULÁRIOS
-================================ */
-.form-card .form-label,
-.cadastro-card .form-label {
-  font-weight: 500;
-  color: #343a40;
-  font-size: 0.9rem;
-}
-
-.form-card .form-control,
-.form-card .form-select,
-.cadastro-card .form-control,
-.cadastro-card .form-select {
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-bottom: 15px;
-  border: 1px solid #dee2e6;
-  transition: all 0.3s;
-}
-
-.form-card .form-control:focus,
-.form-card .form-select:focus,
-.cadastro-card .form-control:focus,
-.cadastro-card .form-select:focus {
-  border-color: #205072;
-  box-shadow: 0 0 6px rgba(13,110,253,0.25);
-}
-
-/* ================================
-   BOTÕES
-================================ */
-.form-card .btn-submit,
-.cadastro-card .btn-submit {
-  width: 100%;
-  background-color: #205072;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 12px;
-  transition: background-color 0.3s;
-}
-
-.form-card .btn-submit:hover,
-.cadastro-card .btn-submit:hover {
-  background-color: #0b5ed7;
-}
-
-/* ================================
-   LINKS
-================================ */
-.form-card a,
-.cadastro-card a {
-  color: #0d6efd;
-  font-size: 0.9rem;
-}
-
-.form-card a:hover,
-.cadastro-card a:hover {
-  text-decoration: underline;
-}
-
-/* ================================
-   ANIMAÇÃO SUAVE
-================================ */
-@keyframes cadastroFade {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ================================
-   RESPONSIVO
-================================ */
-@media (max-width: 768px) {
-  .form-card,
-  .cadastro-card {
-    padding: 25px 20px;
-  }
-
-  .user-tabs-wrapper {
-    height: 40px;
-  }
-
-  .user-tabs-wrapper .nav-link {
-    height: 28px;
-    font-size: 0.9rem;
-  }
-}
-
-/* ================================
-   LOGIN
-================================ */
-
- :root {
-      --azul-escuro: #0d3b66;
-      --verde-claro: #9fe6a0;
-      --card-radius: 12px;
-    }
-
-    html, body {
-      height: 100%;
-    }
-    
-    .login{
-      font-family: 'Inter', sans-serif;
-      background: #f6f8fb;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .login-container {
-      max-width: 1100px;
-      width: 100%;
-      margin-top:35px;
-      margin-bottom:40px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 30px rgba(13,59,102,0.12);
-      background: white;
-    }
-
-    .left-side {
-      background-image: url("../img/bannerlogin.png");
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 400px;
-    }
-
-    .left-side::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(13,59,102,0.75);
-    }
-
-    .left-content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 2rem;
-    }
-
-    .login .login-card {
-      padding: 3rem 2.5rem;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .btn-primary-custom {
-      background: var(--azul-escuro);
-      border-color: var(--azul-escuro);
-    }
-
-    .btn-primary-custom:hover {
-      background: #0b2f54;
-      border-color: #0b2f54;
-    }
-
-    .btn-back {
-      background: transparent;
-      border: 2px solid var(--azul-escuro);
-      color: var(--azul-escuro);
-      border-radius: 10px;
-      padding: .4rem .8rem;
-      font-weight: 500;
-    }
-
-    .signup-link {
-      color: var(--azul-escuro);
-      font-weight: 600;
-    }
-
-    @media (max-width: 992px) {
-      .login-container {
-        max-width: 90%;
-      }
-    }
-
-    @media (max-width: 767.98px) {
-      .login-container {
-        flex-direction: column;
-      }
-      .left-side {
-        min-height: 250px;
-      }
-      .login-card {
-        padding: 2rem;
-      }
-    }
-/* ================================
-   PÁGINA DE CADASTRO — UI DESIGN
-================================ */
-/* ================================
-   PÁGINA DE CADASTRO — MODERNA
-================================ */
-
-.cadastro-bg {
-  background: radial-gradient(#cde7dc, #f0fff8);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 10px;
-}
-
-.cadastro-card {
-  background-color: #fff;
-  border-radius: 14px;
-  padding: 40px 35px;
-  max-width: 950px;
-  width: 100%;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-}
-
-.cadastro-card:hover {
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
-}
-
-/* ===== TÍTULO E DESCRIÇÃO ===== */
-.cadastro-card h3 {
+.titulo-section {
   color: #205072;
   font-weight: 700;
-  font-size: 1.6rem;
-  margin-bottom: 5px;
-}
-
-.cadastro-card p {
-  color: #6c757d;
-  font-size: 0.95rem;
-  margin-bottom: 25px;
-}
-
-/* ===== ABAS ===== */
-.nav-tabs {
-  border: none;
-  background-color: #eef2f4;
-  border-radius: 10px;
-  display: flex;
-  gap: 6px;
-  padding: 6px;
-}
-
-.nav-tabs .nav-item {
-  flex: 1;
-}
-
-.nav-tabs .nav-link {
-  border: none;
-  border-radius: 8px;
-  background-color: #e1e8eb;
-  color: #5e6468;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.nav-tabs .nav-link i {
   font-size: 1rem;
-  opacity: 0.8;
-}
-
-/* Ativos */
-.nav-tabs .nav-link.active {
-  color: #fff;
-  background-color: #205072;
-  box-shadow: 0 3px 10px rgba(32, 80, 114, 0.25);
-}
-
-.nav-tabs .nav-link.active i {
-  opacity: 1;
-}
-
-.nav-tabs .nav-link:hover {
-  background-color: #c5d6db;
-  color: #205072;
-}
-
-/* ===== FORMULÁRIOS ===== */
-form .form-label {
-  font-weight: 500;
-  color: #343a40;
-  font-size: 0.9rem;
-}
-
-form .form-control,
-form .form-select {
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
-  padding: 10px 12px;
-  margin-bottom: 15px;
-  transition: all 0.2s ease;
-}
-
-form .form-control:focus,
-form .form-select:focus {
-  border-color: #205072;
-  box-shadow: 0 0 6px rgba(32, 80, 114, 0.3);
-}
-
-/* ===== GRID DE CAMPOS ===== */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-}
-
-.form-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-
-@media (max-width: 768px) {
-  .form-grid,
-  .form-grid-3 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ===== TEXTAREA ===== */
-textarea.form-control {
-  min-height: 90px;
-  resize: vertical;
-}
-
-/* ===== BOTÕES DE CADASTRO ===== */
-.btn-cadastro {
-  width: 100%;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 12px;
-  transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-.btn-cadastro:active {
-  transform: scale(0.98);
-}
-
-/* Cores específicas de cada aba */
-.btn-cadastro.aluno {
-  background-color: #205072;
-}
-.btn-cadastro.aluno:hover {
-  background-color: #1b4060;
-}
-
-.btn-cadastro.empresa {
-  background-color: #2cb67d;
-}
-.btn-cadastro.empresa:hover {
-  background-color: #229765;
-}
-
-.btn-cadastro.coord {
-  background-color: #6c757d;
-}
-.btn-cadastro.coord:hover {
-  background-color: #5a6268;
-}
-
-/* ===== LINKS ===== */
-.cadastro-card .small a {
-  color: #205072;
-  font-weight: 600;
-  transition: 0.2s;
-}
-
-.cadastro-card .small a:hover {
-  text-decoration: underline;
-}
-
-/* ===== ANIMAÇÃO DAS ABAS ===== */
-.tab-pane {
-  animation: fadeSlide 0.4s ease;
-}
-
-@keyframes fadeSlide {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===== PLACEHOLDER ===== */
-::placeholder {
-  color: #b0b7bb;
-  opacity: 1;
-}
-/* ================================
-   ABAS DE CADASTRO (estilo soft)
-================================ */
-.tabs-wrapper {
-  background-color: #233348; /* fundo leve cinza */
-  border-radius: 12px;
-  padding: 6px;
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid #e2e6ea;
-}
-
-.user-tabs-wrapper .nav-item {
-  flex: 1;
-  margin: 0 4px;
-}
-
-.user-tabs-wrapper .nav-link {
-  width: 100%;
-  border: none;
-  background: transparent;
-  border-radius: 10px;
-  color: #2d3a4b;
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 40px;
-  transition: all 0.25s ease-in-out;
-}
-
-.user-tabs-wrapper .nav-link i {
-  font-size: 1.1rem;
-}
-
-.user-tabs-wrapper .nav-link:hover {
-  background-color: #e8ecf1;
-  color: #205072;
-}
-
-.user-tabs-wrapper .nav-link.active {
-  background-color: #ffffff;
-  color: #000;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-.abas-wrappe{
-  background-color: #0b2f54 !important;
-}
-/* ====== FUNDO ====== */
-.cadastro-bg {
-  background-color: #f7f9fc;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ====== CARD ====== */
-.cadastro-card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  width: 100%;
-  max-width: 700px;
-  border: 1px solid #e5e7eb;
-}
-
-/* ====== TÍTULOS ====== */
-.cadastro-card h3 {
-  color: #111827;
-}
-
-.cadastro-card p {
-  font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 0;
-}
-
-/* ====== ABAS ====== */
-.abas-wrapper {
-  background-color: #f3f4f6;
-  border-radius: 10px;
-  padding: 4px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 18px;
-}
-
-.abas {
-  width: 100%;
-  display: flex;
-}
-
-.abas .nav-link {
-  border: none;
-  border-radius: 8px;
-  background-color: transparent;
-  color: #6b7280;
-  font-weight: 500;
-  width: 100%;
-  padding: 10px 0;
-  transition: all 0.25s ease;
-  font-size: 15px;
-}
-
-.abas .nav-link i {
-  margin-right: 6px;
-  font-size: 16px;
-}
-
-.abas .nav-link.active {
-  background-color: #ffffff;
-  color: #111827;
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-/* ====== FORM ====== */
-form label {
-  font-weight: 500;
-  font-size: 14px;
-  color: #374151;
-}
-
-input, select, textarea {
-  border-radius: 8px !important;
-  border: 1px solid #d1d5db !important;
-  box-shadow: none !important;
-  font-size: 14px;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
-}
-
-/* ====== BOTÕES DE CADASTRO ====== */
-.btn-cadastro {
-  width: 100%;
-  padding: 11px 0;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-cadastro.aluno {
-  background-color: #2563eb;
-  color: #fff;
-}
-
-.btn-cadastro.aluno:hover {
-  background-color: #1d4ed8;
-}
-
-.btn-cadastro.empresa {
-  background-color: #16a34a;
-  color: #fff;
-}
-
-.btn-cadastro.empresa:hover {
-  background-color: #15803d;
-}
-
-.btn-cadastro.coord {
-  background-color: #6b7280;
-  color: #fff;
-}
-
-.btn-cadastro.coord:hover {
-  background-color: #4b5563;
-}
-
-/* ====== RODAPÉ ====== */
-.text-center p {
-  font-size: 13.5px;
-}
-
-.text-center a {
-  color: #2563eb;
-  text-decoration: none;
-}
-
-.text-center a:hover {
-  text-decoration: underline;
-}
-
-/* ====== RESPONSIVIDADE ====== */
-@media (max-width: 576px) {
-  .cadastro-card {
-    margin: 10px;
-    padding: 20px;
-  }
-  .abas .nav-link {
-    font-size: 14px;
-    padding: 8px 0;
-  }
-}
-/* ====== FUNDO ====== */
-.cadastro-bg {
-  background-color: #f7f9fc;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ====== CARD ====== */
-.cadastro-card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  width: 100%;
-  max-width: 700px;
-  border: 1px solid #e5e7eb;
-}
-
-/* ====== TÍTULOS ====== */
-.cadastro-card h3 {
-  color: #111827;
-}
-
-.cadastro-card p {
-  font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 0;
-}
-
-/* ====== ABAS ====== */
-.abas-wrapper {
-  background-color: #f3f4f6;
-  border-radius: 10px;
-  padding: 4px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 18px;
-}
-
-.abas {
-  width: 100%;
-  display: flex;
-}
-
-.abas .nav-link {
-  border: none;
-  border-radius: 8px;
-  background-color: transparent;
-  color: #6b7280;
-  font-weight: 500;
-  width: 100%;
-  padding: 10px 0;
-  transition: all 0.25s ease;
-  font-size: 15px;
-}
-
-.abas .nav-link i {
-  margin-right: 6px;
-  font-size: 16px;
-}
-
-.abas .nav-link.active {
-  background-color: #ffffff;
-  color: #111827;
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-/* ====== FORM ====== */
-form label {
-  font-weight: 500;
-  font-size: 14px;
-  color: #374151;
-}
-
-input, select, textarea {
-  border-radius: 8px !important;
-  border: 1px solid #d1d5db !important;
-  box-shadow: none !important;
-  font-size: 14px;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
-}
-
-/* ====== BOTÕES DE CADASTRO ====== */
-.btn-cadastro {
-  width: 100%;
-  padding: 11px 0;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-cadastro.aluno {
-  background-color: #2563eb;
-  color: #fff;
-}
-
-.btn-cadastro.aluno:hover {
-  background-color: #1d4ed8;
-}
-
-.btn-cadastro.empresa {
-  background-color: #16a34a;
-  color: #fff;
-}
-
-.btn-cadastro.empresa:hover {
-  background-color: #15803d;
-}
-
-.btn-cadastro.coord {
-  background-color: #6b7280;
-  color: #fff;
-}
-
-.btn-cadastro.coord:hover {
-  background-color: #4b5563;
-}
-
-/* ====== RODAPÉ ====== */
-.text-center p {
-  font-size: 13.5px;
-}
-
-.text-center a {
-  color: #2563eb;
-  text-decoration: none;
-}
-
-.text-center a:hover {
-  text-decoration: underline;
-}
-
-/* ====== RESPONSIVIDADE ====== */
-@media (max-width: 576px) {
-  .cadastro-card {
-    margin: 10px;
-    padding: 20px;
-  }
-  .abas .nav-link {
-    font-size: 14px;
-    padding: 8px 0;
-  }
-}
-/* ====== CARROSSEL PERFIS ====== */
-#perfilCarousel .carousel-inner {
-  padding: 10px 0;
-}
-
-.perfil-card {
-  width: 95%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  transform: scale(0.95);
-  opacity: 0.9;
-}
-
-#perfilCarousel .carousel-item.active .perfil-card {
-  transform: scale(1);
-  opacity: 1;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
-.perfil-img {
-  height: 150px;
-  width: 100%;
-  object-fit: cover;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  background-size: 60%;
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-  width: 6%;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .perfil-card {
-    transform: scale(1);
-    opacity: 1;
-  }
-  .carousel-control-prev,
-  .carousel-control-next {
-    display: none;
-  }
+  border-left: 4px solid #2cb67d;
+  padding-left: 10px;
+}
+.icon-contato{
+  color:#18435d;
+  
 }

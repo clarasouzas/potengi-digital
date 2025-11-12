@@ -17,6 +17,7 @@ class Usuario(AbstractUser):
     tipo = models.CharField("Tipo de usuário", max_length=20, choices=TIPO_CHOICES)
     is_approved = models.BooleanField("Aprovado pela coordenação", default=False)
 
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 
@@ -32,7 +33,7 @@ class Usuario(AbstractUser):
 # PERFIL DO ALUNO
 # =====================================================
 class Aluno(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name="aluno")
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name="aluno")    
     curso = models.CharField("Curso", max_length=100, blank=True)
     curriculo = models.FileField(upload_to="curriculos/", blank=True, null=True)
     portfolio = models.URLField("Portfólio (opcional)", blank=True, null=True)

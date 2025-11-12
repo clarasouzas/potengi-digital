@@ -1,20 +1,30 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Field, HTML
 from .models import Empresa
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
-# ======================
-# FORMULÁRIO DE EMPRESA
-# ======================
+class EmailAuthenticationForm(AuthenticationForm):
+    username = forms.EmailField(
+        label="E-mail",
+        widget=forms.EmailInput(attrs={"autofocus": True, "class": "form-control"}),
+    )
+
+    class Meta:
+        model = User
+        fields = ["username", "password"]
+# =====================================================
+# FORMULÁRIO DE EMPRESA — LIMPO E PROFISSIONAL
+# =====================================================
 class EmpresaForm(forms.ModelForm):
     class Meta:
         model = Empresa
         fields = [
             "nome_empresa", "razao_social", "cnpj", "setor", "tamanho_empresa",
-            "telefone", "email", "site", "logradouro", "bairro",
-            "cidade", "estado", "cep", "descricao", "logo"
+            "telefone", "email", "cidade", "cep", "descricao"
         ]
         labels = {
             "nome_empresa": "Nome Fantasia",
@@ -24,14 +34,9 @@ class EmpresaForm(forms.ModelForm):
             "tamanho_empresa": "Porte da Empresa",
             "telefone": "Telefone de Contato",
             "email": "E-mail Corporativo",
-            "site": "Site (opcional)",
-            "logradouro": "Logradouro",
-            "bairro": "Bairro",
             "cidade": "Cidade",
-            "estado": "Estado (UF)",
             "cep": "CEP",
             "descricao": "Descrição da Empresa",
-            "logo": "Logo (imagem opcional)",
         }
 
     def __init__(self, *args, **kwargs):
@@ -39,7 +44,9 @@ class EmpresaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.form_tag = False
+
         self.helper.layout = Layout(
+            HTML("<h6 class='titulo-section mb-3'>Informações da Empresa</h6>"),
             Row(
                 Column("nome_empresa", css_class="col-md-6 mb-3"),
                 Column("razao_social", css_class="col-md-6 mb-3"),
@@ -49,39 +56,36 @@ class EmpresaForm(forms.ModelForm):
                 Column("setor", css_class="col-md-4 mb-3"),
                 Column("tamanho_empresa", css_class="col-md-4 mb-3"),
             ),
+
+            HTML("<h6 class='titulo-section mt-4 mb-3'>Contato</h6>"),
             Row(
                 Column("telefone", css_class="col-md-6 mb-3"),
                 Column("email", css_class="col-md-6 mb-3"),
             ),
+
+            HTML("<h6 class='titulo-section mt-4 mb-3'>Localização</h6>"),
             Row(
-                Column("site", css_class="col-md-6 mb-3"),
-                Column("logo", css_class="col-md-6 mb-3"),
-            ),
-            HTML("<h6 class='mt-3 text-primary'>Endereço</h6>"),
-            Row(
-                Column("logradouro", css_class="col-md-6 mb-3"),
-                Column("bairro", css_class="col-md-6 mb-3"),
-            ),
-            Row(
-                Column("cidade", css_class="col-md-4 mb-3"),
-                Column("estado", css_class="col-md-4 mb-3"),
+                Column("cidade", css_class="col-md-8 mb-3"),
                 Column("cep", css_class="col-md-4 mb-3"),
             ),
+
+            HTML("<h6 class='titulo-section mt-4 mb-3'>Sobre</h6>"),
             Field("descricao", css_class="mb-3"),
         )
 
 
-# ======================
-# FORMULÁRIO DE ALUNO
-# ======================
+# =====================================================
+# FORMULÁRIO DE ALUNO — ORGANIZADO E HARMONIOSO
+# =====================================================
 class AlunoForm(forms.Form):
     nome = forms.CharField(label="Nome Completo", max_length=100)
     matricula = forms.CharField(label="Matrícula", max_length=20)
     curso = forms.ChoiceField(
         choices=[
             ("InfoWeb", "Informática para Internet"),
-            ("Administração", "Administração"),
-            ("Eletrotécnica", "Eletrotécnica"),
+            ("Meio Ambiente", "Meio Ambiente"),
+            ("Edificações", "Edificações"),
+            ("Licenciatura em Matemática", "Licenciatura em Matemática"),
         ],
         label="Curso"
     )
@@ -94,25 +98,31 @@ class AlunoForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.form_tag = False
+
         self.helper.layout = Layout(
+            HTML("<h6 class='titulo-section mb-3'>Dados Pessoais</h6>"),
             Row(
                 Column("nome", css_class="col-md-6 mb-3"),
                 Column("matricula", css_class="col-md-6 mb-3"),
             ),
+
+            HTML("<h6 class='titulo-section mt-4 mb-3'>Curso e Contato</h6>"),
             Row(
                 Column("curso", css_class="col-md-6 mb-3"),
                 Column("email", css_class="col-md-6 mb-3"),
             ),
+
+            HTML("<h6 class='titulo-section mt-4 mb-3'>Acesso</h6>"),
             Row(
                 Column("senha", css_class="col-md-6 mb-3"),
                 Column("confirmar_senha", css_class="col-md-6 mb-3"),
-            )
+            ),
         )
 
 
-# ======================
-# FORMULÁRIO DE COORDENAÇÃO
-# ======================
+# =====================================================
+# FORMULÁRIO DE COORDENAÇÃO — CLEAN E FUNCIONAL
+# =====================================================
 class CoordenacaoForm(forms.Form):
     nome = forms.CharField(label="Nome Completo", max_length=100)
     email = forms.EmailField(label="E-mail Institucional")
@@ -126,17 +136,23 @@ class CoordenacaoForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.form_tag = False
+
         self.helper.layout = Layout(
+            HTML("<h6 class='titulo-section mb-3'>Informações Gerais</h6>"),
             Row(
                 Column("nome", css_class="col-md-6 mb-3"),
                 Column("email", css_class="col-md-6 mb-3"),
             ),
+
+            HTML("<h6 class='titulo-section mt-4 mb-3'>Cargo e Departamento</h6>"),
             Row(
                 Column("cargo", css_class="col-md-6 mb-3"),
                 Column("departamento", css_class="col-md-6 mb-3"),
             ),
+
+            HTML("<h6 class='titulo-section mt-4 mb-3'>Acesso</h6>"),
             Row(
                 Column("senha", css_class="col-md-6 mb-3"),
                 Column("confirmar_senha", css_class="col-md-6 mb-3"),
-            )
+            ),
         )

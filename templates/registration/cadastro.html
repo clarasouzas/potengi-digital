@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cadastro</title>
+    <title>Cadastro — LinkIF</title>
 
     <!-- Bootstrap e ícones -->
     <link
@@ -12,160 +12,77 @@
       rel="stylesheet"
     />
     <link
-      rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
     />
 
     <!-- CSS principal -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
   </head>
 
   <body>
-    <div class="cadastro-bg">
+    <section class="cadastro-bg py-5">
       <div class="container d-flex justify-content-center align-items-center">
-        <div class="cadastro-card p-4">
-          <!-- Título -->
-          <div class="text-center mb-4">
-            <h3 class="fw-bold">Criar Conta</h3>
-            <p class="text-muted">
-              Selecione o tipo de usuário e preencha seus dados
-            </p>
+        <div class="cadastro-card shadow-lg p-4 rounded-4">
+
+          <!-- Cabeçalho -->
+          <div class="cadastro-header text-center mb-4">
+            <h3 class="fw-bold" style="color:#205072;">Criar Conta</h3>
+            <p class="text-muted">Selecione o tipo de usuário e preencha seus dados</p>
           </div>
 
           <!-- Abas -->
-          <div class="abas-wrapper">
-            <ul class="nav abas" id="cadastroTabs" role="tablist">
-              <li class="nav-item flex-fill">
+          <div class="abas-wrapper  mb-4 rounded-3">
+            <ul class="nav abas justify-content-center" id="cadastroTabs" role="tablist">
+              {% for tipo, form, url, cor, icone, titulo in forms %}
+              <li class="nav-item mx-2">
                 <button
-                  class="nav-link active"
-                  id="aluno-tab"
+                  class="nav-link {% if forloop.first %}active{% endif %}"
                   data-bs-toggle="tab"
-                  data-bs-target="#aluno"
+                  data-bs-target="#{{ tipo }}"
                   type="button"
                 >
-                  <i class="bi bi-mortarboard-fill"></i> Aluno
+                  <i class="bi {{ icone }} me-2"></i> {{ titulo|cut:'Cadastro de ' }}
                 </button>
               </li>
-              <li class="nav-item flex-fill">
-                <button
-                  class="nav-link"
-                  id="empresa-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#empresa"
-                  type="button"
-                >
-                  <i class="bi bi-building"></i> Empresa
-                </button>
-              </li>
-              <li class="nav-item flex-fill">
-                <button
-                  class="nav-link"
-                  id="coord-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#coord"
-                  type="button"
-                >
-                  <i class="bi bi-people-fill"></i> Coordenação
-                </button>
-              </li>
+              {% endfor %}
             </ul>
           </div>
 
-          <!-- Conteúdo das abas -->
-          <div class="tab-content mt-3">
-            <!-- Aba Aluno -->
-            <div class="tab-pane fade show active" id="aluno">
-              <h6 class="fw-semibold text-primary mb-3">
-                <i class="bi bi-person-fill me-1"></i> Cadastro de Aluno
-              </h6>
-              <form
-                method="POST"
-                action="{% url 'usuarios:cadastro_aluno' %}"
-              >
-                {% csrf_token %}
-                <div class="row g-3">
-                  <div class="col-md-12">{{ form_aluno.nome|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_aluno.matricula|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_aluno.curso|as_crispy_field }}</div>
-                  <div class="col-md-12">{{ form_aluno.email|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_aluno.senha|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_aluno.confirmar_senha|as_crispy_field }}</div>
-                </div>
-                <button type="submit" class="btn-cadastro aluno mt-3">
-                  Cadastrar como Aluno
-                </button>
-              </form>
-            </div>
+          <!-- Conteúdo das Abas -->
+          <div class="tab-content mt-4">
+            {% for tipo, form, url, cor, icone, titulo in forms %}
+            <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="{{ tipo }}">
 
-            <!-- Aba Empresa -->
-            <div class="tab-pane fade" id="empresa">
-              <h6 class="fw-semibold text-success mb-3">
-                <i class="bi bi-building-fill me-1"></i> Cadastro de Empresa
+              <h6 class="titulo-formulario mb-3">
+                <i class="bi {{ icone }} me-2"></i> {{ titulo }}
               </h6>
-              <form
-                method="POST"
-                action="{% url 'usuarios:cadastro_empresa' %}"
-                enctype="multipart/form-data"
-              >
-                {% csrf_token %}
-                <div class="row g-3">
-                  <div class="col-md-6">{{ form_empresa.nome_empresa|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.razao_social|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.cnpj|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.setor|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.tamanho_empresa|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.telefone|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.email|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.site|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.logradouro|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.bairro|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.cidade|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.estado|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_empresa.cep|as_crispy_field }}</div>
-                  <div class="col-md-12">{{ form_empresa.descricao|as_crispy_field }}</div>
-                  <div class="col-md-12">{{ form_empresa.logo|as_crispy_field }}</div>
-                </div>
-                <button type="submit" class="btn-cadastro empresa mt-3">
-                  Cadastrar Empresa
-                </button>
-              </form>
-            </div>
 
-            <!-- Aba Coordenação -->
-            <div class="tab-pane fade" id="coord">
-              <h6 class="fw-semibold text-secondary mb-3">
-                <i class="bi bi-person-gear-fill me-1"></i> Cadastro de Coordenação
-              </h6>
-              <form
-                method="POST"
-                action="{% url 'usuarios:cadastro_coord' %}"
-              >
+              <form method="POST" enctype="multipart/form-data" action="{% url url %}">
                 {% csrf_token %}
-                <div class="row g-3">
-                  <div class="col-md-6">{{ form_coord.nome|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_coord.cargo|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_coord.departamento|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_coord.email|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_coord.senha|as_crispy_field }}</div>
-                  <div class="col-md-6">{{ form_coord.confirmar_senha|as_crispy_field }}</div>
-                </div>
-                <button type="submit" class="btn-cadastro coord mt-3">
-                  Cadastrar Coordenação
+                {% crispy form %}
+
+                <button type="submit" class="btn-cadastro w-100 mt-3 {{ tipo }}">
+                  <i class="bi bi-check-circle me-1"></i>
+                  Cadastrar {{ titulo|cut:'Cadastro de ' }}
                 </button>
               </form>
+
             </div>
+            {% endfor %}
           </div>
 
           <!-- Link para login -->
           <div class="text-center mt-4">
-            <p class="small">
+            <p class="small text-muted">
               Já possui uma conta?
-              <a href="{% url 'usuarios:login' %}" class="fw-semibold">Faça login</a>
+              <a href="{% url 'usuarios:login' %}" class="fw-semibold text-primary">Faça login</a>
             </p>
           </div>
+
         </div>
       </div>
-    </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>

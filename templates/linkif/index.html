@@ -1,176 +1,154 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ site_config.nome_site }} - Início</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
-</head>
 
-<body>
-  <!-- NAVEGAÇÃO -->
-   <div class="inicial"></div>
-  <nav class="cor navbar navbar-expand-lg shadow-sm">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="{{ site_config.get_logo_url }}" alt="Logo {{ site_config.nome_site }}">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+{% block title %}{{ site_config.nome_site }} - Início{% endblock %}
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="#">Início</a></li>
-          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>          
-          <li class="nav-item"><a class="nav-link" href="#estudante">Para Você</a></li>
-          <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
-        </ul>
-        <div class="ms-3">
-          <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">Entrar</a>
-          <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
-        </div>
-      </div>
-    </div>
-  </nav>
+{% block content %}
 
-<div class="inicial">
-    <!-- BANNER -->
 {% if home.imagem_banner %}
-  <section class="hero" style="background: url('{{ home.imagem_banner.url }}') center center / cover no-repeat;">
+<section class="hero">
+  <div class="overlay"></div>
+
+  <!-- imagem real como elemento -->
+  <img src="{{ home.imagem_banner.url }}" alt="Ilustração LinkIF" class="hero-art">
 {% else %}
-  <section class="hero" style="background: url('{% static "assets/img/banner.png" %}') center center / cover no-repeat;">
-{% endif %}    <div class="overlay"></div>
-    <div class="container text-center text-md-start">
-      <div class="row align-items-center">
-        <div class="col-md-8">
-          <h1 style="font-size: 60px; font-weight: 700;">{{ home.titulo_banner }}</h1>
-          <p>{{ home.subtitulo_banner }}</p>
-          <a href="{% url 'listar_vagas' %}" class="botao btn btn-primary mt-3" style="border: 0;">Explorar Oportunidades</a>
+<section class="hero">
+  <div class="overlay"></div>
+
+  <!-- imagem padrão -->
+  <img src="{% static 'assets/img/banner_hero.png' %}" alt="Ilustração LinkIF" class="hero-art">
+{% endif %}
+
+  <div class="container text-center text-md-start">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1>{{ home.titulo_banner }}</h1>
+        <p>{{ home.subtitulo_banner }}</p>
+
+        <div class="botoes">
+          <a href="{% url 'para_estudantes' %}" class="botao botao-estudante">
+            <i class="bi bi-mortarboard-fill me-2"></i> Estudantes
+          </a>
+          <a href="{% url 'para_empresas' %}" class="botao botao-empresa">
+            <i class="bi bi-building-fill me-2"></i> Empresas
+          </a>
         </div>
       </div>
-    </div>
-  </section>
-
-<!-- O QUE É O LINKIF -->
-<section class="py-5 bg-white" id="sobre">
-  <div class="container text-center">
-    <h2 class="fw-bold" style="color: #1b1f5b;">{{ home.titulo_sobre }}</h2>
-    <p class="mb-5 text-secondary">
-      {{ home.texto_sobre }}
-    </p>
-
-      <div class="row g-4 justify-content-center">
-        <!-- Card 1 -->
-        <div class="col-md-4">
-          <div class="feature-card p-4 text-center h-100 icon-azul">
-            <div class="feature-top">
-              <div class="feature-icon">
-{% if home.card1_icon %}
-  <img src="{{ home.card1_icon.url }}" alt="ícone">
-{% else %}
-  <img src="{% static 'assets/img/icon1.png' %}" alt="ícone">
-{% endif %}              </div>
-            </div>
-            <h5 class="fw-bold mt-3">{{ home.card1_titulo }}</h5>
-            <p>{{ home.card1_texto }}</p>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="col-md-4">
-          <div class="feature-card p-4 text-center h-100 icon-verde">
-            <div class="feature-top">
-              <div class="feature-icon">
-{% if home.card1_icon %}
-  <img src="{{ home.card2_icon.url }}" alt="ícone">
-{% else %}
-  <img src="{% static 'assets/img/icon2.png' %}" alt="ícone">
-{% endif %}              </div>
-            </div>
-            <h5 class="fw-bold mt-3">{{ home.card2_titulo }}</h5>
-            <p>{{ home.card2_texto }}</p>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="col-md-4">
-          <div class="feature-card p-4 text-center h-100 icon-lilas">
-            <div class="feature-top">
-              <div class="feature-icon">
-{% if home.card1_icon %}
-  <img src="{{ home.card3_icon.url }}" alt="ícone">
-{% else %}
-  <img src="{% static 'assets/img/icon3.png' %}" alt="ícone">
-{% endif %}              </div>
-            </div>
-            <h5 class="fw-bold mt-3">{{ home.card3_titulo }}</h5>
-            <p>{{ home.card3_texto }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
- <!-- PERFIS DE FORMAÇÃO -->
-<section class="cor py-5" id="perfis">
-  <div class="container text-center">
-    <h2 class="fw-bold" style="color: #1b1f5b;">Perfis de Formação</h2>
-    <p class="mb-5 text-secondary">
-      Conheça as áreas de formação dos alunos e egressos do IFRN – Campus São Paulo do Potengi.
-    </p>
-
-    <div id="perfilCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        {% for perfil in perfis %}
-        {% if forloop.counter0|divisibleby:3 %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-          <div class="row justify-content-center">
-        {% endif %}
-            <div class="col-md-4 d-flex justify-content-center">
-              <div class="perfil-card card border-0 shadow-sm rounded-4 overflow-hidden">
-                <img
-                  src="{{ perfil.imagem.url|default:'/static/assets/img/perfil_informatica.png' }}"
-                  alt="{{ perfil.nome }}"
-                  class="perfil-img"
-                />
-                <div class="card-body text-start p-4">
-                  <h5 class="fw-bold" style="color:{{ perfil.cor_titulo }}">{{ perfil.nome }}</h5>
-                  <p class="mb-2">{{ perfil.descricao|truncatewords:20 }}</p>
-                  <a
-                    href="{% url 'perfil_detalhe' perfil.id %}"
-                    class="btn btn-sm text-white px-3"
-                    style="background-color:{{ perfil.cor_titulo }}"
-                    >Ver Mais</a
-                  >
-                </div>
-              </div>
-            </div>
-        {% if forloop.counter|divisibleby:3 or forloop.last %}
-          </div>
-        </div>
-        {% endif %}
-        {% endfor %}
-      </div>
-
-      <!-- Botões -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#perfilCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
-        <span class="visually-hidden">Anterior</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#perfilCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
-        <span class="visually-hidden">Próximo</span>
-      </button>
     </div>
   </div>
 </section>
 
 
- <!-- PARA ESTUDANTES -->
+
+<!-- SOBRE / O QUE É O LINKIF -->
+<section class="py-5 bg-white" id="sobre">
+  <div class="container text-center">
+    <h2 class="fw-bold" style="color: #1b1f5b;">{{ home.titulo_sobre }}</h2>
+    <p class="mb-5 text-secondary">{{ home.texto_sobre }}</p>
+
+    <div class="row g-4 justify-content-center">
+      <!-- Card 1 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-azul">
+          <div class="feature-top">
+            <div class="feature-icon">
+              {% if home.card1_icon %}
+              <img src="{{ home.card1_icon.url }}" alt="ícone">
+              {% else %}
+              <img src="{% static 'assets/img/icon1.png' %}" alt="ícone">
+              {% endif %}
+            </div>
+          </div>
+          <h5 class="fw-bold mt-3">{{ home.card1_titulo }}</h5>
+          <p>{{ home.card1_texto }}</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-verde">
+          <div class="feature-top">
+            <div class="feature-icon">
+              {% if home.card2_icon %}
+              <img src="{{ home.card2_icon.url }}" alt="ícone">
+              {% else %}
+              <img src="{% static 'assets/img/icon2.png' %}" alt="ícone">
+              {% endif %}
+            </div>
+          </div>
+          <h5 class="fw-bold mt-3">{{ home.card2_titulo }}</h5>
+          <p>{{ home.card2_texto }}</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-lilas">
+          <div class="feature-top">
+            <div class="feature-icon">
+              {% if home.card3_icon %}
+              <img src="{{ home.card3_icon.url }}" alt="ícone">
+              {% else %}
+              <img src="{% static 'assets/img/icon3.png' %}" alt="ícone">
+              {% endif %}
+            </div>
+          </div>
+          <h5 class="fw-bold mt-3">{{ home.card3_titulo }}</h5>
+          <p>{{ home.card3_texto }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PERFIS DE FORMAÇÃO ===== -->
+<section class="cor py-5" id="perfis">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold" style="color:#1b1f5b;">Perfis de Formação</h2>
+      <p class="text-secondary">
+        Conheça as áreas de formação dos alunos e egressos do IFRN – Campus São Paulo do Potengi.
+      </p>
+    </div>
+
+    <div class="perfil-carousel-container">
+      <button class="perfil-btn perfil-prev"><i class="bi bi-chevron-left"></i></button>
+
+      <div class="perfil-carousel">
+        {% for perfil in perfis %}
+        <div class="perfil-card">
+          <div class="perfil-top">
+            {% if perfil.imagem %}
+              <img src="{{ perfil.imagem.url }}" alt="{{ perfil.nome }}">
+            {% else %}
+              <img src="{% static 'assets/img/perfil_informatica.png' %}" alt="{{ perfil.nome }}">
+            {% endif %}
+            <div class="perfil-icon">
+              {% if perfil.logo %}
+                <img src="{{ perfil.logo.url }}" alt="Logo {{ perfil.nome }}">
+              {% else %}
+                <i class="bi bi-mortarboard-fill"></i>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="perfil-body">
+            <h5>{{ perfil.nome }}</h5>
+            <p>{{ perfil.descricao|truncatewords:18 }}</p>
+            <a href="{% url 'perfil_detalhe' perfil.id %}" class="btn-ver-mais">Ver Mais</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <button class="perfil-btn perfil-next"><i class="bi bi-chevron-right"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- PARA ESTUDANTES -->
 <section class="section-dupla" id="estudante">
   <div class="container" style="max-width:980px;">
     <div class="text-center mb-4">
@@ -178,20 +156,21 @@
       <p class="sub">{{ home.texto_estudantes }}</p>
     </div>
 
-    <div class="row align-items-center gx-5 gy-4">
+    <div class="row align-items-center gx-5 gy-2">
       <div class="col-md-6 text-center">
-{% if home.imagem_estudantes %}
-  <img src="{{ home.imagem_estudantes.url }}" alt="Estudante" class="img-fluid rounded-3 shadow-sm">
-{% else %}
-  <img src="{% static 'assets/img/estudante.png' %}" alt="Estudante" class="img-fluid rounded-3 shadow-sm">
-{% endif %}      </div>
+        {% if home.imagem_estudantes %}
+          <img src="{{ home.imagem_estudantes.url }}" alt="Estudante" class="img-ilustra">
+        {% else %}
+          <img src="{% static 'assets/img/estudante.png' %}" alt="Estudante" class="img-ilustra">
+        {% endif %}
+      </div>
 
-      <div class="col-md-6">
-        <ul class="list-unstyled">
-          <li class="mb-3">Vagas e estágios alinhados ao seu perfil.</li>
-          <li class="mb-3">Perfil inteligente com destaque para suas competências.</li>
-          <li class="mb-3">Contato direto com empresas da região.</li>
-          <li class="mb-3">Certificados e experiências que impulsionam sua trajetória.</li>
+      <div class="col-md-6 texto-dupla">
+        <ul>
+          <li>Vagas e estágios alinhados ao seu perfil.</li>
+          <li>Perfil inteligente com destaque para suas competências.</li>
+          <li>Contato direto com empresas da região.</li>
+          <li>Certificados e experiências que impulsionam sua trajetória.</li>
         </ul>
         <a href="{% url 'listar_vagas' %}" class="btn-dupla">Ver Vagas</a>
       </div>
@@ -200,27 +179,28 @@
 </section>
 
 <!-- PARA EMPRESAS -->
-<section class="cor section-dupla" id="empresas">
+<section class="section-dupla bg-branco cor" id="empresas">
   <div class="container" style="max-width:980px;">
     <div class="text-center mb-4">
       <h3>{{ home.titulo_empresas }}</h3>
       <p class="sub">{{ home.texto_empresas }}</p>
     </div>
 
-    <div class="row align-items-center flex-row-reverse gx-6 gy-4">
+    <div class="row align-items-center flex-row-reverse gx-5 gy-4">
       <div class="col-md-6 text-center">
-{% if home.imagem_empresas %}
-  <img src="{{ home.imagem_empresas.url }}" alt="empresa" class="img-fluid rounded-3 shadow-sm">
-{% else %}
-  <img src="{% static 'assets/img/empresa.png' %}" alt="empresa" class="img-fluid rounded-3 shadow-sm">
-{% endif %}      </div>
+        {% if home.imagem_empresas %}
+          <img src="{{ home.imagem_empresas.url }}" alt="Empresa" class="img-ilustra">
+        {% else %}
+          <img src="{% static 'assets/img/empresa.png' %}" alt="Empresa" class="img-ilustra">
+        {% endif %}
+      </div>
 
-      <div class="col-md-6">
-        <ul class="list-unstyled">
-          <li class="mb-3">Divulgue vagas de estágio e jovem aprendiz.</li>
-          <li class="mb-3">Acesse perfis de alunos e ex-alunos do IFRN.</li>
-          <li class="mb-3">Encontre candidatos com as habilidades que o mercado precisa.</li>
-          <li class="mb-3">Fortaleça parcerias com o IFRN e incentive o desenvolvimento local.</li>
+      <div class="col-md-6 texto-dupla">
+        <ul>
+          <li>Divulgue vagas de estágio e jovem aprendiz.</li>
+          <li>Acesse perfis de alunos e ex-alunos do IFRN.</li>
+          <li>Encontre candidatos com as habilidades que o mercado precisa.</li>
+          <li>Fortaleça parcerias com o IFRN e incentive o desenvolvimento local.</li>
         </ul>
         <a href="#perfis" class="btn-dupla">Explorar Perfis</a>
       </div>
@@ -229,92 +209,100 @@
 </section>
 
 <!-- CONTATO -->
-<div class="contato container py-4" id="contato">
-  <h3 class="text-center" style="color:#241056; margin:40px 0 30px; font-weight:800;">Contato</h3>
-  <div class="row g-4">
-    <!-- Formulário -->
-    <div class="col-md-6">
-      <form>
-        <div class="mb-3">
-          <label class="form-label">Nome</label>
-          <input type="text" class="form-control" placeholder="Digite seu Nome">
-        </div>
+<section class="contato py-5" id="contato">
+  <div class="container">
+    <div class="row justify-content-center align-items-start">
+      
+      <!-- título -->
+      <div class="col-12 text-center mb-5">
+        <h3 class="fw-bold" style="color:#205072;">Contato</h3>
+        <p class="text-muted mb-0">Entre em contato conosco para dúvidas, sugestões ou parcerias.</p>
+      </div>
 
-        <div class="mb-3">
-          <label class="form-label">E-mail</label>
-          <input type="email" class="form-control" placeholder="Digite seu E-mail">
-        </div>
+      <!-- Formulário -->
+      <div class="col-md-6">
+        <form method="POST" class="animate-fade">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <button type="submit" class="btn-enviar mt-3">
+            <i class="bi bi-send-fill me-2"></i> Enviar Mensagem
+          </button>
+        </form>
+      </div>
 
-        <div class="mb-3">
-          <label class="form-label">Tipo de Usuário</label>
-          <select class="form-select">
-            <option selected>Selecione o Tipo de Usuário</option>
-            <option>Aluno</option>
-            <option>Empresa</option>
-          </select>
-        </div>
+      <!-- Informações -->
+      <div class="col-md-6 ps-md-5 mt-5 mt-md-0">
+        <h5 class="fw-bold mb-3" style="color:#205072;">{{ site_config.nome_site }} — Campus São Paulo do Potengi</h5>
+        <p><i class="bi bi-geo-alt-fill icon-contato me-2"></i>{{ site_config.endereco }}</p>
+        <p><i class="bi bi-telephone-fill icon-contato me-2"></i>{{ site_config.telefone }}</p>
+        <p><i class="bi bi-envelope-fill icon-contato me-2"></i>{{ site_config.email_contato }}</p>
 
-        <div class="mb-3">
-          <label class="form-label">Mensagem</label>
-          <textarea class="form-control" rows="3" placeholder="Como Podemos Ajudar?"></textarea>
-        </div>
-      </form>
-      <button type="button" class="btn btn mt-2" style="background-color: #205072; color:white;">Enviar</button>
-    </div>
-
-    <!-- Informações -->
-    <div class="col-md-6">
-      <p class="info-title fw-bold">{{ site_config.nome_site }} - Campus São Paulo do Potengi</p>
-      <p><i class="bi bi-geo-alt-fill text-primary"></i> {{ site_config.endereco }}</p>
-      <p><i class="bi bi-telephone-fill text-primary"></i> {{ site_config.telefone }}</p>
-      <p><i class="bi bi-envelope-fill text-primary"></i> {{ site_config.email_contato }}</p>
-      {% if site_config.mapa_embed %}
-      <div class="ratio ratio-16x9 mt-3">{{ site_config.mapa_embed|safe }}</div>
-      {% else %}
-      <img src="https://via.placeholder.com/300x200.png?text=Mapa" alt="Mapa" class="img-fluid rounded mt-3">
-      {% endif %}
+        {% if site_config.mapa_embed %}
+          <div class="ratio ratio-16x9 mt-3">{{ site_config.mapa_embed|safe }}</div>
+        {% else %}
+          <img src="https://via.placeholder.com/300x200.png?text=Mapa" alt="Mapa" class="img-fluid rounded mt-3 shadow-sm">
+        {% endif %}
+      </div>
     </div>
   </div>
-</div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const carousel = document.querySelector(".perfil-carousel");
+  const cards = Array.from(document.querySelectorAll(".perfil-card"));
+  const prevBtn = document.querySelector(".perfil-prev");
+  const nextBtn = document.querySelector(".perfil-next");
+  const total = cards.length;
 
-  <!-- RODAPÉ -->
-  <footer class="cor">
-    <div class="container">
-      <div class="row text-start">
-        <div class="col-md-4 mb-3 footer-logo" style="margin: 0px">
-          <img src="{{ site_config.get_logo_url }}" alt="Logo LinkIF">
-          <p>{{ site_config.descricao_curta }}</p>
-          <div class="footer-social">
-            <i class="bi bi-instagram"></i>
-            {% if site_config.instagram %}
-              <a href="{{ site_config.instagram }}" target="_blank">Instagram</a>
-            {% else %}
-              <a href="#">LinkIF</a>
-            {% endif %}
-          </div>
-        </div>
+  let index = 1; // começa com o 2º card em destaque
+  let transitioning = false;
 
-        <div class="col-md-4 mb-3 footer-links">
-          <h6 class="footer-title">Links Úteis</h6>
-          <a href="#">Portal IFRN</a>
-          <a href="#">Política de Privacidade</a>
-          <a href="#">Acessibilidade</a>
-        </div>
+  // reposiciona e destaca o card central
+  function updateCarousel() {
+    const cardWidth = cards[0].offsetWidth + 30;
+    const containerWidth = document.querySelector(".perfil-carousel-container").offsetWidth;
+    const offset = (containerWidth / 2) - (cardWidth / 2);
+    const moveX = offset - index * cardWidth;
 
-        <div class="col-md-4 mb-3 footer-links">
-          <h6 class="footer-title">Suporte</h6>
-          <a href="#">Fale Conosco</a>
-          <a href="#">FAQ</a>
-        </div>
-      </div>
+    carousel.style.transition = "transform 0.6s ease";
+    carousel.style.transform = `translateX(${moveX}px)`;
 
-      <div class="footer-bottom">
-        © 2025 {{ site_config.nome_site }} - IFRN. Todos os direitos reservados.
-      </div>
-    </div>
-  </footer>
+    cards.forEach((card, i) => {
+      card.classList.remove("active");
+      if (i === index) card.classList.add("active");
+    });
+  }
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+  // próximo
+  function next() {
+    if (transitioning) return;
+    transitioning = true;
+    index = (index + 1) % total;
+    updateCarousel();
+    setTimeout(() => transitioning = false, 600);
+  }
+
+  // anterior
+  function prev() {
+    if (transitioning) return;
+    transitioning = true;
+    index = (index - 1 + total) % total;
+    updateCarousel();
+    setTimeout(() => transitioning = false, 600);
+  }
+
+  nextBtn.addEventListener("click", next);
+  prevBtn.addEventListener("click", prev);
+
+  // inicia com o 2º em destaque
+  updateCarousel();
+
+  // opcional: auto slide a cada 8s
+  // setInterval(next, 8000);
+
+  // ajusta no resize
+  window.addEventListener("resize", () => updateCarousel());
+});
+</script>
+
+{% endblock %}

@@ -1,13 +1,14 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from usuarios.models import Empresa, Coordenador
+
 
 # =====================================================
-# ÁREAS DE ATUAÇÃO
+# ÁREA DE ATUAÇÃO
 # =====================================================
-
 class AreaAtuacao(models.Model):
-    nome = models.CharField("Nome da área", max_length=120, unique=True)
+    nome = models.CharField("Nome da área", max_length=100, unique=True)
 
     def __str__(self):
         return self.nome
@@ -15,12 +16,12 @@ class AreaAtuacao(models.Model):
     class Meta:
         verbose_name = "Área de Atuação"
         verbose_name_plural = "Áreas de Atuação"
+        ordering = ["nome"]
 
 
 # =====================================================
 # VAGAS
 # =====================================================
-
 class Vaga(models.Model):
     TIPO_CHOICES = [
         ('estagio', 'Estágio'),
@@ -35,31 +36,50 @@ class Vaga(models.Model):
         ('encerrada', 'Encerrada'),
     ]
 
-    empresa = models.ForeignKey('usuarios.Empresa', on_delete=models.CASCADE, related_name='vagas')
-    titulo = models.CharField("Título", max_length=150)
-    descricao = models.TextField("Descrição")
+    empresa = models.ForeignKey(
+        Empresa,
+        on_delete=models.CASCADE,
+        related_name='vagas',
+        verbose_name="Empresa responsável"
+    )
+    titulo = models.CharField("Título da vaga", max_length=150)
+    descricao = models.TextField("Descrição detalhada da vaga")
     requisitos = models.TextField("Requisitos", blank=True)
-    area = models.ForeignKey(AreaAtuacao, on_delete=models.SET_NULL, null=True, blank=True)
-    tipo = models.CharField("Tipo", max_length=20, choices=TIPO_CHOICES, default='estagio')
-    remuneracao = models.DecimalField("Remuneração", max_digits=10, decimal_places=2, null=True, blank=True)
+    area = models.ForeignKey(
+        AreaAtuacao,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Área de atuação"
+    )
+    tipo = models.CharField("Tipo de vaga", max_length=20, choices=TIPO_CHOICES, default='estagio')
+    remuneracao = models.DecimalField("Remuneração (R$)", max_digits=10, decimal_places=2, null=True, blank=True)
     cidade = models.CharField("Cidade", max_length=120, blank=True)
     estado = models.CharField("Estado", max_length=60, blank=True)
     bairro = models.CharField("Bairro", max_length=120, blank=True)
     status = models.CharField("Status", max_length=20, choices=STATUS_CHOICES, default='pendente')
     data_publicacao = models.DateTimeField("Data de publicação", default=timezone.now)
-    data_inicio = models.DateField("Data início", null=True, blank=True)
-    data_fim = models.DateField("Data fim", null=True, blank=True)
-    aprovado_por = models.ForeignKey('usuarios.Coordenador', on_delete=models.SET_NULL, null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.titulo} — {self.empresa.nome_fantasia}"
+    data_inicio = models.DateField("Data de início", null=True, blank=True)
+    data_fim = models.DateField("Data de término", null=True, blank=True)
+    aprovado_por = models.ForeignKey(
+        Coordenador,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Aprovado por"
+    )
 
     class Meta:
         ordering = ['-data_publicacao']
         verbose_name = "Vaga"
         verbose_name_plural = "Vagas"
 
+    def __str__(self):
+        return f"{self.titulo} — {self.empresa.nome_empresa}"
 
+    @property
+    def is_disponivel(self):
+        return self.status == "aprovada"
 # =====================================================
 # CANDIDATURAS
 # =====================================================
@@ -134,7 +154,6 @@ class SiteConfig(models.Model):
         "Descrição curta",
         default="Conectando talentos técnicos do IFRN às melhores oportunidades profissionais.",
     )
-    logo = models.ImageField(upload_to="logos/", blank=True, null=True)
     email_contato = models.EmailField("E-mail de contato", default="contato@ifrn.edu.br")
     telefone = models.CharField("Telefone", max_length=50, default="(84) 98888-8888")
     endereco = models.CharField(
@@ -193,6 +212,22 @@ class HomeContent(models.Model):
     titulo_empresas = models.CharField(max_length=100, default="Para Empresas")
     texto_empresas = models.TextField(default="Encontre os talentos que fazem a diferença e fortaleça sua equipe com jovens qualificados do IFRN.")
     imagem_empresas = models.ImageField(upload_to="home/", blank=True, null=True)
+    
+        # --- Seção "Para Estudantes" ---
+    estudante_card1_titulo = models.CharField(max_length=100, default="Monte seu Perfil")
+    estudante_card1_texto = models.TextField(default="Crie seu perfil profissional e destaque suas habilidades para empresas e oportunidades de estágio.")
+
+    estudante_card2_titulo = models.CharField(max_length=100, default="Conecte-se às Empresas")
+    estudante_card2_texto = models.TextField(default="Entre em contato direto com empresas da região e participe de processos seletivos simplificados.")
+
+    estudante_card3_titulo = models.CharField(max_length=100, default="Encontre Vagas")
+    estudante_card3_texto = models.TextField(default="Acesse vagas de estágio, emprego e projetos de pesquisa disponíveis no LinkIF.")
+
+    estudante_card4_titulo = models.CharField(max_length=100, default="Cresça com o IFRN")
+    estudante_card4_texto = models.TextField(default="Amplie sua experiência e fortaleça seu currículo através de oportunidades reais.")
+
+    estudante_cta_titulo = models.CharField(max_length=150, default="Pronto para dar o próximo passo?")
+    estudante_cta_texto = models.TextField(default="Explore as oportunidades disponíveis e inicie sua trajetória profissional.")
 
     atualizado_em = models.DateTimeField(auto_now=True)
 
@@ -238,3 +273,50 @@ class AreaAtuacaoPerfil(models.Model):
 
     def __str__(self):
         return f"{self.titulo} ({self.perfil.nome})"
+    
+class MensagemContato(models.Model):
+    nome = models.CharField("Nome", max_length=150)
+    email = models.EmailField("E-mail")
+    mensagem = models.TextField("Mensagem")
+    data_envio = models.DateTimeField("Data de envio", default=timezone.now)
+    respondido = models.BooleanField("Respondido?", default=False)
+
+    class Meta:
+        verbose_name = "Mensagem de Contato"
+        verbose_name_plural = "Mensagens de Contato"
+        ordering = ['-data_envio']
+
+    def __str__(self):
+        return f"{self.nome} — {self.email}"
+    
+# =====================================================
+# FEATURES (Estudantes e Empresas)
+# =====================================================
+class Feature(models.Model):
+    TIPO_CHOICES = [
+        ('estudante', 'Para Estudantes'),
+        ('empresa', 'Para Empresas'),
+    ]
+
+    tipo = models.CharField(
+        "Tipo de público",
+        max_length=20,
+        choices=TIPO_CHOICES,
+        default='estudante'
+    )
+    icone = models.CharField(
+        "Ícone Bootstrap",
+        max_length=50,
+        help_text="Exemplo: bi-person-circle, bi-building, bi-rocket-takeoff"
+    )
+    titulo = models.CharField("Título", max_length=120)
+    descricao = models.TextField("Descrição")
+    ordem = models.PositiveIntegerField("Ordem de exibição", default=0)
+
+    class Meta:
+        ordering = ['tipo', 'ordem']
+        verbose_name = "Feature"
+        verbose_name_plural = "Features (Estudantes e Empresas)"
+
+    def __str__(self):
+        return f"{self.titulo} — {self.get_tipo_display()}"
