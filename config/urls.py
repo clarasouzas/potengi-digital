@@ -9,6 +9,8 @@ urlpatterns = [
     path("usuarios/", include("usuarios.urls")),    # autenticação e perfis
     path("accounts/", include("django.contrib.auth.urls")),  # login/logout padrão
     path("admin/", admin.site.urls),
+    path("vagas/", include(("linkif.urls", "vagas"), namespace="vagas")),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

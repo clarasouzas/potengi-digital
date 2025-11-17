@@ -4,6 +4,7 @@ from crispy_forms.layout import Layout, Row, Column, Field, HTML
 from .models import Empresa
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
+from .models import Aluno
 
 User = get_user_model()
 
@@ -156,3 +157,18 @@ class CoordenacaoForm(forms.Form):
                 Column("confirmar_senha", css_class="col-md-6 mb-3"),
             ),
         )
+
+
+Usuario = get_user_model()
+
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ["first_name", "last_name", "email"]
+
+class AlunoEditForm(forms.ModelForm):
+    class Meta:
+        model = Aluno
+        fields = ["curso", "curriculo", "portfolio"]
+

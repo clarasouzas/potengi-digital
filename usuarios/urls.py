@@ -12,6 +12,8 @@ urlpatterns = [
     path('cadastro/aluno/', views.cadastro_aluno, name='cadastro_aluno'),
     path('cadastro/empresa/', views.cadastro_empresa, name='cadastro_empresa'),
     path('cadastro/coord/', views.cadastro_coord, name='cadastro_coord'),
+    path("perfil/<int:id>/", views.perfil_aluno, name="perfil_aluno"),
+   
 
     # =============================
     # AUTENTICAÇÃO PADRÃO DJANGO
@@ -40,4 +42,6 @@ path(
     path("dashboard/aluno/", views.dashboard_aluno, name="dashboard_aluno"),
     path("dashboard/empresa/", views.dashboard_empresa, name="dashboard_empresa"),
     path("dashboard/coord/", views.dashboard_coord, name="dashboard_coord"),
+    path('perfil/editar/', views.editar_perfil_aluno, name='editar_perfil_aluno'),
+
 ]

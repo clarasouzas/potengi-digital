@@ -284,3 +284,11 @@ def para_empresas(request):
         'home': home,
         'features': features
     })
+# MINHAS CANDIDATURAS — sem imports no topo para evitar circularidades
+@login_required
+def minhas_candidaturas(request):
+    aluno = request.user.aluno
+    # usa related_name definido no model Candidatura: aluno.candidaturas
+    candidaturas = aluno.candidaturas.all()
+    return render(request, 'usuarios/minhas_candidaturas.html', {'candidaturas': candidaturas})
+

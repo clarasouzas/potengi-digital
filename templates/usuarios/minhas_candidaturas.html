@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 pt-5 pb-4" style="margin-top: 120px !important;">
+  <!-- margem extra para afastar do cabeçalho -->
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <!-- CABEÇALHO COM GRADIENTE -->
+        <div class="card-header text-white rounded-top-4" 
+             style="background: linear-gradient(135deg, #0d6efd, #4c8df6);">
+            <h4 class="mb-0 fw-semibold">Minhas Candidaturas</h4>
+        </div>
+
+        <div class="card-body p-4">
+
+            {% if candidaturas %}
+                <ul class="list-group list-group-flush">
+                    {% for c in candidaturas %}
+                        <li class="list-group-item py-3 d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <strong class="fs-5">{{ c.vaga.titulo }}</strong><br>
+                                <small class="text-muted">
+                                    Status: <span class="fw-semibold">{{ c.get_status_display }}</span> • 
+                                    Enviado em {{ c.data_candidatura|date:"d/m/Y H:i" }}
+                                </small>
+                            </div>
+
+                            <a href="{% url 'vagas:detalhe_vaga' c.vaga.id %}" 
+                               class="btn btn-primary btn-sm px-3">
+                                Ver Vaga
+                            </a>
+
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            {% else %}
+                <div class="text-center py-5">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076505.png"
+                         width="130" class="mb-4 opacity-75">
+                    <h5 class="text-muted">Você ainda não se candidatou a nenhuma vaga.</h5>
+
+                    <a href="{% url 'vagas:listar_vagas' %}" class="btn btn-primary mt-3 px-4 py-2">
+                        Procurar Vagas
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
