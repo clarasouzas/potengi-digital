@@ -2,6 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 from .forms import EmailAuthenticationForm
+from .views import excluir_perfil
 app_name = 'usuarios'
 
 urlpatterns = [
@@ -43,5 +44,7 @@ path(
     path("dashboard/empresa/", views.dashboard_empresa, name="dashboard_empresa"),
     path("dashboard/coord/", views.dashboard_coord, name="dashboard_coord"),
     path('perfil/editar/', views.editar_perfil_aluno, name='editar_perfil_aluno'),
-
+    path("excluir/", views.excluir_perfil, name="excluir_perfil"),
 ]
+
+

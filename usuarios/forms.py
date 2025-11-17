@@ -170,5 +170,6 @@ class UserEditForm(forms.ModelForm):
 class AlunoEditForm(forms.ModelForm):
     class Meta:
         model = Aluno
-        fields = ["curso", "curriculo", "portfolio"]
+        fields = ["curso", "curriculo", "portfolio", "foto"]
+
 

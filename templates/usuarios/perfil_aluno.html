@@ -2,10 +2,10 @@
 {% load static %}
 
 {% block content %}
+
 <div class="container mt-5 pt-5">
 
-    <div class="mt-4"></div>
-
+    <!-- CARD PRINCIPAL -->
     <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
         <!-- ====================== TOPO COM COR DINÂMICA ====================== -->
@@ -28,7 +28,7 @@
                      class="rounded-circle mx-auto d-block shadow"
                      style="width: 120px; height: 120px; object-fit: cover;">
             {% else %}
-                <img src="{% static 'img/user-default.png' %}" 
+                <img src="{% static 'img/user-default.webp' %}" 
                      class="rounded-circle mx-auto d-block shadow"
                      style="width: 120px; height: 120px; object-fit: cover;">
             {% endif %}
@@ -51,10 +51,10 @@
 
                 <!-- Nome Completo -->
                 <h6 class="text-muted text-uppercase">Nome Completo</h6>
-<p class="fw-semibold">
-    {{ aluno.usuario.first_name|default:"Não informado" }}
-</p>
-
+                <p class="fw-semibold">
+                    {{ aluno.usuario.first_name|default:"Não informado" }}
+                    {{ aluno.usuario.last_name|default:"" }}
+                </p>
 
                 <!-- Email -->
                 <div class="col-md-6 mb-3">
@@ -83,6 +83,7 @@
                 <!-- Portfólio -->
                 <div class="col-md-12 mb-3">
                     <h6 class="text-muted text-uppercase">Portfólio</h6>
+
                     {% if aluno.usuario.portifolio %}
                         <p class="fw-semibold">
                             <a href="{{ aluno.usuario.portifolio }}" 
@@ -102,14 +103,59 @@
 
     </div>
 
-    <!-- BOTÃO EDITAR -->
-    <div class="text-center">
+    <!-- ====================== BOTÕES LADO A LADO ====================== -->
+    <div class="d-flex justify-content-center gap-3 mt-4">
+
+        <!-- Editar -->
         <a href="{% url 'usuarios:editar_perfil_aluno' %}" 
-           class="btn btn-primary px-4 py-2 mt-4"
+           class="btn btn-primary px-4 py-2"
            style="border-radius: 50px; font-size: 16px;">
            Editar Perfil
         </a>
+
+        <!-- Excluir (abre modal) -->
+        <button class="btn btn-danger px-4 py-2"
+                style="border-radius: 50px; font-size: 16px;"
+                data-bs-toggle="modal" 
+                data-bs-target="#modalExcluirConta">
+            Excluir Conta
+        </button>
     </div>
 
 </div>
+
+
+<!-- ====================== MODAL DE CONFIRMAÇÃO ====================== -->
+<div class="modal fade" id="modalExcluirConta" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg rounded-4">
+
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Excluir Conta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body text-center">
+                <h5>Tem certeza que deseja excluir sua conta?</h5>
+                <p class="text-muted">Esta ação não pode ser desfeita.</p>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center">
+
+                <form method="POST" action="{% url 'usuarios:excluir_perfil' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

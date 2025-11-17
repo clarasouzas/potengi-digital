@@ -167,3 +167,16 @@ def editar_perfil_aluno(request):
         "user_form": user_form,
         "aluno_form": aluno_form
     })
+
+
+
+@login_required
+def excluir_perfil(request):
+    if request.method == "POST":
+        user = request.user
+        user.delete()
+        messages.success(request, "Sua conta foi excluída com sucesso.")
+        return redirect("home")
+
+    # Se acessar via GET → volta para o perfil do aluno
+    return redirect("usuarios:perfil_aluno", id=request.user.aluno.id)
