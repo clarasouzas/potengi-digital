@@ -4,8 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserEditForm, AlunoEditForm
-
-
+from .models import Notificacao
 from .forms import AlunoForm, EmpresaForm, CoordenacaoForm
 from .models import Usuario, Aluno, Empresa, Coordenador
 
@@ -176,7 +175,14 @@ def excluir_perfil(request):
         user = request.user
         user.delete()
         messages.success(request, "Sua conta foi excluída com sucesso.")
-        return redirect("home")
+        return redirect("index")
 
     # Se acessar via GET → volta para o perfil do aluno
     return redirect("usuarios:perfil_aluno", id=request.user.aluno.id)
+
+
+@login_required
+def notificacoes(request):
+    notificacoes = Notificacao.objects.filter(usuario_destino=request.user).order_by("-data_envio")
+    notificacoes.filter(lida=False).update(lida=True)
+    return render(request, "linkif/notificacoes.html", {"notificacoes": notificacoes})

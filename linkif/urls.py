@@ -28,7 +28,7 @@ urlpatterns = [
     # ==========================
     # NOTIFICAÇÕES E MENSAGENS
     # ==========================
-    path("notificacoes/", views.notificacoes, name="notificacoes"),
+    
     path("mensagens/", views.mensagens, name="mensagens"),
 
     # ==========================

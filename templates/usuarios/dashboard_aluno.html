@@ -92,8 +92,20 @@
             <i class="bi bi-file-earmark-check fs-4"></i> Minhas Candidaturas
         </a>
 
-        <hr class="text-secondary">
+        <!-- 🔔 NOTIFICAÇÕES ADICIONADO AQUI -->
+        <a href="{% url 'usuarios:notificacoes' %}" class="d-flex justify-content-between align-items-center">
+            <span>
+                <i class="bi bi-bell fs-4"></i> Notificações
+            </span>
 
+            {% if notificacoes_nao_lidas > 0 %}
+                <span class="badge bg-danger rounded-pill">
+                    {{ notificacoes_nao_lidas }}
+                </span>
+            {% endif %}
+        </a>
+
+        <hr class="text-secondary">
         <a href="{% url 'usuarios:logout' %}" class="text-danger fw-bold">
             <i class="bi bi-box-arrow-right fs-4"></i> Sair
         </a>

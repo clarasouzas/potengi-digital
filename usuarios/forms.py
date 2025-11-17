@@ -39,6 +39,7 @@ class EmpresaForm(forms.ModelForm):
             "cep": "CEP",
             "descricao": "Descrição da Empresa",
         }
+        
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -165,7 +166,10 @@ Usuario = get_user_model()
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ["first_name", "last_name", "email"]
+        fields = ["first_name", "email"]
+        labels = {
+            "first_name": "Nome completo",
+        }
 
 class AlunoEditForm(forms.ModelForm):
     class Meta:

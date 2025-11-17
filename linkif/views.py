@@ -6,7 +6,6 @@ from django.utils import timezone
 from .models import (
     Vaga,
     Candidatura,
-    Notificacao,
     Mensagem,
     SiteConfig,
     HomeContent,
@@ -214,12 +213,6 @@ def atualizar_status_candidatura(request, candidatura_id, status):
 # =====================================================
 # NOTIFICAÇÕES E MENSAGENS
 # =====================================================
-
-@login_required
-def notificacoes(request):
-    notificacoes = Notificacao.objects.filter(usuario_destino=request.user).order_by("-data_envio")
-    notificacoes.filter(lida=False).update(lida=True)
-    return render(request, "linkif/notificacoes.html", {"notificacoes": notificacoes})
 
 
 @login_required
