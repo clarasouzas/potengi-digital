@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.conf import settings
+
 
 
 # =====================================================
@@ -38,6 +40,7 @@ class Aluno(models.Model):
     curriculo = models.FileField(upload_to="curriculos/", blank=True, null=True)
     portfolio = models.URLField("Portfólio (opcional)", blank=True, null=True)
     criado_em = models.DateTimeField(default=timezone.now)
+    foto = models.ImageField(upload_to="fotos_perfil/", null=True, blank=True)
 
     def __str__(self):
         return self.usuario.get_full_name() or self.usuario.email
@@ -174,3 +177,18 @@ class Coordenador(models.Model):
     class Meta:
         verbose_name = "Coordenador"
         verbose_name_plural = "Coordenadores"
+
+class Notificacao(models.Model):
+    tipo = models.CharField(max_length=80)
+    mensagem = models.TextField()
+    usuario_destino = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notificacoes')
+    data_envio = models.DateTimeField(default=timezone.now)
+    lida = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-data_envio']
+        verbose_name = "Notificação"
+        verbose_name_plural = "Notificações"
+
+    def __str__(self):
+        return f"{self.tipo} → {self.usuario_destino.username}"

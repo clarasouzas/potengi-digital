@@ -112,20 +112,7 @@ class Candidatura(models.Model):
 # NOTIFICAÇÕES E MENSAGENS
 # =====================================================
 
-class Notificacao(models.Model):
-    tipo = models.CharField(max_length=80)
-    mensagem = models.TextField()
-    usuario_destino = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notificacoes')
-    data_envio = models.DateTimeField(default=timezone.now)
-    lida = models.BooleanField(default=False)
 
-    class Meta:
-        ordering = ['-data_envio']
-        verbose_name = "Notificação"
-        verbose_name_plural = "Notificações"
-
-    def __str__(self):
-        return f"{self.tipo} → {self.usuario_destino.username}"
 
 
 class Mensagem(models.Model):

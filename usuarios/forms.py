@@ -3,6 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Field, HTML
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
+from .models import Aluno
 
 User = get_user_model()
 

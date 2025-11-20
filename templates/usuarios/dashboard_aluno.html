@@ -1,5 +1,150 @@
-{% extends "base.html" %}
-{% block content %}
-  <h2>Área do Aluno</h2>
-  <p>Olá, {{ user.first_name }}! Aqui vai o conteúdo exclusivo pra alunos.</p>
-{% endblock %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Aluno</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #1e1e2d;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 30px 20px;
+            color: white;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            color: #dcdcdc;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #34344a;
+            color: #fff;
+        }
+
+        /* Conteúdo */
+        .content-area {
+            margin-left: 280px;
+            padding: 50px;
+        }
+
+        .card-dashboard {
+            border-radius: 18px;
+            transition: 0.25s;
+            cursor: pointer;
+        }
+
+        .card-dashboard:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <!-- FOTO + NOME -->
+        <div class="text-center mb-4">
+            {% if request.user.aluno.foto %}
+                <img src="{{ request.user.aluno.foto.url }}" 
+                     class="rounded-circle shadow"
+                     style="width: 70px; height: 70px; object-fit: cover;">
+            {% else %}
+                <img src="{% static 'img/user-default.webp' %}" 
+                     class="rounded-circle shadow"
+                     style="width: 70px; height: 70px; object-fit: cover;">
+            {% endif %}
+
+            <h5 class="mt-3 fw-bold">{{ request.user.first_name }}</h5>
+        </div>
+
+        <a href="{% url 'usuarios:dashboard_aluno' %}">
+            <i class="bi bi-house-door fs-4"></i> Início
+        </a>
+
+        <a href="{% url 'usuarios:perfil_aluno' request.user.aluno.id %}">
+            <i class="bi bi-person-circle fs-4"></i> Meu Perfil
+        </a>
+
+        <a href="{% url 'vagas:minhas_candidaturas' %}">
+            <i class="bi bi-file-earmark-check fs-4"></i> Minhas Candidaturas
+        </a>
+
+        <!-- 🔔 NOTIFICAÇÕES ADICIONADO AQUI -->
+        <a href="{% url 'usuarios:notificacoes' %}" class="d-flex justify-content-between align-items-center">
+            <span>
+                <i class="bi bi-bell fs-4"></i> Notificações
+            </span>
+
+            {% if notificacoes_nao_lidas > 0 %}
+                <span class="badge bg-danger rounded-pill">
+                    {{ notificacoes_nao_lidas }}
+                </span>
+            {% endif %}
+        </a>
+
+        <hr class="text-secondary">
+        <a href="{% url 'usuarios:logout' %}" class="text-danger fw-bold">
+            <i class="bi bi-box-arrow-right fs-4"></i> Sair
+        </a>
+    </div>
+
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="content-area">
+
+        <h2 class="fw-bold mb-4">Bem-vindo(a), {{ request.user.first_name }}</h2>
+        <p class="text-muted mb-5">Gerencie seu perfil e acompanhe suas candidaturas.</p>
+
+        <div class="row g-4">
+
+            <!-- CARD PERFIL -->
+            <div class="col-md-6">
+                <a href="{% url 'usuarios:perfil_aluno' request.user.aluno.id %}" class="text-decoration-none">
+                    <div class="card shadow p-4 card-dashboard" style="background: #e7fce7;">
+                        <i class="bi bi-person-lines-fill display-5 mb-3 text-success"></i>
+                        <h4 class="fw-bold text-dark">Meu Perfil</h4>
+                        <p class="text-muted">Veja e edite suas informações pessoais.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- CARD CANDIDATURAS -->
+            <div class="col-md-6">
+                <a href="{% url 'vagas:minhas_candidaturas' %}" class="text-decoration-none">
+                    <div class="card shadow p-4 card-dashboard" style="background: #e3eeff;">
+                        <i class="bi bi-clipboard-check display-5 mb-3 text-primary"></i>
+                        <h4 class="fw-bold text-dark">Minhas Candidaturas</h4>
+                        <p class="text-muted">Acompanhe o status das vagas em que se inscreveu.</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

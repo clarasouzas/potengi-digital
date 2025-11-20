@@ -28,7 +28,7 @@ urlpatterns = [
     # ==========================
     # NOTIFICAÇÕES E MENSAGENS
     # ==========================
-    path("notificacoes/", views.notificacoes, name="notificacoes"),
+    
     path("mensagens/", views.mensagens, name="mensagens"),
 
     # ==========================
@@ -38,8 +38,10 @@ urlpatterns = [
     path("vagas/minhas/", views.listar_vagas_empresa, name="listar_vagas_empresa"),
     path("vagas/editar/<int:id>/", views.editar_vaga, name="editar_vaga"),
     path("vagas/excluir/<int:id>/", views.excluir_vaga, name="excluir_vaga"),
+    path('minhas-candidaturas/', views.minhas_candidaturas, name='minhas_candidaturas'),
 
 
     path('estudantes/', views.para_estudantes, name='para_estudantes'),
     path('empresas/', views.para_empresas, name='para_empresas'),
+   
 ]

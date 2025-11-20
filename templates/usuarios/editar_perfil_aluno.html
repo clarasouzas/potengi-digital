@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5 pt-5">
+
+    <div class="card shadow-lg border-0 p-4 rounded-4">
+
+        <a href="{% url 'usuarios:perfil_aluno' request.user.aluno.id %}" 
+           class="btn btn-outline-secondary mb-4">← Voltar</a>
+
+        <h3 class="mb-4 text-center fw-bold">Editar Perfil</h3>
+
+        <!-- FORM COMEÇA AQUI -->
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- FOTO DE PERFIL -->
+            <div class="d-flex justify-content-center mb-4">
+                <div class="position-relative">
+
+                    <!-- Input escondido -->
+                    <input type="file" name="foto" id="id_foto" class="d-none">
+
+                    <!-- Imagem clicável -->
+                    <label for="id_foto" class="d-block">
+                        <img 
+                            src="{% if request.user.aluno.foto %}{{ request.user.aluno.foto.url }}{% else %}{% static 'img/user-default.webp' %}{% endif %}"
+                            class="rounded-circle border border-3 shadow-sm"
+                            style="width: 140px; height: 140px; object-fit: cover; cursor: pointer;">
+                    </label>
+
+                    <!-- Ícone lápis -->
+                    <label for="id_foto"
+                        class="position-absolute bottom-0 end-0 bg-success text-white
+                               rounded-circle d-flex align-items-center justify-content-center
+                               border border-2 border-white"
+                        style="width: 40px; height: 40px; cursor: pointer;">
+                        <i class="bi bi-pencil-fill"></i>
+                    </label>
+
+                </div>
+            </div>
+
+            <h5 class="mt-3">Dados da Conta</h5>
+            {{ user_form|crispy }}
+
+            <h5 class="mt-4">Dados do Aluno</h5>
+            {{ aluno_form|crispy }}
+
+            <div class="text-center">
+                <button class="btn btn-success px-4 mt-3" type="submit">
+                    Salvar alterações
+                </button>
+            </div>
+
+        </form>
+        <!-- FORM TERMINA AQUI -->
+
+    </div>
+</div>
+
+{% endblock %}

@@ -15,6 +15,8 @@ urlpatterns = [
     
     # painel admin
     path("admin/", admin.site.urls),
+    path("vagas/", include(("linkif.urls", "vagas"), namespace="vagas")),
+
 ]
 
 if settings.DEBUG:
