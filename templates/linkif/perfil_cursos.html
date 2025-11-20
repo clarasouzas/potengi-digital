@@ -12,7 +12,7 @@
         <div class="card-body text-start p-4">
           <h5 class="fw-bold" style="color:{{ perfil.cor_titulo }}">{{ perfil.nome }}</h5>
           <p>{{ perfil.descricao|truncatechars:150 }}</p>
-          <a href="{% url 'perfil_detalhe' perfil.id %}" class="btn btn-sm text-white" style="background-color:{{ perfil.cor_titulo }}">Ver Detalhes</a>
+          <a href="{% url 'linkif:perfil_detalhe' perfil.id %}" class="btn btn-sm text-white" style="background-color:{{ perfil.cor_titulo }}">Ver Detalhes</a>
         </div>
       </div>
     </div>

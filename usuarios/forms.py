@@ -1,107 +1,69 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Field, HTML
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import get_user_model
-from .models import Aluno
-
-User = get_user_model()
-
-# ==========================
-# LOGIN COM E-MAIL
-# ==========================
-class EmailAuthenticationForm(AuthenticationForm):
-    username = forms.EmailField(
-        label="E-mail",
-        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Seu e-mail"}),
-    )
+from .models import Usuario
 
 
-# ==========================
-# CADASTRO DE ALUNO (ENXUTO)
-# ==========================
-class AlunoForm(forms.Form):
-    nome = forms.CharField(label="Nome Completo", max_length=100)
-    email = forms.EmailField(label="E-mail")
-    curso = forms.ChoiceField(
-        choices=[
-            ("InfoWeb", "Informática para Internet"),
-            ("Meio Ambiente", "Meio Ambiente"),
-            ("Edificações", "Edificações"),
-            ("Licenciatura em Matemática", "Licenciatura em Matemática"),
-        ],
-        label="Curso"
-    )
-    senha = forms.CharField(widget=forms.PasswordInput())
-    confirmar_senha = forms.CharField(widget=forms.PasswordInput())
+# =====================================================
+# FORM BASE DO USUÁRIO — APENAS EMAIL + SENHA
+# =====================================================
+class UsuarioCreationForm(UserCreationForm):
+    class Meta:
+        model = Usuario
+        fields = ["email", "password1", "password2"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False  
+
+# =====================================================
+# FORM — ALUNO
+# =====================================================
+class AlunoCreationForm(UsuarioCreationForm):
+    nome = forms.CharField(max_length=100)
+    curso = forms.CharField(max_length=100)
+
+    class Meta(UsuarioCreationForm.Meta):
+        fields = ["nome", "curso"] + UsuarioCreationForm.Meta.fields
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False 
+
+# =====================================================
+# FORM — EMPRESA
+# =====================================================
+class EmpresaCreationForm(UsuarioCreationForm):
+    nome_empresa = forms.CharField(max_length=150)
+    cnpj = forms.CharField(max_length=18)
+    telefone = forms.CharField(max_length=20)
+    cidade = forms.CharField(max_length=100)
+    descricao = forms.CharField(required=False, widget=forms.Textarea)
+
+    class Meta(UsuarioCreationForm.Meta):
+        fields = [
+            "nome_empresa", "cnpj", "telefone", "cidade", "descricao"
+        ] + UsuarioCreationForm.Meta.fields
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.layout = Layout(
-            Row(
-                Column("nome", css_class="col-12 mb-3"),
-            ),
-            Row(
-                Column("email", css_class="col-12 mb-3"),
-            ),
-            Row(
-                Column("curso", css_class="col-12 mb-3"),
-            ),
-            Row(
-                Column("senha", css_class="col-6 mb-3"),
-                Column("confirmar_senha", css_class="col-6 mb-3"),
-            ),
-        )
 
 
-# ==========================
-# CADASTRO DE EMPRESA (ENXUTO)
-# ==========================
-class EmpresaForm(forms.Form):
-    nome_empresa = forms.CharField(label="Nome da Empresa", max_length=100)
-    cnpj = forms.CharField(label="CNPJ", max_length=18)
-    email = forms.EmailField(label="E-mail Corporativo")
-    telefone = forms.CharField(label="Telefone", max_length=20)
-    senha = forms.CharField(widget=forms.PasswordInput())
-    confirmar_senha = forms.CharField(widget=forms.PasswordInput())
+# =====================================================
+# FORM — COORDENAÇÃO
+# =====================================================
+class CoordenadorCreationForm(UsuarioCreationForm):
+    nome = forms.CharField(max_length=100)
+    setor = forms.CharField(max_length=100)
+
+    class Meta(UsuarioCreationForm.Meta):
+        fields = ["nome", "setor"] + UsuarioCreationForm.Meta.fields
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.layout = Layout(
-            Row(Column("nome_empresa", css_class="mb-3"),
-                Column("cnpj", css_class="mb-3"),
-                ),
-            Row(Column("email", css_class="mb-3")),
-            Row(Column("telefone", css_class="mb-3")),
-            Row(
-                Column("senha", css_class="col-6 mb-3"),
-                Column("confirmar_senha", css_class="col-6 mb-3"),
-            ),
-        )
-
-
-# ==========================
-# CADASTRO DE COORDENAÇÃO (ENXUTO)
-# ==========================
-class CoordenacaoForm(forms.Form):
-    nome = forms.CharField(label="Nome Completo", max_length=100)
-    email = forms.EmailField(label="E-mail Institucional")
-    senha = forms.CharField(widget=forms.PasswordInput())
-    confirmar_senha = forms.CharField(widget=forms.PasswordInput())
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.helper.layout = Layout(
-            Row(Column("nome", css_class="mb-3")),
-            Row(Column("email", css_class="mb-3")),
-            Row(
-                Column("senha", css_class="col-6 mb-3"),
-                Column("confirmar_senha", css_class="col-6 mb-3"),
-            ),
-        )

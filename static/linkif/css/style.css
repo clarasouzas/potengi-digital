@@ -648,129 +648,187 @@ footer {
    CADASTRO - LINKIF CLEAN + ABAS REFINADAS
 ======================================= */
 
-/* Card principal */
-.cadastro-card {
-    width: 900px;
-    border-radius: 18px;
-    overflow: hidden;
-    background: var(--branco);
+.cadastro-container {
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
 }
 
-/* ===============================
+.cadastro-card {
+    width: 900px;
+    background: var(--branco);
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch !important;
+    flex-wrap: wrap;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* ===========================================
    LADO ESQUERDO
-================================ */
+=========================================== */
+
 .left-panel {
     background: var(--azul-escuro);
+    color: var(--branco);
     padding: 40px 20px;
+    height: auto !important;
     text-align: center;
 }
 
 .logo {
-    width: 120px;
+    width: 130px;
+    margin-bottom: 15px;
 }
 
+.subtitulo,
 .painel-title {
-    color: var(--branco);
-    font-weight: 600;
-    margin-bottom: 20px;
     font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--branco);
+    margin-bottom: 20px;
 }
 
-/* ===============================
-   ABAS REFINADAS — NOVO
-================================ */
+/* ===========================================
+   ABAS REFINADAS (seu estilo)
+=========================================== */
+
+.tabs-list,
 .refined-tabs {
     list-style: none;
-    padding: 0;
     margin-top: 15px;
+    padding: 0;
 }
 
+.tab-btn,
 .refined-tab-btn {
     width: 100%;
-    text-align: left;
     background: var(--azul-teal);
-    color: var(--branco);
-    border-radius: 12px;
-    padding: 12px 18px;
-    font-weight: 500;
     border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
     margin-bottom: 12px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--branco);
     display: flex;
     align-items: center;
     gap: 8px;
     transition: all .25s ease;
+    text-align: left;
     box-shadow: 0 4px 12px rgba(0,0,0,.08);
 }
 
+.tab-btn:hover,
 .refined-tab-btn:hover {
     background: var(--azul-medio);
     transform: translateY(-2px);
 }
 
+.tab-btn.active,
 .refined-tab-btn.active,
 .refined-tab-btn.nav-link.active {
     background: var(--turquesa);
     color: #003233;
     font-weight: 700;
-    box-shadow: 0 0 0 3px rgba(10,209,200,0.25);
     transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 0 0 3px rgba(10,209,200,0.25);
 }
 
+.tab-btn i,
 .refined-tab-btn i {
-    font-size: 1.25rem;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-    .refined-tab-btn {
-        font-size: .95rem;
-        padding: 10px 14px;
-    }
-}
-
-/* ===============================
-   LADO DIREITO
-================================ */
-.right-panel {
-    padding: 40px;
-}
-
-.titulo-form {
-    color: var(--azul-teal);
-    font-weight: 700;
     font-size: 1.2rem;
 }
 
-/* ===============================
-   BOTÃO SUBMIT
-================================ */
+/* Mobile */
+@media (max-width: 768px) {
+    .tab-btn {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ===========================================
+   LADO DIREITO (FORMULÁRIOS)
+=========================================== */
+
+.right-panel {
+    padding: 40px;
+    height: auto !important;
+}
+
+.titulo,
+.titulo-form {
+    font-size: 1.25rem;
+    color: var(--azul-teal);
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* ===========================================
+   BOTÃO SUBMIT (seu estilo)
+=========================================== */
+
+.btn-enviar,
 .btn-submit {
+    width: 100%;
     background: var(--turquesa);
     border: none;
-    padding: 10px;
+    padding: 12px;
     border-radius: 12px;
     color: #003233;
     font-weight: 600;
-    transition: all .25s ease;
+    transition: .25s ease;
 }
 
+.btn-enviar:hover,
 .btn-submit:hover {
     background: var(--verde-claro);
     transform: translateY(-2px);
 }
 
-/* ===============================
-   LINK LOGIN
-================================ */
-.link-login {
-    color: var(--azul-teal);
-    transition: .25s;
+/* ===========================================
+   FIXES CRÍTICOS PARA ERROS DO FORM
+   (impedem layout quebrar, abas sumirem, etc.)
+=========================================== */
+/* impede que o conteúdo com erro aumente a altura/ largura inesperadamente */
+.right-panel .form-group,
+.right-panel .mb-3,
+.right-panel .form-floating {
+    width: 100%;
+    max-width: 100%;
 }
 
-.link-login:hover {
-    color: var(--azul-medio);
+/* fixa o right-panel no tamanho correto */
+.right-panel {
+    flex: 1;
+    min-width: 0;
 }
 
+/* corrige crispy-forms estourando layout */
+.form-group {
+    margin-bottom: 14px !important;
+}
+
+/* a caixa de erro do crispy não deve empurrar tudo */
+.alert-danger {
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+/* remove espaçamento exagerado gerado pelos errors do crispy */
+.is-invalid,
+.was-validated .form-control:invalid {
+    max-width: 100%;
+}
+
+/* evita que os errors quebrem o tamanho interno do campo */
+.invalid-feedback {
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
 /* =======================================
    LOGIN PAGE - LINKIF STYLE 
 ======================================= */

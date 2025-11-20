@@ -106,7 +106,7 @@
                 <p class="fw-bold" style="color:#0F0261;">R$ {{ vaga.remuneracao|floatformat:2 }}</p>
               {% endif %}
 
-              <a href="{% url 'detalhar_vaga' vaga.id %}" class="btn fw-semibold text-white mt-auto" style="background-color:#205072;">
+              <a href="{% url 'linkif:detalhar_vaga' vaga.id %}" class="btn fw-semibold text-white mt-auto" style="background-color:#205072;">
                 Quero esta vaga
               </a>
             </div>

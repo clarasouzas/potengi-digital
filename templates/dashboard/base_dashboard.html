@@ -22,12 +22,12 @@
 <!-- ========== TOPBAR ========== -->
 <header class="topbar">
 
-    <!-- Botão para abrir/fechar sidebar -->
+    <!-- Botão sidebar -->
     <button id="toggleSidebar" class="btn btn-topbar">
         <i class="bi bi-list fs-3"></i>
     </button>
 
-    <!-- Avatar + dropdown -->
+    <!-- Avatar -->
     <div class="dropdown">
         <a class="pointer" data-bs-toggle="dropdown">
             <img src="{% static 'assets/img/user.png' %}" class="avatar">
@@ -35,7 +35,6 @@
 
         <ul class="dropdown-menu dropdown-menu-end">
 
-            <!-- MEU PERFIL -->
             <li>
                 <a href="{% url 'dashboard:editar_perfil' %}" class="dropdown-item">
                     <i class="bi bi-person me-2"></i> Meu Perfil
@@ -44,23 +43,20 @@
 
             <li><hr class="dropdown-divider"></li>
 
-            <!-- SAIR -->
             <li>
-                <form action="{% url 'usuarios:logout' %}" method="post" class="m-0 p-0">
+                <form method="post" action="{% url 'usuarios:logout' %}">
                     {% csrf_token %}
-                    <button type="submit" class="dropdown-item text-danger">
+                    <button class="dropdown-item text-danger">
                         <i class="bi bi-box-arrow-right me-2"></i> Sair
                     </button>
                 </form>
             </li>
-
         </ul>
     </div>
 
 </header>
 
 
-<!-- ========== LAYOUT ========== -->
 <div class="wrapper">
 
     <!-- ========== SIDEBAR ========== -->
@@ -73,12 +69,11 @@
         </a>
         {% endfor %}
 
-        <hr class="divider">
+        <hr>
 
-        <!-- BOTÃO DE SAIR NA SIDEBAR -->
-        <form action="{% url 'usuarios:logout' %}" method="post" class="m-0 p-0">
+        <form method="post" action="{% url 'usuarios:logout' %}">
             {% csrf_token %}
-            <button type="submit" class="sidebar-item logout-btn">
+            <button class="sidebar-item text-danger">
                 <i class="bi bi-box-arrow-right me-2"></i>
                 <span class="label">Sair</span>
             </button>
@@ -87,19 +82,15 @@
     </aside>
 
 
-    <!-- ========== ÁREA PRINCIPAL ========== -->
+    <!-- ========== CONTEÚDO ========== -->
     <main class="content-area">
         {% block conteudo %}{% endblock %}
     </main>
 
 </div>
 
-
-<!-- ========== JS ========== -->
-
-<!-- animação abrir/fechar menu -->
 <script>
-document.getElementById("toggleSidebar").onclick = function () {
+document.getElementById("toggleSidebar").onclick = function() {
     document.getElementById("sidebar").classList.toggle("closed");
 };
 </script>

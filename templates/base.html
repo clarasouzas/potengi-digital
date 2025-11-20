@@ -18,7 +18,7 @@
   <!-- NAVBAR -->
   <nav class="cor navbar navbar-expand-lg shadow-sm fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'index' %}">
+      <a class="navbar-brand" href="{% url 'linkif:index' %}">
         <img src="{% static 'assets/img/logo.png' %}" alt="{{ site_config.nome_site }}" >
       </a>
 
@@ -28,7 +28,7 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Início</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'linkif:index' %}">Início</a></li>
           <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
           <li class="nav-item"><a class="nav-link" href="#estudante">Para Estudantes</a></li>
           <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
