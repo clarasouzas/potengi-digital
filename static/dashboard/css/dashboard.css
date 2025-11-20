@@ -1,0 +1,146 @@
+/* ================= VARIÁVEIS ================= */
+:root {
+    --azul-escuro: #213A57;
+    --azul-teal: #0B6477;
+    --azul-medio: #14919B;
+    --turquesa: #0AD1C8;
+    --verde: #45DFB1;
+    --verde-soft: #80ED99;
+
+    --branco: #ffffff;
+    --cinza-fundo: #f4f9f9;
+}
+
+/* ================= LAYOUT ================= */
+body {
+    margin: 0;
+    background: var(--cinza-fundo);
+    font-family: "Inter", sans-serif;
+}
+
+.wrapper {
+    display: flex;
+}
+
+
+
+/* ================= TOPBAR ================= */
+.topbar {
+    height: 65px;
+    background: var(--branco);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 0 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.btn-topbar {
+    border: none;
+    background: none;
+    color: var(--azul-escuro);
+}
+
+.btn-topbar:hover {
+    opacity: 0.6;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background: var(--azul-escuro);
+    padding-top: 20px;
+    transition: width .3s ease;
+    overflow: hidden;
+}
+
+.sidebar.closed {
+    width: 70px;
+}
+
+/* ==== item padrão (links) ==== */
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    font-size: 15px;
+
+    color: var(--branco);
+    text-decoration: none;
+
+    transition: .2s ease;
+}
+
+.sidebar-item:hover {
+    background: rgba(255,255,255,0.08);
+    border-left: 4px solid var(--turquesa);
+    padding-left: 14px;
+}
+
+/* esconder texto quando fechado */
+.sidebar.closed .label {
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+
+
+/* ==== divisores ==== */
+.divider {
+    border: none;
+    height: 1px;
+    background: rgba(255,255,255,0.20);
+    margin: 6px 0;
+}
+
+
+
+/* ================= BOTÃO SAIR ================= */
+.logout-btn {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    font-size: 15px;
+
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+
+    color: #ff6b6b; /* vermelho bonito */
+    transition: .2s ease;
+}
+
+.logout-btn .label {
+    color: #ff6b6b !important;
+}
+
+.logout-btn:hover {
+    background: rgba(255,255,255,0.08);
+    border-left: 4px solid var(--turquesa);
+    padding-left: 14px;
+}
+
+
+
+/* ================= CONTENT AREA ================= */
+.content-area {
+    flex: 1;
+    padding: 25px;
+}

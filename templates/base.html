@@ -6,21 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ site_config.nome_site }}{% endblock %}</title>
 
-  <!-- Bootstrap e ícones -->
+  <!-- Bootstrap CSS e Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
   <!-- CSS do projeto -->
   <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
 </head>
 
 <body>
-  <!-- ============================
-       NAVBAR
-  ============================ -->
+  <!-- NAVBAR -->
   <nav class="cor navbar navbar-expand-lg shadow-sm fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="/">
+      <a class="navbar-brand" href="{% url 'index' %}">
         <img src="{% static 'assets/img/logo.png' %}" alt="{{ site_config.nome_site }}" >
       </a>
 
@@ -30,7 +28,7 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Início</a></li>
           <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
           <li class="nav-item"><a class="nav-link" href="#estudante">Para Estudantes</a></li>
           <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
@@ -38,52 +36,86 @@
         </ul>
 
         <!-- BOTÕES DIREITA -->
-        <div class="ms-3 d-flex">
+        <div class="ms-3 d-flex align-items-center">
+
           {% if user.is_authenticated %}
-            <form action="{% url 'usuarios:logout' %}" method="post" class="d-inline">
-  {% csrf_token %}
-  <button type="submit" class="btn-entrar me-2">Sair</button>
-</form>
-            <a href="{% url 'usuarios:dashboard' %}" class="btn-cadastrese">Dashboard</a>
+            <div class="dropdown">
+              <a class="d-flex align-items-center text-decoration-none dropdown-toggle" 
+                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                <!-- aqui você pode trocar para a foto real se existir: user.profile.photo.url etc -->
+                <img src="{% static 'assets/img/user.png' %}" class="rounded-circle" width="40" height="40" alt="avatar">
+
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <span class="dropdown-item-text">
+                    Olá, <strong>{{ user.first_name }}</strong>
+                  </span>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                  <a class="dropdown-item" href="{% url 'dashboard:editar_perfil' %}">
+                    <i class="bi bi-person me-2"></i> Meu Perfil
+                  </a>
+                </li>
+
+                <li>
+                  <a class="dropdown-item" href="{% url 'dashboard:inicio' %}">
+                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                  </a>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                  <form action="{% url 'usuarios:logout' %}" method="post" class="m-0">
+                    {% csrf_token %}
+                    <button class="dropdown-item text-danger" type="submit">
+                      <i class="bi bi-box-arrow-right me-2"></i> Sair
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+
           {% else %}
             <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">Entrar</a>
             <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
           {% endif %}
+
         </div>
       </div>
     </div>
   </nav>
 
+  <!-- ESPAÇO PARA O TOPO FIXO (evita conteúdo escondido pelo fixed-top) -->
+  <div style="height:70px;"></div>
 
-  <!-- ============================
-       CONTEÚDO DAS PÁGINAS
-  ============================ -->
+  <!-- CONTEÚDO DAS PÁGINAS -->
   <main>
     {% block content %}{% endblock %}
   </main>
 
-
-  <!-- ============================
-       RODAPÉ DINÂMICO
-  ============================ -->
-  
+  <!-- RODAPÉ -->
   <footer class="cor py-4 mt-5">
     <div class="container">
       <div class="row text-start">
-        <!-- COLUNA 1 -->
         <div class="col-md-4 mb-3 footer-logo">
           <img src="{% static 'assets/img/logo.png' %}" alt="{{ site_config.nome_site }}"  class="mb-2">
           <p>{{ site_config.descricao_curta }}</p>
 
           {% if site_config.instagram %}
-          <div class="footer-social">
-            <i class="bi bi-instagram"></i>
-            <a href="{{ site_config.instagram }}" target="_blank">@LinkIF</a>
-          </div>
+            <div class="footer-social">
+              <i class="bi bi-instagram"></i>
+              <a href="{{ site_config.instagram }}" target="_blank">@LinkIF</a>
+            </div>
           {% endif %}
         </div>
 
-        <!-- COLUNA 2 -->
         <div class="col-md-4 mb-3 footer-links">
           <h6 class="footer-title">Links Úteis</h6>
           <a href="https://portal.ifrn.edu.br" target="_blank">Portal IFRN</a>
@@ -91,23 +123,20 @@
           <a href="#">Acessibilidade</a>
         </div>
 
-        <!-- COLUNA 3 -->
         <div class="col-md-4 mb-3 footer-links">
           <h6 class="footer-title">Suporte</h6>
           <a href="mailto:{{ site_config.email_contato }}">Fale Conosco</a>
           <a href="#">FAQ</a>
-          
         </div>
       </div>
 
       <div class="footer-bottom text-center pt-3 border-top mt-3">
-        © {{ now|date:"Y" }} {{ site_config.nome_site }} — IFRN. Todos os direitos reservados.
+        © {% now "Y" %} {{ site_config.nome_site }} — IFRN. Todos os direitos reservados.
       </div>
     </div>
   </footer>
 
-
-  <!-- Bootstrap JS -->
+  <!-- Bootstrap JS (apenas 1 vez, no final) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   {% block scripts %}{% endblock %}

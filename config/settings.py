@@ -134,14 +134,20 @@ STATICFILES_DIRS = [
 ]
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-LOGIN_REDIRECT_URL = 'usuarios:dashboard'
-LOGOUT_REDIRECT_URL = 'index'
+
 AUTH_USER_MODEL = "usuarios.Usuario"
-LOGIN_REDIRECT_URL = "usuarios:dashboard"
+
+# para onde o usuário vai DEPOIS DE FAZER LOGIN
+LOGIN_REDIRECT_URL = "dashboard:inicio"
+
+# para onde o usuário vai se tentar acessar algo sem login
 LOGIN_URL = "usuarios:login"
+
+# para onde o usuário vai depois do logout
+LOGOUT_REDIRECT_URL = "index"

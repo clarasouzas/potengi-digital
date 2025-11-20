@@ -1,92 +1,129 @@
 {% load static crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cadastro — LinkIF</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro – LinkIF</title>
 
-    <!-- Bootstrap e ícones -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  </head>
 
-  <body style="background-color:#e8f0ff;">
-    <!-- BOTÃO VOLTAR AO INÍCIO -->
-    <a href="{% url 'index' %}" class="btn-voltar-inicio position-absolute top-0 start-0 m-4 text-decoration-none">
+    <!-- CSS do cadastro -->
+    <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
+</head>
+
+<body style="background:#f5f7fa;">
+  <a href="{% url 'index' %}" class="btn-voltar-inicio position-absolute top-0 start-0 m-4 text-decoration-none">
      <i class="bi bi-arrow-left-circle-fill" style="font-size: 1.8rem; color: #205072;"></i>
      <span class="ms-1 fw-semibold text-secondary">Voltar ao início</span>
     </a>
-    <div class="container-fluid min-vh-100 d-flex align-items-stretch justify-content-center" 
-         style="padding:40px 0;">
 
-      <div class="row shadow rounded-4 overflow-hidden" 
-           style="max-width:950px; width:100%; background-color:white;">
+<div class="d-flex justify-content-center align-items-center py-5">
+    <div class="cadastro-card d-flex flex-wrap shadow">
 
-        <!-- LADO ESQUERDO FIXO -->
-        <div class="col-md-5 d-none d-md-flex flex-column align-items-center justify-content-center text-center p-4" 
-             style="background-color:#cfdcff; position:sticky; top:0; height:100vh;">
-          
-          <div>
-            <h4 class="fw-bold mb-4" style="color:#205072;">Escolha o tipo</h4>
+        <!-- ==========================================
+             LADO ESQUERDO — LOGO + ABAS
+        ============================================= -->
+        <div class="left-panel col-md-4 col-12">
 
-            <ul class="nav flex-column w-100" id="cadastroTabs" role="tablist" style="gap:10px;">
-              {% for tipo, form, url, cor, icone, titulo in forms %}
-              <li class="nav-item">
-                <button
-                  class="nav-link w-100 py-2 {% if forloop.first %}active{% endif %}"
-                  data-bs-toggle="tab"
-                  data-bs-target="#{{ tipo }}"
-                  type="button"
-                 style="border:none; border-radius:10px; background-color:#e0e6ff; color:#205072; font-weight:500;"{% if forloop.first %}#ffffff{% else %}#e0e6ff{% endif %}; color:#205072; font-weight:500;"
-                >
-                  <i class="bi {{ icone }} me-2"></i> {{ titulo|cut:'Cadastro de ' }}
-                </button>
-              </li>
-              {% endfor %}
+            <img src="{% static 'assets/img/logo.png' %}" 
+                 alt="LinkIF" class="logo mb-4">
+
+            <h5 class="painel-title">Escolha o tipo de usuário</h5>
+
+            <!-- abas refinadas -->
+            <ul class="nav flex-column refined-tabs">
+
+                <li class="nav-item">
+                    <button class="nav-link refined-tab-btn active"
+                            data-bs-toggle="tab"
+                            data-bs-target="#aba-aluno">
+                        <i class="bi bi-mortarboard-fill me-2"></i>
+                        Aluno
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link refined-tab-btn"
+                            data-bs-toggle="tab"
+                            data-bs-target="#aba-empresa">
+                        <i class="bi bi-building-fill me-2"></i>
+                        Empresa
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link refined-tab-btn"
+                            data-bs-toggle="tab"
+                            data-bs-target="#aba-coord">
+                        <i class="bi bi-person-gear me-2"></i>
+                        Coordenação
+                    </button>
+                </li>
+
             </ul>
-          </div>
 
         </div>
 
-        <!-- LADO DIREITO: FORMULÁRIOS -->
-        <div class="col-md-7 col-12 p-4" 
-             style="background-color:#ffffff; max-height:100vh; overflow-y:auto;">
-          <div class="tab-content">
-            {% for tipo, form, url, cor, icone, titulo in forms %}
-            <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="{{ tipo }}">
-              <h5 class="fw-semibold mb-3" style="color:#205072;">
-                <i class="bi {{ icone }} me-2"></i> {{ titulo }}
-              </h5>
+        <!-- ==========================================
+             LADO DIREITO — FORMULÁRIOS
+        ============================================= -->
+        <div class="right-panel col-md-8 col-12">
 
-              <form method="POST" enctype="multipart/form-data" action="{% url url %}" 
-                    style="max-width:400px; margin:auto;">
-                {% csrf_token %}
-                {% crispy form %}
+            <div class="tab-content">
 
-                <button type="submit" 
-                  class="w-100 mt-3" 
-                  style="background-color:#27ae60; color:white; border:none; padding:10px; border-radius:10px; font-weight:600;">
-                  <i class="bi bi-check-circle me-1"></i>
-                  Cadastrar {{ titulo|cut:'Cadastro de ' }}
-                </button>
-              </form>
+                <!-- ALUNO -->
+                <div class="tab-pane fade show active" id="aba-aluno">
+                    <h4 class="titulo-form mb-3">
+                        <i class="bi bi-mortarboard-fill me-2"></i> Cadastro de Aluno
+                    </h4>
+
+                    <form method="POST" action="{% url 'usuarios:cadastro_aluno' %}">
+                        {% csrf_token %}
+                        {% crispy forms.0.1 %}
+                        <button class="btn-submit w-100 mt-2">Cadastrar Aluno</button>
+                    </form>
+                </div>
+
+                <!-- EMPRESA -->
+                <div class="tab-pane fade" id="aba-empresa">
+                    <h4 class="titulo-form mb-3">
+                        <i class="bi bi-building-fill me-2"></i> Cadastro de Empresa
+                    </h4>
+
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'usuarios:cadastro_empresa' %}">
+                        {% csrf_token %}
+                        {% crispy forms.1.1 %}
+                        <button class="btn-submit w-100 mt-2">Cadastrar Empresa</button>
+                    </form>
+                </div>
+
+                <!-- COORD -->
+                <div class="tab-pane fade" id="aba-coord">
+                    <h4 class="titulo-form mb-3">
+                        <i class="bi bi-person-gear me-2"></i> Cadastro de Coordenação
+                    </h4>
+
+                    <form method="POST" action="{% url 'usuarios:cadastro_coord' %}">
+                        {% csrf_token %}
+                        {% crispy forms.2.1 %}
+                        <button class="btn-submit w-100 mt-2">Cadastrar Coordenação</button>
+                    </form>
+                </div>
+
             </div>
-            {% endfor %}
-          </div>
 
-          <div class="text-center mt-4">
-            <p class="small text-muted">
-              Já possui uma conta?
-              <a href="{% url 'usuarios:login' %}" class="fw-semibold" style="color:#205072;">Faça login</a>
+            <p class="text-center mt-4">
+                Já possui uma conta?
+                <a href="{% url 'usuarios:login' %}" class="link-login fw-semibold">Faça login</a>
             </p>
-          </div>
+
         </div>
-
-      </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
-

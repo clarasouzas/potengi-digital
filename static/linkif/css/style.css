@@ -1,3 +1,13 @@
+:root {
+    --azul-escuro: #213A57;
+    --azul-teal: #0B6477;
+    --azul-medio: #14919B;
+    --turquesa: #0AD1C8;
+    --verde-claro: #45DFB1;
+    --verde-soft: #80ED99;
+    --branco: #ffffff;
+}
+
 /* =======================================
    BASE GERAL
 ======================================= */
@@ -635,247 +645,132 @@ footer {
   text-align: center; font-size: 0.85rem; color: #0b1a33;
   border-top: 1px solid rgba(0,0,0,0.1); margin-top: 20px; padding-top: 10px;
 }/* =======================================
-   CADASTRO - LINKIF CLEAN
+   CADASTRO - LINKIF CLEAN + ABAS REFINADAS
 ======================================= */
 
-.cadastro-bg {
-  background: linear-gradient(to right, #dff9f2 0%, #f4fffa 30%, #dff9f2 100%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 70px 20px;
-}
-
-/* CARD PRINCIPAL */
+/* Card principal */
 .cadastro-card {
-  background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 1300px;
-  padding: 60px 70px;
-  animation: fadeIn 0.6s ease;
-  position: relative;
-  z-index: 10;
-   padding: 3rem 2.5rem;
+    width: 900px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--branco);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ===============================
+   LADO ESQUERDO
+================================ */
+.left-panel {
+    background: var(--azul-escuro);
+    padding: 40px 20px;
+    text-align: center;
 }
 
-/* CABEÇALHO */
-.cadastro-header {
-  text-align: center;
-  margin-bottom: 40px;
+.logo {
+    width: 120px;
 }
 
-.cadastro-header h3 {
-  font-weight: 800;
-  color: #205072;
-  font-size: 2rem;
-  margin-bottom: 8px;
+.painel-title {
+    color: var(--branco);
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
 }
 
-.cadastro-header p {
-  color: #6c757d;
-  font-size: 1rem;
+/* ===============================
+   ABAS REFINADAS — NOVO
+================================ */
+.refined-tabs {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
 }
 
-/* ABAS */
-.abas-wrapper {
-  background: #f5f8fa;
-  border-radius: 14px;
-  padding: 8px 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  margin-bottom: 40px;
-  max-width: 1000px;
-  margin: auto;
+.refined-tab-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--azul-teal);
+    color: var(--branco);
+    border-radius: 12px;
+    padding: 12px 18px;
+    font-weight: 500;
+    border: none;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .25s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
 }
 
-.abas {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 25px; /* espaçamento entre abas */
-  flex-wrap: wrap;
+.refined-tab-btn:hover {
+    background: var(--azul-medio);
+    transform: translateY(-2px);
 }
 
-/* cada item da aba */
-.abas .nav-item {
-  flex: 1;
-  max-width: 280px; /* largura do retângulo */
+.refined-tab-btn.active,
+.refined-tab-btn.nav-link.active {
+    background: var(--turquesa);
+    color: #003233;
+    font-weight: 700;
+    box-shadow: 0 0 0 3px rgba(10,209,200,0.25);
+    transform: translateY(-2px) scale(1.03);
 }
 
-/* botão da aba */
-.abas .nav-link {
-  border: none;
-  border-radius: 10px;
-  background: #ffffffbb;
-  color: #205072;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 10px 0;
-  height: 45px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s ease;
+.refined-tab-btn i {
+    font-size: 1.25rem;
 }
 
-/* ícone */
-.abas .nav-link i {
-  font-size: 1.2rem;
-}
-
-/* estado hover */
-.abas .nav-link:hover {
-  background: #e9f3f0;
-  transform: translateY(-1px);
-}
-
-/* estado ativo */
-.abas .nav-link.active {
-  background: #bfd2d9
-;   color: #1b1f5b;
-
-  box-shadow: 0 4px 12px rgba(102, 102, 102, 0.137);
-  transform: translateY(-1px);
-}
-/* CAMPOS DE FORMULÁRIO */
-.cadastro-card .form-label {
-  font-weight: 600;
-  color: #205072;
-  font-size: 0.95rem;
-}
-
-.cadastro-card .form-control,
-.cadastro-card .form-select {
-  border-radius: 12px;
-  border: 1px solid #e1e6ea;
-  background: #fafbfc;
-  color: #333;
-  font-size: 0.95rem;
-  padding: 12px 14px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-  transition: all 0.25s ease;
-}
-
-.cadastro-card .form-control:hover,
-.cadastro-card .form-select:hover {
-  border-color: #bfd2d9;
-}
-
-.cadastro-card .form-control:focus,
-.cadastro-card .form-select:focus {
-  background: #fff;
-  border-color: #2cb67d;
-  box-shadow: 0 0 0 0.15rem rgba(44,182,125,0.25);
-}
-
-textarea.form-control {
-  min-height: 100px;
-  resize: vertical;
-  border-radius: 12px;
-}
-
-/* BOTÕES */
-.btn-cadastro {
-  width: 100%;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  padding: 14px;
-  font-size: 1.05rem;
-  transition: all 0.3s ease;
-}
-
-.btn-cadastro.aluno {
-  background: #205072;
-  color: #fff;
-}
-.btn-cadastro.aluno:hover {
-  background-color: #205072;
-  box-shadow: 0 4px 15px rgba(32, 80, 114, 0.25);
-}
-
-.btn-cadastro.empresa {
-  background-color: #205072;
-  color: #fff;
-}
-.btn-cadastro.empresa:hover {
-  background: #249965;
-  box-shadow: 0 4px 15px rgba(44, 182, 125, 0.25);
-}
-
-.btn-cadastro.coord {
-  background-color: #205072;
-  color: #fff;
-}
-.btn-cadastro.coord:hover {
-  background-color: #205072;
-  box-shadow: 0 4px 15px rgba(107, 114, 128, 0.25);
-}
-
-/* LINK FINAL */
-.cadastro-card .small {
-  margin-top: 30px;
-  color: #5e6468;
-}
-.cadastro-card .small a {
-  color: #205072;
-  font-weight: 600;
-  transition: 0.2s ease;
-}
-.cadastro-card .small a:hover {
-  color: #18435d;
-  text-decoration: underline;
-}
-
-/* RESPONSIVO */
+/* Responsivo */
 @media (max-width: 768px) {
-  .cadastro-card {
-    padding: 40px 25px;
-  }
-  .abas {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .abas .nav-link {
-    font-size: 0.95rem;
-    padding: 12px 0;
-  }
+    .refined-tab-btn {
+        font-size: .95rem;
+        padding: 10px 14px;
+    }
 }
 
-
-/* =======================================
-   RESPONSIVO
-======================================= */
-@media (max-width: 768px) {
-  .cadastro-card {
-    padding: 40px 25px;
-  }
-
-  .abas-wrapper {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .abas .nav-link {
-    font-size: 0.95rem;
-    padding: 12px 0;
-  }
+/* ===============================
+   LADO DIREITO
+================================ */
+.right-panel {
+    padding: 40px;
 }
 
+.titulo-form {
+    color: var(--azul-teal);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
 
-.cadastro-header { margin-bottom: 2rem; }
-.abas-wrapper { margin-bottom: 2.5rem; }
-.tab-content { padding: 0 1rem 1rem 1rem; }
+/* ===============================
+   BOTÃO SUBMIT
+================================ */
+.btn-submit {
+    background: var(--turquesa);
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+    color: #003233;
+    font-weight: 600;
+    transition: all .25s ease;
+}
+
+.btn-submit:hover {
+    background: var(--verde-claro);
+    transform: translateY(-2px);
+}
+
+/* ===============================
+   LINK LOGIN
+================================ */
+.link-login {
+    color: var(--azul-teal);
+    transition: .25s;
+}
+
+.link-login:hover {
+    color: var(--azul-medio);
+}
+
 /* =======================================
    LOGIN PAGE - LINKIF STYLE 
 ======================================= */
@@ -1428,4 +1323,41 @@ textarea.form-control {
 .icon-contato{
   color:#18435d;
   
+}
+/* =======================================
+   BOTÃO VOLTAR AO INÍCIO
+   ======================================= */
+.btn-voltar-inicio {
+    position: fixed;
+    top: 22px;
+    left: 22px;
+    background: rgba(10, 209, 200, 0.15);
+    backdrop-filter: blur(6px);
+    padding: 10px 16px;
+    border-radius: 40px;
+    color: var(--turquesa);
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: all .25s ease;
+    z-index: 999;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+.btn-voltar-inicio i {
+    font-size: 1.4rem;
+    color: var(--turquesa);
+}
+
+.btn-voltar-inicio:hover {
+    background: var(--turquesa);
+    color: #003233;
+    transform: translateY(-2px);
+}
+
+.btn-voltar-inicio:hover i {
+    color: #003233;
 }
