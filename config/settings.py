@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'linkif.context_processors.site_context',
+                'linkif.context_processors.splash_screen_processor',
             ],
         },
     },
@@ -160,13 +161,13 @@ AUTH_USER_MODEL = "usuarios.Usuario"
 
 # para onde o usuário vai DEPOIS de fazer login
 # AGORA ESTÁ CORRETO → vai usar sua view de redirecionamento
-LOGIN_REDIRECT_URL = "dashboard:inicio"
+LOGIN_REDIRECT_URL = "linkif:index"
 
 # quando tenta acessar algo sem estar logado
 LOGIN_URL = "usuarios:login"
 
 # para onde vai após logout
-LOGOUT_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "linkif:index"
 
 
 # ============================

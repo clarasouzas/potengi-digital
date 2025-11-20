@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
-from .models import Usuario
+from .models import Usuario, Aluno, Empresa, Coordenador
 
 
 # =====================================================
@@ -62,6 +62,33 @@ class CoordenadorCreationForm(UsuarioCreationForm):
 
     class Meta(UsuarioCreationForm.Meta):
         fields = ["nome", "setor"] + UsuarioCreationForm.Meta.fields
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+class AlunoEditForm(forms.ModelForm):
+    class Meta:
+        model = Aluno
+        fields = ["nome", "curso", "portfolio", "foto", "curriculo"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+class EmpresaEditForm(forms.ModelForm):
+    class Meta:
+        model = Empresa
+        fields = ["nome_empresa", "telefone", "cidade", "descricao", "foto"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+class CoordenadorEditForm(forms.ModelForm):
+    class Meta:
+        model = Coordenador
+        fields = ["nome", "setor"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

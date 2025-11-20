@@ -42,6 +42,8 @@ class Empresa(models.Model):
     telefone = models.CharField(max_length=20)
     cidade = models.CharField(max_length=100)
     descricao = models.TextField(blank=True, null=True)
+    foto = models.ImageField(upload_to="foto-aluno/", blank=True, null=True)
+
 
     def __str__(self):
         return self.nome_empresa

@@ -1,20 +1,19 @@
 /* ================= VARIÁVEIS ================= */
 :root {
-    --azul-escuro: #213A57;
-    --azul-teal: #0B6477;
-    --azul-medio: #14919B;
-    --turquesa: #0AD1C8;
-    --verde: #45DFB1;
-    --verde-soft: #80ED99;
+    --sidebar-bg: #2C7F67;                   /* verde escuro LinkIF */
+    --sidebar-soft: #AEE6D8;                 /* tom suave dos textos e ícones */
+    --turquesa: #00FFF2;                     /* hover / destaque */
+    --sidebar-hover: rgba(255,255,255,0.12); /* hover interno */
 
-    --branco: #ffffff;
-    --cinza-fundo: #f4f9f9;
+    --topbar-bg: #ffffff;
+    --content-bg: #f7f9fc;
+    --text: #ffffff;
 }
 
-/* ================= LAYOUT ================= */
+/* ================= GERAL ================= */
 body {
     margin: 0;
-    background: var(--cinza-fundo);
+    background: var(--content-bg);
     font-family: "Inter", sans-serif;
 }
 
@@ -26,34 +25,64 @@ body {
 
 /* ================= TOPBAR ================= */
 .topbar {
-    height: 65px;
-    background: var(--branco);
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    padding: 0 20px;
+    height: 100px;
+    background: var(--topbar-bg);
+    border-bottom: 1px solid #e6e6e6;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
+    padding: 0 25px;
     position: sticky;
     top: 0;
-    z-index: 20;
+    z-index: 10;
+}
+.btn-topbar i {
+    font-size: 25px; /* maior */
+    color: #2C7F67; /* tua cor verde */
+    text-shadow: 
+        1px 0 currentColor,
+        0 1px currentColor,
+        -1px 0 currentColor,
+        0 -0.8px currentColor; /* deixa grossinho */
+}
+.left-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* LOGO AO LADO DO MENU */
+.topbar-logo {
+    height: 140px;
+    object-fit: contain;
 }
 
 .btn-topbar {
     border: none;
     background: none;
-    color: var(--azul-escuro);
+    color: var(--sidebar-bg);
 }
 
 .btn-topbar:hover {
     opacity: 0.6;
 }
 
+/* Avatar */
 .avatar {
-    width: 38px;
-    height: 38px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    margin-right: 40px;
+}
+
+.avatar-icon {
+    font-size: 50px;
+    margin-right: 40px;
+    color: var(--sidebar-bg);
     cursor: pointer;
 }
 
@@ -61,86 +90,284 @@ body {
 
 /* ================= SIDEBAR ================= */
 .sidebar {
-    width: 240px;
+    width: 250px;
+    background: var(--sidebar-bg);
     min-height: 100vh;
-    background: var(--azul-escuro);
     padding-top: 20px;
-    transition: width .3s ease;
-    overflow: hidden;
+    transition: .3s;
 }
 
 .sidebar.closed {
-    width: 70px;
+    width: 80px;
 }
 
-/* ==== item padrão (links) ==== */
+/* LOGO NA SIDEBAR (se quiser usar no futuro) */
+.sidebar-logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+/* TÍTULO DAS SEÇÕES */
+.sidebar-section-title {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65); /* suave igual ao Gabarita */
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 6px 22px 12px;
+}
+.sidebar-logo-img {
+    width: 130px;
+    filter: brightness(1);
+}
+
+
+
+/* ================= ITENS DO MENU ================= */
 .sidebar-item {
     display: flex;
     align-items: center;
-    padding: 12px 18px;
-    font-size: 15px;
-
-    color: var(--branco);
+    padding: 14px 22px;
+    color: var(--sidebar-soft);
     text-decoration: none;
-
+    font-size: 15px;
     transition: .2s ease;
 }
 
+.sidebar-item i {
+    color: var(--sidebar-soft) !important;
+    font-size: 20px;
+}
+
+/* HOVER DO ITEM */
 .sidebar-item:hover {
-    background: rgba(255,255,255,0.08);
+    background: var(--sidebar-hover);
+    padding-left: 28px;
     border-left: 4px solid var(--turquesa);
-    padding-left: 14px;
 }
 
-/* esconder texto quando fechado */
+.sidebar-item:hover i,
+.sidebar-item:hover .label {
+    color: var(--turquesa) !important;
+}
+
+/* Sidebar fechada -> esconde texto */
 .sidebar.closed .label {
-    opacity: 0;
-    transition: opacity .2s;
+    display: none;
 }
 
 
 
-/* ==== divisores ==== */
+/* ================= DIVISOR ================= */
 .divider {
-    border: none;
     height: 1px;
-    background: rgba(255,255,255,0.20);
-    margin: 6px 0;
+    background: rgba(255,255,255,0.25);
+    margin: 15px 0;
 }
 
 
 
 /* ================= BOTÃO SAIR ================= */
-.logout-btn {
-    display: flex;
-    align-items: center;
-    padding: 12px 18px;
-    font-size: 15px;
-
+.logout-item {
     background: transparent;
     border: none;
     width: 100%;
     text-align: left;
     cursor: pointer;
 
-    color: #ff6b6b; /* vermelho bonito */
-    transition: .2s ease;
+    color: var(--sidebar-soft);
+    font-size: 15px;
+
+    display: flex;
+    align-items: center;
+    padding: 14px 22px;
 }
 
-.logout-btn .label {
-    color: #ff6b6b !important;
+.logout-item i {
+    color: var(--sidebar-soft) !important;
 }
 
-.logout-btn:hover {
-    background: rgba(255,255,255,0.08);
+/* Hover igual aos outros */
+.logout-item:hover {
+    background: var(--sidebar-hover);
+    padding-left: 28px;
     border-left: 4px solid var(--turquesa);
-    padding-left: 14px;
+}
+
+.logout-item:hover i,
+.logout-item:hover .label {
+    color: var(--turquesa) !important;
 }
 
 
 
-/* ================= CONTENT AREA ================= */
+/* ================= ÁREA DE CONTEÚDO ================= */
 .content-area {
     flex: 1;
-    padding: 25px;
+    padding: 30px;
+}
+/* ================= DROPDOWN DO AVATAR ================= */
+
+.custom-dropdown {
+    border-radius: 12px;
+    padding: 8px 0;
+    box-shadow: 0 6px 20px #3eaf8f36;
+    border: none;
+    min-width: 200px;
+}
+
+/* TÍTULO "Olá, Maria" */
+.dropdown-header {
+    padding: 12px 20px 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #2C7F67; /* verde do painel */
+    white-space: nowrap; /* impede quebrar linha */
+}
+
+/* ITENS */
+.custom-dropdown-item {
+    padding: 10px 18px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+
+    border-radius: 6px;
+    transition: 0.25s ease;
+    color: #2C7F67 !important; /* verde do site */
+}
+
+/* Ícones */
+.custom-dropdown-item i {
+    color: #2C7F67 !important;
+    font-size: 18px;
+    transition: 0.25s ease;
+}
+
+/* HOVER suave */
+.custom-dropdown-item:hover {
+    background: rgba(44, 127, 103, 0.12); /* verde clarinho */
+    padding-left: 24px; /* anima */
+}
+
+/* Ícone anima no hover */
+.custom-dropdown-item:hover i {
+    transform: scale(1.15);
+}
+
+
+/* ===========================
+   CONTAINER CENTRAL
+=========================== */
+.editar-perfil-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ===========================
+   CARD
+=========================== */
+.perfil-card {
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    animation: fadePerfil .3s ease;
+}
+
+/* ===========================
+   TÍTULO
+=========================== */
+.perfil-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #2C7F67; /* verde do layout */
+}
+
+/* ===========================
+   FORM
+=========================== */
+.perfil-form .form-control {
+    border-radius: 10px;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+}
+
+.perfil-form .form-control:focus {
+    border-color: var(--turquesa);
+    box-shadow: 0 0 0 3px rgba(0, 255, 242, 0.25);
+}
+
+/* ===========================
+   BOTÕES
+=========================== */
+.perfil-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-salvar {
+    background: var(--sidebar-bg);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: 0.25s ease;
+}
+
+.btn-salvar:hover {
+    background: var(--turquesa);
+    color: #0f0f0f;
+    transform: translateY(-2px);
+}
+
+.btn-cancelar {
+    background: #e5e7eb;
+    color: #374151;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: 0.25s ease;
+}
+
+.btn-cancelar:hover {
+    background: #d1d5db;
+}
+
+/* ===========================
+   ANIMAÇÃO
+=========================== */
+@keyframes fadePerfil {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.foto-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-top: 10px;
+}.avatar-lg {
+    border-radius: 50%;
+}
+
+.page-title {
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: #1e2a3a;
+}
+
+.label-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #808080;
+}
+
+.value {
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    margin-top: 2px;
 }

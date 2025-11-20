@@ -1,8 +1,32 @@
 {% extends "dashboard/base_dashboard.html" %}
+{% load crispy_forms_tags %}
 
 {% block conteudo %}
-<div class="container py-4">
-    <h2>Editar Perfil</h2>
-    <p>Em breve sua página de edição de perfil estará aqui.</p>
+
+<div class="container">
+
+    <h3 class="mb-4">Editar Perfil</h3>
+
+    <div class="card p-4 shadow-sm">
+
+        <!-- FOTO DO PERFIL -->
+        <div class="text-center mb-4">
+            {% if foto %}
+                <img src="{{ foto }}" class="perfil-foto-preview">
+            {% else %}
+                <i class="{{ icone }} perfil-foto-icone"></i>
+            {% endif %}
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <button type="submit" class="btn btn-primary mt-3">Salvar</button>
+        </form>
+
+    </div>
+
 </div>
+
 {% endblock %}

@@ -2,10 +2,14 @@
     --azul-escuro: #213A57;
     --azul-teal: #0B6477;
     --azul-medio: #14919B;
-    --turquesa: #0AD1C8;
     --verde-claro: #45DFB1;
     --verde-soft: #80ED99;
     --branco: #ffffff;
+     --sidebar-bg: #2C7F67;                   /* verde escuro LinkIF */
+    --sidebar-soft: #AEE6D8;                 /* tom suave dos textos e ícones */
+    --turquesa: #00FFF2;                     /* hover / destaque */
+    --sidebar-hover: rgba(255,255,255,0.12); /* hover interno */
+
 }
 
 /* =======================================
@@ -74,16 +78,16 @@ a:hover { text-decoration: underline; }
   position: absolute;
   left: 0;
   bottom: 0;
-  height: 2px;
+  height: 1px;
   width: 0;
-  background-color: #205072;
+  background-color: var(--sidebar-bg); /* linha turquesa */
   transition: width 0.3s ease;
 }
 
 /* Hover e foco */
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link:focus {
-  color: #0b1a33;
+  color: var(--sidebar-bg) !important; /* texto turquesa */
   background: none !important;
   text-decoration: none !important;
 }
@@ -92,12 +96,13 @@ a:hover { text-decoration: underline; }
   width: 100%;
 }
 
-/* Remove qualquer cor azul padrão de clique */
+/* Estado ativo */
 .navbar-nav .nav-link:active,
 .navbar-nav .nav-link.show {
   background: none !important;
-  color: #0b1a33;
+  color: var(--sidebar-bg) !important;
 }
+
 /* ===============================
    BOTÕES DIREITA (Entrar / Cadastre-se)
    — versão azul unificada com contraste elegante
@@ -238,7 +243,7 @@ a:hover { text-decoration: underline; }
 
 /* botão verde petróleo (para estudantes) */
 .botao-estudante {
-  background: linear-gradient(135deg, #205072, #356e8c);
+  background: linear-gradient(135deg, #143d5a, #356e8c);
   color: #fff;
 }
 .botao-estudante:hover {
@@ -249,7 +254,7 @@ a:hover { text-decoration: underline; }
 
 /* botão verde claro (para empresas) */
 .botao-empresa {
-  background: linear-gradient(135deg, #2cb67d, #32d896);
+  background: linear-gradient(135deg, #2C7F67, #32d896);
   color: #fff;
 }
 .botao-empresa:hover {
@@ -461,7 +466,6 @@ a:hover { text-decoration: underline; }
 
 .perfil-btn:hover {
   background: #2cb67d;
-  transform: translateY(-50%) scale(1.1);
 }
 
 .perfil-prev { left: 0; }
@@ -1418,4 +1422,44 @@ footer {
 
 .btn-voltar-inicio:hover i {
     color: #003233;
+}
+
+/* Logo animada */
+.splash-logo {
+  width: 300px;
+  opacity: 0;
+  animation: splashFade 0.5s ease forwards;
+}
+
+@keyframes splashFade {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Quando a tela sobe */
+#splash-screen.hide {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+#main-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bs-body-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+  transition: transform 0.5s ease, opacity 2s ease;
 }

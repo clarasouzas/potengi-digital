@@ -17,7 +17,6 @@ urlpatterns = [
         auth_views.LoginView.as_view(
             template_name="registration/login.html",
             redirect_authenticated_user=True,
-            next_page="dashboard:inicio",
         ),
         name="login"
     ),
