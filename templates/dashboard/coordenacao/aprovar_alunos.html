@@ -1,0 +1,29 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block conteudo %}
+
+<h2 class="mb-4">Aprovar Alunos</h2>
+
+{% if alunos %}
+<div class="row g-3">
+    {% for a in alunos %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card-list">
+            <div class="card-title">{{ a.email }}</div>
+            <div class="card-meta">Nome: {{ a.aluno.nome }}</div>
+            <div class="card-meta">Curso: {{ a.aluno.curso }}</div>
+
+            <div class="card-actions">
+                <a href="{% url 'dashboard:usuario_editar' a.id %}" class="btn-outline-action">
+                    <i class="bi bi-check-circle"></i> Aprovar
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<p class="text-muted">Nenhum aluno aguardando aprovação.</p>
+{% endif %}
+
+{% endblock %}

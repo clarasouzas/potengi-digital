@@ -94,3 +94,16 @@ class CoordenadorEditForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+class UsuarioEditFormSimples(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ["email", "tipo", "is_approved"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # estilização
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                "class": "form-control"
+            })

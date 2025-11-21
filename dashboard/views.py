@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.apps import apps
-from usuarios.forms import AlunoEditForm, EmpresaEditForm, CoordenadorEditForm
+from usuarios.forms import (
+    AlunoEditForm, EmpresaEditForm, CoordenadorEditForm,
+    UsuarioEditFormSimples
+)
 
-
-# MODELS
+# Models
 User = apps.get_model("usuarios", "Usuario")
 Aluno = apps.get_model("usuarios", "Aluno")
 Empresa = apps.get_model("usuarios", "Empresa")
@@ -14,10 +16,11 @@ Vaga = apps.get_model("linkif", "Vaga")
 Candidatura = apps.get_model("linkif", "Candidatura")
 
 
-# =========================================
-# FUNÇÃO PARA PEGAR AVATAR (foto ou ícone)
-# =========================================
+# ======================================================================
+# AVATAR (foto ou ícone)
+# ======================================================================
 def get_avatar_data(user):
+
     if user.tipo == "aluno":
         perfil = user.aluno
         foto = perfil.foto.url if perfil.foto else None
@@ -28,7 +31,7 @@ def get_avatar_data(user):
         foto = perfil.foto.url if hasattr(perfil, "foto") and perfil.foto else None
         icone = "bi-building"
 
-    else:  # coordenador
+    else:
         perfil = user.coordenador
         foto = perfil.foto.url if hasattr(perfil, "foto") and perfil.foto else None
         icone = "bi-person-badge"
@@ -36,9 +39,9 @@ def get_avatar_data(user):
     return foto, icone
 
 
-# =========================================
+# ======================================================================
 # MENU DINÂMICO
-# =========================================
+# ======================================================================
 def get_menu(user):
 
     if user.tipo == "aluno":
@@ -60,34 +63,34 @@ def get_menu(user):
             ("dashboard:coordenacao_painel", "bi bi-house-door", "Meu painel"),
             ("dashboard:aprovar_alunos", "bi bi-person-check", "Aprovar Alunos"),
             ("dashboard:aprovar_empresas", "bi bi-building-check", "Aprovar Empresas"),
-            ("dashboard:aprovar_vagas", "bi bi-briefcase-check", "Aprovar Vagas"),
+            ("dashboard:aprovar_vagas", "bi bi-check2-circle", "Aprovar Vagas"),
             ("dashboard:usuarios", "bi bi-people", "Gerenciar Usuários"),
+            ("dashboard:empresas", "bi bi-building", "Gerenciar Empresas"),
             ("dashboard:relatorios", "bi bi-bar-chart", "Relatórios"),
         ]
 
     return []
 
 
-# =========================================
-# REDIRECIONAMENTO PÓS-LOGIN
-# =========================================
+# ======================================================================
+# DASHBOARD DEFAULT
+# ======================================================================
 @login_required
 def redirecionar_dashboard(request):
-    user = request.user
+    u = request.user
 
-    if user.tipo == "aluno":
+    if u.tipo == "aluno":
         return redirect("dashboard:aluno_painel")
-    if user.tipo == "empresa":
+
+    if u.tipo == "empresa":
         return redirect("dashboard:empresa_painel")
-    if user.tipo == "coordenador":
-        return redirect("dashboard:coordenacao_painel")
 
-    return redirect("index")
+    return redirect("dashboard:coordenacao_painel")
 
 
-# =========================================
+# ======================================================================
 # ALUNO
-# =========================================
+# ======================================================================
 @login_required
 def aluno_painel(request):
     foto, icone = get_avatar_data(request.user)
@@ -117,25 +120,23 @@ def aluno_vagas(request):
 @login_required
 def aluno_candidaturas(request):
     foto, icone = get_avatar_data(request.user)
-    aluno = request.user.aluno
-    candidaturas = Candidatura.objects.filter(aluno=aluno)
+    lista = Candidatura.objects.filter(aluno=request.user.aluno)
 
     return render(request, "dashboard/aluno/candidaturas.html", {
         "menu": get_menu(request.user),
-        "candidaturas": candidaturas,
+        "candidaturas": lista,
         "foto": foto,
         "icone": icone,
     })
 
 
-# =========================================
+# ======================================================================
 # EMPRESA
-# =========================================
+# ======================================================================
 @login_required
 def empresa_painel(request):
     foto, icone = get_avatar_data(request.user)
-    empresa = request.user.empresa
-    vagas = Vaga.objects.filter(empresa=empresa)
+    vagas = Vaga.objects.filter(empresa=request.user.empresa)
 
     return render(request, "dashboard/empresa/painel.html", {
         "menu": get_menu(request.user),
@@ -148,8 +149,7 @@ def empresa_painel(request):
 @login_required
 def empresa_vagas(request):
     foto, icone = get_avatar_data(request.user)
-    empresa = request.user.empresa
-    vagas = Vaga.objects.filter(empresa=empresa)
+    vagas = Vaga.objects.filter(empresa=request.user.empresa)
 
     return render(request, "dashboard/empresa/minhas_vagas.html", {
         "menu": get_menu(request.user),
@@ -192,9 +192,9 @@ def empresa_candidaturas(request):
     })
 
 
-# =========================================
-# COORDENAÇÃO
-# =========================================
+# ======================================================================
+# COORDENAÇÃO – Visão Geral
+# ======================================================================
 @login_required
 def coordenacao_painel(request):
     foto, icone = get_avatar_data(request.user)
@@ -206,6 +206,9 @@ def coordenacao_painel(request):
     })
 
 
+# ======================================================================
+# APROVAÇÕES
+# ======================================================================
 @login_required
 def aprovar_alunos(request):
     foto, icone = get_avatar_data(request.user)
@@ -245,55 +248,38 @@ def aprovar_vagas(request):
     })
 
 
-@login_required
-def usuarios(request):
-    foto, icone = get_avatar_data(request.user)
-    lista = User.objects.all()
-
-    return render(request, "dashboard/coordenacao/usuarios.html", {
-        "menu": get_menu(request.user),
-        "usuarios": lista,
-        "foto": foto,
-        "icone": icone,
-    })
-
-
-@login_required
-def relatorios(request):
-    foto, icone = get_avatar_data(request.user)
-
-    return render(request, "dashboard/coordenacao/relatorios.html", {
-        "menu": get_menu(request.user),
-        "foto": foto,
-        "icone": icone,
-    })
-
+# ======================================================================
+# PERFIL
+# ======================================================================
 @login_required
 def meu_perfil(request):
     foto, icone = get_avatar_data(request.user)
 
-    if request.user.tipo == "aluno":
-        perfil = request.user.aluno
-    elif request.user.tipo == "empresa":
-        perfil = request.user.empresa
+    user = request.user
+
+    if user.tipo == "aluno":
+        perfil = user.aluno
+    elif user.tipo == "empresa":
+        perfil = user.empresa
     else:
-        perfil = request.user.coordenador
+        perfil = user.coordenador
 
     return render(request, "dashboard/meu_perfil.html", {
         "menu": get_menu(request.user),
         "perfil": perfil,
+        "user": user,
         "foto": foto,
         "icone": icone,
-        "user": request.user,
     })
+
 
 @login_required
 def editar_perfil(request):
 
     user = request.user
-    foto, icone = get_avatar_data(user)
+    foto, icone = get_avatar_data(request.user)
 
-    # Selecionar form conforme o tipo
+    # Form correto
     if user.tipo == "aluno":
         perfil = user.aluno
         form_class = AlunoEditForm
@@ -302,7 +288,7 @@ def editar_perfil(request):
         perfil = user.empresa
         form_class = EmpresaEditForm
 
-    else:  # coordenador
+    else:
         perfil = user.coordenador
         form_class = CoordenadorEditForm
 
@@ -311,16 +297,124 @@ def editar_perfil(request):
         form = form_class(request.POST, request.FILES, instance=perfil)
         if form.is_valid():
             form.save()
-            return redirect("dashboard:inicio")
+            return redirect("dashboard:meu_perfil")
 
     else:
         form = form_class(instance=perfil)
 
     return render(request, "dashboard/editar_perfil.html", {
-        "menu": get_menu(user),
+        "menu": get_menu(request.user),
+        "form": form,
+        "perfil": perfil,
+        "foto": foto,
+        "icone": icone,
+    })
+
+
+# ======================================================================
+# CRUD — COORDENAÇÃO → USUÁRIOS
+# ======================================================================
+@login_required
+def usuarios(request):
+    foto, icone = get_avatar_data(request.user)
+    lista = User.objects.all()
+
+    return render(request, "dashboard/coordenacao/usuarios_list.html", {
+        "menu": get_menu(request.user),
+        "usuarios": lista,
+        "foto": foto,
+        "icone": icone,
+    })
+@login_required
+def coordenacao_usuarios(request):
+    foto, icone = get_avatar_data(request.user)
+    lista = User.objects.all()
+
+    return render(request, "dashboard/coordenacao/usuarios_list.html", {
+        "menu": get_menu(request.user),
+        "usuarios": lista,
+        "foto": foto,
+        "icone": icone,
+    })
+
+
+@login_required
+def coordenacao_usuario_editar(request, user_id):
+    foto, icone = get_avatar_data(request.user)
+
+    usuario = get_object_or_404(User, id=user_id)
+
+    from usuarios.forms import UsuarioEditFormSimples
+    form = UsuarioEditFormSimples(request.POST or None, instance=usuario)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return redirect("dashboard:usuarios")
+
+    return render(request, "dashboard/coordenacao/usuarios_editar.html", {
+        "menu": get_menu(request.user),
         "form": form,
         "foto": foto,
         "icone": icone,
-        "perfil": perfil,
-        "user": user,
+        "usuario": usuario,
+    })
+
+
+@login_required
+def coordenacao_usuario_excluir(request, user_id):
+    usuario = get_object_or_404(User, id=user_id)
+    usuario.delete()
+    return redirect("dashboard:usuarios")
+
+
+# ======================================================================
+# CRUD — COORDENAÇÃO → EMPRESAS
+# ======================================================================
+@login_required
+def coordenacao_empresas(request):
+    foto, icone = get_avatar_data(request.user)
+    empresas = Empresa.objects.all()
+
+    return render(request, "dashboard/coordenacao/empresas_list.html", {
+        "menu": get_menu(request.user),
+        "empresas": empresas,
+        "foto": foto,
+        "icone": icone,
+    })
+
+
+@login_required
+def coordenacao_empresa_editar(request, empresa_id):
+    foto, icone = get_avatar_data(request.user)
+
+    empresa = get_object_or_404(Empresa, id=empresa_id)
+    form = EmpresaEditForm(request.POST or None, request.FILES or None, instance=empresa)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return redirect("dashboard:empresas")
+
+    return render(request, "dashboard/coordenacao/empresas_editar.html", {
+        "menu": get_menu(request.user),
+        "form": form,
+        "empresa": empresa,
+        "foto": foto,
+        "icone": icone,
+    })
+
+
+@login_required
+def coordenacao_empresa_excluir(request, empresa_id):
+    empresa = get_object_or_404(Empresa, id=empresa_id)
+    empresa.delete()
+    return redirect("dashboard:empresas")
+@login_required
+def relatorios(request):
+    foto, icone = get_avatar_data(request.user)
+    return render(request, "dashboard/coordenacao/relatorios.html", {
+        "menu": get_menu(request.user),
+        "foto": foto,
+        "icone": icone,
     })

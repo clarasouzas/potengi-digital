@@ -1,8 +1,10 @@
-/* ================= VARIÁVEIS ================= */
+/* ============================================================
+   VARIÁVEIS GLOBAIS
+============================================================ */
 :root {
     --sidebar-bg: #2C7F67;                   /* verde escuro LinkIF */
-    --sidebar-soft: #AEE6D8;                 /* tom suave dos textos e ícones */
-    --turquesa: #00FFF2;                     /* hover / destaque */
+    --sidebar-soft: #AEE6D8;                 /* textos e ícones suaves */
+    --turquesa: #00FFF2;                     /* destaque / hover */
     --sidebar-hover: rgba(255,255,255,0.12); /* hover interno */
 
     --topbar-bg: #ffffff;
@@ -10,7 +12,9 @@
     --text: #ffffff;
 }
 
-/* ================= GERAL ================= */
+/* ============================================================
+   BASE / RESET
+============================================================ */
 body {
     margin: 0;
     background: var(--content-bg);
@@ -21,42 +25,26 @@ body {
     display: flex;
 }
 
-
-
-/* ================= TOPBAR ================= */
+/* ============================================================
+   TOPBAR
+============================================================ */
 .topbar {
     height: 100px;
     background: var(--topbar-bg);
     border-bottom: 1px solid #e6e6e6;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 0 25px;
     position: sticky;
     top: 0;
     z-index: 10;
 }
-.btn-topbar i {
-    font-size: 25px; /* maior */
-    color: #2C7F67; /* tua cor verde */
-    text-shadow: 
-        1px 0 currentColor,
-        0 1px currentColor,
-        -1px 0 currentColor,
-        0 -0.8px currentColor; /* deixa grossinho */
-}
+
 .left-area {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-/* LOGO AO LADO DO MENU */
-.topbar-logo {
-    height: 140px;
-    object-fit: contain;
 }
 
 .btn-topbar {
@@ -65,8 +53,23 @@ body {
     color: var(--sidebar-bg);
 }
 
+.btn-topbar i {
+    font-size: 25px;
+    color: #2C7F67;
+    text-shadow:
+        1px 0 currentColor,
+        0 1px currentColor,
+        -1px 0 currentColor,
+        0 -1px currentColor;
+}
+
 .btn-topbar:hover {
-    opacity: 0.6;
+    opacity: .6;
+}
+
+.topbar-logo {
+    height: 140px;
+    object-fit: contain;
 }
 
 /* Avatar */
@@ -86,9 +89,9 @@ body {
     cursor: pointer;
 }
 
-
-
-/* ================= SIDEBAR ================= */
+/* ============================================================
+   SIDEBAR
+============================================================ */
 .sidebar {
     width: 250px;
     background: var(--sidebar-bg);
@@ -101,28 +104,17 @@ body {
     width: 80px;
 }
 
-/* LOGO NA SIDEBAR (se quiser usar no futuro) */
-.sidebar-logo {
-    text-align: center;
-    margin-bottom: 20px;
-}
-/* TÍTULO DAS SEÇÕES */
+/* Título da seção */
 .sidebar-section-title {
     font-size: 13px;
-    color: rgba(255,255,255,0.65); /* suave igual ao Gabarita */
+    color: rgba(255,255,255,0.65);
     letter-spacing: 1px;
     font-weight: 600;
     text-transform: uppercase;
     padding: 6px 22px 12px;
 }
-.sidebar-logo-img {
-    width: 130px;
-    filter: brightness(1);
-}
 
-
-
-/* ================= ITENS DO MENU ================= */
+/* Itens */
 .sidebar-item {
     display: flex;
     align-items: center;
@@ -134,11 +126,10 @@ body {
 }
 
 .sidebar-item i {
-    color: var(--sidebar-soft) !important;
     font-size: 20px;
+    color: var(--sidebar-soft) !important;
 }
 
-/* HOVER DO ITEM */
 .sidebar-item:hover {
     background: var(--sidebar-hover);
     padding-left: 28px;
@@ -150,33 +141,26 @@ body {
     color: var(--turquesa) !important;
 }
 
-/* Sidebar fechada -> esconde texto */
 .sidebar.closed .label {
     display: none;
 }
 
-
-
-/* ================= DIVISOR ================= */
+/* divisor */
 .divider {
     height: 1px;
     background: rgba(255,255,255,0.25);
     margin: 15px 0;
 }
 
-
-
-/* ================= BOTÃO SAIR ================= */
+/* botão sair */
 .logout-item {
     background: transparent;
     border: none;
     width: 100%;
     text-align: left;
     cursor: pointer;
-
     color: var(--sidebar-soft);
     font-size: 15px;
-
     display: flex;
     align-items: center;
     padding: 14px 22px;
@@ -186,7 +170,6 @@ body {
     color: var(--sidebar-soft) !important;
 }
 
-/* Hover igual aos outros */
 .logout-item:hover {
     background: var(--sidebar-hover);
     padding-left: 28px;
@@ -198,15 +181,17 @@ body {
     color: var(--turquesa) !important;
 }
 
-
-
-/* ================= ÁREA DE CONTEÚDO ================= */
+/* ============================================================
+   ÁREA DE CONTEÚDO
+============================================================ */
 .content-area {
     flex: 1;
     padding: 30px;
 }
-/* ================= DROPDOWN DO AVATAR ================= */
 
+/* ============================================================
+   DROPDOWN DO AVATAR
+============================================================ */
 .custom-dropdown {
     border-radius: 12px;
     padding: 8px 0;
@@ -215,58 +200,48 @@ body {
     min-width: 200px;
 }
 
-/* TÍTULO "Olá, Maria" */
 .dropdown-header {
     padding: 12px 20px 8px;
     font-size: 15px;
     font-weight: 500;
-    color: #2C7F67; /* verde do painel */
-    white-space: nowrap; /* impede quebrar linha */
+    color: #2C7F67;
+    white-space: nowrap;
 }
 
-/* ITENS */
 .custom-dropdown-item {
     padding: 10px 18px;
     font-size: 15px;
     display: flex;
     align-items: center;
-
     border-radius: 6px;
     transition: 0.25s ease;
-    color: #2C7F67 !important; /* verde do site */
+    color: #2C7F67 !important;
 }
 
-/* Ícones */
 .custom-dropdown-item i {
     color: #2C7F67 !important;
     font-size: 18px;
     transition: 0.25s ease;
 }
 
-/* HOVER suave */
 .custom-dropdown-item:hover {
-    background: rgba(44, 127, 103, 0.12); /* verde clarinho */
-    padding-left: 24px; /* anima */
+    background: rgba(44, 127, 103, 0.12);
+    padding-left: 24px;
 }
 
-/* Ícone anima no hover */
 .custom-dropdown-item:hover i {
     transform: scale(1.15);
 }
 
-
-/* ===========================
-   CONTAINER CENTRAL
-=========================== */
+/* ============================================================
+   PERFIL / EDITAR PERFIL
+============================================================ */
 .editar-perfil-container {
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;
 }
 
-/* ===========================
-   CARD
-=========================== */
 .perfil-card {
     background: #ffffff;
     padding: 32px;
@@ -275,19 +250,13 @@ body {
     animation: fadePerfil .3s ease;
 }
 
-/* ===========================
-   TÍTULO
-=========================== */
 .perfil-title {
     font-size: 26px;
     font-weight: 600;
     margin-bottom: 25px;
-    color: #2C7F67; /* verde do layout */
+    color: #2C7F67;
 }
 
-/* ===========================
-   FORM
-=========================== */
 .perfil-form .form-control {
     border-radius: 10px;
     padding: 10px 14px;
@@ -299,9 +268,6 @@ body {
     box-shadow: 0 0 0 3px rgba(0, 255, 242, 0.25);
 }
 
-/* ===========================
-   BOTÕES
-=========================== */
 .perfil-actions {
     margin-top: 20px;
     display: flex;
@@ -337,37 +303,81 @@ body {
     background: #d1d5db;
 }
 
-/* ===========================
-   ANIMAÇÃO
-=========================== */
-@keyframes fadePerfil {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
 .foto-preview {
     width: 120px;
     height: 120px;
     border-radius: 12px;
     object-fit: cover;
     margin-top: 10px;
-}.avatar-lg {
-    border-radius: 50%;
 }
 
-.page-title {
-    font-size: 1.7rem;
+/* ============================================================
+   CARDS DE LISTAGEM (CRUD)
+============================================================ */
+.card-list {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: 0.25s ease;
+}
+
+.card-list:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0,0,0,0.12);
+}
+
+.card-title {
+    font-size: 1.15rem;
     font-weight: 600;
-    color: #1e2a3a;
+    color: #0b1a33;
 }
 
-.label-title {
+.card-meta {
     font-size: 0.9rem;
-    font-weight: 600;
-    color: #808080;
+    color: #6c757d;
 }
 
-.value {
-    font-size: 0.95rem;
-    color: #1a1a1a;
-    margin-top: 2px;
+.card-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+}
+
+/* botões */
+.btn-outline-action {
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: .85rem;
+    border: 1px solid var(--turquesa);
+    color: var(--turquesa);
+    background: transparent;
+    transition: 0.2s;
+}
+
+.btn-outline-action:hover {
+    background: var(--turquesa);
+    color: #fff;
+}
+
+.btn-delete {
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: .85rem;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    background: transparent;
+}
+
+.btn-delete:hover {
+    background: #e74c3c;
+    color: #fff;
+}
+
+/* ============================================================
+   ANIMAÇÕES
+============================================================ */
+@keyframes fadePerfil {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
 }

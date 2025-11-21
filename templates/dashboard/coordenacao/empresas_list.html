@@ -1,0 +1,30 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block conteudo %}
+
+<h2 class="mb-4">Gerenciar Empresas</h2>
+
+<div class="row g-3">
+    {% for e in empresas %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card-list">
+
+            <div class="card-title">{{ e.nome_empresa }}</div>
+            <div class="card-meta">Cidade: {{ e.cidade }}</div>
+            <div class="card-meta">Telefone: {{ e.telefone }}</div>
+
+            <div class="card-actions">
+                <a href="{% url 'dashboard:empresa_editar' e.id %}" class="btn-outline-action">
+                    <i class="bi bi-pencil"></i> Editar
+                </a>
+
+                <a href="{% url 'dashboard:empresa_excluir' e.id %}" class="btn-delete">
+                    <i class="bi bi-trash"></i> Excluir
+                </a>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

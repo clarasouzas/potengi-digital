@@ -1,0 +1,31 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block conteudo %}
+
+<h2 class="mb-4">Gerenciar Usuários</h2>
+
+<div class="row g-3">
+    {% for u in usuarios %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card-list">
+
+            <div class="card-title">{{ u.email }}</div>
+            <div class="card-meta">
+                Tipo: {{ u.get_tipo_display }}
+            </div>
+
+            <div class="card-actions">
+                <a href="{% url 'dashboard:usuario_editar' u.id %}" class="btn-outline-action">
+                    <i class="bi bi-pencil"></i> Editar
+                </a>
+
+                <a href="{% url 'dashboard:usuario_excluir' u.id %}" class="btn-delete">
+                    <i class="bi bi-trash"></i> Excluir
+                </a>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

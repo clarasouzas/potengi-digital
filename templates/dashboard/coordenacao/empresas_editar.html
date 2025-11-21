@@ -1,0 +1,20 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load crispy_forms_tags %}
+
+{% block conteudo %}
+<h2 class="mb-4">Editar Empresa</h2>
+
+<div class="card-list p-4">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <button class="btn-outline-action mt-3" type="submit">
+            <i class="bi bi-check2"></i> Salvar
+        </button>
+        <a href="{% url 'dashboard:usuarios' %}" class="btn-delete mt-3">
+            Cancelar
+        </a>
+    </form>
+</div>
+{% endblock %}

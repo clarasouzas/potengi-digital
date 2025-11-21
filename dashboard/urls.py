@@ -6,7 +6,7 @@ app_name = "dashboard"
 urlpatterns = [
 
     # ======================================
-    # REDIRECIONAMENTO APÓS LOGIN
+    # PÓS-LOGIN
     # ======================================
     path("", views.redirecionar_dashboard, name="inicio"),
 
@@ -29,16 +29,25 @@ urlpatterns = [
     # COORDENAÇÃO
     # ======================================
     path("coordenacao/", views.coordenacao_painel, name="coordenacao_painel"),
-    path("coordenacao/aprovar-alunos/", views.aprovar_alunos, name="aprovar_alunos"),
-    path("coordenacao/aprovar-empresas/", views.aprovar_empresas, name="aprovar_empresas"),
-    path("coordenacao/aprovar-vagas/", views.aprovar_vagas, name="aprovar_vagas"),
-    path("coordenacao/usuarios/", views.usuarios, name="usuarios"),
-    path("coordenacao/relatorios/", views.relatorios, name="relatorios"),
 
-    # ======================================
-    # EDITAR PERFIL
-    # ======================================
-    path("perfil/editar/", views.editar_perfil, name="editar_perfil"),
+    path("coordenacao/aprovar_alunos/", views.aprovar_alunos, name="aprovar_alunos"),
+    path("coordenacao/aprovar_empresas/", views.aprovar_empresas, name="aprovar_empresas"),
+    path("coordenacao/aprovar_vagas/", views.aprovar_vagas, name="aprovar_vagas"),
+
+    # Gerenciar usuários
+    path("coordenacao/usuarios/", views.usuarios, name="usuarios"),
+    path("coordenacao/usuarios/<int:user_id>/editar/", views.coordenacao_usuario_editar, name="usuario_editar"),
+    path("coordenacao/usuarios/<int:user_id>/excluir/", views.coordenacao_usuario_excluir, name="usuario_excluir"),
+
+    # Gerenciar empresas
+    path("coordenacao/empresas/", views.coordenacao_empresas, name="empresas"),
+    path("coordenacao/empresas/<int:empresa_id>/editar/", views.coordenacao_empresa_editar, name="empresa_editar"),
+    path("coordenacao/empresas/<int:empresa_id>/excluir/", views.coordenacao_empresa_excluir, name="empresa_excluir"),
+
+    # Perfil
     path("perfil/", views.meu_perfil, name="perfil"),
+    path("perfil/editar/", views.editar_perfil, name="editar_perfil"),
+
+    path("coordenacao/relatorios/", views.relatorios, name="relatorios"),
 
 ]

@@ -1,0 +1,32 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block conteudo %}
+
+<h2 class="mb-4">Aprovar Vagas</h2>
+
+{% if vagas %}
+<div class="row g-3">
+    {% for v in vagas %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card-list">
+            <div class="card-title">{{ v.titulo }}</div>
+            <div class="card-meta">Empresa: {{ v.empresa.nome_empresa }}</div>
+            <div class="card-meta">Status: {{ v.status }}</div>
+
+            <div class="card-actions">
+                <a href="#" class="btn-outline-action">
+                    <i class="bi bi-check-circle"></i> Aprovar
+                </a>
+                <a href="#" class="btn-delete">
+                    <i class="bi bi-x-circle"></i> Reprovar
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<p class="text-muted">Nenhuma vaga aguardando aprovação.</p>
+{% endif %}
+
+{% endblock %}
