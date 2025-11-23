@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
+from usuarios.models import Aluno
+
 
 from .models import (
     Vaga,
@@ -12,6 +14,7 @@ from .models import (
     AreaAtuacao,
     PerfilFormacao,
     Feature,
+    
 )
 from .forms import VagaForm, CandidaturaForm, ContatoForm
 from usuarios.models import Empresa, Usuario
@@ -166,3 +169,13 @@ def para_empresas(request):
         "home": home,
         "features": features,
     })
+@login_required
+def explorar_perfis(request):
+    if request.user.tipo not in ["coordenador", "empresa"]:
+        return redirect('linkif:index')  # ou homepage
+
+    alunos = Aluno.objects.all()
+    return render(request, "linkif/explorar.html", {"alunos": alunos})
+
+
+

@@ -29,4 +29,5 @@ urlpatterns = [
     
     # candidatura (aluno precisa estar logado)
     path("vagas/<int:vaga_id>/candidatar/", views.candidatar_vaga, name="candidatar_vaga"),
+    path("explorar/", views.explorar_perfis, name="explorar"),
 ]

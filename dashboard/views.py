@@ -418,3 +418,5 @@ def relatorios(request):
         "foto": foto,
         "icone": icone,
     })
+
+

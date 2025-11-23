@@ -49,5 +49,5 @@ urlpatterns = [
     path("perfil/editar/", views.editar_perfil, name="editar_perfil"),
 
     path("coordenacao/relatorios/", views.relatorios, name="relatorios"),
-
+   
 ]
