@@ -130,7 +130,8 @@ a:hover { text-decoration: underline; }
   background: transparent;
   border-color: #205072;
 }
-.btn-entrar:hover {
+.btn-entrar:hover,
+.btn-auth:hover {
   background: #205072;
   color: #fff;
   transform: translateY(-2px);
@@ -148,6 +149,16 @@ a:hover { text-decoration: underline; }
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(32,80,114,0.25);
   color: #fff;
+}
+
+/* botão “Entrar com...” — vazado (outline) azul petróleo e tamanho menor */
+.btn-auth {
+  color: #205072;
+  background: transparent;
+  border-color: #205072;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.90rem;
+  border-radius: 1rem;
 }
 
 /* ícones opcionais */
