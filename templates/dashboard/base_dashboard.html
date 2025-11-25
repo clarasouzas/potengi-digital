@@ -27,79 +27,88 @@
         </button>
 
         <!-- LOGO NO TOPO -->
-         <a href="{% url 'linkif:index' %}">
+        <a href="{% url 'linkif:index' %}">
             <img src="{% static 'assets/img/logo.png' %}" 
              alt="LinkIF" 
              class="topbar-logo">
-         </a>
-        
-
+        </a>
     </div>
-<div class="right-area">
-    <div class="dropdown">
-         <a data-bs-toggle="dropdown" class="d-flex align-items-center pointer">
 
-            {% if foto %}
-                <!-- FOTO DO PERFIL -->
-                <img src="{{ foto }}" class="avatar">
-            {% else %}
-                <!-- ÍCONE QUANDO NÃO HÁ FOTO -->
-                <i class="{{ icone }} avatar-icon"></i>
-            {% endif %}
+    <div class="right-area">
+        <div class="dropdown">
+            <a data-bs-toggle="dropdown" class="d-flex align-items-center pointer">
 
-        </a>
-    <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
+                {% if foto %}
+                    <img src="{{ foto }}" class="avatar">
+                {% else %}
+                    <i class="{{ icone }} avatar-icon"></i>
+                {% endif %}
+            </a>
 
-    <!-- Saudação -->
-    <li class="dropdown-header">
-        Olá, 
-        {% if user.tipo == "aluno" %}
-            {{ user.aluno.nome }}
-        {% elif user.tipo == "empresa" %}
-            {{ user.empresa.nome_empresa }}
-        {% elif user.tipo == "coordenador" %}
-            {{ user.coordenador.nome }}
-        {% else %}
-            {{ user.email }}
-        {% endif %}
-    </li>
+            <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
+                <li class="dropdown-header">
+                    Olá,
+                    {% if user.tipo == "aluno" %}
+                        {{ user.aluno.nome }}
+                    {% elif user.tipo == "empresa" %}
+                        {{ user.empresa.nome_empresa }}
+                    {% elif user.tipo == "coordenador" %}
+                        {{ user.coordenador.nome }}
+                    {% else %}
+                        {{ user.email }}
+                    {% endif %}
+                </li>
 
-    <!-- Ir para Meu Perfil -->
-    <li>
-        <a href="{% url 'dashboard:perfil' %}" class="dropdown-item custom-dropdown-item">
-            <i class="bi bi-person me-2"></i> Meu Perfil
-        </a>
-    </li>
+                <li>
+                    <a href="{% url 'dashboard:perfil' %}" class="dropdown-item custom-dropdown-item">
+                        <i class="bi bi-person me-2"></i> Meu Perfil
+                    </a>
+                </li>
 
-    
-
-    <!-- Sair -->
-    <li>
-        <form method="post" action="{% url 'usuarios:logout' %}">
-            {% csrf_token %}
-            <button class="dropdown-item custom-dropdown-item">
-                <i class="bi bi-box-arrow-right me-2"></i> Sair
-            </button>
-        </form>
-    </li>
-
-</ul>
-
-</div>
-
+                <li>
+                    <form method="post" action="{% url 'usuarios:logout' %}">
+                        {% csrf_token %}
+                        <button class="dropdown-item custom-dropdown-item">
+                            <i class="bi bi-box-arrow-right me-2"></i> Sair
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 
 </header>
 
+<!-- ===================== ALERTAS (global-alert) ===================== -->
+{% if messages %}
+<div class="global-alert-container">
+    {% for message in messages %}
+        <div class="
+            global-alert
+            {% if 'success' in message.tags %}success{% endif %}
+            {% if 'error' in message.tags %}error{% endif %}
+            {% if 'warning' in message.tags %}warning{% endif %}
+            {% if 'info' in message.tags %}info{% endif %}
+        ">
+            <span>
+                <i class="bi bi-info-circle me-2"></i>
+                {{ message }}
+            </span>
+            <span class="close-btn" onclick="this.parentElement.remove()">×</span>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<!-- WRAPPER -->
 <div class="wrapper">
 
     <!-- ========== SIDEBAR ========== -->
     <aside id="sidebar" class="sidebar">
-        <div class="sidebar-section-title">
-            VISÃO GERAL
-        </div>
-       
-        <!-- ITENS DO MENÚ -->
+
+        <div class="sidebar-section-title">VISÃO GERAL</div>
+
         {% for url_name, icon, label in menu %}
         <a href="{% url url_name %}" class="sidebar-item">
             <i class="{{ icon }} me-2"></i>
@@ -109,7 +118,6 @@
 
         <hr class="divider">
 
-        <!-- VOLTAR PARA O SITE PÚBLICO -->
         <a href="{% url 'linkif:index' %}" class="sidebar-item">
             <i class="bi bi-arrow-left-circle me-2"></i>
             <span class="label">Voltar ao Site</span>

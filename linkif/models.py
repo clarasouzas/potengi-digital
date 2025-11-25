@@ -4,20 +4,6 @@ from django.utils import timezone
 from usuarios.models import Empresa, Coordenador
 
 
-# =====================================================
-# ÁREA DE ATUAÇÃO
-# =====================================================
-class AreaAtuacao(models.Model):
-    nome = models.CharField("Nome da área", max_length=100, unique=True)
-
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        verbose_name = "Área de Atuação"
-        verbose_name_plural = "Áreas de Atuação"
-        ordering = ["nome"]
-
 
 # =====================================================
 # VAGAS
@@ -45,20 +31,12 @@ class Vaga(models.Model):
     titulo = models.CharField("Título da vaga", max_length=150)
     descricao = models.TextField("Descrição detalhada da vaga")
     requisitos = models.TextField("Requisitos", blank=True)
-    area = models.ForeignKey(
-        AreaAtuacao,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name="Área de atuação"
-    )
     tipo = models.CharField("Tipo de vaga", max_length=20, choices=TIPO_CHOICES, default='estagio')
     remuneracao = models.DecimalField("Remuneração (R$)", max_digits=10, decimal_places=2, null=True, blank=True)
     cidade = models.CharField("Cidade", max_length=120, blank=True)
-    estado = models.CharField("Estado", max_length=60, blank=True)
     bairro = models.CharField("Bairro", max_length=120, blank=True)
     status = models.CharField("Status", max_length=20, choices=STATUS_CHOICES, default='pendente')
-    data_publicacao = models.DateTimeField("Data de publicação", default=timezone.now)
+    data_publicacao = models.DateTimeField(null=True, blank=True)
     data_inicio = models.DateField("Data de início", null=True, blank=True)
     data_fim = models.DateField("Data de término", null=True, blank=True)
     aprovado_por = models.ForeignKey(

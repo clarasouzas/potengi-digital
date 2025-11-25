@@ -967,45 +967,138 @@ footer {
 }
 
 
+/* ============================
+   FILTRO LATERAL
+============================ */
 
-/* =======================================
-   VAGAS / CARDS / PAGINAÇÃO
-======================================= */
-/* PÁGINA DE VAGAS */
-.vagas-section {
-  background-color: #f9f9f9;
+.filtro-box {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.08);
 }
 
-.filtro-card {
-  border: 1px solid rgba(0, 0, 0, 0.05);
+.titulo-filtro {
+    font-weight: 600;
+    color: #003c46;
+    margin-bottom: 20px;
 }
 
-.vaga-status-container {
-  font-size: 0.85rem;
+.filtro-box label {
+    font-weight: 500;
+    font-size: 14px;
 }
 
-.vaga-status {
-  font-weight: 600;
+.filtro-box input,
+.filtro-box select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dce2e5;
+    border-radius: 10px;
+    background: #fafafa;
+    font-size: 14px;
 }
 
-.card .btn-detalhes {
-  border-radius: 8px;
-  font-weight: 600;
-  transition: 0.3s;
+.btn-filtrar {
+    background: #006f77;
+    padding: 10px 0;
+    border-radius: 8px;
+    border: none;
+    color: #fff;
+    font-weight: 500;
 }
 
-.card .btn-detalhes:hover {
-  background-color: #183e5a;
+.btn-filtrar:hover {
+    opacity: .9;
 }
 
-@media (max-width: 768px) {
-  .vagas-section h2 {
-    font-size: 1.5rem;
-  }
-  .filtro-card {
-    margin-bottom: 25px;
-  }
+
+
+/* ============================
+   CARDS DE VAGAS
+============================ */
+
+.vaga-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 22px;
+    position: relative;
+    box-shadow: 0 8px 26px rgba(0,0,0,.08);
+    transition: .2s ease;
 }
+
+.vaga-card:hover {
+    transform: translateY(-3px);
+}
+
+/* Badge verde superior */
+.vaga-tag {
+    background: #d2ffee;
+    color: #007f6e;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    position: absolute;
+    top: -10px;
+    left: 20px;
+}
+
+/* Data no canto superior direito */
+.vaga-data {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #777;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Título */
+.vaga-titulo {
+    margin-top: 25px;
+    color: #003c46;
+    font-weight: 700;
+    font-size: 15px;
+    min-height: 48px;
+}
+
+/* Lista de infos */
+.vaga-lista {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.vaga-lista li {
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: #444;
+}
+
+.vaga-lista i {
+    color: #00a388;
+    margin-right: 6px;
+}
+
+/* Botão */
+.vaga-btn {
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    padding: 7px 0;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #00a388;
+    color: #00a388;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.vaga-btn:hover {
+    background: #00a388;
+    color: white;
+}
+
 
 /* =======================================
    SEÇÃO DE CONTATO — estilo LinkIF

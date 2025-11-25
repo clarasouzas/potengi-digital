@@ -1,12 +1,16 @@
+# dashboard/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.apps import apps
+from django.utils import timezone
+from linkif.forms import VagaForm
 from usuarios.forms import (
     AlunoEditForm, EmpresaEditForm, CoordenadorEditForm,
     UsuarioEditFormSimples
 )
 
-# Models
+# Models (carregados dinamicamente para evitar import cycles)
 User = apps.get_model("usuarios", "Usuario")
 Aluno = apps.get_model("usuarios", "Aluno")
 Empresa = apps.get_model("usuarios", "Empresa")
@@ -17,25 +21,25 @@ Candidatura = apps.get_model("linkif", "Candidatura")
 
 
 # ======================================================================
-# AVATAR (foto ou ícone)
+# AVATAR
 # ======================================================================
 def get_avatar_data(user):
-
-    if user.tipo == "aluno":
-        perfil = user.aluno
-        foto = perfil.foto.url if perfil.foto else None
+    try:
+        if user.tipo == "aluno":
+            perfil = user.aluno
+            foto = perfil.foto.url if perfil.foto else None
+            icone = "bi-person-circle"
+        elif user.tipo == "empresa":
+            perfil = user.empresa
+            foto = perfil.foto.url if hasattr(perfil, "foto") and perfil.foto else None
+            icone = "bi-building"
+        else:
+            perfil = user.coordenador
+            foto = perfil.foto.url if hasattr(perfil, "foto") and perfil.foto else None
+            icone = "bi-person-badge"
+    except:
+        foto = None
         icone = "bi-person-circle"
-
-    elif user.tipo == "empresa":
-        perfil = user.empresa
-        foto = perfil.foto.url if hasattr(perfil, "foto") and perfil.foto else None
-        icone = "bi-building"
-
-    else:
-        perfil = user.coordenador
-        foto = perfil.foto.url if hasattr(perfil, "foto") and perfil.foto else None
-        icone = "bi-person-badge"
-
     return foto, icone
 
 
@@ -73,18 +77,15 @@ def get_menu(user):
 
 
 # ======================================================================
-# DASHBOARD DEFAULT
+# REDIRECIONAMENTO PÓS-LOGIN
 # ======================================================================
 @login_required
 def redirecionar_dashboard(request):
     u = request.user
-
     if u.tipo == "aluno":
         return redirect("dashboard:aluno_painel")
-
     if u.tipo == "empresa":
         return redirect("dashboard:empresa_painel")
-
     return redirect("dashboard:coordenacao_painel")
 
 
@@ -94,7 +95,7 @@ def redirecionar_dashboard(request):
 @login_required
 def aluno_painel(request):
     foto, icone = get_avatar_data(request.user)
-    vagas = Vaga.objects.filter(status="aprovada")[:6]
+    vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")[:6]
 
     return render(request, "dashboard/aluno/painel.html", {
         "menu": get_menu(request.user),
@@ -107,7 +108,7 @@ def aluno_painel(request):
 @login_required
 def aluno_vagas(request):
     foto, icone = get_avatar_data(request.user)
-    vagas = Vaga.objects.filter(status="aprovada")
+    vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
 
     return render(request, "dashboard/aluno/vagas.html", {
         "menu": get_menu(request.user),
@@ -120,7 +121,7 @@ def aluno_vagas(request):
 @login_required
 def aluno_candidaturas(request):
     foto, icone = get_avatar_data(request.user)
-    lista = Candidatura.objects.filter(aluno=request.user.aluno)
+    lista = Candidatura.objects.filter(aluno=request.user.aluno).order_by("-data_candidatura")
 
     return render(request, "dashboard/aluno/candidaturas.html", {
         "menu": get_menu(request.user),
@@ -131,12 +132,12 @@ def aluno_candidaturas(request):
 
 
 # ======================================================================
-# EMPRESA
+# EMPRESA — VAGAS
 # ======================================================================
 @login_required
 def empresa_painel(request):
     foto, icone = get_avatar_data(request.user)
-    vagas = Vaga.objects.filter(empresa=request.user.empresa)
+    vagas = Vaga.objects.filter(empresa=request.user.empresa).order_by("-id")
 
     return render(request, "dashboard/empresa/painel.html", {
         "menu": get_menu(request.user),
@@ -149,7 +150,7 @@ def empresa_painel(request):
 @login_required
 def empresa_vagas(request):
     foto, icone = get_avatar_data(request.user)
-    vagas = Vaga.objects.filter(empresa=request.user.empresa)
+    vagas = Vaga.objects.filter(empresa=request.user.empresa).order_by("-id")
 
     return render(request, "dashboard/empresa/minhas_vagas.html", {
         "menu": get_menu(request.user),
@@ -158,22 +159,76 @@ def empresa_vagas(request):
         "icone": icone,
     })
 
-
 @login_required
 def empresa_cadastrar_vaga(request):
     foto, icone = get_avatar_data(request.user)
 
+    if not request.user.is_approved:
+        messages.warning(request, "Você ainda não pode cadastrar vagas. Aguarde aprovação.")
+        return redirect("dashboard:empresa_painel")
+
+    form = VagaForm(request.POST or None)
+
     if request.method == "POST":
-        Vaga.objects.create(
-            titulo=request.POST.get("titulo"),
-            descricao=request.POST.get("descricao"),
-            empresa=request.user.empresa,
-            status="pendente",
-        )
-        return redirect("dashboard:empresa_vagas")
+        if form.is_valid():
+            vaga = form.save(commit=False)
+            vaga.empresa = request.user.empresa
+            vaga.status = "pendente"
+            vaga.data_publicacao = None
+            vaga.save()
+
+            messages.success(request, "Vaga cadastrada e enviada para aprovação.")
+            return redirect("dashboard:empresa_vagas")
+
+        messages.error(request, "Preencha todos os campos obrigatórios.")
 
     return render(request, "dashboard/empresa/cadastrar_vaga.html", {
         "menu": get_menu(request.user),
+        "foto": foto,
+        "icone": icone,
+        "form": form
+    })
+
+@login_required
+def empresa_editar_vaga(request, vaga_id):
+    foto, icone = get_avatar_data(request.user)
+    vaga = get_object_or_404(Vaga, id=vaga_id, empresa=request.user.empresa)
+
+    if request.method == "POST":
+        titulo = request.POST.get("titulo", "").strip()
+        descricao = request.POST.get("descricao", "").strip()
+
+        if not titulo or not descricao:
+            messages.error(request, "Preencha todos os campos obrigatórios.")
+        else:
+            vaga.titulo = titulo
+            vaga.descricao = descricao
+            vaga.status = "pendente"
+            vaga.save()
+            messages.success(request, "Vaga atualizada e reenviada para aprovação.")
+            return redirect("dashboard:empresa_vagas")
+
+    return render(request, "dashboard/empresa/editar_vaga.html", {
+        "menu": get_menu(request.user),
+        "vaga": vaga,
+        "foto": foto,
+        "icone": icone,
+    })
+
+
+@login_required
+def empresa_excluir_vaga(request, vaga_id):
+    foto, icone = get_avatar_data(request.user)
+    vaga = get_object_or_404(Vaga, id=vaga_id, empresa=request.user.empresa)
+
+    if request.method == "POST":
+        vaga.delete()
+        messages.success(request, "Vaga excluída com sucesso.")
+        return redirect("dashboard:empresa_vagas")
+
+    return render(request, "dashboard/empresa/confirmar_exclusao.html", {
+        "menu": get_menu(request.user),
+        "vaga": vaga,
         "foto": foto,
         "icone": icone,
     })
@@ -182,23 +237,22 @@ def empresa_cadastrar_vaga(request):
 @login_required
 def empresa_candidaturas(request):
     foto, icone = get_avatar_data(request.user)
-    lista = Candidatura.objects.filter(vaga__empresa=request.user.empresa)
+    candidaturas = Candidatura.objects.filter(vaga__empresa=request.user.empresa).order_by("-data_candidatura")
 
     return render(request, "dashboard/empresa/candidaturas_recebidas.html", {
         "menu": get_menu(request.user),
-        "candidaturas": lista,
+        "candidaturas": candidaturas,
         "foto": foto,
         "icone": icone,
     })
 
 
 # ======================================================================
-# COORDENAÇÃO – Visão Geral
+# COORDENAÇÃO — PAINEL PRINCIPAL
 # ======================================================================
 @login_required
 def coordenacao_painel(request):
     foto, icone = get_avatar_data(request.user)
-
     return render(request, "dashboard/coordenacao/painel.html", {
         "menu": get_menu(request.user),
         "foto": foto,
@@ -207,12 +261,16 @@ def coordenacao_painel(request):
 
 
 # ======================================================================
-# APROVAÇÕES
+# COORDENAÇÃO — APROVAÇÃO DE ALUNOS
 # ======================================================================
 @login_required
 def aprovar_alunos(request):
     foto, icone = get_avatar_data(request.user)
-    alunos = User.objects.filter(tipo="aluno", is_approved=False)
+
+    alunos = User.objects.filter(
+        tipo="aluno",
+        is_approved=False
+    ).order_by("id")
 
     return render(request, "dashboard/coordenacao/aprovar_alunos.html", {
         "menu": get_menu(request.user),
@@ -222,10 +280,17 @@ def aprovar_alunos(request):
     })
 
 
+# ======================================================================
+# COORDENAÇÃO — APROVAÇÃO DE EMPRESAS
+# ======================================================================
 @login_required
 def aprovar_empresas(request):
     foto, icone = get_avatar_data(request.user)
-    empresas = User.objects.filter(tipo="empresa", is_approved=False)
+
+    empresas = User.objects.filter(
+        tipo="empresa",
+        is_approved=False
+    ).order_by("id")
 
     return render(request, "dashboard/coordenacao/aprovar_empresas.html", {
         "menu": get_menu(request.user),
@@ -235,10 +300,16 @@ def aprovar_empresas(request):
     })
 
 
+# ======================================================================
+# COORDENAÇÃO — APROVAÇÃO DE VAGAS
+# ======================================================================
 @login_required
 def aprovar_vagas(request):
     foto, icone = get_avatar_data(request.user)
-    vagas = Vaga.objects.filter(status="pendente")
+
+    vagas = Vaga.objects.filter(
+        status="pendente"
+    ).order_by("-data_publicacao", "-id")
 
     return render(request, "dashboard/coordenacao/aprovar_vagas.html", {
         "menu": get_menu(request.user),
@@ -249,56 +320,77 @@ def aprovar_vagas(request):
 
 
 # ======================================================================
+# COORDENAÇÃO — AÇÕES EM VAGAS
+# ======================================================================
+@login_required
+def aprovar_vaga_action(request, vaga_id):
+    vaga = get_object_or_404(Vaga, id=vaga_id)
+
+    vaga.status = "aprovada"
+    vaga.data_publicacao = timezone.now()  # publica oficialmente
+    vaga.aprovado_por = getattr(request.user, "coordenador", None)
+    vaga.save()
+
+    messages.success(request, "A vaga foi aprovada e publicada com sucesso!")
+    return redirect("dashboard:aprovar_vagas")
+
+
+@login_required
+def reprovar_vaga_action(request, vaga_id):
+    vaga = get_object_or_404(Vaga, id=vaga_id)
+
+    vaga.status = "reprovada"
+    vaga.save()
+
+    messages.warning(request, "A vaga foi reprovada com sucesso.")
+    return redirect("dashboard:aprovar_vagas")
+
+
+# ======================================================================
 # PERFIL
 # ======================================================================
 @login_required
 def meu_perfil(request):
     foto, icone = get_avatar_data(request.user)
 
-    user = request.user
-
-    if user.tipo == "aluno":
-        perfil = user.aluno
-    elif user.tipo == "empresa":
-        perfil = user.empresa
+    if request.user.tipo == "aluno":
+        perfil = request.user.aluno
+    elif request.user.tipo == "empresa":
+        perfil = request.user.empresa
     else:
-        perfil = user.coordenador
+        perfil = request.user.coordenador
 
     return render(request, "dashboard/meu_perfil.html", {
         "menu": get_menu(request.user),
         "perfil": perfil,
-        "user": user,
         "foto": foto,
         "icone": icone,
+        "user": request.user,
     })
 
 
 @login_required
 def editar_perfil(request):
-
     user = request.user
     foto, icone = get_avatar_data(request.user)
 
-    # Form correto
     if user.tipo == "aluno":
         perfil = user.aluno
         form_class = AlunoEditForm
-
     elif user.tipo == "empresa":
         perfil = user.empresa
         form_class = EmpresaEditForm
-
     else:
         perfil = user.coordenador
         form_class = CoordenadorEditForm
 
-    # POST
     if request.method == "POST":
         form = form_class(request.POST, request.FILES, instance=perfil)
         if form.is_valid():
             form.save()
+            messages.success(request, "Perfil atualizado com sucesso.")
             return redirect("dashboard:meu_perfil")
-
+        messages.error(request, "Corrija os erros no formulário.")
     else:
         form = form_class(instance=perfil)
 
@@ -312,23 +404,12 @@ def editar_perfil(request):
 
 
 # ======================================================================
-# CRUD — COORDENAÇÃO → USUÁRIOS
+# USUÁRIOS — COORDENAÇÃO
 # ======================================================================
-@login_required
-def usuarios(request):
-    foto, icone = get_avatar_data(request.user)
-    lista = User.objects.all()
-
-    return render(request, "dashboard/coordenacao/usuarios_list.html", {
-        "menu": get_menu(request.user),
-        "usuarios": lista,
-        "foto": foto,
-        "icone": icone,
-    })
 @login_required
 def coordenacao_usuarios(request):
     foto, icone = get_avatar_data(request.user)
-    lista = User.objects.all()
+    lista = User.objects.all().order_by("-id")
 
     return render(request, "dashboard/coordenacao/usuarios_list.html", {
         "menu": get_menu(request.user),
@@ -341,23 +422,23 @@ def coordenacao_usuarios(request):
 @login_required
 def coordenacao_usuario_editar(request, user_id):
     foto, icone = get_avatar_data(request.user)
-
     usuario = get_object_or_404(User, id=user_id)
 
-    from usuarios.forms import UsuarioEditFormSimples
     form = UsuarioEditFormSimples(request.POST or None, instance=usuario)
 
     if request.method == "POST":
         if form.is_valid():
             form.save()
+            messages.success(request, "Usuário atualizado com sucesso.")
             return redirect("dashboard:usuarios")
+        messages.error(request, "Corrija os erros no formulário.")
 
     return render(request, "dashboard/coordenacao/usuarios_editar.html", {
         "menu": get_menu(request.user),
         "form": form,
+        "usuario": usuario,
         "foto": foto,
         "icone": icone,
-        "usuario": usuario,
     })
 
 
@@ -365,16 +446,17 @@ def coordenacao_usuario_editar(request, user_id):
 def coordenacao_usuario_excluir(request, user_id):
     usuario = get_object_or_404(User, id=user_id)
     usuario.delete()
+    messages.success(request, "Usuário removido com sucesso.")
     return redirect("dashboard:usuarios")
 
 
 # ======================================================================
-# CRUD — COORDENAÇÃO → EMPRESAS
+# EMPRESAS — COORDENAÇÃO
 # ======================================================================
 @login_required
 def coordenacao_empresas(request):
     foto, icone = get_avatar_data(request.user)
-    empresas = Empresa.objects.all()
+    empresas = Empresa.objects.all().order_by("-id")
 
     return render(request, "dashboard/coordenacao/empresas_list.html", {
         "menu": get_menu(request.user),
@@ -387,14 +469,15 @@ def coordenacao_empresas(request):
 @login_required
 def coordenacao_empresa_editar(request, empresa_id):
     foto, icone = get_avatar_data(request.user)
-
     empresa = get_object_or_404(Empresa, id=empresa_id)
     form = EmpresaEditForm(request.POST or None, request.FILES or None, instance=empresa)
 
     if request.method == "POST":
         if form.is_valid():
             form.save()
+            messages.success(request, "Empresa atualizada com sucesso.")
             return redirect("dashboard:empresas")
+        messages.error(request, "Corrija os erros no formulário.")
 
     return render(request, "dashboard/coordenacao/empresas_editar.html", {
         "menu": get_menu(request.user),
@@ -409,7 +492,13 @@ def coordenacao_empresa_editar(request, empresa_id):
 def coordenacao_empresa_excluir(request, empresa_id):
     empresa = get_object_or_404(Empresa, id=empresa_id)
     empresa.delete()
+    messages.success(request, "Empresa removida com sucesso.")
     return redirect("dashboard:empresas")
+
+
+# ======================================================================
+# RELATÓRIOS
+# ======================================================================
 @login_required
 def relatorios(request):
     foto, icone = get_avatar_data(request.user)

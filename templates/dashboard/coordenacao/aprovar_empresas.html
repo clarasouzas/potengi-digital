@@ -8,14 +8,19 @@
     {% for e in empresas %}
     <div class="col-12 col-md-6 col-lg-4">
         <div class="card-list">
+            
             <div class="card-title">{{ e.empresa.nome_empresa }}</div>
             <div class="card-meta">CNPJ: {{ e.empresa.cnpj }}</div>
             <div class="card-meta">Cidade: {{ e.empresa.cidade }}</div>
 
             <div class="card-actions">
-                <a href="{% url 'dashboard:usuario_editar' e.id %}" class="btn-outline-action">
+
+                <!-- BOTÃO APROVAR EMPRESA -->
+                <a href="{% url 'dashboard:aprovar_empresa_action' e.id %}" 
+                   class="btn-outline-action">
                     <i class="bi bi-check-circle"></i> Aprovar
                 </a>
+
             </div>
         </div>
     </div>

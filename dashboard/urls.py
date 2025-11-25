@@ -24,6 +24,8 @@ urlpatterns = [
     path("empresa/vagas/", views.empresa_vagas, name="empresa_vagas"),
     path("empresa/vagas/cadastrar/", views.empresa_cadastrar_vaga, name="empresa_cadastrar_vaga"),
     path("empresa/candidaturas/", views.empresa_candidaturas, name="empresa_candidaturas"),
+    path("empresa/vagas/editar/<int:vaga_id>/", views.empresa_editar_vaga, name="empresa_editar_vaga"),
+    path("empresa/vagas/excluir/<int:vaga_id>/", views.empresa_excluir_vaga, name="empresa_excluir_vaga"),
 
     # ======================================
     # COORDENAÇÃO
@@ -34,8 +36,12 @@ urlpatterns = [
     path("coordenacao/aprovar_empresas/", views.aprovar_empresas, name="aprovar_empresas"),
     path("coordenacao/aprovar_vagas/", views.aprovar_vagas, name="aprovar_vagas"),
 
+    # ações
+    path("coordenacao/vagas/<int:vaga_id>/aprovar/", views.aprovar_vaga_action, name="aprovar_vaga_action"),
+    path("coordenacao/vagas/<int:vaga_id>/reprovar/", views.reprovar_vaga_action, name="reprovar_vaga_action"),
+
     # Gerenciar usuários
-    path("coordenacao/usuarios/", views.usuarios, name="usuarios"),
+    path("coordenacao/usuarios/", views.coordenacao_usuarios, name="usuarios"),
     path("coordenacao/usuarios/<int:user_id>/editar/", views.coordenacao_usuario_editar, name="usuario_editar"),
     path("coordenacao/usuarios/<int:user_id>/excluir/", views.coordenacao_usuario_excluir, name="usuario_excluir"),
 

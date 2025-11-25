@@ -1,0 +1,74 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block titulo %}Minhas Vagas{% endblock %}
+
+{% block conteudo %}
+
+<h2 class="mb-4">
+    <i class="bi bi-briefcase me-2"></i>
+    Minhas Vagas
+</h2>
+
+<div class="row g-4">
+
+    {% for vaga in vagas %}
+    <div class="col-md-6 col-lg-4">
+    <div class="vaga-card">
+
+        <!-- CORTINA -->
+        <div class="vaga-card-top"></div>
+
+        <!-- OVERLAY DOS ÍCONES -->
+        <div class="vaga-overlay">
+
+            <a href="#" class="overlay-btn view">
+                <i class="bi-eye-fill"></i>
+            </a>
+
+            <a href="{% url 'dashboard:empresa_editar_vaga' vaga.id %}" 
+               class="overlay-btn edit">
+                <i class="bi-pencil-square"></i>
+            </a>
+
+            <a href="{% url 'dashboard:empresa_excluir_vaga' vaga.id %}" 
+               class="overlay-btn delete">
+                <i class="bi-trash-fill"></i>
+            </a>
+
+        </div>
+
+        <!-- CONTEÚDO NORMAL -->
+        <div class="vaga-card-content">
+
+            <div class="vaga-card-header">
+                <h5>{{ vaga.titulo }}</h5>
+
+                <span class="vaga-label 
+                    {% if vaga.status == 'aprovada' %} label-green
+                    {% elif vaga.status == 'pendente' %} label-yellow
+                    {% else %} label-red
+                    {% endif %}">
+                    {{ vaga.status|title }}
+                </span>
+            </div>
+
+
+            <p class="vaga-desc">
+                {{ vaga.descricao|truncatewords:22 }}
+            </p>
+
+            
+
+        </div>
+
+    </div>
+</div>
+
+    {% empty %}
+    <p class="text-muted">Você ainda não cadastrou nenhuma vaga.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

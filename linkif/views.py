@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.core.paginator import Paginator
+from .filters import VagaFilter
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
 from usuarios.models import Aluno
@@ -11,7 +13,6 @@ from .models import (
     Mensagem,
     SiteConfig,
     HomeContent,
-    AreaAtuacao,
     PerfilFormacao,
     Feature,
     
@@ -67,31 +68,27 @@ def index(request):
     })
 
 
-# ================================
-# LISTAGEM DE VAGAS PÚBLICAS
-# ================================
+
+
 def listar_vagas(request):
-    vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
-    areas = AreaAtuacao.objects.all()
+    # queryset inicial (somente vagas aprovadas)
+    vagas_qs = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
 
-    filtros = {
-        "titulo": request.GET.get("titulo"),
-        "area": request.GET.get("area"),
-        "cidade": request.GET.get("cidade"),
-        "tipo": request.GET.get("tipo"),
-    }
+    # aplica o filtro
+    filtro = VagaFilter(request.GET, queryset=vagas_qs)
 
-    if filtros["titulo"]:
-        vagas = vagas.filter(titulo__icontains=filtros["titulo"])
-    if filtros["area"]:
-        vagas = vagas.filter(area__nome__icontains=filtros["area"])
-    if filtros["cidade"]:
-        vagas = vagas.filter(cidade__icontains=filtros["cidade"])
-    if filtros["tipo"]:
-        vagas = vagas.filter(tipo__iexact=filtros["tipo"])
+    # queryset filtrado
+    vagas_filtradas = filtro.qs
 
-    return render(request, "linkif/vagas.html", {"vagas": vagas, "areas": areas})
+    # paginação
+    paginator = Paginator(vagas_filtradas, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
+    return render(request, "linkif/vagas.html", {
+        "vagas": page_obj,
+        "filtro": filtro,
+    })
 
 # ================================
 # CANDIDATURA
@@ -101,7 +98,14 @@ def listar_vagas(request):
 def candidatar_vaga(request, vaga_id):
     vaga = get_object_or_404(Vaga, id=vaga_id, status="aprovada")
 
+    # bloq aluno não aprovado
+    if not request.user.is_approved:
+        messages.error(request, "Seu cadastro ainda não foi aprovado pela coordenação.")
+        return redirect("linkif:listar_vagas")
+
     aluno = request.user.aluno
+
+    # já existe candidatura
     if Candidatura.objects.filter(vaga=vaga, aluno=aluno).exists():
         messages.warning(request, "Você já se candidatou a esta vaga.")
         return redirect("linkif:listar_vagas")
@@ -123,8 +127,6 @@ def candidatar_vaga(request, vaga_id):
         "form": form,
         "vaga": vaga,
     })
-
-
 # ================================
 # PERFIS DE FORMAÇÃO
 # ================================

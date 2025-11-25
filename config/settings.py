@@ -28,15 +28,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # APPS DO SEU PROJETO
+    #apps
     'usuarios',
     'linkif',
     'dashboard',
-
-    # Crispy Forms (Formulários Bonitos)
+    #forms
     'crispy_forms',
     'crispy_bootstrap5',
+    #filters
+    'django_filters',
 ]
 
 # Configurações do Crispy
