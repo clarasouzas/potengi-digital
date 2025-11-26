@@ -5,7 +5,7 @@
 
 {% block conteudo %}
 
-<h2 class="mb-4">
+<h2 class="mb-4 d-flex align-items-center">
     <i class="bi bi-briefcase me-2"></i>
     Minhas Vagas
 </h2>
@@ -14,59 +14,102 @@
 
     {% for vaga in vagas %}
     <div class="col-md-6 col-lg-4">
-    <div class="vaga-card">
+        <div class="vaga-card">
 
-        <!-- CORTINA -->
-        <div class="vaga-card-top"></div>
+            <!-- Capa superior -->
+            <div class="vaga-card-top"></div>
 
-        <!-- OVERLAY DOS ÍCONES -->
-        <div class="vaga-overlay">
+            <!-- Overlay com ações -->
+            <div class="vaga-overlay">
+                <!-- VER DETALHES (abre modal CSS) -->
+                <a href="#modal-vaga-{{ vaga.id }}" class="overlay-btn view">
+                    <i class="bi bi-eye-fill"></i>
+                </a>
 
-            <a href="#" class="overlay-btn view">
-                <i class="bi-eye-fill"></i>
-            </a>
+                <!-- EDITAR -->
+                <a href="{% url 'dashboard:empresa_editar_vaga' vaga.id %}" 
+                   class="overlay-btn edit">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
 
-            <a href="{% url 'dashboard:empresa_editar_vaga' vaga.id %}" 
-               class="overlay-btn edit">
-                <i class="bi-pencil-square"></i>
-            </a>
-
-            <a href="{% url 'dashboard:empresa_excluir_vaga' vaga.id %}" 
-               class="overlay-btn delete">
-                <i class="bi-trash-fill"></i>
-            </a>
-
-        </div>
-
-        <!-- CONTEÚDO NORMAL -->
-        <div class="vaga-card-content">
-
-            <div class="vaga-card-header">
-                <h5>{{ vaga.titulo }}</h5>
-
-                <span class="vaga-label 
-                    {% if vaga.status == 'aprovada' %} label-green
-                    {% elif vaga.status == 'pendente' %} label-yellow
-                    {% else %} label-red
-                    {% endif %}">
-                    {{ vaga.status|title }}
-                </span>
+                <!-- EXCLUIR -->
+                <a href="{% url 'dashboard:empresa_excluir_vaga' vaga.id %}" 
+                   class="overlay-btn delete">
+                    <i class="bi bi-trash-fill"></i>
+                </a>
             </div>
 
+            <!-- Conteúdo -->
+            <div class="vaga-card-content">
 
-            <p class="vaga-desc">
-                {{ vaga.descricao|truncatewords:22 }}
-            </p>
+                <div class="vaga-card-header">
+                    <h5 class="vaga-title">{{ vaga.titulo }}</h5>
 
-            
+                    <span class="vaga-label label-{{ vaga.status }}">
+                        {{ vaga.get_status_display }}
+                    </span>
+                </div>
+
+                <p class="vaga-desc">
+                    {{ vaga.descricao|truncatewords:22 }}
+                </p>
+
+            </div>
 
         </div>
-
     </div>
-</div>
+
+    <!-- ===========================
+         MODAL CSS-ONLY DA VAGA
+    ============================ -->
+    <div id="modal-vaga-{{ vaga.id }}" class="modal-vaga">
+
+        <div class="modal-content-vaga">
+
+            <!-- FECHAR MODAL -->
+            <a href="#" class="modal-close">
+                <i class="bi bi-x-lg"></i>
+            </a>
+
+            <h3 class="modal-title">{{ vaga.titulo }}</h3>
+
+            <p><strong>Status:</strong> {{ vaga.get_status_display }}</p>
+            <p><strong>Tipo:</strong> {{ vaga.get_tipo_display }}</p>
+            <p><strong>Modalidade:</strong> {{ vaga.get_modalidade_display }}</p>
+
+            {% if vaga.remuneracao %}
+            <p><strong>Remuneração:</strong> R$ {{ vaga.remuneracao }}</p>
+            {% endif %}
+
+            <p><strong>Cidade:</strong> {{ vaga.cidade }}</p>
+            <p><strong>Bairro:</strong> {{ vaga.bairro }}</p>
+
+            <hr>
+
+            <p><strong>Descrição Completa:</strong></p>
+            <p>{{ vaga.descricao }}</p>
+
+            {% if vaga.requisitos %}
+            <hr>
+            <p><strong>Requisitos:</strong></p>
+            <p>{{ vaga.requisitos }}</p>
+            {% endif %}
+
+            <hr>
+
+            <p class="text-muted small">
+                Publicada pela empresa:
+                <strong>{{ vaga.empresa.nome }}</strong>
+            </p>
+
+        </div>
+    </div>
+    <!-- fim modal -->
 
     {% empty %}
-    <p class="text-muted">Você ainda não cadastrou nenhuma vaga.</p>
+    <div class="text-center mt-4">
+        <p class="text-muted">Você ainda não cadastrou nenhuma vaga.</p>
+    </div>
     {% endfor %}
 
 </div>

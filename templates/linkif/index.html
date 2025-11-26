@@ -2,11 +2,13 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %}{{ site_config.nome_site }} - Início{% endblock %}
+{% block title %}{{ site_config.nome_site }} — Início{% endblock %}
 
 {% block content %}
 
-<!-- HERO -->
+<!-- =======================
+       HERO
+======================== -->
 <section class="hero">
   <div class="overlay"></div>
 
@@ -35,10 +37,15 @@
   </div>
 </section>
 
-<!-- SOBRE -->
+
+
+<!-- =======================
+       SOBRE
+======================== -->
 <section class="py-5 bg-white" id="sobre">
   <div class="container text-center">
-    <h2 class="fw-bold" style="color: #1b1f5b;">{{ home.titulo_sobre }}</h2>
+    
+    <h2 class="fw-bold" style="color:#1b1f5b;">{{ home.titulo_sobre }}</h2>
     <p class="mb-5 text-secondary">{{ home.texto_sobre }}</p>
 
     <div class="row g-4 justify-content-center">
@@ -98,23 +105,27 @@
   </div>
 </section>
 
-<!-- PERFIS -->
+
+
+<!-- =======================
+   PERFIS DE FORMAÇÃO
+======================== -->
 <section class="cor py-5" id="perfis">
   <div class="container">
+
     <div class="text-center mb-5">
       <h2 class="fw-bold" style="color:#1b1f5b;">Perfis de Formação</h2>
-      <p class="text-secondary">Conheça as áreas dos alunos e egressos do IFRN.</p>
+      <p class="text-secondary">Conheça as áreas de formação dos estudantes do IFRN.</p>
     </div>
 
     <div class="perfil-carousel-container">
 
-      <button class="perfil-btn perfil-prev">
-        <i class="bi bi-chevron-left"></i>
-      </button>
+      <button class="perfil-btn perfil-prev"><i class="bi bi-chevron-left"></i></button>
 
       <div class="perfil-carousel">
         {% for perfil in perfis %}
         <div class="perfil-card">
+
           <div class="perfil-top">
             {% if perfil.imagem %}
               <img src="{{ perfil.imagem.url }}" alt="{{ perfil.nome }}">
@@ -133,30 +144,41 @@
 
           <div class="perfil-body">
             <h5>{{ perfil.nome }}</h5>
-            <p>{{ perfil.descricao|truncatewords:18 }}</p>
-            <a href="{% url 'linkif:perfil_detalhe' perfil.id %}" class="btn-ver-mais">Ver Mais</a>
+
+            <p>
+              {{ perfil.descricao|default:"Descrição ainda não cadastrada."|truncatewords:18 }}
+            </p>
+
+            <a href="{% url 'linkif:perfil_detalhe' perfil.id %}" class="btn-ver-mais">
+              Ver Mais
+            </a>
           </div>
+
         </div>
         {% endfor %}
       </div>
 
-      <button class="perfil-btn perfil-next">
-        <i class="bi bi-chevron-right"></i>
-      </button>
+      <button class="perfil-btn perfil-next"><i class="bi bi-chevron-right"></i></button>
 
     </div>
   </div>
 </section>
 
-<!-- PARA ESTUDANTES -->
+
+
+<!-- =======================
+     PARA ESTUDANTES
+======================== -->
 <section class="section-dupla" id="estudante">
   <div class="container" style="max-width:980px;">
+
     <div class="text-center mb-4">
       <h3>{{ home.titulo_estudantes }}</h3>
       <p class="sub">{{ home.texto_estudantes }}</p>
     </div>
 
     <div class="row align-items-center gx-5 gy-2">
+
       <div class="col-md-6 text-center">
         {% if home.imagem_estudantes %}
           <img src="{{ home.imagem_estudantes.url }}" class="img-ilustra">
@@ -168,19 +190,25 @@
       <div class="col-md-6 texto-dupla">
         <ul>
           <li>Vagas alinhadas ao seu perfil.</li>
-          <li>Perfil inteligente com competências.</li>
           <li>Contato direto com empresas.</li>
-          <li>Certificados que impulsionam sua trajetória.</li>
+          <li>Perfil inteligente com competências.</li>
+          <li>Experiência para impulsionar sua carreira.</li>
         </ul>
         <a href="{% url 'linkif:listar_vagas' %}" class="btn-dupla">Ver Vagas</a>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- PARA EMPRESAS -->
+
+
+<!-- =======================
+      PARA EMPRESAS
+======================== -->
 <section class="section-dupla bg-branco cor" id="empresas">
   <div class="container" style="max-width:980px;">
+
     <div class="text-center mb-4">
       <h3>{{ home.titulo_empresas }}</h3>
       <p class="sub">{{ home.texto_empresas }}</p>
@@ -197,32 +225,25 @@
       </div>
 
       <div class="col-md-6 texto-dupla">
+
         <ul>
-          <li>Divulgue vagas de estágio e aprendiz.</li>
-          <li>Acesse perfis de estudantes do IFRN.</li>
-          <li>Encontre candidatos qualificados.</li>
+          <li>Divulgue oportunidades de estágio.</li>
+          <li>Encontre talentos qualificados.</li>
+          <li>Explore perfis de estudantes.</li>
           <li>Fortaleça parcerias com o IFRN.</li>
         </ul>
 
         {% if user.is_authenticated %}
 
-    {% if user.tipo == "aluno" %}
-        <!-- aluno vai para outra página -->
-         <a href="#perfis" class="btn-dupla">
-            Explorar Perfis
-        </a>
+            {% if user.tipo == "aluno" %}
+              <a href="#perfis" class="btn-dupla">Explorar Perfis</a>
+            {% else %}
+              <a href="{% url 'linkif:explorar' %}" class="btn-dupla">Explorar Perfis</a>
+            {% endif %}
 
-    {% else %}
-        <!-- coordenação ou empresa -->
-        <a href="{% url 'linkif:explorar' %}" class="btn-dupla">Explorar Perfis</a>
-
-    {% endif %}
-
-{% else %}
-    <!-- visitante → manda para cadastro/login -->
-    <a href="{% url 'usuarios:cadastro' %}" class="btn-dupla">Explorar Perfis</a>
-{% endif %}
-
+        {% else %}
+            <a href="{% url 'usuarios:cadastro' %}" class="btn-dupla">Explorar Perfis</a>
+        {% endif %}
 
       </div>
 
@@ -230,7 +251,11 @@
   </div>
 </section>
 
-<!-- CONTATO -->
+
+
+<!-- =======================
+      CONTATO
+======================== -->
 <section class="contato py-5" id="contato">
   <div class="container">
 
@@ -241,6 +266,7 @@
         <p class="text-muted">Entre em contato conosco.</p>
       </div>
 
+      <!-- FORM -->
       <div class="col-md-6">
         <form method="POST" class="animate-fade">
           {% csrf_token %}
@@ -251,16 +277,21 @@
         </form>
       </div>
 
+      <!-- CONTATO INFO -->
       <div class="col-md-6 ps-md-5 mt-5 mt-md-0">
         <h5 class="fw-bold mb-3">{{ site_config.nome_site }} — Campus São Paulo do Potengi</h5>
+
         <p><i class="bi bi-geo-alt-fill icon-contato me-2"></i>{{ site_config.endereco }}</p>
         <p><i class="bi bi-telephone-fill icon-contato me-2"></i>{{ site_config.telefone }}</p>
         <p><i class="bi bi-envelope-fill icon-contato me-2"></i>{{ site_config.email_contato }}</p>
 
         {% if site_config.mapa_embed %}
-          <div class="ratio ratio-16x9 mt-3">{{ site_config.mapa_embed|safe }}</div>
+          <div class="ratio ratio-16x9 mt-3">
+            {{ site_config.mapa_embed|safe }}
+          </div>
         {% else %}
-          <img src="https://via.placeholder.com/300x200.png" class="img-fluid rounded mt-3 shadow-sm">
+          <img src="https://via.placeholder.com/300x200.png"
+               class="img-fluid rounded mt-3 shadow-sm">
         {% endif %}
       </div>
 
@@ -268,6 +299,11 @@
   </div>
 </section>
 
+
+
+<!-- =======================
+   JS DO CARROSSEL
+======================== -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const carousel = document.querySelector(".perfil-carousel");

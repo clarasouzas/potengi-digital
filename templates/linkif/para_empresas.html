@@ -13,13 +13,42 @@
         <h1>Para Empresas</h1>
         <p>Conecte-se aos talentos do IFRN e fortaleça o desenvolvimento local com a sua marca.</p>
 
-        {% if not user.is_authenticated or user.tipo != "empresa" %}
-        <div class="botoes">
-          <a href="{% url 'usuarios:cadastro' %}" class="botao-principal">
-            <i class="bi bi-building-add"></i> Cadastrar Empresa
-          </a>
-        </div>
+        <!-- =============================
+             BOTÃO DO HERO – LÓGICA NOVA
+        ============================== -->
+        {% if not user.is_authenticated %}
+            <!-- Visitante -->
+            <div class="botoes">
+              <a href="{% url 'usuarios:cadastro' %}" class="botao-principal">
+                <i class="bi bi-building-add"></i> Cadastrar Empresa
+              </a>
+            </div>
+
+        {% elif user.tipo == "empresa" %}
+            <!-- Empresa logada -->
+            <div class="botoes">
+              <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="botao-principal">
+                <i class="bi bi-briefcase"></i> Criar Vaga
+              </a>
+            </div>
+
+        {% elif user.tipo == "coordenador" %}
+            <!-- Coordenação -->
+            <div class="botoes">
+              <a href="{% url 'linkif:explorar' %}" class="botao-principal">
+                <i class="bi bi-search"></i> Explorar Perfis
+              </a>
+            </div>
+
+        {% else %}
+            <!-- Aluno -->
+            <div class="botoes">
+              <a href="{% url 'linkif:perfil_cursos' %}" class="botao-principal">
+                <i class="bi bi-mortarboard-fill"></i> Ver Cursos
+              </a>
+            </div>
         {% endif %}
+
       </div>
 
       <div class="hero-art">
@@ -93,17 +122,35 @@
 </section>
 
 
+
 <!-- CTA FINAL -->
 <section class="cta-empresas text-center">
   <h3 class="fw-bold" style="color:#1b1f5b;">Pronta para encontrar novos talentos?</h3>
   <p class="mb-5 text-secondary">Publique vagas e descubra profissionais que fazem a diferença.</p>
 
-  {% if not user.is_authenticated or user.tipo != "empresa" %}
-  <div class="botoes justify-content-center mt-5 mb-5">
-    <a href="{% url 'linkif:listar_vagas' %}" class="btn-cta botao-principal">
-      <i class="bi bi-briefcase"></i> Publicar Vagas
-    </a>
-  </div>
+  {% if not user.is_authenticated %}
+      <!-- visitante -->
+      <a href="{% url 'usuarios:cadastro' %}" class="btn-cta botao-principal">
+        <i class="bi bi-building-add"></i> Criar conta de empresa
+      </a>
+
+  {% elif user.tipo == "empresa" %}
+      <!-- empresa logada -->
+      <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="btn-cta botao-principal">
+        <i class="bi bi-briefcase"></i> Publicar vaga agora
+      </a>
+
+  {% elif user.tipo == "coordenador" %}
+      <!-- coord -->
+      <a href="{% url 'linkif:explorar' %}" class="btn-cta botao-principal">
+        <i class="bi bi-search"></i> Explorar estudantes
+      </a>
+
+  {% else %}
+      <!-- aluno -->
+      <a href="{% url 'linkif:listar_vagas' %}" class="btn-cta botao-principal">
+        <i class="bi bi-briefcase"></i> Ver vagas disponíveis
+      </a>
   {% endif %}
 </section>
 

@@ -1,121 +1,72 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import login
 from django.contrib import messages
 
 from .forms import (
     AlunoCreationForm,
     EmpresaCreationForm,
-    CoordenadorCreationForm
 )
-from .models import Usuario, Aluno, Empresa, Coordenador
-
-
-# =====================================================
-# TELA INICIAL DO CADASTRO
-# =====================================================
+from .models import Usuario
 def cadastro(request):
     return render(request, "registration/cadastro.html", {
         "forms": [
-            ("aluno", AlunoCreationForm(), "usuarios:cadastro_aluno", "bi-mortarboard-fill", "Cadastro de Aluno"),
-            ("empresa", EmpresaCreationForm(), "usuarios:cadastro_empresa", "bi-building-fill", "Cadastro de Empresa"),
-            ("coord", CoordenadorCreationForm(), "usuarios:cadastro_coord", "bi-person-gear", "Cadastro de Coordenação"),
+            ("aluno", AlunoCreationForm(), "usuarios:cadastro_aluno"),
+            ("empresa", EmpresaCreationForm(), "usuarios:cadastro_empresa"),
         ],
         "active_tab": "aluno",
     })
-
-
-# =====================================================
-# CADASTRO — ALUNO
-# =====================================================
 def cadastro_aluno(request):
     if request.method == "POST":
-        form = AlunoCreationForm(request.POST)
+        form = AlunoCreationForm(request.POST, request.FILES)
 
         if form.is_valid():
             usuario = form.save(commit=False)
             usuario.tipo = "aluno"
             usuario.save()
 
-            Aluno.objects.create(
-                usuario=usuario,
-                nome=form.cleaned_data["nome"],
-                curso=form.cleaned_data["curso"],
-            )
-
-            messages.success(request, "Aluno cadastrado com sucesso!")
+            messages.success(request, "Cadastro de aluno realizado com sucesso!")
             return redirect("usuarios:login")
 
-        # ERRO — VOLTA PRA ABA CORRETA SEM QUEBRAR CSS
         return render(request, "registration/cadastro.html", {
             "forms": [
-                ("aluno", form, "usuarios:cadastro_aluno", "bi-mortarboard-fill", "Cadastro de Aluno"),
-                ("empresa", EmpresaCreationForm(), "usuarios:cadastro_empresa", "bi-building-fill", "Cadastro de Empresa"),
-                ("coord", CoordenadorCreationForm(), "usuarios:cadastro_coord", "bi-person-gear", "Cadastro de Coordenação"),
+                ("aluno", form, "usuarios:cadastro_aluno"),
+                ("empresa", EmpresaCreationForm(), "usuarios:cadastro_empresa"),
             ],
             "active_tab": "aluno",
         })
 
-
-# =====================================================
-# CADASTRO — EMPRESA
-# =====================================================
+    return redirect("usuarios:cadastro")
 def cadastro_empresa(request):
     if request.method == "POST":
-        form = EmpresaCreationForm(request.POST)
+        form = EmpresaCreationForm(request.POST, request.FILES)
 
         if form.is_valid():
             usuario = form.save(commit=False)
             usuario.tipo = "empresa"
             usuario.save()
 
-            Empresa.objects.create(
-                usuario=usuario,
-                nome_empresa=form.cleaned_data["nome_empresa"],
-                cnpj=form.cleaned_data["cnpj"],
-                telefone=form.cleaned_data["telefone"],
-                cidade=form.cleaned_data["cidade"],
-                descricao=form.cleaned_data.get("descricao", "")
-            )
-
-            messages.success(request, "Empresa cadastrada com sucesso!")
+            messages.success(request, "Cadastro de empresa realizado com sucesso!")
             return redirect("usuarios:login")
 
         return render(request, "registration/cadastro.html", {
             "forms": [
-                ("aluno", AlunoCreationForm(), "usuarios:cadastro_aluno", "bi-mortarboard-fill", "Cadastro de Aluno"),
-                ("empresa", form, "usuarios:cadastro_empresa", "bi-building-fill", "Cadastro de Empresa"),
-                ("coord", CoordenadorCreationForm(), "usuarios:cadastro_coord", "bi-person-gear", "Cadastro de Coordenação"),
+                ("aluno", AlunoCreationForm(), "usuarios:cadastro_aluno"),
+                ("empresa", form, "usuarios:cadastro_empresa"),
             ],
             "active_tab": "empresa",
         })
 
+    return redirect("usuarios:cadastro")
+def redirecionar_dashboard(request):
+    user = request.user
 
-# =====================================================
-# CADASTRO — COORDENAÇÃO
-# =====================================================
-def cadastro_coord(request):
-    if request.method == "POST":
-        form = CoordenadorCreationForm(request.POST)
+    if user.tipo == "aluno":
+        return redirect("dashboard:aluno")
 
-        if form.is_valid():
-            usuario = form.save(commit=False)
-            usuario.tipo = "coordenador"
-            usuario.is_staff = True
-            usuario.save()
+    if user.tipo == "empresa":
+        return redirect("dashboard:empresa")
 
-            Coordenador.objects.create(
-                usuario=usuario,
-                nome=form.cleaned_data["nome"],
-                setor=form.cleaned_data["setor"],
-            )
+    if user.tipo == "coordenador":
+        return redirect("dashboard:coord")
 
-            messages.success(request, "Coordenação cadastrada com sucesso!")
-            return redirect("usuarios:login")
-
-        return render(request, "registration/cadastro.html", {
-            "forms": [
-                ("aluno", AlunoCreationForm(), "usuarios:cadastro_aluno", "bi-mortarboard-fill", "Cadastro de Aluno"),
-                ("empresa", EmpresaCreationForm(), "usuarios:cadastro_empresa", "bi-building-fill", "Cadastro de Empresa"),
-                ("coord", form, "usuarios:cadastro_coord", "bi-person-gear", "Cadastro de Coordenação"),
-            ],
-            "active_tab": "coord",
-        })
+    return redirect("index")

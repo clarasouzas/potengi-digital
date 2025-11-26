@@ -156,55 +156,54 @@ a:hover { text-decoration: underline; }
   font-size: 1.1rem;
   margin-right: 6px;
 }
-
 /* =======================================
-   HERO (BANNER) — versão refinada LinkIF
-   Equilíbrio imagem x texto
+   HERO — versão refinada LinkIF
+   (mantendo exatamente sua estética)
 ======================================= */
+
 .hero {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   overflow: hidden;
-  min-height: 75vh; /* levemente menor que tela cheia */
-  background: linear-gradient(to right, #eafbf2 0%, #f4fff8 20%, #fff 100%);
+  min-height: 80vh;
   padding: 100px 0 80px 0;
 }
 
-/* IMAGEM DO HERO */
+/* IMAGEM DO HERO (fica atrás do véu) */
 .hero-art {
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 58%;              /* imagem cobre metade + um pouco */
+  width: 66%;
   height: auto;
   object-fit: contain;
   pointer-events: none;
   z-index: 1;
 }
 
-/* camada de contraste para texto */
+/* VEÚ (overlay verde escuro translúcido) */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(221, 255, 225, 0.97) 45%, rgba(255,255,255,0) 75%);
-  z-index: 1;
+  background: rgba(0, 46, 19, 0.46);
+  z-index: 2;
 }
 
-/* container de texto */
+/* CONTAINER DO TEXTO */
 .hero .container {
   position: relative;
-  z-index: 2;
+  z-index: 3; /* texto acima do véu */
   margin-top: 50px;
   color: #1b1f5b;
-  max-width:72%;       /* mais espaço para respirar */
+  max-width: 72%;
   margin-left: 6%;
 }
 
-/* textos */
+/* TÍTULO */
 .hero h1 {
   font-size: 3.4rem;
   font-weight: 800;
@@ -212,6 +211,7 @@ a:hover { text-decoration: underline; }
   margin-bottom: 16px;
 }
 
+/* SUBTÍTULO */
 .hero p {
   font-size: 1.3rem;
   color: #333;
@@ -219,7 +219,8 @@ a:hover { text-decoration: underline; }
   max-width: 90%;
   margin-bottom: 35px;
 }
-/* BOTÕES REESTILIZADOS */
+
+/* BOTÕES */
 .botoes {
   display: flex;
   gap: 16px;
@@ -241,7 +242,7 @@ a:hover { text-decoration: underline; }
   border: none;
 }
 
-/* botão verde petróleo (para estudantes) */
+/* botao 1 */
 .botao-estudante {
   background: linear-gradient(135deg, #143d5a, #356e8c);
   color: #fff;
@@ -252,9 +253,9 @@ a:hover { text-decoration: underline; }
   box-shadow: 0 6px 14px rgba(32,80,114,0.25);
 }
 
-/* botão verde claro (para empresas) */
+/* botao 2 */
 .botao-empresa {
-  background: linear-gradient(135deg, #2C7F67, #32d896);
+  background: linear-gradient(135deg, #2c7f67, #32d896);
   color: #fff;
 }
 .botao-empresa:hover {
@@ -263,37 +264,44 @@ a:hover { text-decoration: underline; }
   box-shadow: 0 6px 14px rgba(44,182,125,0.25);
 }
 
-/* ícones */
+/* ÍCONES */
 .botoes i {
   font-size: 1.2rem;
 }
 
+/* =======================================
+   RESPONSIVO (mantendo a estética original)
+======================================= */
 
-/* ===== RESPONSIVO ===== */
 @media (max-width: 992px) {
   .hero {
-    flex-direction: column;
     min-height: auto;
-    padding: 40px 0;
+    padding: 60px 0 40px 0;
     text-align: center;
+    flex-direction: column;
   }
 
+  /* imagem vai pra baixo, continua visível */
   .hero-art {
-    position: static;
-    width: 100%;
-    max-width: 500px;
-    height: auto;
+    position: relative;
+    top: auto;
+    right: auto;
     transform: none;
-    margin-top: 20px;
+    width: 85%;
+    max-width: 420px;
+    margin: 30px auto 0 auto;
+    z-index: 1;
   }
 
+  /* véu continua igual (sem ficar branco!) */
   .hero::before {
-    background: rgba(255,255,255,0.95);
+    background: rgba(0, 46, 19, 0.46);
   }
 
   .hero .container {
-    max-width: 100%;
+    max-width: 90%;
     margin: 0 auto;
+    z-index: 3;
   }
 
   .hero h1 {
@@ -301,10 +309,116 @@ a:hover { text-decoration: underline; }
   }
 
   .hero p {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    max-width: 100%;
   }
 }
 
+/* MOBILE pequeno */
+@media (max-width: 576px) {
+  .hero-art {
+    width: 95%;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+}
+/* ============================
+   MOBILE SIDEBAR MENU (RIGHT)
+============================ */
+@media (max-width: 992px) {
+
+  /* tira o fundo branco enorme */
+  .navbar-collapse {
+    position: fixed;
+    top: 0;
+    right: -280px;       /* esconde */
+    width: 260px;
+    height: 100vh;
+    background: #102153; /* azul estilo dashboard */
+    padding-top: 90px;
+    transition: right .35s ease;
+    box-shadow: -4px 0 14px rgba(0,0,0,0.25);
+    z-index: 9999;
+  }
+
+  /* quando o menu abre (classe .show) */
+  .navbar-collapse.show {
+    right: 0;
+  }
+
+  /* links dentro do sidebar */
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start !important;
+    padding-left: 25px;
+  }
+
+  .navbar-nav .nav-link {
+    color: #fff !important;
+    font-size: 1rem;
+    padding: 10px 0;
+  }
+
+  .navbar-nav .nav-link::after {
+    background: transparent;
+  }
+
+  /* fechar menu (X) */
+  .navbar-toggler.collapsed .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='25' fill='%23ffffff' class='bi bi-list' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z'/%3E%3C/svg%3E");
+  }
+
+  .navbar-toggler:not(.collapsed) .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' fill='%23ffffff' class='bi bi-x-lg' viewBox='0 0 16 16'%3E%3Cpath d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z'/%3E%3C/svg%3E");
+  }
+
+  /* esconde botões de "Entrar" e "Cadastro" no mobile */
+  .btn-entrar,
+  .btn-cadastrese {
+    display: none !important;
+  }
+}
+/* ===============================
+   FIX — Hero art grudada à direita
+   mesmo no responsivo
+================================= */
+
+/* telas grandes (desktop) já estão perfeitas */
+
+/* tablets */
+@media (max-width: 992px) {
+  .hero {
+     min-height: 40vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-art {
+    position: absolute;      /* volta a grudar */
+    right: 0;                /* encosta na direita */
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 70%;
+    max-width: none;
+    margin: 0;               /* remove afastamento */
+    padding: 0;
+  }
+}
+
+/* celulares */
+@media (max-width: 576px) {
+  .hero-art {
+    width: 85%;
+    right: 0;                /* garante colado */
+  }
+}
 
 /* =======================================
    CARDS DE DESTAQUE
@@ -966,137 +1080,185 @@ footer {
   }
 }
 
+/* ======================================================
+   ESTILO DO LAYOUT DE LISTAGEM DE VAGAS 
+   ====================================================== */
 
-/* ============================
-   FILTRO LATERAL
-============================ */
-
-.filtro-box {
+/* --- CONTAINER DO FILTRO LATERAL --- */
+.filtro-card {
     background: #ffffff;
-    border-radius: 18px;
-    box-shadow: 0 6px 20px rgba(0,0,0,.08);
+    border-radius: 14px;
+    padding: 25px;
+    border: 1px solid #e8e8e8;
 }
 
-.titulo-filtro {
+.filtro-card h5 {
+    color: #1b1f5b;
+    font-weight: 700;
+}
+
+.filtro-card label {
+    font-size: 14px;
     font-weight: 600;
-    color: #003c46;
-    margin-bottom: 20px;
+    margin-top: 12px;
+    color: #3e4a60;
 }
 
-.filtro-box label {
-    font-weight: 500;
-    font-size: 14px;
-}
-
-.filtro-box input,
-.filtro-box select {
+.filtro-card input,
+.filtro-card select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #dce2e5;
-    border-radius: 10px;
-    background: #fafafa;
-    font-size: 14px;
-}
-
-.btn-filtrar {
-    background: #006f77;
-    padding: 10px 0;
-    border-radius: 8px;
     border: none;
-    color: #fff;
-    font-weight: 500;
+    border-bottom: 2px solid #d8dfe8;
+    border-radius: 0;
+    padding: 8px 2px;
+    font-size: 14px;
+    background: transparent;
+    transition: .2s ease;
 }
 
-.btn-filtrar:hover {
-    opacity: .9;
+.filtro-card input:focus,
+.filtro-card select:focus {
+    border-bottom: 2px solid #0a7a79;
+    outline: none;
+}
+
+/* Botão Filtrar */
+.filtro-card button {
+    border-radius: 50px;
+    font-weight: 600;
+    padding: 10px;
+    transition: .25s ease;
+}
+.filtro-card button:hover {
+    opacity: .85;
 }
 
 
+/* ======================================================
+   GRID DE VAGAS
+   ====================================================== */
+   /* container do topo da empresa */
+.vaga-empresa {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
 
-/* ============================
-   CARDS DE VAGAS
-============================ */
+/* foto da empresa */
+.empresa-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* inicial da empresa caso não tenha foto */
+
+.empresa-avatar-fallback {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    background: #ecf3f3;
+    color: #6c757d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+/* nome da empresa */
+.empresa-nome {
+    font-weight: 600;
+    color: #205072;
+    font-size: 15px;
+}
 
 .vaga-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 22px;
+    background: #ffff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #e4efef;
+    transition: .25s ease;
     position: relative;
-    box-shadow: 0 8px 26px rgba(0,0,0,.08);
-    transition: .2s ease;
+    min-height: 180px;
 }
 
 .vaga-card:hover {
     transform: translateY(-3px);
 }
 
-/* Badge verde superior */
-.vaga-tag {
-    background: #d2ffee;
-    color: #007f6e;
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 10px;
-    font-weight: 600;
-    position: absolute;
-    top: -10px;
-    left: 20px;
-}
-
-/* Data no canto superior direito */
+/* Data de publicação */
 .vaga-data {
     position: absolute;
-    right: 20px;
-    top: 10px;
-    color: #777;
-    font-size: 13px;
-    font-weight: 500;
+    top: 12px;
+    right: 14px;
+    font-size: 12px;
+    color: #6c757d;
+    background: #ecf3f3;
+    padding: 4px 9px;
+    border-radius: 8px;
+    font-weight: 600;
 }
 
 /* Título */
 .vaga-titulo {
-    margin-top: 25px;
-    color: #003c46;
+    font-size: 20px;
+    line-height: 1.3;
+    color: #205072;
+    margin-bottom: 12px;
     font-weight: 700;
-    font-size: 15px;
-    min-height: 48px;
+    max-width: 90%;
 }
 
-/* Lista de infos */
-.vaga-lista {
+/* Lista de informações */
+.vaga-info {
     list-style: none;
-    padding-left: 0;
-    margin-top: 10px;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 15px;
 }
 
-.vaga-lista li {
+.vaga-info li {
     font-size: 14px;
-    margin-bottom: 4px;
-    color: #444;
+    color: #488a8a;
+    margin-bottom: 5px;
 }
 
-.vaga-lista i {
-    color: #00a388;
+.vaga-info i {
     margin-right: 6px;
 }
 
-/* Botão */
-.vaga-btn {
-    margin-top: 10px;
-    display: block;
-    width: 100%;
-    padding: 7px 0;
-    text-align: center;
-    border-radius: 8px;
-    border: 1px solid #00a388;
-    color: #00a388;
+/* Botão Quero esta vaga */
+.vaga-card a.btn {
+    background: #0a7a79;
+    color: white;
     font-weight: 600;
-    transition: .2s ease;
+    border-radius: 50px;
+    padding: 9px 0;
+    transition: .25s ease;
 }
 
-.vaga-btn:hover {
-    background: #00a388;
-    color: white;
+.vaga-card a.btn:hover {
+    background: #066666;
+}
+
+
+/* ======================================================
+   RESPONSIVIDADE
+   ====================================================== */
+
+@media (max-width: 992px) {
+    .filtro-card {
+        margin-bottom: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .vaga-card {
+        padding: 18px;
+    }
 }
 
 

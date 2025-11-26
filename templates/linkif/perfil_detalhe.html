@@ -1,40 +1,81 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}{{ perfil.nome }} - {{ site_config.nome_site }}{% endblock %}
+
 {% block content %}
-<section class="hero text-center text-white" style="background:url('{{ perfil.imagem.url|default:'/static/assets/img/perfil_meioambiente.png' }}') center/cover;padding:120px 0;">
-  <div class="overlay" style="background:rgba(0,0,0,0.4);position:absolute;top:0;bottom:0;left:0;right:0;"></div>
+
+<!-- HERO SEGURO -->
+<section class="hero text-center text-white position-relative"
+         style="padding:120px 0;
+         background:url('{% if perfil.imagem %}{{ perfil.imagem.url }}{% else %}{% static 'assets/img/perfil_meioambiente.png' %}{% endif %}')
+         center/cover no-repeat;">
+
+  <div class="overlay"
+       style="background:rgba(0,0,0,0.4);
+              position:absolute;
+              top:0; left:0; right:0; bottom:0;">
+  </div>
+
   <div class="container position-relative">
     <h1 class="fw-bold">{{ perfil.nome }}</h1>
-    <p>{{ perfil.descricao_curta|default:"Formação técnica de excelência." }}</p>
+    <p>
+      {{ perfil.descricao_curta|default:"Formação técnica de excelência." }}
+    </p>
   </div>
+
 </section>
 
+
 <div class="container py-5">
+
+  <!-- PERFIL -->
   <div class="card p-4 shadow-sm mb-4">
     <h4 class="fw-bold" style="color:{{ perfil.cor_titulo }}">Perfil</h4>
-    <p>{{ perfil.descricao }}</p>
+    <p>{{ perfil.descricao|default:"Descrição ainda não cadastrada." }}</p>
   </div>
 
+
+  <!-- COMPETÊNCIAS -->
   <div class="card p-4 shadow-sm mb-4">
     <h4 class="fw-bold" style="color:{{ perfil.cor_titulo }}">Competências</h4>
-    <div class="row g-3">
+
+    <div class="row g-3 mt-2">
+
       {% for comp in perfil.competencias.all %}
-      <div class="col-md-6"><div class="p-3 border rounded-3 bg-white">{{ comp.texto }}</div></div>
+      <div class="col-md-6">
+        <div class="p-3 border rounded-3 bg-white">
+          {{ comp.texto }}
+        </div>
+      </div>
       {% empty %}
-      <p class="text-muted">Nenhuma competência cadastrada.</p>
+      <p class="text-muted ps-2">Nenhuma competência cadastrada.</p>
       {% endfor %}
+
     </div>
   </div>
 
+
+  <!-- ÁREAS DE ATUAÇÃO -->
   <div class="card p-4 shadow-sm">
     <h4 class="fw-bold" style="color:{{ perfil.cor_titulo }}">Áreas de Atuação</h4>
+
     <div class="row g-3 mt-3">
+
       {% for area in perfil.areas.all %}
-      <div class="col-md-4"><div class="p-3 border rounded-3 bg-white h-100 text-center"><h6>{{ area.titulo }}</h6><p>{{ area.descricao }}</p></div></div>
+      <div class="col-md-4">
+        <div class="p-3 border rounded-3 bg-white h-100 text-center">
+          <h6 class="fw-bold">{{ area.titulo }}</h6>
+          <p>{{ area.descricao|default:"Sem descrição." }}</p>
+        </div>
+      </div>
       {% empty %}
-      <p class="text-muted">Nenhuma área cadastrada.</p>
+      <p class="text-muted ps-2">Nenhuma área cadastrada.</p>
       {% endfor %}
+
     </div>
   </div>
+
 </div>
+
 {% endblock %}

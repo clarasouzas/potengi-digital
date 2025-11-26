@@ -18,14 +18,14 @@
 
                     <div class="d-flex justify-content-between align-items-start">
 
-                        <!-- Ícone + texto -->
+                        <!-- Conteúdo -->
                         <div>
                             <h6 class="fw-bold mb-1">
                                 <i class="bi bi-info-circle-fill text-primary"></i>
-                                {{ n.tipo }}
+                                Notificação
                             </h6>
 
-                            <p class="mb-1">{{ n.mensagem }}</p>
+                            <p class="mb-1">{{ n.conteudo }}</p>
 
                             <small class="text-muted">
                                 {{ n.data_envio|date:"d/m/Y H:i" }}

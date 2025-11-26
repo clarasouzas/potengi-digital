@@ -5,23 +5,62 @@
 
 {% if vagas %}
 <div class="row g-3">
+
     {% for v in vagas %}
     <div class="col-12 col-md-6 col-lg-4">
+
         <div class="card-list">
-            
-            <div class="card-title">{{ v.titulo }}</div>
-            <div class="card-meta">Empresa: {{ v.empresa.nome_empresa }}</div>
-            <div class="card-meta">Status: {{ v.get_status_display }}</div>
 
-            <div class="card-actions">
+            <!-- TÍTULO -->
+            <div class="card-title">
+                {{ v.titulo }}
+            </div>
 
-                <!-- BOTÃO APROVAR -->
-                <a href="{% url 'dashboard:aprovar_vaga_action' v.id %}" class="btn-outline-action">
+            <!-- EMPRESA -->
+            <div class="card-meta">
+                <strong>Empresa:</strong> {{ v.empresa.nome|default:v.empresa.email }}
+            </div>
+
+            <!-- TIPO / MODALIDADE -->
+            <div class="card-meta">
+                <strong>Tipo:</strong> {{ v.get_tipo_display }}
+            </div>
+
+            <div class="card-meta">
+                <strong>Modalidade:</strong> {{ v.get_modalidade_display }}
+            </div>
+
+            <!-- DATA DE INÍCIO -->
+            {% if v.data_inicio %}
+            <div class="card-meta">
+                <strong>Início:</strong> {{ v.data_inicio|date:"d/m/Y" }}
+            </div>
+            {% endif %}
+
+            <!-- DESCRIÇÃO REDUZIDA -->
+            <div class="mt-2 text-muted small" style="min-height:60px;">
+                {{ v.descricao|truncatewords:18 }}
+            </div>
+
+            <!-- STATUS -->
+            <div class="mt-2">
+                <span class="badge bg-secondary">Pendente</span>
+            </div>
+
+            <!-- AÇÕES -->
+            <div class="card-actions mt-3">
+
+                <!-- APROVAR -->
+                <a href="{% url 'dashboard:aprovar_vaga_action' v.id %}"
+                   class="btn-outline-action"
+                   onclick="return confirm('Aprovar esta vaga?');">
                     <i class="bi bi-check-circle"></i> Aprovar
                 </a>
 
-                <!-- BOTÃO REPROVAR -->
-                <a href="{% url 'dashboard:reprovar_vaga_action' v.id %}" class="btn-delete">
+                <!-- REPROVAR -->
+                <a href="{% url 'dashboard:reprovar_vaga_action' v.id %}"
+                   class="btn-delete"
+                   onclick="return confirm('Reprovar esta vaga?');">
                     <i class="bi bi-x-circle"></i> Reprovar
                 </a>
 
@@ -30,6 +69,7 @@
         </div>
     </div>
     {% endfor %}
+
 </div>
 
 {% else %}

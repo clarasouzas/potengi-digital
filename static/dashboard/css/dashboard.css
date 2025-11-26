@@ -453,7 +453,7 @@ body {
 /* ============================ */
 
 .vaga-card {
-    width: 75%;
+    width: 100%;
     height: 200px;
     border-radius: 16px;
     background: #f7f7ff;
@@ -512,11 +512,6 @@ body {
     justify-content: space-between;
     align-items: center;
 }
-
-/* ============================ */
-/* LABELS                       */
-/* ============================ */
-
 .vaga-label {
     padding: 5px 12px;
     border-radius: 40px;
@@ -524,13 +519,26 @@ body {
     font-weight: 600;
 }
 
-
-.label-yellow {
-    background: #dae3ef;
-    color: #205072;
-    border: 1px solid #205072;
+/* aprovado */
+.label-aprovada {
+    background: #d8f8e5;
+    color: #1c7c4d;
+    border: 1px solid #1c7c4d;
 }
 
+/* pendente */
+.label-pendente {
+    background: #fff7d6;
+    color: #b38700;
+    border: 1px solid #b38700;
+}
+
+/* reprovada */
+.label-reprovada {
+    background: #ffe0e0;
+    color: #b30000;
+    border: 1px solid #b30000;
+}
 
 /* TEXTO */
 
@@ -617,6 +625,86 @@ body {
 .overlay-btn.view   { color: var(--sidebar-soft); }
 .overlay-btn.edit   { color: var(--sidebar-soft); }
 .overlay-btn.delete { color:  var(--sidebar-soft); }
+/* ============================ */
+/* MODAL (SEM JAVASCRIPT)       */
+/* ============================ */
+
+.modal-vaga {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 40, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    z-index: 5000;
+}
+
+.modal-vaga:target {
+    display: flex;
+}
+
+.modal-content-vaga {
+    width: 100%;
+    max-width: 720px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 35px;
+    position: relative;
+    animation: modalPop .25s ease forwards;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* animação */
+@keyframes modalPop {
+    0% { transform: scale(.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* botão fechar */
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #eee;
+    color: #333;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.2rem;
+    text-decoration: none;
+
+    transition: .2s ease;
+}
+
+.modal-close:hover {
+    background: #ddd;
+}
+
+/* texto do modal */
+.modal-content-vaga h3 {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #191837;
+}
+
+.modal-content-vaga p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.modal-content-vaga hr {
+    border: none;
+    border-top: 1px solid #eaeaea;
+    margin: 18px 0;
+}
+
 /* ==============================
    LINKIF — Form Card (Cadastrar Vaga)
    Cole no dashboard/css/dashboard.css
@@ -786,4 +874,82 @@ body {
   font-weight: 700;
   font-size: .82rem;
   border: 1px solid rgba(11,107,79,0.08);
+}
+/* ============================================
+   CARD DE EXCLUSÃO — ESTILO PERIGOOOO 🚨
+============================================ */
+
+.delete-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    border-left: 6px solid #d9534f;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* título */
+.delete-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #c0392b;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+/* texto explicativo */
+.delete-text {
+    color: #6c757d;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Botão excluir */
+.soft-btn-danger {
+    background: linear-gradient(135deg, #d64545, #b73434);
+    border: none;
+    color: white;
+    padding: 12px;
+    border-radius: 40px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.soft-btn-danger:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #b73434, #992626);
+}
+
+/* Botão cancelar */
+.soft-btn-outline-secondary {
+    padding: 12px;
+    border-radius: 40px;
+    font-weight: 600;
+    border: 2px solid #95a5a6;
+    color: #6c7373;
+    background: #fff;
+    transition: 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.soft-btn-outline-secondary:hover {
+    background: #f2f4f5;
+    border-color: #7f8c8d;
+}
+
+/* animação */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

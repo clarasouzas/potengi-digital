@@ -1,12 +1,12 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
-from .models import Usuario, Aluno, Empresa, Coordenador
+from .models import Usuario
 
 
-# =====================================================
-# FORM BASE DO USUÁRIO — APENAS EMAIL + SENHA
-# =====================================================
+# ======================================
+# FORM BASE — EMAIL + SENHA
+# ======================================
 class UsuarioCreationForm(UserCreationForm):
     class Meta:
         model = Usuario
@@ -15,28 +15,25 @@ class UsuarioCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = False  
+        self.helper.form_tag = False
 
-# =====================================================
-# FORM — ALUNO
-# =====================================================
+
+# ======================================
+# CADASTRO — ALUNO
+# ======================================
 class AlunoCreationForm(UsuarioCreationForm):
-    nome = forms.CharField(max_length=100)
+    nome = forms.CharField(max_length=120)
     curso = forms.CharField(max_length=100)
 
     class Meta(UsuarioCreationForm.Meta):
         fields = ["nome", "curso"] + UsuarioCreationForm.Meta.fields
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False 
 
-# =====================================================
-# FORM — EMPRESA
-# =====================================================
+# ======================================
+# CADASTRO — EMPRESA
+# ======================================
 class EmpresaCreationForm(UsuarioCreationForm):
-    nome_empresa = forms.CharField(max_length=150)
+    nome = forms.CharField(label="Nome da empresa", max_length=150)
     cnpj = forms.CharField(max_length=18)
     telefone = forms.CharField(max_length=20)
     cidade = forms.CharField(max_length=100)
@@ -44,56 +41,40 @@ class EmpresaCreationForm(UsuarioCreationForm):
 
     class Meta(UsuarioCreationForm.Meta):
         fields = [
-            "nome_empresa", "cnpj", "telefone", "cidade", "descricao"
+            "nome", "cnpj", "telefone", "cidade", "descricao"
         ] + UsuarioCreationForm.Meta.fields
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
 
-
-# =====================================================
-# FORM — COORDENAÇÃO
-# =====================================================
-class CoordenadorCreationForm(UsuarioCreationForm):
-    nome = forms.CharField(max_length=100)
-    setor = forms.CharField(max_length=100)
-
-    class Meta(UsuarioCreationForm.Meta):
-        fields = ["nome", "setor"] + UsuarioCreationForm.Meta.fields
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
+# ======================================
+# EDIÇÃO — ALUNO
+# ======================================
 class AlunoEditForm(forms.ModelForm):
     class Meta:
-        model = Aluno
-        fields = ["nome", "curso", "portfolio", "foto", "curriculo"]
+        model = Usuario
+        fields = ["nome", "curso", "foto", "curriculo", "portfolio"]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
+
+# ======================================
+# EDIÇÃO — EMPRESA
+# ======================================
 class EmpresaEditForm(forms.ModelForm):
     class Meta:
-        model = Empresa
-        fields = ["nome_empresa", "telefone", "cidade", "descricao", "foto"]
+        model = Usuario
+        fields = ["nome", "telefone", "cidade", "descricao", "foto"]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
+
+# ======================================
+# EDIÇÃO — COORDENAÇÃO
+# ======================================
 class CoordenadorEditForm(forms.ModelForm):
     class Meta:
-        model = Coordenador
+        model = Usuario
         fields = ["nome", "setor"]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
+
+# ======================================
+# EDIÇÃO — ADMIN (EMAIL | TIPO | APROVAÇÃO)
+# ======================================
 class UsuarioEditFormSimples(forms.ModelForm):
     class Meta:
         model = Usuario
@@ -101,9 +82,5 @@ class UsuarioEditFormSimples(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # estilização
-        for field in self.fields.values():
-            field.widget.attrs.update({
-                "class": "form-control"
-            })
+        for f in self.fields.values():
+            f.widget.attrs.update({"class": "form-control"})

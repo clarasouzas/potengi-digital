@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
-from .filters import VagaFilter
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
-from usuarios.models import Aluno
+from django.contrib.auth.decorators import login_required, user_passes_test
 
+from .filters import VagaFilter
 
 from .models import (
     Vaga,
@@ -15,23 +14,23 @@ from .models import (
     HomeContent,
     PerfilFormacao,
     Feature,
-    
 )
+
 from .forms import VagaForm, CandidaturaForm, ContatoForm
-from usuarios.models import Empresa, Usuario
+from usuarios.models import Usuario   # único modelo agora
 
 
 # ================================
 # AUXILIARES
 # ================================
 def is_coordenador(user):
-    return user.is_authenticated and getattr(user, "tipo", "") == "coordenador"
+    return user.is_authenticated and user.tipo == "coordenador"
 
 def is_empresa(user):
-    return user.is_authenticated and getattr(user, "tipo", "") == "empresa"
+    return user.is_authenticated and user.tipo == "empresa"
 
 def is_aluno(user):
-    return user.is_authenticated and getattr(user, "tipo", "") == "aluno"
+    return user.is_authenticated and user.tipo == "aluno"
 
 
 # ================================
@@ -48,7 +47,6 @@ def index(request):
 
     form = ContatoForm(request.POST or None)
 
-    # envio de mensagem
     if request.method == "POST":
         if not request.user.is_authenticated:
             messages.warning(request, "Você precisa estar logada para enviar uma mensagem.")
@@ -68,19 +66,15 @@ def index(request):
     })
 
 
-
-
+# ================================
+# LISTAR VAGAS
+# ================================
 def listar_vagas(request):
-    # queryset inicial (somente vagas aprovadas)
     vagas_qs = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
 
-    # aplica o filtro
     filtro = VagaFilter(request.GET, queryset=vagas_qs)
-
-    # queryset filtrado
     vagas_filtradas = filtro.qs
 
-    # paginação
     paginator = Paginator(vagas_filtradas, 6)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -90,6 +84,7 @@ def listar_vagas(request):
         "filtro": filtro,
     })
 
+
 # ================================
 # CANDIDATURA
 # ================================
@@ -98,12 +93,12 @@ def listar_vagas(request):
 def candidatar_vaga(request, vaga_id):
     vaga = get_object_or_404(Vaga, id=vaga_id, status="aprovada")
 
-    # bloq aluno não aprovado
+    # verificar aprovação do usuário (coordenador precisa aprovar)
     if not request.user.is_approved:
         messages.error(request, "Seu cadastro ainda não foi aprovado pela coordenação.")
         return redirect("linkif:listar_vagas")
 
-    aluno = request.user.aluno
+    aluno = request.user  # agora o próprio usuário é o aluno
 
     # já existe candidatura
     if Candidatura.objects.filter(vaga=vaga, aluno=aluno).exists():
@@ -127,6 +122,8 @@ def candidatar_vaga(request, vaga_id):
         "form": form,
         "vaga": vaga,
     })
+
+
 # ================================
 # PERFIS DE FORMAÇÃO
 # ================================
@@ -171,13 +168,26 @@ def para_empresas(request):
         "home": home,
         "features": features,
     })
+
+
+# ================================
+# EXPLORAR PERFIS (Coordenação / Empresas)
+# ================================
 @login_required
 def explorar_perfis(request):
     if request.user.tipo not in ["coordenador", "empresa"]:
-        return redirect('linkif:index')  # ou homepage
+        return redirect('linkif:index')
 
-    alunos = Aluno.objects.all()
-    return render(request, "linkif/explorar.html", {"alunos": alunos})
+    alunos = Usuario.objects.filter(tipo="aluno", is_approved=True)
 
-
-
+    return render(request, "linkif/explorar.html", {
+        "alunos": alunos
+    })
+# detalhar vaga
+def vaga_detalhe(request, vaga_id):
+    vaga = get_object_or_404(Vaga, id=vaga_id, status="aprovada")
+    site_config = SiteConfig.objects.first()
+    return render(request, "linkif/vaga_detalhe.html", {
+        "vaga": vaga,
+        "site_config": site_config,
+    })

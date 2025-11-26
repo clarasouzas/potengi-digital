@@ -1,12 +1,13 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
-from .models import Vaga, Candidatura, MensagemContato
+from .models import Vaga, Candidatura, MensagemContato, PerfilFormacao
 
 
 # =====================================================
 # FORMULÁRIO DE VAGA (para empresas)
 # =====================================================
+
 
 
 class VagaForm(forms.ModelForm):
@@ -16,7 +17,9 @@ class VagaForm(forms.ModelForm):
             "titulo",
             "descricao",
             "requisitos",
+            "curso",
             "tipo",
+            "modalidade",
             "remuneracao",
             "cidade",
             "bairro",
@@ -42,9 +45,15 @@ class VagaForm(forms.ModelForm):
                 "placeholder": "Ex: HTML, CSS, Git, comunicação..."
             }),
 
-    
+            "curso": forms.Select(attrs={
+                "class": "soft-input"
+            }),
 
             "tipo": forms.Select(attrs={
+                "class": "soft-input"
+            }),
+
+            "modalidade": forms.Select(attrs={
                 "class": "soft-input"
             }),
 
@@ -57,8 +66,6 @@ class VagaForm(forms.ModelForm):
                 "class": "soft-input",
                 "placeholder": "Cidade da vaga"
             }),
-
-        
 
             "bairro": forms.TextInput(attrs={
                 "class": "soft-input",
@@ -79,21 +86,37 @@ class VagaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        obrigatorios = ["titulo", "descricao", "tipo", "cidade","remuneracao","data_inicio","data_fim"]    
+        # campos obrigatórios
+        obrigatorios = [
+            "titulo",
+            "descricao",
+            "tipo",
+            "cidade",
+            "remuneracao",
+            "data_inicio",
+            "data_fim",
+        ]
 
         for campo in obrigatorios:
             self.fields[campo].required = True
 
-    # labels
+        # labels
         self.fields["titulo"].label = "Título da Vaga *"
         self.fields["descricao"].label = "Descrição *"
         self.fields["requisitos"].label = "Requisitos"
-        self.fields["tipo"].label = "Tipo"
-        self.fields["remuneracao"].label = "Bolsa / Salário (R$)"
-        self.fields["cidade"].label = "Cidade"
+        self.fields["curso"].label = "Curso relacionado"
+        self.fields["tipo"].label = "Tipo de Vaga *"
+        self.fields["modalidade"].label = "Modalidade"
+        self.fields["remuneracao"].label = "Bolsa / Salário (R$) *"
+        self.fields["cidade"].label = "Cidade *"
         self.fields["bairro"].label = "Bairro"
-        self.fields["data_inicio"].label = "Início"
-        self.fields["data_fim"].label = "Término"
+        self.fields["data_inicio"].label = "Início *"
+        self.fields["data_fim"].label = "Término *"
+
+        # cursos ordenados lindos
+        self.fields["curso"].queryset = PerfilFormacao.objects.all().order_by("nome")
+        self.fields["curso"].empty_label = "Selecione um curso (opcional)"
+
 
 # =====================================================
 # FORMULÁRIO DE CANDIDATURA (para alunos)

@@ -4,11 +4,161 @@
 
 {% block conteudo %}
 
-<h2 class="mb-4">Coordenação – Painel de Controle</h2>
+<h2 class="mb-4">Painel da Coordenação</h2>
 
-<div class="card p-4 shadow-sm">
-    <h5 class="text-primary fw-bold">Visão Geral</h5>
-    <p class="text-muted">Aprove alunos, empresas e vagas. Gerencie todo o sistema a partir deste painel.</p>
+<!-- ===================== CARDS DE ESTATÍSTICAS ===================== -->
+<div class="row g-3 mb-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3 card-cord">
+            <h6 class="text-muted mb-1">Alunos Pendentes</h6>
+            <h3 class="fw-bold">{{ alunos_pendentes }}</h3>
+            <a href="{% url 'dashboard:aprovar_alunos' %}" class="text-decoration-none small">
+                Ver alunos pendentes →
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3 card-cord">
+            <h6 class="text-muted mb-1">Empresas Pendentes</h6>
+            <h3 class="fw-bold">{{ empresas_pendentes }}</h3>
+            <a href="{% url 'dashboard:aprovar_empresas' %}" class="text-decoration-none small">
+                Ver empresas pendentes →
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3 card-cord">
+            <h6 class="text-muted mb-1">Vagas Aguardando Aprovação</h6>
+            <h3 class="fw-bold">{{ vagas_pendentes }}</h3>
+            <a href="{% url 'dashboard:aprovar_vagas' %}" class="text-decoration-none small">
+                Ver vagas pendentes →
+            </a>
+        </div>
+    </div>
+
 </div>
+
+
+<!-- ===================== AÇÕES RÁPIDAS ===================== -->
+<div class="card shadow-sm p-4 mb-4">
+    <h5 class="text-primary fw-bold mb-3">
+        <i class="bi bi-lightning-charge-fill me-1"></i> Ações Rápidas
+    </h5>
+
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <a href="{% url 'dashboard:aprovar_alunos' %}" class="painel-btn">
+                <i class="bi bi-person-check-fill icon"></i>
+                Aprovar Alunos
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'dashboard:aprovar_empresas' %}" class="painel-btn">
+                <i class="bi bi-building-check icon"></i>
+                Aprovar Empresas
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'dashboard:aprovar_vagas' %}" class="painel-btn">
+                <i class="bi bi-clipboard-check icon"></i>
+                Aprovar Vagas
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'dashboard:usuarios' %}" class="painel-btn">
+                <i class="bi bi-people-fill icon"></i>
+                Gerenciar Usuários
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'dashboard:empresas' %}" class="painel-btn">
+                <i class="bi bi-building icon"></i>
+                Gerenciar Empresas
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'dashboard:relatorios' %}" class="painel-btn">
+                <i class="bi bi-bar-chart icon"></i>
+                Relatórios
+            </a>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ===================== STATUS DO SISTEMA ===================== -->
+<div class="card shadow-sm p-4">
+    <h5 class="text-primary fw-bold mb-3">
+        <i class="bi bi-speedometer2 me-1"></i> Status Geral do Sistema
+    </h5>
+
+    <ul class="list-group list-group-flush">
+
+        <li class="list-group-item">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            Sistema funcionando normalmente.
+        </li>
+
+        <li class="list-group-item">
+            <i class="bi bi-people-fill text-primary me-2"></i>
+            Usuários cadastrados: <strong>{{ total_usuarios }}</strong>
+        </li>
+
+        <li class="list-group-item">
+            <i class="bi bi-briefcase-fill text-info me-2"></i>
+            Vagas publicadas: <strong>{{ total_vagas }}</strong>
+        </li>
+
+        <li class="list-group-item">
+            <i class="bi bi-mortarboard-fill text-success me-2"></i>
+            Alunos cadastrados: <strong>{{ total_alunos }}</strong>
+        </li>
+
+        <li class="list-group-item">
+            <i class="bi bi-building-fill text-warning me-2"></i>
+            Empresas cadastradas: <strong>{{ total_empresas }}</strong>
+        </li>
+
+    </ul>
+</div>
+
+
+<style>
+.card-cord {
+    border-left: 4px solid #2C7F67;
+    background: #f8f9ff;
+    border-radius: 10px;
+}
+.painel-btn {
+    display: block;
+    background: #e8f4ef;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: #205072;
+    font-weight: 600;
+    text-decoration: none;
+    transition: .2s;
+}
+.painel-btn:hover {
+    background: #d4eee4;
+    transform: translateY(-2px);
+}
+.painel-btn .icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 10px;
+}
+</style>
 
 {% endblock %}

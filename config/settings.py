@@ -160,7 +160,6 @@ AUTH_USER_MODEL = "usuarios.Usuario"
 # ============================
 
 # para onde o usuário vai DEPOIS de fazer login
-# AGORA ESTÁ CORRETO → vai usar sua view de redirecionamento
 LOGIN_REDIRECT_URL = "linkif:index"
 
 # quando tenta acessar algo sem estar logado
@@ -170,7 +169,4 @@ LOGIN_URL = "usuarios:login"
 LOGOUT_REDIRECT_URL = "linkif:index"
 
 
-# ============================
-# Primary Key padrão
-# ============================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

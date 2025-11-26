@@ -8,15 +8,13 @@ urlpatterns = [
     path("", include("linkif.urls")),              
     
     # dashboard privado
-    path("dashboard/", include("dashboard.urls", namespace="dashboard")),
+    path("dashboard/", include("dashboard.urls")),
     
     # login / cadastro / recuperação de senha personalizados
     path("usuarios/", include("usuarios.urls")),
     
     # painel admin
     path("admin/", admin.site.urls),
-    path("vagas/", include(("linkif.urls", "vagas"), namespace="vagas")),
-
 ]
 
 if settings.DEBUG:

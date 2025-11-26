@@ -11,7 +11,7 @@ urlpatterns = [
     path("", views.index, name="index"),
 
     # ============================
-    # PARA ESTUDANTES / EMPRESAS
+    # PÁGINAS PÚBLICAS
     # ============================
     path("para-estudantes/", views.para_estudantes, name="para_estudantes"),
     path("para-empresas/", views.para_empresas, name="para_empresas"),
@@ -23,11 +23,20 @@ urlpatterns = [
     path("perfis/<int:perfil_id>/", views.perfil_detalhe, name="perfil_detalhe"),
 
     # ============================
-    # VAGAS PÚBLICAS
+    # VAGAS PÚBLICAS (listagem)
     # ============================
     path("vagas/", views.listar_vagas, name="listar_vagas"),
-    
-    # candidatura (aluno precisa estar logado)
+    path("vagas/<int:vaga_id>/", views.vaga_detalhe, name="vaga_detalhe"),
+
+
+    # candidatura (somente aluno)
     path("vagas/<int:vaga_id>/candidatar/", views.candidatar_vaga, name="candidatar_vaga"),
+
+    # ============================
+    # EXPLORAR ALUNOS (coordenação e empresas)
+    # ============================
     path("explorar/", views.explorar_perfis, name="explorar"),
+
+
+
 ]

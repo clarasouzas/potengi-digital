@@ -5,89 +5,150 @@
 
 {% block content %}
 
-<section class="container vagas-container mt-5 mb-5">
+<section class="hero hero-estudante">
+  <div class="container text-center text-md-start">
+    <div class="row align-items-center">
+      <div class="col-md-7">
+        <h1>Conecte-se às melhores oportunidades</h1>
+        <p>Explore vagas de estágio, emprego e bolsas voltadas para estudantes do IFRN.</p>
+      </div>
+
+      <div class="hero-art">
+        <img src="{% static 'assets/img/estudante.png' %}" class="hero-art">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container mt-5 mb-5">
 
 <div class="row g-4">
 
-    <!-- FILTRO -->
-    <div class="col-lg-4">
-        <div class="filtro-box p-4">
+    <!-- =====================
+         FILTRO LATERAL
+    ====================== -->
+    <div class="col-md-4">
+        <div class="filtro-card p-4">
 
-            <h5 class="titulo-filtro">Personalize sua pesquisa</h5>
+            <h5 class="fw-bold mb-3">Filtrar vagas</h5>
 
             <form method="get">
-                
-                <label>Busque pelo nome da vaga</label>
+
+                {{ filtro.form.titulo.label_tag }}
                 {{ filtro.form.titulo }}
 
-                <label class="mt-3">Localização Ideal</label>
+                {{ filtro.form.cidade.label_tag }}
                 {{ filtro.form.cidade }}
 
-                <label class="mt-3">Tipo de Vaga</label>
+                {{ filtro.form.tipo.label_tag }}
                 {{ filtro.form.tipo }}
 
-                <!-- CAMPOS FUTUROS DA IMAGEM (curso, modalidade, pcd) -->
-                <label class="mt-3">Curso</label>
-                <select class="form-control soft-input" disabled>
-                    <option>Selecione um curso</option>
-                </select>
+                {{ filtro.form.curso.label_tag }}
+                {{ filtro.form.curso }}
 
-                <label class="mt-3">Modalidade</label>
-                <select class="form-control soft-input" disabled>
-                    <option>Selecione uma modalidade</option>
-                </select>
+                {{ filtro.form.modalidade.label_tag }}
+                {{ filtro.form.modalidade }}
 
-                <div class="mt-3 d-flex align-items-center justify-content-between">
-                    <span>Exclusivo PCD</span>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" disabled>
-                    </div>
-                </div>
-
-                <button class="btn-filtrar w-100 mt-3">
-                    <i class="bi bi-funnel"></i> Filtrar
+                <button class="btn w-100 mt-3" style="background:#0a7a79; color:white;">
+                    Aplicar Filtros
                 </button>
-            </form>
 
+            </form>
         </div>
     </div>
 
-
-    <!-- LISTAGEM DE VAGAS -->
-    <div class="col-lg-8">
+    <!-- =====================
+         LISTA DE VAGAS
+    ====================== -->
+    <div class="col-md-8">
         <div class="row g-4">
 
             {% for vaga in vagas %}
-            <div class="col-md-6 col-xl-4">
-                <div class="vaga-card">
+            <div class="col-md-6">
+            <div class="vaga-card">
 
-                    <span class="vaga-tag">Vagas destacadas…</span>
+                <!-- Empresa + foto -->
+                <div class="vaga-empresa">
 
-                    <span class="vaga-data">{{ vaga.data_publicacao|date:"d/m/Y" }}</span>
+                    {% if vaga.empresa.foto %}
+                        <img src="{{ vaga.empresa.foto.url }}" class="empresa-avatar">
+                    {% else %}
+                        <div class="empresa-avatar-fallback">
+                            <i class="bi bi-buildings"></i>
+                        </div>
+                    {% endif %}
 
-                    <h5 class="vaga-titulo">{{ vaga.titulo|upper }}</h5>
-
-                    <ul class="vaga-lista">
-                        <li><i class="bi bi-geo-alt"></i> {{ vaga.cidade }}/RN</li>
-                        <li><i class="bi bi-person-check"></i> Presencial</li>
-                        {% if vaga.remuneracao %}
-                        <li><i class="bi bi-cash"></i> R$ {{ vaga.remuneracao }}</li>
-                        {% endif %}
-                    </ul>
-
-                    <a href="{% url 'linkif:candidatar_vaga' vaga.id %}" class="vaga-btn">
-                        Quero esta vaga
-                    </a>
-
+                    <span class="empresa-nome">
+                        {{ vaga.empresa.nome|default:vaga.empresa.email }}
+                    </span>
                 </div>
+
+                <!-- Data -->
+                {% if vaga.data_publicacao %}
+                <span class="vaga-data">{{ vaga.data_publicacao|date:"d/m/Y" }}</span>
+                {% endif %}
+
+                <!-- Título -->
+                <h5 class="vaga-titulo fw-bold text-uppercase">
+                    {{ vaga.titulo }}
+                </h5>
+
+                <!-- Info -->
+                <ul class="vaga-info">
+                    <li><i class="bi bi-geo-alt"></i> {{ vaga.cidade }}/RN</li>
+                    <li><i class="bi bi-briefcase"></i> {{ vaga.get_tipo_display }}</li>
+
+                    {% if vaga.remuneracao %}
+                    <li><i class="bi bi-cash"></i> R$ {{ vaga.remuneracao }}</li>
+                    {% endif %}
+                </ul>
+
+                <!-- Botão -->
+                <a href="{% url 'linkif:vaga_detalhe' vaga.id %}" 
+                   class="btn btn-primary w-100 mt-3">
+                    Ver detalhes
+                </a>
+
+            </div>
             </div>
 
             {% empty %}
-            <p class="text-center text-muted mt-4">
-                Nenhuma vaga encontrada com os filtros selecionados.
-            </p>
+            <p class="text-center text-muted mt-4">Nenhuma vaga encontrada.</p>
             {% endfor %}
+
         </div>
+
+        <!-- PAGINAÇÃO -->
+        <div class="mt-4">
+            <nav>
+                <ul class="pagination justify-content-center">
+
+                    {% if vagas.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ vagas.previous_page_number }}&{{ request.GET.urlencode }}">
+                        «
+                      </a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item disabled">
+                      <a class="page-link">
+                        Página {{ vagas.number }} de {{ vagas.paginator.num_pages }}
+                      </a>
+                    </li>
+
+                    {% if vagas.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ vagas.next_page_number }}&{{ request.GET.urlencode }}">
+                        »
+                      </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+
     </div>
 
 </div>
