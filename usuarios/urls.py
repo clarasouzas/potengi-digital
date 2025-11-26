@@ -1,28 +1,28 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from . import views
+from .views import (
+    cadastro,
+    cadastro_aluno,
+    cadastro_empresa,
+    redirecionar_dashboard,
+)
 
 app_name = "usuarios"
 
 urlpatterns = [
-    # CADASTROS
-    path("cadastro/", views.cadastro, name="cadastro"),
-    path("cadastro/aluno/", views.cadastro_aluno, name="cadastro_aluno"),
-    path("cadastro/empresa/", views.cadastro_empresa, name="cadastro_empresa"),
-    path("cadastro/coord/", views.cadastro_coord, name="cadastro_coord"),
-   
-    # LOGIN
-    path(
-        "login/",
-        auth_views.LoginView.as_view(
-            template_name="registration/login.html",
-            redirect_authenticated_user=True,
-        ),
-        name="login"
-    ),
+    path("cadastro/", cadastro, name="cadastro"),
 
-    # LOGOUT
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("cadastro/aluno/", cadastro_aluno, name="cadastro_aluno"),
+    path("cadastro/empresa/", cadastro_empresa, name="cadastro_empresa"),
 
-   
+    # login/logout do Django
+    path("login/",
+         auth_views.LoginView.as_view(template_name="registration/login.html"),
+         name="login"),
+    path("logout/",
+         auth_views.LogoutView.as_view(),
+         name="logout"),
+
+    # redirecionamento pós-login
+    path("dashboard/", redirecionar_dashboard, name="redirecionar_dashboard"),
 ]

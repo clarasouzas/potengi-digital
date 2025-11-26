@@ -1,0 +1,29 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block conteudo %}
+
+<h3 class="mb-4">Cancelar Candidatura</h3>
+
+<p>Tem certeza que deseja cancelar sua candidatura para:</p>
+
+<div class="card-list mb-4">
+    <div class="card-title">{{ candidatura.vaga.titulo }}</div>
+    <div class="card-meta">
+        <i class="bi bi-building"></i> {{ candidatura.vaga.empresa.nome_empresa }}
+    </div>
+    <div class="card-meta">
+        <i class="bi bi-calendar"></i> {{ candidatura.data_candidatura|date:"d/m/Y" }}
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button class="btn-delete">
+        <i class="bi bi-trash"></i> Confirmar Cancelamento
+    </button>
+
+    <a href="{% url 'dashboard:aluno_candidaturas' %}" class="btn-outline-action ms-2">
+        Voltar
+    </a>
+</form>
+
+{% endblock %}

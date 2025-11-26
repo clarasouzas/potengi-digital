@@ -1,0 +1,75 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block conteudo %}
+
+<h2 class="mb-4">Minhas Candidaturas</h2>
+
+{% if candidaturas %}
+<div class="row g-3">
+
+    {% for c in candidaturas %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card-list">
+
+            <!-- Título da vaga -->
+            <div class="card-title">{{ c.vaga.titulo }}</div>
+
+            <!-- Empresa -->
+            <div class="card-meta">
+                <i class="bi bi-building me-1"></i>
+                {{ c.vaga.empresa.nome_empresa }}
+            </div>
+
+            <!-- Data de candidatura -->
+            <div class="card-meta">
+                <i class="bi bi-calendar2-week me-1"></i>
+                {{ c.data_candidatura|date:"d/m/Y" }}
+            </div>
+
+            <!-- Status da candidatura -->
+            <div class="mt-2">
+                {% if c.status == "pendente" %}
+                    <span class="badge bg-warning text-dark px-3 py-2">
+                        <i class="bi bi-hourglass-split me-1"></i> Pendente
+                    </span>
+                {% elif c.status == "em_analise" %}
+                    <span class="badge bg-info text-dark px-3 py-2">
+                        <i class="bi bi-search me-1"></i> Em análise
+                    </span>
+                {% elif c.status == "aprovado" %}
+                    <span class="badge bg-success px-3 py-2">
+                        <i class="bi bi-check2-circle me-1"></i> Aprovado
+                    </span>
+                {% elif c.status == "recusado" %}
+                    <span class="badge bg-danger px-3 py-2">
+                        <i class="bi bi-x-circle me-1"></i> Recusado
+                    </span>
+                {% endif %}
+            </div>
+
+            <!-- Ações -->
+            <div class="card-actions">
+
+                <a href="{% url 'linkif:candidatar_vaga' c.vaga.id %}"
+                   class="btn-outline-action">
+                    <i class="bi bi-eye"></i> Ver Vaga
+                </a>
+
+                <a href="{% url 'dashboard:cancelar_candidatura' c.id %}"
+                   class="btn-delete">
+                    <i class="bi bi-trash"></i> Cancelar
+                </a>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<p class="text-muted">
+    Você ainda não se candidatou a nenhuma vaga.
+</p>
+{% endif %}
+
+{% endblock %}

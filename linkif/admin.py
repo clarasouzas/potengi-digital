@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import (
-    AreaAtuacao,
     Vaga,
     Candidatura,
     Mensagem,
@@ -14,7 +13,6 @@ from .models import (
 admin.site.register(Competencia)
 admin.site.register(AreaAtuacaoPerfil)
 admin.site.register(PerfilFormacao)
-admin.site.register(AreaAtuacao)
 admin.site.register(Vaga)
 admin.site.register(Candidatura)
 admin.site.register(Mensagem)

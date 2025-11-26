@@ -1,14 +1,104 @@
 {% extends "dashboard/base_dashboard.html" %}
 
-{% block titulo %}Dashboard da Empresa{% endblock %}
+{% block titulo %}Dashboard{{ request.user.nome }}{% endblock %}
 
 {% block conteudo %}
 
-<h2 class="mb-4">Bem-vinda, {{ request.user.empresa.nome_empresa }}</h2>
+<h2 class="mb-4 d-flex align-items-center">
+    <i class="bi bi-building me-2"></i>
+    Visão Geral
+</h2>
 
-<div class="card p-4 shadow-sm">
-    <h5 class="text-primary fw-bold">Gerenciamento rápido</h5>
-    <p class="text-muted">Cadastre novas vagas, acompanhe candidatos e atualize informações da sua empresa.</p>
+<!-- ===================== RESUMO ===================== -->
+<div class="row g-4 mb-4">
+
+    <div class="col-md-4">
+        <div class="soft-card p-4 text-center">
+            <i class="bi bi-briefcase-fill text-primary fs-2 mb-2"></i>
+            <h4 class="fw-bold">{{ total_vagas }}</h4>
+            <p class="text-muted m-0">Vagas cadastradas</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="soft-card p-4 text-center">
+            <i class="bi bi-clock-history text-warning fs-2 mb-2"></i>
+            <h4 class="fw-bold">{{ vagas_pendentes }}</h4>
+            <p class="text-muted m-0">Aguardando aprovação</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="soft-card p-4 text-center">
+            <i class="bi bi-people-fill text-success fs-2 mb-2"></i>
+            <h4 class="fw-bold">{{ total_candidaturas }}</h4>
+            <p class="text-muted m-0">Candidaturas recebidas</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===================== AÇÕES RÁPIDAS ===================== -->
+<h4 class="fw-semibold mb-3">Ações rápidas</h4>
+
+<div class="row g-3 mb-4">
+
+    <div class="col-md-4">
+        <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="quick-action">
+            <i class="bi bi-plus-circle fs-2 mb-2"></i>
+            <span>Cadastrar nova vaga</span>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="{% url 'dashboard:empresa_vagas' %}" class="quick-action">
+            <i class="bi bi-list-check fs-2 mb-2"></i>
+            <span>Minhas vagas</span>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="{% url 'dashboard:empresa_candidaturas' %}" class="quick-action">
+            <i class="bi bi-person-lines-fill fs-2 mb-2"></i>
+            <span>Candidaturas recebidas</span>
+        </a>
+    </div>
+
+</div>
+
+<!-- ===================== ÚLTIMAS VAGAS ===================== -->
+<h4 class="fw-semibold mb-3">Últimas vagas cadastradas</h4>
+
+<div class="row g-4">
+
+    {% for vaga in vagas_recentes %}
+    <div class="col-md-6 col-lg-4">
+        <div class="vaga-mini-card shadow-sm p-3 rounded">
+
+            <h5 class="fw-bold mb-1">{{ vaga.titulo }}</h5>
+
+            <span class="badge 
+                {% if vaga.status == 'aprovada' %}bg-success
+                {% elif vaga.status == 'pendente' %}bg-warning text-dark
+                {% else %}bg-danger
+                {% endif %}
+            ">
+                {{ vaga.get_status_display }}
+            </span>
+
+            <p class="text-muted mt-2 small">
+                {{ vaga.descricao|truncatewords:20 }}
+            </p>
+
+            <a href="{% url 'dashboard:empresa_vagas' %}" class="text-decoration-none small text-primary">
+                Ver detalhes →
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-muted">Você ainda não cadastrou nenhuma vaga.</p>
+    {% endfor %}
+
 </div>
 
 {% endblock %}

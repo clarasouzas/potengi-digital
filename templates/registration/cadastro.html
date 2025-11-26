@@ -56,15 +56,6 @@
                     </button>
                 </li>
 
-                <!-- COORDENAÇÃO -->
-                <li class="nav-item">
-                    <button class="tab-btn {% if active_tab == 'coord' %}active{% endif %}"
-                        data-bs-toggle="tab"
-                        data-bs-target="#aba-coord">
-                        <i class="bi bi-person-gear me-2"></i> Coordenação
-                    </button>
-                </li>
-
             </ul>
 
         </aside>
@@ -107,23 +98,6 @@
 
                         {% crispy forms.1.1 %}
                         <button class="btn-enviar w-100 mt-3">Cadastrar Empresa</button>
-                    </form>
-                </div>
-
-                <!-- ==================== COORD ==================== -->
-                <div class="tab-pane fade {% if active_tab == 'coord' %}show active{% endif %}" id="aba-coord">
-
-                    <h4 class="titulo"><i class="bi bi-person-gear me-2"></i>Cadastro de Coordenação</h4>
-
-                    <form method="POST" action="{% url 'usuarios:cadastro_coord' %}">
-                        {% csrf_token %}
-
-                        {% if forms.2.1.errors %}
-                            <div class="alert alert-danger py-2">Verifique os campos e tente novamente.</div>
-                        {% endif %}
-
-                        {% crispy forms.2.1 %}
-                        <button class="btn-enviar w-100 mt-3">Cadastrar Coordenação</button>
                     </form>
                 </div>
 

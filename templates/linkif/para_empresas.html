@@ -4,6 +4,7 @@
 {% block title %}Para Empresas — LinkIF{% endblock %}
 
 {% block content %}
+
 <!-- HERO -->
 <section class="hero hero-empresas">
   <div class="container text-center text-md-start">
@@ -11,12 +12,45 @@
       <div class="col-md-7">
         <h1>Para Empresas</h1>
         <p>Conecte-se aos talentos do IFRN e fortaleça o desenvolvimento local com a sua marca.</p>
-        <div class="botoes">
-          <a href="{% url 'usuarios:cadastro' %}" class="botao-principal">
-            <i class="bi bi-building-add"></i> Cadastrar Empresa
-          </a>
-        </div>
+
+        <!-- =============================
+             BOTÃO DO HERO – LÓGICA NOVA
+        ============================== -->
+        {% if not user.is_authenticated %}
+            <!-- Visitante -->
+            <div class="botoes">
+              <a href="{% url 'usuarios:cadastro' %}" class="botao-principal">
+                <i class="bi bi-building-add"></i> Cadastrar Empresa
+              </a>
+            </div>
+
+        {% elif user.tipo == "empresa" %}
+            <!-- Empresa logada -->
+            <div class="botoes">
+              <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="botao-principal">
+                <i class="bi bi-briefcase"></i> Criar Vaga
+              </a>
+            </div>
+
+        {% elif user.tipo == "coordenador" %}
+            <!-- Coordenação -->
+            <div class="botoes">
+              <a href="{% url 'linkif:explorar' %}" class="botao-principal">
+                <i class="bi bi-search"></i> Explorar Perfis
+              </a>
+            </div>
+
+        {% else %}
+            <!-- Aluno -->
+            <div class="botoes">
+              <a href="{% url 'linkif:perfil_cursos' %}" class="botao-principal">
+                <i class="bi bi-mortarboard-fill"></i> Ver Cursos
+              </a>
+            </div>
+        {% endif %}
+
       </div>
+
       <div class="hero-art">
         <img src="{% static 'assets/img/empresa.png' %}" alt="Empresas" class="hero-art">
       </div>
@@ -25,19 +59,25 @@
 </section>
 
 
+<!-- O QUE OFERECEMOS -->
 <section class="oferecemos">
   <div class="container text-center">
     <h2 class="fw-bold" style="color:#1b1f5b;">O que oferecemos para sua empresa</h2>
-    <p class="mb-5 text-secondary">Um canal direto com os estudantes e egressos do IFRN para gerar oportunidades e fortalecer o mercado local.</p>
+    <p class="mb-5 text-secondary">
+      Um canal direto com os estudantes e egressos do IFRN para gerar oportunidades e fortalecer o mercado local.
+    </p>
 
     <div class="row g-4 justify-content-center mt-4">
+
       <div class="col-md-3 icon-empresa-azul">
         <div class="feature-empresa-card">
           <div class="feature-empresa-top">
             <div class="feature-empresa-icon"><i class="bi bi-people-fill"></i></div>
           </div>
           <h5 class="fw-bold">Encontre Talentos</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'> Descubra alunos e egressos com as competências que sua empresa procura.</p>
+          <p class='mt-3 ' style='width: 250px; margin:auto;'>
+            Descubra alunos e egressos com as competências que sua empresa procura.
+          </p>
         </div>
       </div>
 
@@ -47,7 +87,9 @@
             <div class="feature-empresa-icon"><i class="bi bi-megaphone-fill"></i></div>
           </div>
           <h5 class="fw-bold">Divulgue Vagas</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'>Cadastre vagas de estágio, emprego e bolsas e receba candidaturas direcionadas.</p>
+          <p class='mt-3 ' style='width: 250px; margin:auto;'>
+            Cadastre vagas de estágio, emprego e bolsas e receba candidaturas direcionadas.
+          </p>
         </div>
       </div>
 
@@ -57,7 +99,9 @@
             <div class="feature-empresa-icon"><i class="bi bi-bullseye"></i></div>
           </div>
           <h5 class="fw-bold">Crie Parcerias</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'> Fortaleça vínculos com o IFRN e participe de projetos de inovação e pesquisa aplicada.</p>
+          <p class='mt-3 ' style='width: 250px; margin:auto;'>
+            Fortaleça vínculos com o IFRN e participe de projetos de inovação e pesquisa aplicada.
+          </p>
         </div>
       </div>
 
@@ -67,18 +111,47 @@
             <div class="feature-empresa-icon"><i class="bi bi-graph-up"></i></div>
           </div>
           <h5 class="fw-bold">Acompanhe Resultados</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'>Visualize estatísticas e relatórios sobre suas vagas e interações com os candidatos.</p>
+          <p class='mt-3 ' style='width: 250px; margin:auto;'>
+            Visualize estatísticas e relatórios sobre suas vagas e interações com os candidatos.
+          </p>
         </div>
       </div>
+
     </div>
   </div>
 </section>
-<section class="cta-empresas">
+
+
+
+<!-- CTA FINAL -->
+<section class="cta-empresas text-center">
   <h3 class="fw-bold" style="color:#1b1f5b;">Pronta para encontrar novos talentos?</h3>
   <p class="mb-5 text-secondary">Publique vagas e descubra profissionais que fazem a diferença.</p>
-  <div class="botoes justify-content-center mt-5 mb-5">
-<a href="{% url 'linkif:listar_vagas' %}" class="btn-cta botao-principal">
-  <i class="bi bi-briefcase"></i> Publicar Vagas
-</a></section>
+
+  {% if not user.is_authenticated %}
+      <!-- visitante -->
+      <a href="{% url 'usuarios:cadastro' %}" class="btn-cta botao-principal">
+        <i class="bi bi-building-add"></i> Criar conta de empresa
+      </a>
+
+  {% elif user.tipo == "empresa" %}
+      <!-- empresa logada -->
+      <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="btn-cta botao-principal">
+        <i class="bi bi-briefcase"></i> Publicar vaga agora
+      </a>
+
+  {% elif user.tipo == "coordenador" %}
+      <!-- coord -->
+      <a href="{% url 'linkif:explorar' %}" class="btn-cta botao-principal">
+        <i class="bi bi-search"></i> Explorar estudantes
+      </a>
+
+  {% else %}
+      <!-- aluno -->
+      <a href="{% url 'linkif:listar_vagas' %}" class="btn-cta botao-principal">
+        <i class="bi bi-briefcase"></i> Ver vagas disponíveis
+      </a>
+  {% endif %}
+</section>
 
 {% endblock %}

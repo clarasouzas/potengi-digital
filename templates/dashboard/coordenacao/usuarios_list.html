@@ -1,31 +1,88 @@
 {% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
 {% block conteudo %}
 
 <h2 class="mb-4">Gerenciar Usuários</h2>
 
 <div class="row g-3">
+
     {% for u in usuarios %}
     <div class="col-12 col-md-6 col-lg-4">
+
         <div class="card-list">
 
-            <div class="card-title">{{ u.email }}</div>
-            <div class="card-meta">
-                Tipo: {{ u.get_tipo_display }}
+            <!-- EMAIL + ADMIN BADGE -->
+            <div class="card-title d-flex justify-content-between align-items-center">
+                {{ u.email }}
+
+                {% if u.is_superuser %}
+                <span class="badge bg-warning text-dark">
+                    <i class="bi bi-shield-lock-fill"></i> Admin
+                </span>
+                {% endif %}
             </div>
 
-            <div class="card-actions">
+            <!-- TIPO -->
+            <div class="card-meta">
+                <strong>Tipo:</strong> {{ u.get_tipo_display }}
+            </div>
+
+            <!-- DADOS ESPECÍFICOS POR TIPO -->
+            {% if u.tipo == "aluno" %}
+                <div class="card-meta"><strong>Nome:</strong> {{ u.nome|default:"—" }}</div>
+                <div class="card-meta"><strong>Curso:</strong> {{ u.curso|default:"—" }}</div>
+
+            {% elif u.tipo == "empresa" %}
+                <div class="card-meta"><strong>Empresa:</strong> {{ u.nome|default:"—" }}</div>
+                <div class="card-meta"><strong>Cidade:</strong> {{ u.cidade|default:"—" }}</div>
+
+            {% elif u.tipo == "coordenador" %}
+                <div class="card-meta"><strong>Coordenação:</strong> {{ u.nome|default:"—" }}</div>
+            {% endif %}
+
+            <!-- APROVAÇÃO -->
+            <div class="mt-2">
+                {% if u.is_approved %}
+                    <span class="badge bg-success">Aprovado</span>
+                {% else %}
+                    <span class="badge bg-secondary">Pendente</span>
+                {% endif %}
+            </div>
+
+            <!-- AÇÕES -->
+            <div class="card-actions mt-3">
+
+                <!-- EDITAR -->
                 <a href="{% url 'dashboard:usuario_editar' u.id %}" class="btn-outline-action">
                     <i class="bi bi-pencil"></i> Editar
                 </a>
 
-                <a href="{% url 'dashboard:usuario_excluir' u.id %}" class="btn-delete">
+                <!-- EXCLUIR (não permite excluir a si mesma) -->
+                {% if u.id != request.user.id %}
+                <a href="{% url 'dashboard:usuario_excluir' u.id %}"
+                   class="btn-delete"
+                   onclick="return confirm('Tem certeza que deseja excluir este usuário?');">
                     <i class="bi bi-trash"></i> Excluir
                 </a>
+                {% endif %}
             </div>
+
+            <!-- TORNAR ADMIN (se não for superuser) -->
+            {% if not u.is_superuser %}
+            <div class="mt-3">
+                <a href="{% url 'dashboard:tornar_admin' u.id %}"
+                   class="btn btn-sm btn-warning w-100"
+                   onclick="return confirm('Promover este usuário a ADMINISTRADOR?');">
+                    <i class="bi bi-shield-lock"></i> Tornar Admin
+                </a>
+            </div>
+            {% endif %}
 
         </div>
     </div>
     {% endfor %}
+
 </div>
 
 {% endblock %}

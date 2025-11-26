@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.paginator import Paginator
 from django.utils import timezone
-from usuarios.models import Aluno
+from django.contrib.auth.decorators import login_required, user_passes_test
 
+from .filters import VagaFilter
 
 from .models import (
     Vaga,
@@ -11,26 +12,25 @@ from .models import (
     Mensagem,
     SiteConfig,
     HomeContent,
-    AreaAtuacao,
     PerfilFormacao,
     Feature,
-    
 )
+
 from .forms import VagaForm, CandidaturaForm, ContatoForm
-from usuarios.models import Empresa, Usuario
+from usuarios.models import Usuario   # único modelo agora
 
 
 # ================================
 # AUXILIARES
 # ================================
 def is_coordenador(user):
-    return user.is_authenticated and getattr(user, "tipo", "") == "coordenador"
+    return user.is_authenticated and user.tipo == "coordenador"
 
 def is_empresa(user):
-    return user.is_authenticated and getattr(user, "tipo", "") == "empresa"
+    return user.is_authenticated and user.tipo == "empresa"
 
 def is_aluno(user):
-    return user.is_authenticated and getattr(user, "tipo", "") == "aluno"
+    return user.is_authenticated and user.tipo == "aluno"
 
 
 # ================================
@@ -47,7 +47,6 @@ def index(request):
 
     form = ContatoForm(request.POST or None)
 
-    # envio de mensagem
     if request.method == "POST":
         if not request.user.is_authenticated:
             messages.warning(request, "Você precisa estar logada para enviar uma mensagem.")
@@ -68,29 +67,22 @@ def index(request):
 
 
 # ================================
-# LISTAGEM DE VAGAS PÚBLICAS
+# LISTAR VAGAS
 # ================================
 def listar_vagas(request):
-    vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
-    areas = AreaAtuacao.objects.all()
+    vagas_qs = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
 
-    filtros = {
-        "titulo": request.GET.get("titulo"),
-        "area": request.GET.get("area"),
-        "cidade": request.GET.get("cidade"),
-        "tipo": request.GET.get("tipo"),
-    }
+    filtro = VagaFilter(request.GET, queryset=vagas_qs)
+    vagas_filtradas = filtro.qs
 
-    if filtros["titulo"]:
-        vagas = vagas.filter(titulo__icontains=filtros["titulo"])
-    if filtros["area"]:
-        vagas = vagas.filter(area__nome__icontains=filtros["area"])
-    if filtros["cidade"]:
-        vagas = vagas.filter(cidade__icontains=filtros["cidade"])
-    if filtros["tipo"]:
-        vagas = vagas.filter(tipo__iexact=filtros["tipo"])
+    paginator = Paginator(vagas_filtradas, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
-    return render(request, "linkif/vagas.html", {"vagas": vagas, "areas": areas})
+    return render(request, "linkif/vagas.html", {
+        "vagas": page_obj,
+        "filtro": filtro,
+    })
 
 
 # ================================
@@ -101,7 +93,14 @@ def listar_vagas(request):
 def candidatar_vaga(request, vaga_id):
     vaga = get_object_or_404(Vaga, id=vaga_id, status="aprovada")
 
-    aluno = request.user.aluno
+    # verificar aprovação do usuário (coordenador precisa aprovar)
+    if not request.user.is_approved:
+        messages.error(request, "Seu cadastro ainda não foi aprovado pela coordenação.")
+        return redirect("linkif:listar_vagas")
+
+    aluno = request.user  # agora o próprio usuário é o aluno
+
+    # já existe candidatura
     if Candidatura.objects.filter(vaga=vaga, aluno=aluno).exists():
         messages.warning(request, "Você já se candidatou a esta vaga.")
         return redirect("linkif:listar_vagas")
@@ -169,13 +168,26 @@ def para_empresas(request):
         "home": home,
         "features": features,
     })
+
+
+# ================================
+# EXPLORAR PERFIS (Coordenação / Empresas)
+# ================================
 @login_required
 def explorar_perfis(request):
     if request.user.tipo not in ["coordenador", "empresa"]:
-        return redirect('linkif:index')  # ou homepage
+        return redirect('linkif:index')
 
-    alunos = Aluno.objects.all()
-    return render(request, "linkif/explorar.html", {"alunos": alunos})
+    alunos = Usuario.objects.filter(tipo="aluno", is_approved=True)
 
-
-
+    return render(request, "linkif/explorar.html", {
+        "alunos": alunos
+    })
+# detalhar vaga
+def vaga_detalhe(request, vaga_id):
+    vaga = get_object_or_404(Vaga, id=vaga_id, status="aprovada")
+    site_config = SiteConfig.objects.first()
+    return render(request, "linkif/vaga_detalhe.html", {
+        "vaga": vaga,
+        "site_config": site_config,
+    })

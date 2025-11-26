@@ -7,123 +7,115 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
 </head>
 
 <body>
 
-<!-- ========== TOPBAR ========== -->
+<!-- ===================== TOPBAR ===================== -->
 <header class="topbar">
 
     <div class="left-area d-flex align-items-center">
-
-        <!-- Botão para abrir/fechar sidebar -->
         <button id="toggleSidebar" class="btn btn-topbar me-2">
             <i class="bi bi-list fs-3"></i>
         </button>
 
-        <!-- LOGO NO TOPO -->
-         <a href="{% url 'linkif:index' %}">
-            <img src="{% static 'assets/img/logo.png' %}" 
-             alt="LinkIF" 
-             class="topbar-logo">
-         </a>
-        
-
+        <a href="{% url 'linkif:index' %}">
+            <img src="{% static 'assets/img/logo.png' %}" class="topbar-logo">
+        </a>
     </div>
-<div class="right-area">
-    <div class="dropdown">
-         <a data-bs-toggle="dropdown" class="d-flex align-items-center pointer">
 
-            {% if foto %}
-                <!-- FOTO DO PERFIL -->
-                <img src="{{ foto }}" class="avatar">
-            {% else %}
-                <!-- ÍCONE QUANDO NÃO HÁ FOTO -->
-                <i class="{{ icone }} avatar-icon"></i>
-            {% endif %}
+    <!-- USER DROPDOWN -->
+    <div class="right-area">
+        <div class="dropdown">
+            <a data-bs-toggle="dropdown" class="d-flex align-items-center pointer">
 
-        </a>
-    <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
+                {% if foto %}
+                    <img src="{{ foto }}" class="avatar">
+                {% else %}
+                    <i class="{{ icone }} avatar-icon"></i>
+                {% endif %}
+            </a>
 
-    <!-- Saudação -->
-    <li class="dropdown-header">
-        Olá, 
-        {% if user.tipo == "aluno" %}
-            {{ user.aluno.nome }}
-        {% elif user.tipo == "empresa" %}
-            {{ user.empresa.nome_empresa }}
-        {% elif user.tipo == "coordenador" %}
-            {{ user.coordenador.nome }}
-        {% else %}
-            {{ user.email }}
-        {% endif %}
-    </li>
+            <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
 
-    <!-- Ir para Meu Perfil -->
-    <li>
-        <a href="{% url 'dashboard:perfil' %}" class="dropdown-item custom-dropdown-item">
-            <i class="bi bi-person me-2"></i> Meu Perfil
-        </a>
-    </li>
+                <li class="dropdown-header">
+                    Olá, {{ request.user.nome|default:request.user.email }}
+                </li>
 
-    
+                <li>
+                    <a href="{% url 'dashboard:perfil' %}" class="dropdown-item custom-dropdown-item">
+                        <i class="bi bi-person me-2"></i> Meu Perfil
+                    </a>
+                </li>
 
-    <!-- Sair -->
-    <li>
-        <form method="post" action="{% url 'usuarios:logout' %}">
-            {% csrf_token %}
-            <button class="dropdown-item custom-dropdown-item">
-                <i class="bi bi-box-arrow-right me-2"></i> Sair
-            </button>
-        </form>
-    </li>
+                <li>
+                    <form method="post" action="{% url 'usuarios:logout' %}">
+                        {% csrf_token %}
+                        <button class="dropdown-item custom-dropdown-item">
+                            <i class="bi bi-box-arrow-right me-2"></i> Sair
+                        </button>
+                    </form>
+                </li>
 
-</ul>
-
-</div>
-
+            </ul>
+        </div>
     </div>
 
 </header>
 
+<!-- ===================== ALERTAS ===================== -->
+{% if messages %}
+<div class="global-alert-container">
+    {% for message in messages %}
+        <div class="
+            global-alert
+            {% if 'success' in message.tags %}success{% endif %}
+            {% if 'error' in message.tags %}error{% endif %}
+            {% if 'warning' in message.tags %}warning{% endif %}
+            {% if 'info' in message.tags %}info{% endif %}
+        ">
+            <span><i class="bi bi-info-circle me-2"></i>{{ message }}</span>
+            <span class="close-btn" onclick="this.parentElement.remove()">×</span>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<!-- ===================== LAYOUT WRAPPER ===================== -->
 <div class="wrapper">
 
-    <!-- ========== SIDEBAR ========== -->
+    <!-- SIDEBAR -->
     <aside id="sidebar" class="sidebar">
-        <div class="sidebar-section-title">
-            VISÃO GERAL
-        </div>
-       
-        <!-- ITENS DO MENÚ -->
+
+        <div class="sidebar-section-title">MENU</div>
+
         {% for url_name, icon, label in menu %}
         <a href="{% url url_name %}" class="sidebar-item">
-            <i class="{{ icon }} me-2"></i>
-            <span class="label">{{ label }}</span>
+            <i class="{{ icon }} me-2"></i> <span>{{ label }}</span>
         </a>
         {% endfor %}
 
         <hr class="divider">
 
-        <!-- VOLTAR PARA O SITE PÚBLICO -->
         <a href="{% url 'linkif:index' %}" class="sidebar-item">
-            <i class="bi bi-arrow-left-circle me-2"></i>
-            <span class="label">Voltar ao Site</span>
+            <i class="bi bi-arrow-left-circle me-2"></i> Voltar ao Site
         </a>
 
     </aside>
 
-    <!-- ========== CONTEÚDO ========== -->
+    <!-- CONTEÚDO DINÂMICO -->
     <main class="content-area">
         {% block conteudo %}{% endblock %}
     </main>
 
 </div>
 
+
+<!-- ===================== SCRIPTS ===================== -->
 <script>
 document.getElementById("toggleSidebar").onclick = function() {
     document.getElementById("sidebar").classList.toggle("closed");

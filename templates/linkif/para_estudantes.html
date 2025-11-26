@@ -4,19 +4,53 @@
 {% block title %}Para Estudantes — LinkIF{% endblock %}
 
 {% block content %}
+
+<!-- HERO -->
 <section class="hero hero-estudante">
   <div class="container text-center text-md-start">
     <div class="row align-items-center">
       <div class="col-md-7">
         <h1>Para Estudantes</h1>
         <p>Transforme seu potencial em oportunidades reais. Conecte-se com o mercado e construa o futuro que você merece.</p>
-        <div class="botoes">
-          <a href="{% url 'usuarios:cadastro' %}" class="botao-principal">
-            <i class="bi bi-person-add"></i> Criar Perfil
-          </a>
-        </div>
+
+        <!-- BOTÃO INTELIGENTE -->
+        {% if not user.is_authenticated %}
+          <!-- Visitante -->
+          <div class="botoes">
+              <a href="{% url 'usuarios:cadastro' %}" class="botao-principal">
+                  <i class="bi bi-person-add"></i> Criar Perfil
+              </a>
+          </div>
+
+        {% elif user.tipo == "aluno" %}
+          <!-- Aluno logado -->
+          <div class="botoes">
+              <a href="{% url 'linkif:listar_vagas' %}" class="botao-principal">
+                  <i class="bi bi-search"></i> Explorar Vagas
+              </a>
+          </div>
+
+        {% elif user.tipo == "empresa" %}
+          <!-- Empresa logada -->
+          <div class="botoes">
+              <a href="{% url 'linkif:explorar' %}" class="botao-principal">
+                  <i class="bi bi-people-fill"></i> Explorar Estudantes
+              </a>
+          </div>
+
+        {% elif user.tipo == "coordenador" %}
+          <!-- Coordenação -->
+          <div class="botoes">
+              <a href="{% url 'linkif:explorar' %}" class="botao-principal">
+                  <i class="bi bi-search"></i> Explorar Estudantes
+              </a>
+          </div>
+
+        {% endif %}
+
       </div>
-      <div class=" hero-art">
+
+      <div class="hero-art">
         <img src="{% static 'assets/img/estudante.png' %}" alt="Estudantes" class="hero-art">
       </div>
     </div>
@@ -24,19 +58,22 @@
 </section>
 
 
+
+<!-- O QUE OFERECEMOS -->
 <section class="oferecemos">
   <div class="container text-center">
     <h2 class="fw-bold" style="color:#1b1f5b;">O que oferecemos para você</h2>
     <p class="mb-5 text-secondary">Uma plataforma completa para impulsionar sua carreira profissional desde a formação.</p>
 
     <div class="row g-4 justify-content-center mt-4">
+
       <div class="col-md-3 icon-estudante-lilas">
         <div class="feature-estudante-card">
           <div class="feature-estudante-top">
             <div class="feature-estudante-icon"><i class="bi bi-person-circle"></i></div>
           </div>
           <h5 class="fw-bold mt-4">Monte seu Perfil</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'>  Crie um perfil  que destaque suas habilidades, conquistas e experiências.</p>
+          <p class='mt-3 ' style='width: 250px; margin:auto;'>Crie um perfil que destaque suas habilidades, conquistas e experiências.</p>
         </div>
       </div>
 
@@ -46,7 +83,7 @@
             <div class="feature-estudante-icon"><i class="bi bi-building-check"></i></div>
           </div>
           <h5 class="fw-bold">Conecte-se a Empresas</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'>Encontre empresas do IFRN que valorizam o seu talento e desejam te conhecer.</p>
+          <p class='mt-3 ' style='width: 250px; margin:auto;'>Encontre empresas do IFRN que valorizam seu talento e desejam te conhecer.</p>
         </div>
       </div>
 
@@ -66,20 +103,40 @@
             <div class="feature-estudante-icon"><i class="bi bi-mortarboard"></i></div>
           </div>
           <h5 class="fw-bold">Cresça com o IFRN</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'> Desenvolva sua carreira com o apoio e incentivo do Instituto Federal.</p>
+          <p class='mt-3 ' style='width: 250px; margin:auto;'>Desenvolva sua carreira com apoio e incentivo do Instituto Federal.</p>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
-<section class="cta-estudante">
+
+
+<!-- CTA FINAL -->
+<section class="cta-estudante text-center">
   <h3 class="fw-bold" style="color:#1b1f5b;">Pronta pra começar tua jornada?</h3>
-  <p class="mb-5 text-secondary">Monte teu perfil e descobre as oportunidades que combinam contigo.</p>
+  <p class="mb-5 text-secondary">Monte teu perfil e descubra as oportunidades que combinam contigo.</p>
+
   <div class="botoes justify-content-center mt-5 mb-5">
-<a href="{% url 'linkif:listar_vagas' %}" class="btn-cta botao-principal">
-  <i class="bi bi-search"></i> Explorar Vagas
-</a></section>
+    
+    {% if not user.is_authenticated %}
+      <a href="{% url 'usuarios:cadastro' %}" class="btn-cta botao-principal">
+        <i class="bi bi-person-add"></i> Criar Perfil
+      </a>
+    
+    {% elif user.tipo == "aluno" %}
+      <a href="{% url 'linkif:listar_vagas' %}" class="btn-cta botao-principal">
+        <i class="bi bi-search"></i> Explorar Vagas
+      </a>
+
+    {% else %}
+      <a href="{% url 'linkif:perfil_cursos' %}" class="btn-cta botao-principal">
+        <i class="bi bi-book"></i> Ver Perfis de Cursos
+      </a>
+    {% endif %}
+
   </div>
+</section>
 
 {% endblock %}

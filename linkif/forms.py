@@ -1,12 +1,14 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
-from .models import Vaga, Candidatura, MensagemContato
+from .models import Vaga, Candidatura, MensagemContato, PerfilFormacao
 
 
 # =====================================================
 # FORMULÁRIO DE VAGA (para empresas)
 # =====================================================
+
+
 
 class VagaForm(forms.ModelForm):
     class Meta:
@@ -15,50 +17,105 @@ class VagaForm(forms.ModelForm):
             "titulo",
             "descricao",
             "requisitos",
-            "area",
+            "curso",
             "tipo",
+            "modalidade",
             "remuneracao",
             "cidade",
-            "estado",
             "bairro",
             "data_inicio",
             "data_fim",
         ]
+
         widgets = {
-            "descricao": forms.Textarea(attrs={"rows": 3, "placeholder": "Descreva a vaga..."}),
-            "requisitos": forms.Textarea(attrs={"rows": 3, "placeholder": "Informe os requisitos..."}),
+            "titulo": forms.TextInput(attrs={
+                "class": "soft-input",
+                "placeholder": "Ex: Desenvolvedor Front-End"
+            }),
+
+            "descricao": forms.Textarea(attrs={
+                "class": "soft-textarea",
+                "rows": 5,
+                "placeholder": "Descreva as atividades, horário, benefícios..."
+            }),
+
+            "requisitos": forms.Textarea(attrs={
+                "class": "soft-textarea",
+                "rows": 4,
+                "placeholder": "Ex: HTML, CSS, Git, comunicação..."
+            }),
+
+            "curso": forms.Select(attrs={
+                "class": "soft-input"
+            }),
+
+            "tipo": forms.Select(attrs={
+                "class": "soft-input"
+            }),
+
+            "modalidade": forms.Select(attrs={
+                "class": "soft-input"
+            }),
+
+            "remuneracao": forms.NumberInput(attrs={
+                "class": "soft-input",
+                "placeholder": "Ex: 600.00"
+            }),
+
+            "cidade": forms.TextInput(attrs={
+                "class": "soft-input",
+                "placeholder": "Cidade da vaga"
+            }),
+
+            "bairro": forms.TextInput(attrs={
+                "class": "soft-input",
+                "placeholder": "Bairro"
+            }),
+
+            "data_inicio": forms.DateInput(attrs={
+                "type": "date",
+                "class": "soft-input"
+            }),
+
+            "data_fim": forms.DateInput(attrs={
+                "type": "date",
+                "class": "soft-input"
+            }),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = "post"
-        self.helper.layout = Layout(
-            Row(
-                Column("titulo", css_class="col-md-6"),
-                Column("tipo", css_class="col-md-6"),
-            ),
-            Row(
-                Column("descricao", css_class="col-12"),
-            ),
-            Row(
-                Column("requisitos", css_class="col-12"),
-            ),
-            Row(
-                Column("area", css_class="col-md-4"),
-                Column("remuneracao", css_class="col-md-4"),
-                Column("cidade", css_class="col-md-4"),
-            ),
-            Row(
-                Column("estado", css_class="col-md-6"),
-                Column("bairro", css_class="col-md-6"),
-            ),
-            Row(
-                Column("data_inicio", css_class="col-md-6"),
-                Column("data_fim", css_class="col-md-6"),
-            ),
-            Submit("submit", "Salvar Vaga", css_class="btn btn-primary mt-3"),
-        )
+
+        # campos obrigatórios
+        obrigatorios = [
+            "titulo",
+            "descricao",
+            "tipo",
+            "cidade",
+            "remuneracao",
+            "data_inicio",
+            "data_fim",
+        ]
+
+        for campo in obrigatorios:
+            self.fields[campo].required = True
+
+        # labels
+        self.fields["titulo"].label = "Título da Vaga *"
+        self.fields["descricao"].label = "Descrição *"
+        self.fields["requisitos"].label = "Requisitos"
+        self.fields["curso"].label = "Curso relacionado"
+        self.fields["tipo"].label = "Tipo de Vaga *"
+        self.fields["modalidade"].label = "Modalidade"
+        self.fields["remuneracao"].label = "Bolsa / Salário (R$) *"
+        self.fields["cidade"].label = "Cidade *"
+        self.fields["bairro"].label = "Bairro"
+        self.fields["data_inicio"].label = "Início *"
+        self.fields["data_fim"].label = "Término *"
+
+        # cursos ordenados lindos
+        self.fields["curso"].queryset = PerfilFormacao.objects.all().order_by("nome")
+        self.fields["curso"].empty_label = "Selecione um curso (opcional)"
 
 
 # =====================================================

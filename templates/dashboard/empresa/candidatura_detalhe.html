@@ -1,0 +1,67 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block titulo %}Detalhes da Candidatura{% endblock %}
+
+{% block conteudo %}
+
+<h2 class="page-title mb-4">
+    <i class="bi bi-person-vcard me-2"></i>
+    Detalhes da Candidatura
+</h2>
+
+<div class="soft-card p-4">
+
+    <h4 class="fw-bold text-uppercase">{{ candidatura.vaga.titulo }}</h4>
+
+    <p class="mb-2">
+        <strong>Aluno:</strong> {{ candidatura.aluno.nome|default:"Sem nome" }}
+    </p>
+
+    <p class="mb-2">
+        <strong>E-mail:</strong> {{ candidatura.aluno.email }}
+    </p>
+
+    <p class="mb-2">
+        <strong>Data:</strong> {{ candidatura.data_candidatura|date:"d/m/Y H:i" }}
+    </p>
+
+    <p class="mb-4">
+        <strong>Status atual:</strong>
+        <span class="badge bg-secondary">{{ candidatura.get_status_display }}</span>
+    </p>
+
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label class="fw-semibold">Alterar status:</label>
+        <select name="status" class="form-select mt-2">
+
+            <option value="em_analise"
+                {% if candidatura.status == "em_analise" %}selected{% endif %}>
+                Em análise
+            </option>
+
+            <option value="aprovado"
+                {% if candidatura.status == "aprovado" %}selected{% endif %}>
+                Aprovado / Selecionado
+            </option>
+
+            <option value="recusado"
+                {% if candidatura.status == "recusado" %}selected{% endif %}>
+                Reprovado
+            </option>
+
+        </select>
+
+        <button class="soft-btn-primary w-100 mt-3">
+            <i class="bi bi-check-circle me-1"></i>
+            Atualizar Status
+        </button>
+    </form>
+
+</div>
+
+{% endblock %}

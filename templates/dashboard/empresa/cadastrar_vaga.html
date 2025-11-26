@@ -1,0 +1,31 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load crispy_forms_tags %}
+
+{% block titulo %}Cadastrar Vaga — Empresa{% endblock %}
+
+{% block conteudo %}
+
+<!-- Título da Página -->
+<div class="page-title mb-4">
+    <i class="bi bi-plus-circle me-2"></i>
+    <span>Cadastrar nova vaga</span>
+</div>
+
+<div class="soft-card p-4">
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Formulário -->
+        {{ form|crispy }}
+
+        <!-- Botão -->
+        <button type="submit" class="soft-btn-primary w-100 mt-3">
+            <i class="bi bi-send-check me-1"></i>
+            Salvar e enviar para aprovação
+        </button>
+    </form>
+
+</div>
+
+{% endblock %}

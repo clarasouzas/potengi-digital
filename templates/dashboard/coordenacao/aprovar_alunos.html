@@ -5,21 +5,46 @@
 
 {% if alunos %}
 <div class="row g-3">
+
     {% for a in alunos %}
     <div class="col-12 col-md-6 col-lg-4">
-        <div class="card-list">
-            <div class="card-title">{{ a.email }}</div>
-            <div class="card-meta">Nome: {{ a.aluno.nome }}</div>
-            <div class="card-meta">Curso: {{ a.aluno.curso }}</div>
 
-            <div class="card-actions">
-                <a href="{% url 'dashboard:usuario_editar' a.id %}" class="btn-outline-action">
+        <div class="card-list">
+
+            <!-- NOME DO ALUNO -->
+            <div class="card-title">
+                {{ a.nome|default:"Aluno sem nome" }}
+            </div>
+
+            <!-- EMAIL -->
+            <div class="card-meta">
+                <strong>E-mail:</strong> {{ a.email }}
+            </div>
+
+            <!-- CURSO -->
+            <div class="card-meta">
+                <strong>Curso:</strong> {{ a.curso|default:"—" }}
+            </div>
+
+            <!-- STATUS -->
+            <div class="mt-2">
+                <span class="badge bg-secondary">Pendente</span>
+            </div>
+
+            <!-- AÇÕES -->
+            <div class="card-actions mt-3">
+                <a href="{% url 'dashboard:aprovar_aluno_action' a.id %}"
+                   class="btn-outline-action"
+                   onclick="return confirm('Aprovar este aluno?');">
                     <i class="bi bi-check-circle"></i> Aprovar
                 </a>
             </div>
+
         </div>
+
     </div>
     {% endfor %}
+
 </div>
 
 {% else %}

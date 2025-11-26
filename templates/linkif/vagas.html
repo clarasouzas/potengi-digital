@@ -5,122 +5,154 @@
 
 {% block content %}
 
-<!-- HERO -->
 <section class="hero hero-estudante">
   <div class="container text-center text-md-start">
     <div class="row align-items-center">
       <div class="col-md-7">
-        <h1>Conecte-se às melhores oportunidades 💼</h1>
-        <p>
-          Explore vagas de estágio, emprego e bolsa voltadas para estudantes do IFRN.  
-          Dê o primeiro passo na sua carreira com o <strong>LinkIF</strong>!
-        </p>
-        <div class="botoes">
-          <a href="{% url 'usuarios:login' %}" class="botao-principal">
-            <i class="bi bi-person-check"></i> Entrar para se candidatar
-          </a>
-          <a href="{% url 'usuarios:cadastro' %}" class="botao-secundario ms-2">
-            <i class="bi bi-person-plus"></i> Criar conta
-          </a>
-        </div>
+        <h1>Conecte-se às melhores oportunidades</h1>
+        <p>Explore vagas de estágio, emprego e bolsas voltadas para estudantes do IFRN.</p>
       </div>
+
       <div class="hero-art">
-        <img src="{% static 'assets/img/estudante.png' %}" alt="Estudantes" class="hero-art">
+        <img src="{% static 'assets/img/estudante.png' %}" class="hero-art">
       </div>
     </div>
   </div>
 </section>
 
+<section class="container mt-5 mb-5">
 
-<!-- LISTAGEM DE VAGAS -->
-<section class="vagas-section py-5">
-  <div class="container">
-    <h2 class="fw-bold text-center mb-4" style="color:#1b1f5b;">
-      Encontre a vaga ideal para o seu futuro profissional
-    </h2>
+<div class="row g-4">
 
-    <div class="row g-4">
-      <!-- FILTRO -->
-      <div class="col-lg-3">
-        <div class="filtro-card p-4 rounded shadow-sm bg-white">
-          <h6 class="fw-bold mb-3" style="color:#0F0261;">Personalize sua pesquisa</h6>
+    <!-- =====================
+         FILTRO LATERAL
+    ====================== -->
+    <div class="col-md-4">
+        <div class="filtro-card p-4">
 
-          <form method="get">
-            <div class="mb-3">
-              <label class="form-label fw-semibold">Nome da vaga</label>
-              <input type="text" name="titulo" class="form-control" placeholder="Ex: Desenvolvedor" value="{{ request.GET.titulo }}">
-            </div>
+            <h5 class="fw-bold mb-3">Filtrar vagas</h5>
 
-            <div class="mb-3">
-              <label class="form-label fw-semibold">Localização</label>
-              <input type="text" name="cidade" class="form-control" placeholder="Cidade ou estado" value="{{ request.GET.cidade }}">
-            </div>
+            <form method="get">
 
-            <div class="mb-3">
-              <label class="form-label fw-semibold">Tipo de vaga</label>
-              <select name="tipo" class="form-select">
-                <option value="">Todos os tipos</option>
-                {% for key, value in vagas.model.TIPO_CHOICES %}
-                  <option value="{{ key }}" {% if request.GET.tipo == key %}selected{% endif %}>{{ value }}</option>
-                {% endfor %}
-              </select>
-            </div>
+                {{ filtro.form.titulo.label_tag }}
+                {{ filtro.form.titulo }}
 
-            <div class="mb-4">
-              <label class="form-label fw-semibold">Área de atuação</label>
-              <select name="area" class="form-select">
-                <option value="">Todas as áreas</option>
-                {% for area in areas %}
-                  <option value="{{ area.nome }}" {% if request.GET.area == area.nome %}selected{% endif %}>{{ area.nome }}</option>
-                {% endfor %}
-              </select>
-            </div>
+                {{ filtro.form.cidade.label_tag }}
+                {{ filtro.form.cidade }}
 
-            <button type="submit" class="btn w-100 text-white fw-semibold" style="background-color:#205072;">Filtrar</button>
-          </form>
+                {{ filtro.form.tipo.label_tag }}
+                {{ filtro.form.tipo }}
+
+                {{ filtro.form.curso.label_tag }}
+                {{ filtro.form.curso }}
+
+                {{ filtro.form.modalidade.label_tag }}
+                {{ filtro.form.modalidade }}
+
+                <button class="btn w-100 mt-3" style="background:#0a7a79; color:white;">
+                    Aplicar Filtros
+                </button>
+
+            </form>
         </div>
-      </div>
-
-      <!-- RESULTADOS -->
-      <div class="col-lg-9">
-        <div class="row g-4">
-          {% for vaga in vagas %}
-          <div class="col-md-4 d-flex">
-            <div class="card border-0 shadow-sm rounded-4 p-3 w-100 vaga-card d-flex flex-column">
-              <div class="vaga-status-container d-flex justify-content-between align-items-center mb-1">
-                <span class="vaga-status text-success">
-                  {% if vaga.status == "aprovada" %}Disponível{% else %}{{ vaga.get_status_display }}{% endif %}
-                </span>
-                <small class="text-muted">{{ vaga.empresa.nome_empresa }}</small>
-              </div>
-
-              <h6 class="fw-bold mt-1" style="color:#1b1f5b;">{{ vaga.titulo }}</h6>
-              <p class="text-secondary mb-1"><i class="bi bi-geo-alt-fill"></i> {{ vaga.cidade }}{% if vaga.estado %}/{{ vaga.estado }}{% endif %}</p>
-              <p class="text-secondary mb-1"><i class="bi bi-briefcase-fill"></i> {{ vaga.get_tipo_display }}</p>
-
-              {% if vaga.area %}
-                <p class="text-secondary mb-1"><i class="bi bi-tag-fill"></i> {{ vaga.area.nome }}</p>
-              {% endif %}
-
-              {% if vaga.remuneracao %}
-                <p class="fw-bold" style="color:#0F0261;">R$ {{ vaga.remuneracao|floatformat:2 }}</p>
-              {% endif %}
-
-              <a href="{% url 'linkif:detalhar_vaga' vaga.id %}" class="btn fw-semibold text-white mt-auto" style="background-color:#205072;">
-                Quero esta vaga
-              </a>
-            </div>
-          </div>
-          {% empty %}
-          <div class="text-center mt-4">
-            <p class="text-secondary">Nenhuma vaga encontrada com os filtros selecionados.</p>
-            <img src="{% static 'assets/img/sem_vagas.svg' %}" alt="Sem vagas" class="img-fluid mt-3" style="max-width:240px;">
-          </div>
-          {% endfor %}
-        </div>
-      </div>
     </div>
-  </div>
+
+    <!-- =====================
+         LISTA DE VAGAS
+    ====================== -->
+    <div class="col-md-8">
+        <div class="row g-4">
+
+            {% for vaga in vagas %}
+            <div class="col-md-6">
+            <div class="vaga-card">
+
+                <!-- Empresa + foto -->
+                <div class="vaga-empresa">
+
+                    {% if vaga.empresa.foto %}
+                        <img src="{{ vaga.empresa.foto.url }}" class="empresa-avatar">
+                    {% else %}
+                        <div class="empresa-avatar-fallback">
+                            <i class="bi bi-buildings"></i>
+                        </div>
+                    {% endif %}
+
+                    <span class="empresa-nome">
+                        {{ vaga.empresa.nome|default:vaga.empresa.email }}
+                    </span>
+                </div>
+
+                <!-- Data -->
+                {% if vaga.data_publicacao %}
+                <span class="vaga-data">{{ vaga.data_publicacao|date:"d/m/Y" }}</span>
+                {% endif %}
+
+                <!-- Título -->
+                <h5 class="vaga-titulo fw-bold text-uppercase">
+                    {{ vaga.titulo }}
+                </h5>
+
+                <!-- Info -->
+                <ul class="vaga-info">
+                    <li><i class="bi bi-geo-alt"></i> {{ vaga.cidade }}/RN</li>
+                    <li><i class="bi bi-briefcase"></i> {{ vaga.get_tipo_display }}</li>
+
+                    {% if vaga.remuneracao %}
+                    <li><i class="bi bi-cash"></i> R$ {{ vaga.remuneracao }}</li>
+                    {% endif %}
+                </ul>
+
+                <!-- Botão -->
+                <a href="{% url 'linkif:vaga_detalhe' vaga.id %}" 
+                   class="btn btn-primary w-100 mt-3">
+                    Ver detalhes
+                </a>
+
+            </div>
+            </div>
+
+            {% empty %}
+            <p class="text-center text-muted mt-4">Nenhuma vaga encontrada.</p>
+            {% endfor %}
+
+        </div>
+
+        <!-- PAGINAÇÃO -->
+        <div class="mt-4">
+            <nav>
+                <ul class="pagination justify-content-center">
+
+                    {% if vagas.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ vagas.previous_page_number }}&{{ request.GET.urlencode }}">
+                        «
+                      </a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item disabled">
+                      <a class="page-link">
+                        Página {{ vagas.number }} de {{ vagas.paginator.num_pages }}
+                      </a>
+                    </li>
+
+                    {% if vagas.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ vagas.next_page_number }}&{{ request.GET.urlencode }}">
+                        »
+                      </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+
+</div>
+
 </section>
 
 {% endblock %}
