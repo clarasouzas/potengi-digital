@@ -61,7 +61,7 @@ def redirecionar_dashboard(request):
     user = request.user
 
     if user.tipo == "aluno":
-        return redirect("dashboard:aluno")
+        return redirect("dashboard:aluno_painel")
 
     if user.tipo == "empresa":
         return redirect("dashboard:empresa")
