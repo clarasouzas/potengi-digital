@@ -9,7 +9,7 @@ class Usuario(AbstractUser):
         ("coordenador", "Coordenação"),
     ]
 
-    username = None
+    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
     email = models.EmailField("E-mail", unique=True)
 
     # tipo

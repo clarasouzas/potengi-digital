@@ -11,18 +11,12 @@ app_name = "usuarios"
 
 urlpatterns = [
     path("cadastro/", cadastro, name="cadastro"),
-
     path("cadastro/aluno/", cadastro_aluno, name="cadastro_aluno"),
     path("cadastro/empresa/", cadastro_empresa, name="cadastro_empresa"),
 
-    # login/logout do Django
-    path("login/",
-         auth_views.LoginView.as_view(template_name="registration/login.html"),
-         name="login"),
-    path("logout/",
-         auth_views.LogoutView.as_view(),
-         name="logout"),
+    # não é necessário enquanto usamos allauth
+    # path("login/", auth_views.LoginView.as_view(...), name="login"),
+    # path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 
-    # redirecionamento pós-login
     path("dashboard/", redirecionar_dashboard, name="redirecionar_dashboard"),
 ]
