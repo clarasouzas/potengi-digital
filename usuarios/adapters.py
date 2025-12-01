@@ -20,9 +20,21 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
             'ifrn.edu.br',
         ]
         
-        domain = email.split('@')[1].lower() if '@' in email else ''
+        if not email or '@' not in email:
+            return False
+            
+        domain = email.split('@')[1].lower()
         return domain in suap_domains
     
+    def pre_social_login(self, request, sociallogin):
+        """
+        Executado ANTES do login social
+        Aqui podemos capturar o tipo da sessão
+        """
+        tipo_sessao = request.session.get('social_login_type')
+        if tipo_sessao:
+            sociallogin.state['user_type'] = tipo_sessao
+            
     def populate_user(self, request, sociallogin, data):
         """
         Popula o usuário com dados do provedor social
@@ -30,27 +42,46 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         user = super().populate_user(request, sociallogin, data)
         
         provider = sociallogin.account.provider
+        email = data.get('email', '')
         
         if provider == 'suap':
             user.tipo = 'aluno'
             user.is_approved = True
             
             extra_data = sociallogin.account.extra_data
-            
             user.nome = extra_data.get('nome_usual', '').strip()
             user.curso = ''
             
         elif provider == 'google':
-            if self._is_suap_email(user.email):
-                user.tipo = 'aluno'
-                user.is_approved = True
+            tipo_from_state = sociallogin.state.get('user_type')
+            
+            if tipo_from_state:
+                user.tipo = tipo_from_state
+                
+                if tipo_from_state == 'aluno':
+                    user.is_approved = self._is_suap_email(email)
+                else:
+                    user.is_approved = False
+                    
             else:
-                user.tipo = 'aluno'
-                user.is_approved = False
+                tipo_sessao = request.session.get('social_login_type')
+                if tipo_sessao:
+                    user.tipo = tipo_sessao
+                    if tipo_sessao == 'aluno':
+                        user.is_approved = self._is_suap_email(email)
+                    else:
+                        user.is_approved = False
+                else:
+                    if self._is_suap_email(email):
+                        user.tipo = 'aluno'
+                        user.is_approved = True
+                    else:
+                        user.tipo = ''
+                        user.is_approved = False
+                        request.session['social_login_needs_type'] = True
             
             extra_data = sociallogin.account.extra_data
             display_name = extra_data.get('name', '') or data.get('name', '')
-            
             if not user.nome and display_name:
                 user.nome = display_name.strip()
             
@@ -61,21 +92,42 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def save_user(self, request, sociallogin, form=None):
         user = super().save_user(request, sociallogin, form=form)
         
-        if sociallogin.account.provider == 'suap':
-            self._buscar_curso_e_foto(user, sociallogin)
-            
-        elif sociallogin.account.provider == 'google':
-            self._download_google_photo(user, sociallogin)
-            
-            if (not getattr(sociallogin, 'is_existing', False) and
-                not self._is_suap_email(user.email)):
+        user.save()
                 
-                request.session['sociallogin_needs_type'] = True
-                request.session['socialaccount_id'] = sociallogin.account.id
-                request.session['user_id'] = user.id
+        if sociallogin.account.provider == 'google':
+            self._download_google_photo(user, sociallogin)
+        elif sociallogin.account.provider == 'suap':
+            self._download_suap_photo(user, sociallogin)
+            self._buscar_curso(user, sociallogin)
         
         return user
     
+    def get_connect_redirect_url(self, request, socialaccount):
+        """
+        Redireciona após login social
+        """
+        from django.urls import reverse
+        
+        user = socialaccount.user
+        
+        if 'social_login_type' in request.session:
+            del request.session['social_login_type']
+        
+        if request.session.get('social_login_needs_type'):
+            del request.session['social_login_needs_type']
+            return reverse('usuarios:escolher_tipo')
+        
+        if not user.tipo:
+            return reverse('usuarios:escolher_tipo')
+        
+        if user.tipo == 'empresa' and not user.is_approved:
+            return reverse('usuarios:aguardando_aprovacao')
+        
+        if user.tipo == 'aluno' and not user.is_approved:
+            return reverse('usuarios:aguardando_aprovacao_aluno')
+        
+        return reverse('linkif:index')
+        
     def _download_google_photo(self, user, sociallogin):
         try:
             extra_data = sociallogin.account.extra_data
@@ -98,14 +150,25 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
                     
                     filename = f"google_photo_{user.id}.{extension}"
                     user.foto.save(filename, ContentFile(response.content), save=True)
-                    print(f"Foto do Google baixada com sucesso para o usuário {user.email}")
                 
         except Exception as e:
             print(f"Erro ao baixar foto do Google: {e}")
     
-    def _buscar_curso_e_foto(self, user, sociallogin):
-        self._download_suap_photo(user, sociallogin)
-        
+    def _download_suap_photo(self, user, sociallogin):
+        try:
+            extra_data = sociallogin.account.extra_data
+            foto_url = extra_data.get('url_foto_150x200') or extra_data.get('foto')
+            
+            if foto_url:
+                response = requests.get(foto_url, timeout=10)
+                if response.status_code == 200:
+                    filename = f"suap_photo_{user.id}.jpg"
+                    user.foto.save(filename, ContentFile(response.content), save=True)
+                
+        except Exception as e:
+            print(f"Erro ao baixar foto: {e}")
+    
+    def _buscar_curso(self, user, sociallogin):
         curso = self._get_curso_from_meus_dados(sociallogin)
         if curso:
             user.curso = curso
@@ -138,22 +201,3 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
                 return str(caminho).strip()
         
         return ""
-    
-    def _download_suap_photo(self, user, sociallogin):
-        try:
-            extra_data = sociallogin.account.extra_data
-            foto_url = extra_data.get('url_foto_150x200') or extra_data.get('foto')
-            
-            if foto_url:
-                response = requests.get(foto_url, timeout=10)
-                if response.status_code == 200:
-                    filename = f"suap_photo_{user.id}.jpg"
-                    user.foto.save(filename, ContentFile(response.content), save=True)
-                
-        except Exception as e:
-            print(f"Erro ao baixar foto: {e}")
-    
-    def get_connect_redirect_url(self, request, socialaccount):
-        if request.session.get('sociallogin_needs_type'):
-            return reverse('usuarios:escolher_tipo_social')
-        return super().get_connect_redirect_url(request, socialaccount)

@@ -1,136 +1,149 @@
-    {% load static crispy_forms_tags %}
-    <!DOCTYPE html>
-    <html lang="pt-br">
+{% load static crispy_forms_tags socialaccount %}
+<!DOCTYPE html>
+<html lang="pt-br">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cadastro – LinkIF</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro – LinkIF</title>
 
-        <!-- Bootstrap -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-        <!-- CSS -->
-        <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
-    </head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
+</head>
 
-    <body>
+<body>
 
-    <!-- VOLTAR -->
-    <a href="{% url 'linkif:index' %}" class="btn-voltar-inicio position-absolute top-0 start-0 m-4 text-decoration-none">
-        <i class="bi bi-arrow-left-circle-fill" style="font-size: 1.8rem; color: #205072;"></i>
-        <span class="ms-1 fw-semibold text-secondary">Voltar ao início</span>
-    </a>
+<!-- VOLTAR -->
+<a href="{% url 'linkif:index' %}" class="btn-voltar-inicio position-absolute top-0 start-0 m-4 text-decoration-none">
+    <i class="bi bi-arrow-left-circle-fill" style="font-size: 1.8rem; color: #205072;"></i>
+    <span class="ms-1 fw-semibold text-secondary">Voltar ao início</span>
+</a>
 
-    <div class="cadastro-container">
+<div class="cadastro-container">
 
-        <div class="cadastro-card shadow">
+    <div class="cadastro-card shadow">
 
-            <!-- ===========================
-                LADO ESQUERDO
-            ============================ -->
-            <aside class="left-panel">
+        <!-- ===========================
+            LADO ESQUERDO
+        ============================ -->
+        <aside class="left-panel">
 
-                <img src="{% static 'assets/img/logo.png' %}" class="logo" alt="LinkIF">
+            <img src="{% static 'assets/img/logo.png' %}" class="logo" alt="LinkIF">
 
-                <h4 class="subtitulo">Escolha o tipo de usuário</h4>
+            <h4 class="subtitulo">Escolha o tipo de usuário</h4>
 
-                <ul class="nav flex-column tabs-list">
+            <ul class="nav flex-column tabs-list">
 
-                    <!-- ALUNO -->
-                    <li class="nav-item">
-                        <button class="tab-btn {% if active_tab == 'aluno' %}active{% endif %}"
+                <!-- ALUNO -->
+                <li class="nav-item">
+                    <button class="tab-btn {% if active_tab == 'aluno' %}active{% endif %}"
                             data-bs-toggle="tab"
                             data-bs-target="#aba-aluno">
-                            <i class="bi bi-mortarboard-fill me-2"></i> Aluno
-                        </button>
-                    </li>
+                        <i class="bi bi-mortarboard-fill me-2"></i> Aluno
+                    </button>
+                </li>
 
-                    <!-- EMPRESA -->
-                    <li class="nav-item">
-                        <button class="tab-btn {% if active_tab == 'empresa' %}active{% endif %}"
+                <!-- EMPRESA -->
+                <li class="nav-item">
+                    <button class="tab-btn {% if active_tab == 'empresa' %}active{% endif %}"
                             data-bs-toggle="tab"
                             data-bs-target="#aba-empresa">
-                            <i class="bi bi-building-fill me-2"></i> Empresa
-                        </button>
-                    </li>
+                        <i class="bi bi-building-fill me-2"></i> Empresa
+                    </button>
+                </li>
 
-                </ul>
+            </ul>
 
-            </aside>
+        </aside>
 
-            <!-- ===========================
-                LADO DIREITO — FORMULÁRIOS
-            ============================ -->
-            <section class="right-panel">
+        <!-- ===========================
+            LADO DIREITO — FORMULÁRIOS
+        ============================ -->
+        <section class="right-panel">
 
-                <div class="tab-content">
+            <div class="tab-content">
 
-                    <!-- ==================== ALUNO ==================== -->
-                    <div class="tab-pane fade {% if active_tab == 'aluno' %}show active{% endif %}" id="aba-aluno">
+                <!-- ==================== ALUNO ==================== -->
+                <div class="tab-pane fade {% if active_tab == 'aluno' %}show active{% endif %}" id="aba-aluno">
 
-                        <h4 class="titulo"><i class="bi bi-mortarboard-fill me-2"></i>Cadastro de Aluno</h4>
+                    <h4 class="titulo"><i class="bi bi-mortarboard-fill me-2"></i>Cadastro de Aluno</h4>
 
-                        {% include "partials/_suap_auth_button.html" %}
+                    {% include "partials/_suap_auth_button.html" %}
+                    {% with tipo='aluno' %}
                         {% include "partials/_google_auth_button.html" %}
+                    {% endwith %}
 
-                        <div class="d-flex align-items-center my-3">
-                            <hr class="flex-grow-1">
-                            <span class="px-3">OU</span>
-                            <hr class="flex-grow-1">
-                        </div>
-
-                        <form method="POST" action="{% url 'usuarios:cadastro_aluno' %}">
-                            {% csrf_token %}
-
-                            {% if forms.0.1.errors %}
-                                <div class="alert alert-danger py-2">Verifique os campos e tente novamente.</div>
-                            {% endif %}
-
-                            {% crispy forms.0.1 %}
-                            <button class="btn-enviar w-100 mt-3">Cadastrar Aluno</button>
-                        </form>
+                    <div class="d-flex align-items-center my-3">
+                        <hr class="flex-grow-1">
+                        <span class="px-3">OU</span>
+                        <hr class="flex-grow-1">
                     </div>
 
-                    <!-- ==================== EMPRESA ==================== -->
-                    <div class="tab-pane fade {% if active_tab == 'empresa' %}show active{% endif %}" id="aba-empresa">
+                    <form method="POST" action="{% url 'usuarios:cadastro_aluno' %}">
+                        {% csrf_token %}
 
-                        <h4 class="titulo"><i class="bi bi-building-fill me-2"></i>Cadastro de Empresa</h4>
+                        {% if forms.0.1.errors %}
+                            <div class="alert alert-danger py-2">Verifique os campos e tente novamente.</div>
+                        {% endif %}
 
-                        {% include "partials/_google_auth_button.html" %}
-
-                        <div class="d-flex align-items-center my-3">
-                            <hr class="flex-grow-1">
-                            <span class="px-3">OU</span>
-                            <hr class="flex-grow-1">
-                        </div>
-
-                        <form method="POST" enctype="multipart/form-data" action="{% url 'usuarios:cadastro_empresa' %}">
-                            {% csrf_token %}
-
-                            {% if forms.1.1.errors %}
-                                <div class="alert alert-danger py-2">Verifique os campos e tente novamente.</div>
-                            {% endif %}
-
-                            {% crispy forms.1.1 %}
-                            <button class="btn-enviar w-100 mt-3">Cadastrar Empresa</button>
-                        </form>
-                    </div>
-
+                        {% crispy forms.0.1 %}
+                        <button class="btn-enviar w-100 mt-3">Cadastrar Aluno</button>
+                    </form>
                 </div>
 
-                <p class="login-text text-center mt-3">
-                    Já possui uma conta?  
-                    <a href="{% url 'usuarios:login' %}" class="fw-semibold link-cadastro"> Faça login</a>
-                </p>
+                <!-- ==================== EMPRESA ==================== -->
+                <div class="tab-pane fade {% if active_tab == 'empresa' %}show active{% endif %}" id="aba-empresa">
 
-            </section>
-        </div>
+                    <h4 class="titulo"><i class="bi bi-building-fill me-2"></i>Cadastro de Empresa</h4>
+
+                    {% with tipo='empresa' %}
+                        {% include "partials/_google_auth_button.html" %}
+                    {% endwith %}
+
+                    <div class="d-flex align-items-center my-3">
+                        <hr class="flex-grow-1">
+                        <span class="px-3">OU</span>
+                        <hr class="flex-grow-1">
+                    </div>
+
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'usuarios:cadastro_empresa' %}">
+                        {% csrf_token %}
+
+                        {% if forms.1.1.errors %}
+                            <div class="alert alert-danger py-2">Verifique os campos e tente novamente.</div>
+                        {% endif %}
+
+                        {% crispy forms.1.1 %}
+                        <button class="btn-enviar w-100 mt-3">Cadastrar Empresa</button>
+                    </form>
+                </div>
+
+            </div>
+
+            <p class="login-text text-center mt-3">
+                Já possui uma conta?  
+                <a href="{% url 'usuarios:login' %}" class="fw-semibold link-cadastro"> Faça login</a>
+            </p>
+
+        </section>
     </div>
+</div>
 
-    <!-- BOOTSTRAP -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Formulário oculto para definir o tipo na sessão -->
+<form id="set-type-form" method="post" action="{% url 'usuarios:social_login_callback' %}" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="tipo" id="form-tipo-input">
+</form>
 
-    </body>
-    </html>
+<!-- BOOTSTRAP -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JavaScript personalizado -->
+<script src="{% static 'assets/js/setAuthType.js' %}"></script>
+
+</body>
+</html>

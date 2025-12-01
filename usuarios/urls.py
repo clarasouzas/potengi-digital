@@ -5,6 +5,7 @@ from .views import (
     cadastro_aluno,
     cadastro_empresa,
     redirecionar_dashboard,
+    social_login_callback,
 )
 
 app_name = "usuarios"
@@ -18,4 +19,6 @@ urlpatterns = [
     # path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 
     path("dashboard/", redirecionar_dashboard, name="redirecionar_dashboard"),
+
+    path('social-login-callback/', social_login_callback, name='social_login_callback'),
 ]

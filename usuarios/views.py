@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.http import HttpResponse
+
 from .models import Usuario
 from .forms import (
     AlunoCreationForm,
@@ -67,9 +72,27 @@ def redirecionar_dashboard(request):
         return redirect("dashboard:aluno_painel")
 
     if user.tipo == "empresa":
-        return redirect("dashboard:empresa")
+        return redirect("dashboard:empresa_painel")
 
     if user.tipo == "coordenador":
         return redirect("dashboard:coordenacao_painel")
 
     return redirect("index")
+
+def social_login_callback(request):
+    tipo = request.POST.get('tipo')
+    
+    if tipo in ['aluno', 'empresa']:
+        request.session['social_login_type'] = tipo
+        
+        request.session.modified = True
+        
+        return JsonResponse({
+            'success': True,
+            'message': f'Tipo {tipo} definido na sessão'
+        })
+    
+    return JsonResponse({
+        'success': False,
+        'error': 'Tipo inválido'
+    })
