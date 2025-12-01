@@ -30,6 +30,15 @@
             <h3 class="fw-bold mb-2" style="color: #205072;">Login</h3>
             <p class="text-secondary">Acesse sua conta no LinkIF</p>
 
+            {% include "partials/_suap_auth_button.html" %}
+            {% include "partials/_google_auth_button.html" %}
+
+            <div class="d-flex align-items-center my-3">
+              <hr class="flex-grow-1">
+              <span class="px-3">OU</span>
+              <hr class="flex-grow-1">
+            </div>
+
             {% if form.errors %}
             <div class="alert alert-danger small">
               <strong>Erro:</strong> e-mail ou senha incorretos.

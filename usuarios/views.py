@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-
+from .models import Usuario
 from .forms import (
     AlunoCreationForm,
     EmpresaCreationForm,
 )
-from .models import Usuario
+
 def cadastro(request):
     return render(request, "registration/cadastro.html", {
         "forms": [
@@ -15,6 +15,7 @@ def cadastro(request):
         ],
         "active_tab": "aluno",
     })
+
 def cadastro_aluno(request):
     if request.method == "POST":
         form = AlunoCreationForm(request.POST, request.FILES)
@@ -36,6 +37,7 @@ def cadastro_aluno(request):
         })
 
     return redirect("usuarios:cadastro")
+
 def cadastro_empresa(request):
     if request.method == "POST":
         form = EmpresaCreationForm(request.POST, request.FILES)
@@ -57,6 +59,7 @@ def cadastro_empresa(request):
         })
 
     return redirect("usuarios:cadastro")
+
 def redirecionar_dashboard(request):
     user = request.user
 
@@ -67,6 +70,6 @@ def redirecionar_dashboard(request):
         return redirect("dashboard:empresa")
 
     if user.tipo == "coordenador":
-        return redirect("dashboard:coord")
+        return redirect("dashboard:coordenacao_painel")
 
     return redirect("index")
