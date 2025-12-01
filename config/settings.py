@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'allauth_suap',
     
     # Apps do projeto
@@ -210,9 +211,8 @@ AUTH_USER_MODEL = "usuarios.Usuario"
 # ============================
 # Configurações Allauth
 # ============================
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_UNIQUE_EMAIL = True
 
 # Forms customizados:
@@ -229,13 +229,31 @@ SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
 
-SOCIALACCOUNT_ADAPTER = "usuarios.adapters.SuapSocialAccountAdapter"
+SOCIALACCOUNT_ADAPTER = "usuarios.adapters.CustomSocialAccountAdapter"
 
 SOCIALACCOUNT_PROVIDERS = {
     "suap": {
         "APP": {
             "client_id": os.getenv("SUAP_CLIENT_ID"),
             "secret": os.getenv("SUAP_CLIENT_SECRET"),
+        },
+        "SCOPE": [
+            "identificacao", 
+            "email",
+        ]
+    },
+    "google": {
+        "APP": {
+            "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+            "secret": os.getenv("GOOGLE_CLIENT_SECRET"),
+            "key": ""
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
         }
     }
 }
@@ -244,7 +262,7 @@ SOCIALACCOUNT_PROVIDERS = {
 # REDIRECIONAMENTOS
 # ============================
 LOGIN_REDIRECT_URL = "usuarios:redirecionar_dashboard"
-LOGIN_URL = "account_login"
+LOGIN_URL = "usuarios:login"
 LOGOUT_REDIRECT_URL = "linkif:index"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
