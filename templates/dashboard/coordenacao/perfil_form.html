@@ -1,0 +1,80 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block titulo %}
+    {% if perfil %}Editar Perfil: {{ perfil.nome }}{% else %}Novo Perfil de Formação{% endif %}
+{% endblock %}
+
+{% block conteudo %}
+
+<h2 class="page-title mb-4">
+    <i class="bi bi-diagram-3 me-2"></i>
+    {% if perfil %}Editar Perfil de Formação{% else %}Criar Novo Perfil de Formação{% endif %}
+</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="btn btn-success">
+                <i class="bi bi-save me-1"></i> Salvar
+            </button>
+
+            <a href="{% url 'dashboard:listar_perfis' %}" class="btn btn-secondary ms-2">
+                Voltar
+            </a>
+        </form>
+    </div>
+</div>
+
+{% if perfil %}
+<hr class="my-4">
+
+<h4><i class="bi bi-layers me-2"></i> Competências</h4>
+
+<form method="post" action="{% url 'dashboard:adicionar_competencia' perfil.id %}" class="d-flex gap-2 mb-3">
+    {% csrf_token %}
+    <input type="text" name="nome" class="form-control" placeholder="Adicionar nova competência..." required>
+    <button class="btn btn-primary">Adicionar</button>
+</form>
+
+<ul class="list-group mb-4">
+    {% for c in competencias %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ c.nome }}
+        <a href="{% url 'dashboard:remover_competencia' c.id %}" class="btn btn-sm btn-danger">
+            <i class="bi bi-x-circle"></i>
+        </a>
+    </li>
+    {% empty %}
+    <li class="list-group-item text-muted">Nenhuma competência cadastrada.</li>
+    {% endfor %}
+</ul>
+
+<h4><i class="bi bi-diagram-3-fill me-2"></i> Áreas de Atuação</h4>
+
+<form method="post" action="{% url 'dashboard:adicionar_area' perfil.id %}" class="d-flex gap-2 mb-3">
+    {% csrf_token %}
+    <input type="text" name="nome" class="form-control" placeholder="Adicionar nova área..." required>
+    <button class="btn btn-primary">Adicionar</button>
+</form>
+
+<ul class="list-group">
+    {% for a in areas %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ a.nome }}
+        <a href="{% url 'dashboard:remover_area' a.id %}" class="btn btn-sm btn-danger">
+            <i class="bi bi-x-circle"></i>
+        </a>
+    </li>
+    {% empty %}
+    <li class="list-group-item text-muted">Nenhuma área cadastrada.</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}

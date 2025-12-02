@@ -1,13 +1,31 @@
 {% extends "dashboard/base_dashboard.html" %}
 
-{% block titulo %}Dashboard{{ request.user.nome }}{% endblock %}
+{% block titulo %}Dashboard - {{ request.user.nome }}{% endblock %}
 
 {% block conteudo %}
 
-<h2 class="mb-4 d-flex align-items-center">
-    <i class="bi bi-building me-2"></i>
+<h2 class="mb-4 d-flex align-items-center title-dashboard">
+    <i class="bi bi-building me-2 "></i>
     Visão Geral
 </h2>
+
+<!-- ===================== MENSAGEM DE APROVAÇÃO ===================== -->
+{% if not request.user.is_approved %}
+<div class="approval-alert shadow-sm">
+
+    <i class="bi bi-hourglass-split alert-icon"></i>
+
+    <div class="alert-text">
+        Sua empresa está <b>aguardando aprovação</b> pela coordenação.<br>
+        Assim que for aprovada, todas as funcionalidades serão liberadas.
+    </div>
+
+</div>
+{% endif %}
+
+
+
+{% if request.user.is_approved %}
 
 <!-- ===================== RESUMO ===================== -->
 <div class="row g-4 mb-4">
@@ -42,7 +60,6 @@
 <h4 class="fw-semibold mb-3">Ações rápidas</h4>
 
 <div class="row g-3 mb-4">
-
     <div class="col-md-4">
         <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="quick-action">
             <i class="bi bi-plus-circle fs-2 mb-2"></i>
@@ -63,7 +80,6 @@
             <span>Candidaturas recebidas</span>
         </a>
     </div>
-
 </div>
 
 <!-- ===================== ÚLTIMAS VAGAS ===================== -->
@@ -100,5 +116,7 @@
     {% endfor %}
 
 </div>
+
+{% endif %}
 
 {% endblock %}

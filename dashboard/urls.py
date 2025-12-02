@@ -80,6 +80,62 @@ path("coordenacao/vagas/<int:vaga_id>/reprovar/",
 
     path("coordenacao/empresas/<int:empresa_id>/excluir/",
          views.coordenacao_empresa_excluir, name="empresa_excluir"),
+# -----------------------------------
+# PERFIS DE FORMAÇÃO (Coordenação)
+# -----------------------------------
+
+# listar perfis
+path(
+    "coordenacao/perfis/",
+    views.listar_perfis,
+    name="listar_perfis"
+),
+
+# criar novo perfil
+path(
+    "coordenacao/perfis/novo/",
+    views.editar_perfil_formacao,
+    name="novo_perfil_formacao"
+),
+
+# editar perfil existente
+path(
+    "coordenacao/perfis/editar/<int:pk>/",
+    views.editar_perfil_formacao,
+    name="editar_perfil_formacao"
+),
+
+# excluir perfil
+path(
+    "coordenacao/perfis/excluir/<int:pk>/",
+    views.excluir_perfil_formacao,
+    name="excluir_perfil_formacao"
+),
+
+# adicionar / remover competência
+path(
+    "coordenacao/perfis/<int:perfil_id>/competencia/adicionar/",
+    views.adicionar_competencia,
+    name="adicionar_competencia"
+),
+path(
+    "coordenacao/perfis/competencia/remover/<int:pk>/",
+    views.remover_competencia,
+    name="remover_competencia"
+),
+
+# adicionar / remover área
+path(
+    "coordenacao/perfis/<int:perfil_id>/area/adicionar/",
+    views.adicionar_area,
+    name="adicionar_area"
+),
+path(
+    "coordenacao/perfis/area/remover/<int:pk>/",
+    views.remover_area,
+    name="remover_area"
+),
+
 
     # ==============================
     # PERFIL

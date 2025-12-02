@@ -1,8 +1,41 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
-from .models import Vaga, Candidatura, MensagemContato, PerfilFormacao
+from .models import Vaga, Candidatura, MensagemContato, PerfilFormacao,Competencia, AreaAtuacaoPerfil
 
+class PerfilFormacaoForm(forms.ModelForm):
+    class Meta:
+        model = PerfilFormacao
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for f in self.fields.values():
+            f.widget.attrs.update({"class": "form-control mb-3"})
+
+
+class CompetenciaForm(forms.ModelForm):
+    class Meta:
+        model = Competencia
+        fields = ["texto"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["texto"].widget.attrs.update({
+            "class": "form-control mb-2",
+            "placeholder": "Digite uma competência..."
+        })
+
+
+class AreaAtuacaoForm(forms.ModelForm):
+    class Meta:
+        model = AreaAtuacaoPerfil
+        fields = ["titulo", "descricao"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["titulo"].widget.attrs.update({"class": "form-control mb-2"})
+        self.fields["descricao"].widget.attrs.update({"class": "form-control mb-2"})
 
 # =====================================================
 # FORMULÁRIO DE VAGA (para empresas)

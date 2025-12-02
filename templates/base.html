@@ -9,6 +9,7 @@
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="{% static 'linkif/css/style.css' %}">
@@ -18,7 +19,7 @@
 
   {% if show_splash %}
     <div id="splash-screen">
-      <img src="{% static 'assets/img/logo.png' %}" alt="Logo LinkIF" class="splash-logo">
+      <img src="{% static 'assets/img/logo.svg' %}" alt="Logo LinkIF" class="splash-logo">
     </div>
   {% endif %}
 
@@ -31,7 +32,7 @@
         {% if site_config.logo %}
           <img src="{{ site_config.logo.url }}" alt="{{ site_config.nome_site|default:'LinkIF' }}">
         {% else %}
-          <img src="{% static 'assets/img/logo.png' %}" alt="{{ site_config.nome_site|default:'LinkIF' }}">
+          <img src="{% static 'assets/img/logo.svg' %}" alt="{{ site_config.nome_site|default:'LinkIF' }}">
         {% endif %}
       </a>
 
@@ -41,30 +42,49 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
 
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="{% url 'linkif:index' %}">Início</a></li>
-          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
-          <li class="nav-item"><a class="nav-link" href="#estudante">Para Estudantes</a></li>
-          <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
-        </ul>
 
-        <!-- LOGIN / DASHBOARD -->
-        <div class="ms-3 d-flex align-items-center">
+  {% if request.resolver_match.url_name == "index" %}
+      <!-- MENU DA HOME -->
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+        <li class="nav-item"><a class="nav-link" href="#estudante">Para Estudantes</a></li>
+        <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+      </ul>
+  {% else %}
+      <!-- PLACEHOLDER PARA MANTER A LOGO CENTRALIZADA -->
+      <div class="flex-grow-1"></div>
+  {% endif %}
 
-          {% if user.is_authenticated %}
+</div>
 
-            <a href="{% url 'dashboard:inicio' %}"
-               class="d-flex align-items-center text-decoration-none">
-              <i class="bi bi-person-circle fs-1" style="color:#2C7F67;"></i>
-            </a>
+       <!-- LOGIN / DASHBOARD -->
+<div class="ms-3 d-flex align-items-center">
 
-          {% else %}
-            <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">Entrar</a>
-            <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">Cadastre-se</a>
-          {% endif %}
+  {% if user.is_authenticated %}
 
-        </div>
+    <a href="{% url 'dashboard:inicio' %}" class="navbar-avatar-link">
+
+      {% if request.user.foto %}
+          <img src="{{ request.user.foto.url }}" class="avatar" alt="Foto de perfil">
+      {% else %}
+          <i class="bi bi-person-circle avatar-icon"></i>
+      {% endif %}
+
+    </a>
+
+  {% else %}
+
+    <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">
+      <i class="bi bi-box-arrow-in-right me-2"></i> Entrar
+    </a>
+
+    <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">
+      <i class="bi bi-person-plus me-2"></i> Cadastre-se
+    </a>
+
+  {% endif %}
+</div>
 
       </div>
     </div>
@@ -88,7 +108,7 @@
           {% if site_config.logo %}
             <img src="{{ site_config.logo.url }}" class="mb-2" alt="Logo {{ site_config.nome_site }}">
           {% else %}
-            <img src="{% static 'assets/img/logo.png' %}" class="mb-2" alt="Logo {{ site_config.nome_site }}">
+            <img src="{% static 'assets/img/logo.svg' %}" class="mb-2" alt="Logo {{ site_config.nome_site }}">
           {% endif %}
 
           <p>{{ site_config.descricao_curta|default:"Plataforma de talentos do IFRN." }}</p>

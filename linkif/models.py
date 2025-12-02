@@ -231,7 +231,7 @@ class SiteConfig(models.Model):
     def get_logo_url(self):
         if self.logo and hasattr(self.logo, "url"):
             return self.logo.url
-        return "/static/assets/img/logo.png"
+        return "/static/assets/img/logo.svg"
 
 
 # =====================================================
@@ -239,11 +239,9 @@ class SiteConfig(models.Model):
 # =====================================================
 class HomeContent(models.Model):
     titulo_banner = models.CharField(max_length=200, default="Da ideia à prática, do campus à carreira.")
-    subtitulo_banner = models.CharField(max_length=255, default="Seu futuro começa aqui.")
+    subtitulo_banner = models.CharField(max_length=255, default="Aprender, se conectar e crescer: seu futuro começa aqui.")
     imagem_banner = models.ImageField(upload_to="home/", blank=True, null=True)
 
-    titulo_sobre = models.CharField(max_length=100, default="O que é o LinkIF?")
-    texto_sobre = models.TextField(default="O LinkIF conecta estudantes, ex-alunos e empresas.")
 
     card1_titulo = models.CharField(max_length=100, default="Plataforma Integrada")
     card1_texto = models.TextField(default="Um ambiente criado para centralizar oportunidades profissionais.")

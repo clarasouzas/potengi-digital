@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from crispy_forms.helper import FormHelper
+from crispy_forms.helper import FormHelper 
+from crispy_forms.layout import Layout, Row, Column, Field
 from .models import Usuario
 
 
@@ -28,22 +29,68 @@ class AlunoCreationForm(UsuarioCreationForm):
     class Meta(UsuarioCreationForm.Meta):
         fields = ["nome", "curso"] + UsuarioCreationForm.Meta.fields
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for field in self.fields.values():
+            field.help_text = None
+        self.helper = FormHelper()
+        self.helper.form_tag = False  # não gera <form>
+
+        self.helper.layout = Layout(
+             Row(
+                Column("email", css_class="col-md-12"),
+            ),
+            Row(
+                Column("nome", css_class="col-md-6"),
+                Column("curso", css_class="col-md-6"),
+            ),
+            Row(
+                Column("password1", css_class="col-md-6"),               
+                Column("password2", css_class="col-md-6"),
+            )
+        )
+
 
 # ======================================
 # CADASTRO — EMPRESA
 # ======================================
+
 class EmpresaCreationForm(UsuarioCreationForm):
     nome = forms.CharField(label="Nome da empresa", max_length=150)
     cnpj = forms.CharField(max_length=18)
     telefone = forms.CharField(max_length=20)
-    cidade = forms.CharField(max_length=100)
-    descricao = forms.CharField(required=False, widget=forms.Textarea)
 
     class Meta(UsuarioCreationForm.Meta):
         fields = [
-            "nome", "cnpj", "telefone", "cidade", "descricao"
+            "nome", "cnpj", "telefone"
         ] + UsuarioCreationForm.Meta.fields
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.help_text = None
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+        self.helper.layout = Layout(
+            Row(
+                Column("nome", css_class="col-md-6"),                
+                Column("telefone", css_class="col-md-6"),
+            ),
+            Row(
+                Column("email", css_class="col-md-12"),
+            ),
+            
+            Row(
+                Column("cnpj", css_class="col-md-12"),
+            ),
+            Row(
+                Column("password1", css_class="col-md-6"),
+                Column("password2", css_class="col-md-6"),
+            ),
+        )
 
 # ======================================
 # EDIÇÃO — ALUNO

@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     #filters
     'django_filters',
+    #tabelas
+    "django_tables2",
 ]
 
 # Configurações do Crispy

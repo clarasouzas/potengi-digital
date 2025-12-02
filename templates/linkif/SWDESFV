@@ -1,0 +1,7 @@
+ </a>
+          <a href="{% url 'linkif:para_estudantes' %}" class="botao botao-estudante">
+            <i class="bi bi-mortarboard-fill me-2"></i> Estudantes
+          </a>
+          <a href="{% url 'linkif:para_empresas' %}" class="botao botao-empresa">
+            <i class="bi bi-building-fill me-2"></i> Empresas
+          </a>

@@ -2,42 +2,43 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %}{{ site_config.nome_site }} — Início{% endblock %}
+{% block title %}{{ site_config.nome_site|default:"LinkIF" }} — Início{% endblock %}
 
 {% block content %}
-
-<!-- =======================
-       HERO
-======================== -->
 <section class="hero">
-  <div class="overlay"></div>
+  <div class="hero-bg"></div>
 
-  {% if home.imagem_banner %}
-    <img src="{{ home.imagem_banner.url }}" alt="Ilustração LinkIF" class="hero-art">
-  {% else %}
-    <img src="{% static 'assets/img/banner_hero.png' %}" alt="Ilustração LinkIF" class="hero-art">
-  {% endif %}
-
-  <div class="container text-center text-md-start">
+  <div class="container hero-container">
     <div class="row align-items-center">
-      <div class="col-md-8">
-        <h1>{{ home.titulo_banner }}</h1>
-        <p>{{ home.subtitulo_banner }}</p>
 
-        <div class="botoes">
-          <a href="{% url 'linkif:para_estudantes' %}" class="botao botao-estudante">
-            <i class="bi bi-mortarboard-fill me-2"></i> Estudantes
-          </a>
-          <a href="{% url 'linkif:para_empresas' %}" class="botao botao-empresa">
-            <i class="bi bi-building-fill me-2"></i> Empresas
-          </a>
-        </div>
+      <!-- TEXTO -->
+      <div class="col-lg-6 col-md-7 text-area">
+        <h1>{{ home.titulo_banner|default:"Da ideia à prática, do campus à carreira." }}</h1>
+        <p>{{ home.subtitulo_banner|default:"Aprender, se conectar e crescer: seu futuro começa aqui." }}</p>
+
+       <div class="botoes-hero">
+  {% if not user.is_authenticated %}
+    <a href="{% url 'usuarios:login' %}" class="btn-hero">
+      <i class="bi bi-arrow-right-circle me-2"></i>
+      Começar Agora
+    </a>
+  {% endif %}
+</div>
+        
       </div>
+
+      <!-- IMAGEM -->
+      <div class="col-lg-6 col-md-5 hero-art-wrapper">
+        {% if home.imagem_banner %}
+          <img src="{{ home.imagem_banner.url }}" alt="Hero LinkIF" class="hero-art">
+        {% else %}
+          <img src="{% static 'assets/img/banner_hero.svg' %}" alt="Hero LinkIF" class="hero-art">
+        {% endif %}
+      </div>
+
     </div>
   </div>
 </section>
-
-
 
 <!-- =======================
        SOBRE
@@ -45,8 +46,13 @@
 <section class="py-5 bg-white" id="sobre">
   <div class="container text-center">
     
-    <h2 class="fw-bold" style="color:#1b1f5b;">{{ home.titulo_sobre }}</h2>
-    <p class="mb-5 text-secondary">{{ home.texto_sobre }}</p>
+    <h2 class="fw-bold" >
+      {{ home.titulo_sobre|default:"O que é o LinkIF?" }}
+    </h2>
+
+    <p class="mb-5 text-secondary">
+      {{ home.texto_sobre|default:"O LinkIF é uma plataforma do IFRN – Campus São Paulo do Potengi que conecta estudantes, ex-alunos e empresas, centralizando estágios e oportunidades de trabalho na região." }}
+    </p>
 
     <div class="row g-4 justify-content-center">
 
@@ -56,14 +62,14 @@
           <div class="feature-top">
             <div class="feature-icon">
               {% if home.card1_icon %}
-                <img src="{{ home.card1_icon.url }}" alt="ícone">
+                <img src="{{ home.card1_icon.url }}">
               {% else %}
-                <img src="{% static 'assets/img/icon1.png' %}" alt="ícone">
+                <img src="{% static 'assets/img/icon1.png' %}">
               {% endif %}
             </div>
           </div>
-          <h5 class="fw-bold mt-3">{{ home.card1_titulo }}</h5>
-          <p>{{ home.card1_texto }}</p>
+          <h5 class="fw-bold mt-3">{{ home.card1_titulo|default:"Plataforma Integrada" }}</h5>
+          <p  class="text-secondary">{{ home.card1_texto|default:"Um ambiente digital criado para centralizar estágios e oportunidades profissionais no Potengi." }}</p>
         </div>
       </div>
 
@@ -73,14 +79,14 @@
           <div class="feature-top">
             <div class="feature-icon">
               {% if home.card2_icon %}
-                <img src="{{ home.card2_icon.url }}" alt="ícone">
+                <img src="{{ home.card2_icon.url }}">
               {% else %}
-                <img src="{% static 'assets/img/icon2.png' %}" alt="ícone">
+                <img src="{% static 'assets/img/icon2.png' %}">
               {% endif %}
             </div>
           </div>
-          <h5 class="fw-bold mt-3">{{ home.card2_titulo }}</h5>
-          <p>{{ home.card2_texto }}</p>
+          <h5 class="fw-bold mt-3">{{ home.card2_titulo|default:"Conexão Estratégica" }}</h5>
+          <p class="text-secondary">{{ home.card2_texto|default:"Coloca em diálogo estudantes  e empresas, aproximando o IFRN do mercado de trabalho." }}</p>
         </div>
       </div>
 
@@ -90,14 +96,14 @@
           <div class="feature-top">
             <div class="feature-icon">
               {% if home.card3_icon %}
-                <img src="{{ home.card3_icon.url }}" alt="ícone">
+                <img src="{{ home.card3_icon.url }}">
               {% else %}
-                <img src="{% static 'assets/img/icon3.png' %}" alt="ícone">
+                <img src="{% static 'assets/img/icon3.png' %}">
               {% endif %}
             </div>
           </div>
-          <h5 class="fw-bold mt-3">{{ home.card3_titulo }}</h5>
-          <p>{{ home.card3_texto }}</p>
+          <h5 class="fw-bold mt-3">{{ home.card3_titulo|default:"Porta de entrada" }}</h5>
+          <p  class="text-secondary">{{ home.card3_texto|default:"Mais que um sistema, o LinkIF é o caminho para transformar formação técnica em experiência real." }}</p>
         </div>
       </div>
 
@@ -114,8 +120,8 @@
   <div class="container">
 
     <div class="text-center mb-5">
-      <h2 class="fw-bold" style="color:#1b1f5b;">Perfis de Formação</h2>
-      <p class="text-secondary">Conheça as áreas de formação dos estudantes do IFRN.</p>
+      <h2 class="fw-bold">Perfis de Formação</h2>
+      <p class="text-secondary">Conheça as áreas de formação dos alunos do IFRN – Campus São Paulo do Potengi e descubra as competências que conectam educação e mercado de trabalho.</p>
     </div>
 
     <div class="perfil-carousel-container">
@@ -128,14 +134,14 @@
 
           <div class="perfil-top">
             {% if perfil.imagem %}
-              <img src="{{ perfil.imagem.url }}" alt="{{ perfil.nome }}">
+              <img src="{{ perfil.imagem.url }}">
             {% else %}
-              <img src="{% static 'assets/img/perfil_informatica.png' %}" alt="{{ perfil.nome }}">
+              <img src="{% static 'assets/img/perfil_informatica.png' %}">
             {% endif %}
 
             <div class="perfil-icon">
               {% if perfil.logo %}
-                <img src="{{ perfil.logo.url }}" alt="Logo {{ perfil.nome }}">
+                <img src="{{ perfil.logo.url }}">
               {% else %}
                 <i class="bi bi-mortarboard-fill"></i>
               {% endif %}
@@ -170,11 +176,12 @@
      PARA ESTUDANTES
 ======================== -->
 <section class="section-dupla" id="estudante">
-  <div class="container" style="max-width:980px;">
+  <div class="container">
 
-    <div class="text-center mb-4">
-      <h3>{{ home.titulo_estudantes }}</h3>
-      <p class="sub">{{ home.texto_estudantes }}</p>
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Para Estudantes</h2>
+      <p class="text-secondary">Mostre suas habilidades, monte seu perfil profissional e encontre 
+                                oportunidades que combinam com você.</p>
     </div>
 
     <div class="row align-items-center gx-5 gy-2">
@@ -187,14 +194,27 @@
         {% endif %}
       </div>
 
-      <div class="col-md-6 texto-dupla">
-        <ul>
-          <li>Vagas alinhadas ao seu perfil.</li>
-          <li>Contato direto com empresas.</li>
-          <li>Perfil inteligente com competências.</li>
-          <li>Experiência para impulsionar sua carreira.</li>
-        </ul>
-        <a href="{% url 'linkif:listar_vagas' %}" class="btn-dupla">Ver Vagas</a>
+      <div class="col-md-5 texto-dupla">
+        <ul class="lista-check">
+        <li>
+          <i class="bi bi-check-circle-fill me-2 "></i>
+            Vagas e estágios alinhados ao seu perfil.
+        </li>
+        <li>
+          <i class="bi bi-check-circle-fill me-2 "></i>
+            Perfil inteligente com destaque para suas competências.
+        </li>
+        <li>
+          <i class="bi bi-check-circle-fill me-2 "></i>
+            Contato direto com empresas da região.
+        </li>
+        <li>
+          <i class="bi bi-check-circle-fill me-2"></i>
+          Certificados e experiências que impulsionam sua trajetória.
+        </li>
+</ul>
+
+        <a href="{% url 'linkif:para_estudantes' %}" class="btn-dupla">Ver Mais</a>
       </div>
 
     </div>
@@ -207,11 +227,11 @@
       PARA EMPRESAS
 ======================== -->
 <section class="section-dupla bg-branco cor" id="empresas">
-  <div class="container" style="max-width:980px;">
-
-    <div class="text-center mb-4">
-      <h3>{{ home.titulo_empresas }}</h3>
-      <p class="sub">{{ home.texto_empresas }}</p>
+  <div class="container">
+     <div class="text-center mb-5">
+      <h2 class="fw-bold">Para Empresas</h2>
+      <p class="text-secondary">Aproxima sua instituição de talentos em formação
+                                no IFRN, capacitados para agregar valor e resultados.</p>
     </div>
 
     <div class="row align-items-center flex-row-reverse gx-5 gy-4">
@@ -224,28 +244,29 @@
         {% endif %}
       </div>
 
-      <div class="col-md-6 texto-dupla">
+      <div class="col-md-5 texto-dupla">
 
-        <ul>
-          <li>Divulgue oportunidades de estágio.</li>
-          <li>Encontre talentos qualificados.</li>
-          <li>Explore perfis de estudantes.</li>
-          <li>Fortaleça parcerias com o IFRN.</li>
-        </ul>
+        <ul class="lista-check">
+          <li>
+            <i class="bi bi-check-circle-fill me-2 "></i>
+            Divulgue oportunidades de estágio com agilidade.
+          </li>
+          <li>
+            <i class="bi bi-check-circle-fill me-2 "></i>E
+            ncontre talentos qualificados para sua empresa.
+          </li>
+          <li>
+            <i class="bi bi-check-circle-fill me-2 "></i>
+            Explore perfis completos de estudantes.
+          </li>
+          <li>
+            <i class="bi bi-check-circle-fill me-2 "></i>
+            Fortaleça parcerias estratégicas com o IFRN.
+          </li>
+</ul>
+        <a href="{% url 'linkif:para_empresas' %}" class="btn-dupla">Ver Mais</a>
 
-        {% if user.is_authenticated %}
-
-            {% if user.tipo == "aluno" %}
-              <a href="#perfis" class="btn-dupla">Explorar Perfis</a>
-            {% else %}
-              <a href="{% url 'linkif:explorar' %}" class="btn-dupla">Explorar Perfis</a>
-            {% endif %}
-
-        {% else %}
-            <a href="{% url 'usuarios:cadastro' %}" class="btn-dupla">Explorar Perfis</a>
-        {% endif %}
-
-      </div>
+</div>
 
     </div>
   </div>
@@ -262,8 +283,8 @@
     <div class="row justify-content-center align-items-start">
 
       <div class="col-12 text-center mb-5">
-        <h3 class="fw-bold" style="color:#205072;">Contato</h3>
-        <p class="text-muted">Entre em contato conosco.</p>
+        <h3 class="fw-bold">Contato</h3>
+        <p class="text-secondary">Entre em contato conosco.</p>
       </div>
 
       <!-- FORM -->
@@ -279,11 +300,13 @@
 
       <!-- CONTATO INFO -->
       <div class="col-md-6 ps-md-5 mt-5 mt-md-0">
-        <h5 class="fw-bold mb-3">{{ site_config.nome_site }} — Campus São Paulo do Potengi</h5>
+        <h5 class="fw-bold mb-3">
+          {{ site_config.nome_site|default:"LinkIF" }} — Campus São Paulo do Potengi
+        </h5>
 
-        <p><i class="bi bi-geo-alt-fill icon-contato me-2"></i>{{ site_config.endereco }}</p>
-        <p><i class="bi bi-telephone-fill icon-contato me-2"></i>{{ site_config.telefone }}</p>
-        <p><i class="bi bi-envelope-fill icon-contato me-2"></i>{{ site_config.email_contato }}</p>
+        <p><i class="bi bi-geo-alt-fill icon-contato me-2"></i>{{ site_config.endereco|default:"Endereço não informado" }}</p>
+        <p><i class="bi bi-telephone-fill icon-contato me-2"></i>{{ site_config.telefone|default:"(84) 90000-0000" }}</p>
+        <p><i class="bi bi-envelope-fill icon-contato me-2"></i>{{ site_config.email_contato|default:"contato@ifrn.edu.br" }}</p>
 
         {% if site_config.mapa_embed %}
           <div class="ratio ratio-16x9 mt-3">
@@ -300,9 +323,8 @@
 </section>
 
 
-
 <!-- =======================
-   JS DO CARROSSEL
+   JS CARROSSEL
 ======================== -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
