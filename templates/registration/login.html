@@ -31,7 +31,13 @@
             <p class="text-secondary">Acesse sua conta no LinkIF</p>
 
             {% include "partials/_suap_auth_button.html" %}
-            {% include "partials/_google_auth_button.html" %}
+
+            <div class="text-center my-2">
+              <a href="{% provider_login_url 'google' %}" class="btn btn-auth d-flex align-items-center justify-content-center gap-2">
+                <img src="{% static 'assets/svg/logo_google.svg' %}" alt="logo google" style="height: 1.1rem;">
+                Entrar com Google
+              </a>
+            </div>
 
             <div class="d-flex align-items-center my-3">
               <hr class="flex-grow-1">
