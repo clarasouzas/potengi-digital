@@ -3,9 +3,10 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django_tables2 import RequestConfig
 
-from .filters import VagaFilter
-
+from .filters import VagaFilter,AlunoFilter
+from .tables import AlunoTable
 from .models import (
     Vaga,
     Candidatura,
@@ -59,14 +60,14 @@ def candidatar_vaga(request, vaga_id):
     # verificar aprovação do usuário (coordenador precisa aprovar)
     if not request.user.is_approved:
         messages.error(request, "Seu cadastro ainda não foi aprovado pela coordenação.")
-        return redirect("linkif:listar_vagas")
+        return redirect("linkif:para_estudantes")
 
     aluno = request.user  # agora o próprio usuário é o aluno
 
     # já existe candidatura
     if Candidatura.objects.filter(vaga=vaga, aluno=aluno).exists():
         messages.warning(request, "Você já se candidatou a esta vaga.")
-        return redirect("linkif:listar_vagas")
+        return redirect("linkif:para_estudantes")
 
     form = CandidaturaForm(request.POST or None)
 
@@ -79,7 +80,7 @@ def candidatar_vaga(request, vaga_id):
         candidatura.save()
 
         messages.success(request, "Candidatura enviada com sucesso!")
-        return redirect("linkif:listar_vagas")
+        return redirect("linkif:para_estudantes")
 
     return render(request, "linkif/candidatar.html", {
         "form": form,
@@ -116,7 +117,7 @@ def para_estudantes(request):
     filtro = VagaFilter(request.GET, queryset=vagas_qs)
     vagas_filtradas = filtro.qs
 
-    paginator = Paginator(vagas_filtradas, 6)
+    paginator = Paginator(vagas_filtradas, 4)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
@@ -126,23 +127,28 @@ def para_estudantes(request):
     })
 
 
+@login_required
 def para_empresas(request):
     return render(request, "linkif/para_empresas.html", {
     })
 
 
-# ================================
-# EXPLORAR PERFIS (Coordenação / Empresas)
-# ================================
 @login_required
 def explorar_perfis(request):
-    if request.user.tipo not in ["coordenador", "empresa"]:
-        return redirect('linkif:index')
 
-    alunos = Usuario.objects.filter(tipo="aluno", is_approved=True)
+    if request.user.tipo not in ["empresa", "coordenador"]:
+        return redirect("linkif:index")
 
-    return render(request, "linkif/explorar.html", {
-        "alunos": alunos
+    qs = Usuario.objects.filter(tipo="aluno", is_approved=True).order_by("nome")
+
+    filtro = AlunoFilter(request.GET, queryset=qs)
+    table = AlunoTable(filtro.qs)
+
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+
+    return render(request, "linkif/explorar_tabela.html", {
+        "table": table,
+        "filtro": filtro,
     })
 # detalhar vaga
 def vaga_detalhe(request, vaga_id):

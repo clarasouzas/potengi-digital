@@ -275,7 +275,7 @@ body {
 }
 
 .title-dashboard{
-    font-size: 30px;
+    font-size: 35px;
     font-weight: 600;
     margin-bottom: 25px;
     color: var(--accent-purple);
@@ -1044,7 +1044,7 @@ body {
 }
 
 .approval-alert .alert-text {
-    font-size: 15px;
+    font-size: 18px;
     line-height: 1.4;
     color: var(--accent-purple);
 }

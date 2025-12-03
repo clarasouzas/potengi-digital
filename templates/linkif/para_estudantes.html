@@ -6,46 +6,27 @@
 {% block content %}
 
 <!-- =====================================================
-     HERO — REFEITO IGUAL AO SEU EXEMPLO
+     HERO
 ====================================================== -->
 <section class="hero hero-estudante">
+  <div class="hero-inner">
 
-    <!-- wrapper interno limitado -->
-    <div class="hero-inner">
+    <div class="text-area">
+      <h1>Para Estudantes</h1>
+      <p>Expanda seu futuro com oportunidades que valorizam suas competências.</p>
 
-        <!-- TEXTO -->
-        <div class="text-area">
-            <h1>Para Estudantes</h1>
-            <p>Transforme seu potencial em oportunidades reais.</p>
-
-            <div class="botoes">
-                {% if not user.is_authenticated %}
-                  <a href="{% url 'usuarios:cadastro' %}" class="botao-principal">
-                    <i class="bi bi-person-add"></i> Criar Perfil
-                  </a>
-
-                {% elif user.tipo == 'aluno' %}
-                  <a href="#vagas" class="botao-principal">
-                    <i class="bi bi-search"></i> Explorar Vagas
-                  </a>
-
-                {% else %}
-                  <a href="{% url 'linkif:explorar' %}" class="botao-principal">
-                    <i class="bi bi-people-fill"></i> Explorar Estudantes
-                  </a>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- IMAGEM -->
-        <img src="{% static 'assets/img/estudante.svg' %}" class="hero-art">
-
+      {% if not user.is_authenticated %}
+      <div class="botoes-hero">
+        <a href="{% url 'usuarios:cadastro' %}" class="btn-hero">
+          <i class="bi bi-person-add"></i> Iniciar jornada
+        </a>
+      </div>
+      {% endif %}
     </div>
 
+    <img src="{% static 'assets/img/estudante.svg' %}" class="hero-art">
+  </div>
 </section>
-
-
-
 
 
 <!-- =====================================================
@@ -54,177 +35,276 @@
 <section class="oferecemos py-5">
   <div class="container text-center">
 
-    <h2 class="fw-bold" style="color:#1b1f5b;">O que oferecemos para você</h2>
-    <p class="text-secondary mb-5">Funcionalidades feitas para te aproximar das melhores vagas.</p>
+    <h2 class="fw-bold title-section">Conectando você às melhores oportunidades</h2>
+    <p class="text-secondary mb-5">
+      Ferramentas criadas para fortalecer sua trajetória educacional e profissional.
+    </p>
 
     <div class="row g-4 justify-content-center">
 
-      <div class="col-md-3">
-        <div class="feature-estudante-card icon-estudante-lilas h-100">
-          <div class="feature-estudante-top">
-            <div class="feature-estudante-icon"><i class="bi bi-person-circle"></i></div>
+      <!-- CARD 1 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-lilas">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-person-circle" style="font-size:48px;color:#0F0261;"></i>
+            </div>
           </div>
-          <h5 class="fw-bold mt-4">Monte seu Perfil</h5>
-          <p class="mt-3 mx-auto" style="max-width:240px;">Mostre habilidades e experiências.</p>
+          <h5 class="fw-bold title-card-index mt-3">Perfil Estudantil</h5>
+          <p class="text-secondary">Destaque suas competências, experiências e interesses profissionais.</p>
         </div>
       </div>
 
-      <div class="col-md-3">
-        <div class="feature-estudante-card icon-estudante-verde h-100">
-          <div class="feature-estudante-top">
-            <div class="feature-estudante-icon"><i class="bi bi-building-check"></i></div>
+      <!-- CARD 2 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-verde">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-building" style="font-size:48px;color:#0F0261;"></i>
+            </div>
           </div>
-          <h5 class="fw-bold mt-4">Conecte-se a Empresas</h5>
-          <p class="mt-3 mx-auto" style="max-width:240px;">Empresas do IFRN podem ver seu perfil.</p>
+          <h5 class="fw-bold title-card-index mt-3">Visibilidade para Empresas</h5>
+          <p class="text-secondary">Empresas parceiras podem acessar seu perfil e identificar seu potencial.</p>
         </div>
       </div>
 
-      <div class="col-md-3">
-        <div class="feature-estudante-card icon-estudante-azul h-100">
-          <div class="feature-estudante-top">
-            <div class="feature-estudante-icon"><i class="bi bi-briefcase"></i></div>
+      <!-- CARD 3 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-azul">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-briefcase" style="font-size:48px;color:#0F0261;"></i>
+            </div>
           </div>
-          <h5 class="fw-bold mt-4">Encontre Vagas</h5>
-          <p class="mt-3 mx-auto" style="max-width:240px;">Acesso rápido a oportunidades reais.</p>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="feature-estudante-card icon-estudante-rosa h-100">
-          <div class="feature-estudante-top">
-            <div class="feature-estudante-icon"><i class="bi bi-mortarboard"></i></div>
-          </div>
-          <h5 class="fw-bold mt-4">Cresça com o IFRN</h5>
-          <p class="mt-3 mx-auto" style="max-width:240px;">Ferramentas para te ajudar a evoluir.</p>
+          <h5 class="fw-bold title-card-index mt-3">Oportunidades Reais</h5>
+          <p class="text-secondary">Encontre vagas alinhadas ao seu curso e aos seus objetivos profissionais.</p>
         </div>
       </div>
 
     </div>
-
   </div>
 </section>
 
 
-
-
-
 <!-- =====================================================
-     LISTAGEM DE VAGAS
+     VAGAS + FILTRO
 ====================================================== -->
-<section id="vagas" class="py-5">
+<section id="vagas" class="py-5 cor">
   <div class="container">
+
+    <h2 class="fw-bold title-section text-center mb-4">Vagas Disponíveis</h2>
+    <p class="text-secondary text-center mb-5">Utilize os filtros e explore oportunidades compatíveis com sua área de formação.</p>
 
     <div class="row g-4">
 
       <!-- FILTRO -->
       <div class="col-md-4">
-        <div class="filtro-card p-4 h-100">
+        <div class="filtro-card h-100">
           <h5 class="fw-bold mb-3">Filtrar vagas</h5>
 
           <form method="get" class="d-flex flex-column gap-2">
+            {{ filtro.form.titulo.label_tag }} {{ filtro.form.titulo }}
+            {{ filtro.form.cidade.label_tag }} {{ filtro.form.cidade }}
+            {{ filtro.form.tipo.label_tag }} {{ filtro.form.tipo }}
+            {{ filtro.form.curso.label_tag }} {{ filtro.form.curso }}
+            {{ filtro.form.modalidade.label_tag }} {{ filtro.form.modalidade }}
 
-            {{ filtro.form.titulo.label_tag }}
-            {{ filtro.form.titulo }}
-
-            {{ filtro.form.cidade.label_tag }}
-            {{ filtro.form.cidade }}
-
-            {{ filtro.form.tipo.label_tag }}
-            {{ filtro.form.tipo }}
-
-            {{ filtro.form.curso.label_tag }}
-            {{ filtro.form.curso }}
-
-            {{ filtro.form.modalidade.label_tag }}
-            {{ filtro.form.modalidade }}
-
-            <button class="btn w-100 mt-3" style="background:#0a7a79;color:white;">
-              Aplicar Filtros
-            </button>
+            <button class="btn w-100 mt-3">Aplicar Filtros</button>
           </form>
         </div>
       </div>
 
 
-      <!-- LISTA DE VAGAS -->
+      <!-- LISTAGEM DE VAGAS -->
       <div class="col-md-8">
         <div class="row g-4">
 
           {% for vaga in vagas %}
           <div class="col-md-6">
-            <div class="vaga-card h-100">
+            <div class="vaga-card">
 
-              <div class="vaga-empresa">
-                {% if vaga.empresa.foto %}
-                  <img src="{{ vaga.empresa.foto.url }}" class="empresa-avatar">
-                {% else %}
-                  <div class="empresa-avatar-fallback">
-                    <i class="bi bi-buildings"></i>
+              <div class="vaga-card-top"></div>
+
+              <div class="vaga-card-content">
+
+                <header class="vaga-header">
+                  <div class="vaga-header-left">
+                    {% if vaga.empresa.foto %}
+                      <img src="{{ vaga.empresa.foto.url }}" class="vaga-avatar">
+                    {% else %}
+                      <div class="vaga-avatar fallback">
+                        <i class="bi bi-buildings"></i>
+                      </div>
+                    {% endif %}
+                    <span class="vaga-empresa-nome">{{ vaga.empresa.nome|truncatewords:2|upper }}</span>
                   </div>
-                {% endif %}
-                <span class="empresa-nome">
-                  {{ vaga.empresa.nome|default:vaga.empresa.email }}
-                </span>
+                </header>
+
+                <h5 class="vaga-title">{{ vaga.titulo }}</h5>
+
+                <div class="vaga-meta">
+                  <span><i class="bi bi-geo-alt"></i> {{ vaga.cidade }}/RN</span>
+                  <span><i class="bi bi-briefcase"></i> {{ vaga.get_tipo_display }}</span>
+                  {% if vaga.remuneracao %}
+                  <span><i class="bi bi-cash"></i> R$ {{ vaga.remuneracao }}</span>
+                  {% endif %}
+                </div>
+
               </div>
 
-              {% if vaga.data_publicacao %}
-                <span class="vaga-data">{{ vaga.data_publicacao|date:"d/m/Y" }}</span>
-              {% endif %}
+              <div class="vaga-overlay">
+                <a href="#modal-{{ vaga.id }}" class="overlay-btn-vertical">
+                  <i class="bi bi-eye"></i><span>Ver detalhes</span>
+                </a>
 
-              <h5 class="vaga-titulo fw-bold text-uppercase">{{ vaga.titulo }}</h5>
-
-              <ul class="vaga-info">
-                <li><i class="bi bi-geo-alt"></i> {{ vaga.cidade }}/RN</li>
-                <li><i class="bi bi-briefcase"></i> {{ vaga.get_tipo_display }}</li>
-                {% if vaga.remuneracao %}
-                <li><i class="bi bi-cash"></i> R$ {{ vaga.remuneracao }}</li>
-                {% endif %}
-              </ul>
-
-              <a href="{% url 'linkif:vaga_detalhe' vaga.id %}"
-                 class="btn btn-primary w-100 mt-3">
-                Ver detalhes
-              </a>
+                <a href="{% url 'linkif:candidatar_vaga' vaga.id %}" class="overlay-btn-vertical apply">
+                  <i class="bi bi-send-check"></i><span>Candidatar-se</span>
+                </a>
+              </div>
 
             </div>
-          </div>
 
+            <!-- MODAL -->
+            <div id="modal-{{ vaga.id }}" class="modal-vaga">
+              <div class="modal-content-vaga">
+
+                <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+
+                <h3 class="title-section fw-bold">{{ vaga.titulo }}</h3>
+
+                <div class="modal-badges">
+                  <span class="tag-chip"><i class="bi bi-buildings"></i> {{ vaga.empresa.nome|upper }}</span>
+                  <span class="tag-chip"><i class="bi bi-geo-alt"></i> {{ vaga.cidade }}/RN</span>
+                  <span class="tag-chip"><i class="bi bi-briefcase"></i> {{ vaga.get_tipo_display }}</span>
+                  {% if vaga.remuneracao %}
+                  <span class="tag-chip"><i class="bi bi-cash"></i> R$ {{ vaga.remuneracao }}</span>
+                  {% endif %}
+                </div>
+
+                <hr>
+
+                <h5 class="title-section">Descrição</h5>
+                <p>{{ vaga.descricao|default:"Sem descrição informada." }}</p>
+
+                <h5 class="title-section">Requisitos</h5>
+                <p>{{ vaga.requisitos|default:"Nenhum requisito informado." }}</p>
+
+                <a href="{% url 'linkif:candidatar_vaga' vaga.id %}" class="modal-btn-apply">
+                  <i class="bi bi-send-check me-2"></i> Candidatar-se
+                </a>
+
+                {% if vaga.data_publicacao %}
+                <span class="modal-date-chip">Publicada em {{ vaga.data_publicacao|date:"d/m/Y" }}</span>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
           {% empty %}
           <p class="text-center text-muted">Nenhuma vaga encontrada.</p>
           {% endfor %}
 
         </div>
 
-        <!-- PAGINAÇÃO -->
-        <div class="mt-4">
-          <nav aria-label="Paginação">
-            <ul class="pagination justify-content-center">
 
-              {% if vagas.has_previous %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ vagas.previous_page_number }}&{{ request.GET.urlencode }}">«</a>
-              </li>
+        <!-- ======================
+             PAGINAÇÃO MODERNA
+        ====================== -->
+        {% if vagas.has_other_pages %}
+        <div class="pagination-modern">
+
+          {% if vagas.has_previous %}
+            <a href="?page={{ vagas.previous_page_number }}&{{ request.GET.urlencode }}" class="page-btn">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <span class="page-btn disabled"><i class="bi bi-chevron-left"></i></span>
+          {% endif %}
+
+          <div class="page-numbers">
+            {% for num in vagas.paginator.page_range %}
+
+              {% if num == vagas.number %}
+                <span class="page-number active">{{ num }}</span>
+
+              {% elif num >= vagas.number|add:-2 and num <= vagas.number|add:2 %}
+                <a href="?page={{ num }}&{{ request.GET.urlencode }}" class="page-number">{{ num }}</a>
+
               {% endif %}
+            {% endfor %}
+          </div>
 
-              <li class="page-item disabled">
-                <span class="page-link">Página {{ vagas.number }} de {{ vagas.paginator.num_pages }}</span>
-              </li>
+          {% if vagas.has_next %}
+            <a href="?page={{ vagas.next_page_number }}&{{ request.GET.urlencode }}" class="page-btn">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <span class="page-btn disabled"><i class="bi bi-chevron-right"></i></span>
+          {% endif %}
 
-              {% if vagas.has_next %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ vagas.next_page_number }}&{{ request.GET.urlencode }}">»</a>
-              </li>
-              {% endif %}
-
-            </ul>
-          </nav>
         </div>
+        {% endif %}
 
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- =====================================================
+     COMO FUNCIONA
+====================================================== -->
+<section class="como-funciona py-5">
+  <div class="container text-center">
+
+    <h2 class="fw-bold title-section">Como funciona?</h2>
+    <p class="text-secondary mb-5">Uma jornada simples, integrada e alinhada ao ecossistema acadêmico do IFRN.</p>
+
+    <div class="row g-4 justify-content-center">
+
+      <!-- PASSO 1 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-azul">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-pencil-square" style="font-size:48px;color:#0F0261;"></i>
+            </div>
+          </div>
+          <h5 class="fw-bold title-card-index mt-3">1. Crie seu perfil</h5>
+          <p class="text-secondary">Cadastre suas informações acadêmicas, habilidades e experiências relevantes.</p>
+        </div>
+      </div>
+
+      <!-- PASSO 2 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-verde">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-search" style="font-size:48px;color:#0F0261;"></i>
+            </div>
+          </div>
+          <h5 class="fw-bold title-card-index mt-3">2. Explore vagas</h5>
+          <p class="text-secondary">Utilize filtros inteligentes para encontrar oportunidades compatíveis com sua formação.</p>
+        </div>
+      </div>
+
+      <!-- PASSO 3 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-lilas">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-send-check" style="font-size:48px;color:#0F0261;"></i>
+            </div>
+          </div>
+          <h5 class="fw-bold title-card-index mt-3">3. Candidate-se</h5>
+          <p class="text-secondary">Envie sua candidatura e acompanhe o andamento diretamente pela plataforma.</p>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
-
 
 {% endblock %}

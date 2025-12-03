@@ -5,114 +5,96 @@
 
 {% block content %}
 
-<!-- HERO -->
-<section class="hero hero-empresas">
-  <div class="container text-center text-md-start">
-    <div class="row align-items-center">
-      <div class="col-md-7">
-        <h1>Para Empresas</h1>
-        <p>Conecte-se aos talentos do IFRN e fortaleça o desenvolvimento local com a sua marca.</p>
+<!-- =====================================================
+     HERO — MESMA ESTRUTURA DO PARA ESTUDANTES
+====================================================== -->
+<section class="hero hero-estudante">
+  <div class="hero-inner">
 
-        <!-- =============================
-             BOTÃO DO HERO – LÓGICA NOVA
-        ============================== -->
-        {% if not user.is_authenticated %}
-            <!-- Visitante -->
-            <div class="botoes">
-              <a href="{% url 'usuarios:cadastro' %}" class="botao-principal">
-                <i class="bi bi-building-add"></i> Cadastrar Empresa
-              </a>
-            </div>
+    <div class="text-area">
+      <h1>Para Empresas</h1>
+      <p>Encontre talentos qualificados do IFRN e fortaleça o desenvolvimento da sua organização.</p>
 
-        {% elif user.tipo == "empresa" %}
-            <!-- Empresa logada -->
-            <div class="botoes">
-              <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="botao-principal">
-                <i class="bi bi-briefcase"></i> Criar Vaga
-              </a>
-            </div>
-
-        {% elif user.tipo == "coordenador" %}
-            <!-- Coordenação -->
-            <div class="botoes">
-              <a href="{% url 'linkif:explorar' %}" class="botao-principal">
-                <i class="bi bi-search"></i> Explorar Perfis
-              </a>
-            </div>
-
-        {% else %}
-            <!-- Aluno -->
-            <div class="botoes">
-              <a href="{% url 'linkif:perfil_cursos' %}" class="botao-principal">
-                <i class="bi bi-mortarboard-fill"></i> Ver Cursos
-              </a>
-            </div>
-        {% endif %}
-
+      {% if not user.is_authenticated %}
+      <div class="botoes-hero">
+        <a href="{% url 'usuarios:cadastro' %}" class="btn-hero">
+          <i class="bi bi-building-add"></i> Criar conta de empresa
+        </a>
       </div>
-
-      <div class="hero-art">
-        <img src="{% static 'assets/img/empresa.png' %}" alt="Empresas" class="hero-art">
+      {% elif user.tipo == "empresa" %}
+      <div class="botoes-hero">
+        <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="btn-hero">
+          <i class="bi bi-briefcase"></i> Publicar vaga
+        </a>
       </div>
+      {% elif user.tipo == "coordenador" %}
+      <div class="botoes-hero">
+        <a href="{% url 'linkif:explorar' %}" class="btn-hero">
+          <i class="bi bi-search"></i> Explorar estudantes
+        </a>
+      </div>
+      {% endif %}
     </div>
+
+    <img src="{% static 'assets/img/empresa.svg' %}" class="hero-art">
   </div>
 </section>
 
 
-<!-- O QUE OFERECEMOS -->
-<section class="oferecemos">
+<!-- =====================================================
+     O QUE OFERECEMOS — MESMA ESTRUTURA DOS CARDS
+====================================================== -->
+<section class="oferecemos py-5">
   <div class="container text-center">
-    <h2 class="fw-bold" style="color:#1b1f5b;">O que oferecemos para sua empresa</h2>
-    <p class="mb-5 text-secondary">
-      Um canal direto com os estudantes e egressos do IFRN para gerar oportunidades e fortalecer o mercado local.
+
+    <h2 class="fw-bold title-section">Soluções para impulsionar sua empresa</h2>
+    <p class="text-secondary mb-5">
+      Recursos criados para aproximar sua organização dos talentos do IFRN.
     </p>
 
-    <div class="row g-4 justify-content-center mt-4">
+    <div class="row g-4 justify-content-center">
 
-      <div class="col-md-3 icon-empresa-azul">
-        <div class="feature-empresa-card">
-          <div class="feature-empresa-top">
-            <div class="feature-empresa-icon"><i class="bi bi-people-fill"></i></div>
+      <!-- CARD 1 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-azul">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-people-fill" style="font-size:48px;color:#0F0261;"></i>
+            </div>
           </div>
-          <h5 class="fw-bold">Encontre Talentos</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'>
-            Descubra alunos e egressos com as competências que sua empresa procura.
+          <h5 class="fw-bold title-card-index mt-3">Acesso a Talentos</h5>
+          <p class="text-secondary">
+            Encontre estudantes e egressos com habilidades técnicas atualizadas.
           </p>
         </div>
       </div>
 
-      <div class="col-md-3 icon-empresa-verde">
-        <div class="feature-empresa-card">
-          <div class="feature-empresa-top">
-            <div class="feature-empresa-icon"><i class="bi bi-megaphone-fill"></i></div>
+      <!-- CARD 2 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-verde">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-megaphone-fill" style="font-size:48px;color:#0F0261;"></i>
+            </div>
           </div>
-          <h5 class="fw-bold">Divulgue Vagas</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'>
-            Cadastre vagas de estágio, emprego e bolsas e receba candidaturas direcionadas.
+          <h5 class="fw-bold title-card-index mt-3">Divulgação de Vagas</h5>
+          <p class="text-secondary">
+            Publique oportunidades e receba candidaturas alinhadas à sua demanda.
           </p>
         </div>
       </div>
 
-      <div class="col-md-3 icon-empresa-lilas">
-        <div class="feature-empresa-card">
-          <div class="feature-empresa-top">
-            <div class="feature-empresa-icon"><i class="bi bi-bullseye"></i></div>
+      <!-- CARD 3 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-lilas">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-building-check" style="font-size:48px;color:#0F0261;"></i>
+            </div>
           </div>
-          <h5 class="fw-bold">Crie Parcerias</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'>
-            Fortaleça vínculos com o IFRN e participe de projetos de inovação e pesquisa aplicada.
-          </p>
-        </div>
-      </div>
-
-      <div class="col-md-3 icon-empresa-rosa">
-        <div class="feature-empresa-card">
-          <div class="feature-empresa-top">
-            <div class="feature-empresa-icon"><i class="bi bi-graph-up"></i></div>
-          </div>
-          <h5 class="fw-bold">Acompanhe Resultados</h5>
-          <p class='mt-3 ' style='width: 250px; margin:auto;'>
-            Visualize estatísticas e relatórios sobre suas vagas e interações com os candidatos.
+          <h5 class="fw-bold title-card-index mt-3">Parcerias Institucionais</h5>
+          <p class="text-secondary">
+            Conecte-se ao IFRN para projetos, pesquisas e desenvolvimento local.
           </p>
         </div>
       </div>
@@ -121,37 +103,100 @@
   </div>
 </section>
 
+<section id="estudantes" class="py-5 cor">
+  <div class="container">
 
+    {% if request.user.is_authenticated and request.user.tipo in "empresa coordenador" %}
 
-<!-- CTA FINAL -->
-<section class="cta-empresas text-center">
-  <h3 class="fw-bold" style="color:#1b1f5b;">Pronta para encontrar novos talentos?</h3>
-  <p class="mb-5 text-secondary">Publique vagas e descubra profissionais que fazem a diferença.</p>
+      <h2 class="fw-bold title-section text-center mb-4">Estudantes Disponíveis</h2>
+      <p class="text-secondary text-center mb-5">
+        Conheça alguns dos perfis qualificados do IFRN prontos para integrar sua empresa.
+      </p>
 
-  {% if not user.is_authenticated %}
-      <!-- visitante -->
-      <a href="{% url 'usuarios:cadastro' %}" class="btn-cta botao-principal">
-        <i class="bi bi-building-add"></i> Criar conta de empresa
-      </a>
+      <div class="text-center">
+        <a href="{% url 'linkif:explorar' %}" class="btn-dupla">
+          <i class="bi bi-search"></i> Ver todos os estudantes
+        </a>
+      </div>
 
-  {% elif user.tipo == "empresa" %}
-      <!-- empresa logada -->
-      <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="btn-cta botao-principal">
-        <i class="bi bi-briefcase"></i> Publicar vaga agora
-      </a>
+    {% else %}
 
-  {% elif user.tipo == "coordenador" %}
-      <!-- coord -->
-      <a href="{% url 'linkif:explorar' %}" class="btn-cta botao-principal">
-        <i class="bi bi-search"></i> Explorar estudantes
-      </a>
+      <h2 class="fw-bold title-section text-center mb-4">Conheça nossos estudantes</h2>
+      <p class="text-secondary text-center mb-5">
+        Estudantes qualificados do IFRN estão prontos para fazer parte da sua empresa.
+        Cadastre-se gratuitamente para ter acesso completo aos perfis.
+      </p>
 
-  {% else %}
-      <!-- aluno -->
-      <a href="{% url 'linkif:listar_vagas' %}" class="btn-cta botao-principal">
-        <i class="bi bi-briefcase"></i> Ver vagas disponíveis
-      </a>
-  {% endif %}
+      <div class="text-center">
+        <a href="{% url 'usuarios:cadastro' %}" class="btn-dupla">
+          <i class="bi bi-building-add"></i> Cadastrar minha empresa
+        </a>
+      </div>
+
+    {% endif %}
+
+  </div>
+</section>
+<!-- =====================================================
+     COMO FUNCIONA
+====================================================== -->
+<section class="como-funciona py-5">
+  <div class="container text-center">
+
+    <h2 class="fw-bold title-section">Como funciona?</h2>
+    <p class="text-secondary mb-5">
+      Um fluxo simples que permite sua empresa encontrar talentos com agilidade.
+    </p>
+
+    <div class="row g-4 justify-content-center">
+
+      <!-- PASSO 1 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-azul">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-building-add" style="font-size:48px;color:#0F0261;"></i>
+            </div>
+          </div>
+          <h5 class="fw-bold title-card-index mt-3">1. Cadastre sua empresa</h5>
+          <p class="text-secondary">
+            Crie sua conta e apresente sua organização ao IFRN.
+          </p>
+        </div>
+      </div>
+
+      <!-- PASSO 2 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-verde">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-briefcase" style="font-size:48px;color:#0F0261;"></i>
+            </div>
+          </div>
+          <h5 class="fw-bold title-card-index mt-3">2. Publique vagas</h5>
+          <p class="text-secondary">
+            Adicione oportunidades e receba candidaturas alinhadas ao seu perfil.
+          </p>
+        </div>
+      </div>
+
+      <!-- PASSO 3 -->
+      <div class="col-md-4">
+        <div class="feature-card p-4 text-center h-100 icon-lilas">
+          <div class="feature-top">
+            <div class="feature-icon">
+              <i class="bi bi-search" style="font-size:48px;color:#0F0261;"></i>
+            </div>
+          </div>
+          <h5 class="fw-bold title-card-index mt-3">3. Encontre talentos</h5>
+          <p class="text-secondary">
+            Conecte-se com estudantes qualificados e selecione os melhores para sua empresa.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
 {% endblock %}

@@ -79,7 +79,7 @@ body {
 }
 
 .cor {
-  background-color: rgba(221, 255, 225, 0.97);
+  background-color: var(--primary-light-5);
 }
 
 section {
@@ -216,54 +216,85 @@ a:hover {
 
 /* Ícone quando não tem foto */
 .avatar-icon {
-  font-size: 38px;
+  font-size: 50px;
   color: var(--accent-blue);
 }
 
-/* HERO */
+.avatar-icon:hover {
+  color: var(--primary);
+}
+
+/* =========================================================
+   HERO PRINCIPAL — mesmo estilo do HERO ESTUDANTE
+========================================================= */
+
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: 70vh;
+
+  min-height: 60vh;
+  /* altura equilibrada */
+  padding: 90px 0;
+  /* top/bottom igual ao de estudantes */
+
   display: flex;
   align-items: center;
-  padding: 100px 0;
-}
-
-/* FUNDO — exatamente como estava */
-.hero-bg {
-  position: absolute;
-  inset: 0;
   background: linear-gradient(135deg,
       rgba(83, 117, 197, 0.20) 0%,
       rgba(41, 212, 95, 0.25) 50%,
       rgba(89, 54, 163, 0.22) 100%);
+}
+
+/* overlay suave igual ao hero estudante */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right,
+      rgba(15, 2, 97, 0.10) 25%,
+      rgba(255, 255, 255, 0) 80%);
   z-index: 1;
 }
 
-/* CONTAINER */
+/* wrapper interno (igual ao hero-estudante .hero-inner) */
 .hero-container {
   position: relative;
   z-index: 3;
+
+  width: 100%;
+  max-width: 1400px;
+  /* mesma largura que usamos no estudante */
+  margin: 0 auto;
+  padding: 0 70px;
+  /* mesmo respiro lateral */
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  /* espaço entre texto e imagem */
 }
 
-/* TEXTO */
+/* TEXTO — igual ao hero de estudantes */
 .text-area h1 {
   color: #205072;
   font-size: 3.2rem;
   font-weight: 800;
   line-height: 1.15;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .text-area p {
-  font-size: larger;
+  font-size: 1.3rem;
   color: #205072;
   opacity: .90;
+  line-height: 1.55;
+  max-width: 700px;
+  /* igual ao estudante */
   margin-bottom: 32px;
-  max-width: 85%;
 }
 
+/* BOTÃO igual ao hero estudantes */
 .botoes-hero {
   margin-top: 32px;
 }
@@ -275,7 +306,6 @@ a:hover {
 
   padding: 14px 32px;
   border-radius: 40px;
-
   font-weight: 600;
   font-size: 1.05rem;
   letter-spacing: 0.4px;
@@ -284,39 +314,52 @@ a:hover {
   color: white;
 
   background: var(--primary);
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
-
-  transition: all 0.28s ease;
   border: none;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .25);
+  transition: all .28s ease;
 }
 
-/* Efeito hover moderno */
 .btn-hero:hover {
   transform: translateY(-2px);
-  text-decoration: none;
   box-shadow: inset 0 6px 18px rgba(86, 255, 117, 0.427);
 }
 
-
-.title-section{
-  color: var(--accent-blue);
-}
-/* ARTE */
+/* IMAGEM — mesma lógica ABSOLUTA do hero-estudante */
 .hero-art-wrapper {
-  display: flex;
-  justify-content: flex-end;
+  position: relative;
+  z-index: 2;
 }
 
 .hero-art {
-  width: 125%;
-  max-width: 680px;
+  position: absolute;
+  right: -110px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 620px;
+  max-width: 520px;
   height: auto;
+
   filter: drop-shadow(0 28px 50px rgba(0, 0, 0, .20));
+  pointer-events: none;
 }
 
-/* ==========================
-    RESPONSIVIDADE CERTA
-========================== */
+/* ===========================
+      RESPONSIVIDADE
+=========================== */
+
+@media (max-width: 1200px) {
+  .hero-art {
+    width: 450px;
+    max-width: 450px;
+    right: 40px;
+  }
+
+  .hero-container {
+    padding: 0 40px;
+    gap: 40px;
+  }
+}
 
 @media (max-width: 992px) {
 
@@ -325,9 +368,10 @@ a:hover {
     padding: 60px 0;
   }
 
-  /* texto centraliza */
   .hero-container {
     text-align: center;
+    flex-direction: column;
+    gap: 20px;
   }
 
   .text-area h1 {
@@ -339,13 +383,10 @@ a:hover {
     margin: 0 auto 28px;
   }
 
-  /* imagem desce — NATURAL E BONITO */
-  .hero-art-wrapper {
-    justify-content: center;
-    margin-top: 40px;
-  }
-
   .hero-art {
+    position: static;
+    transform: none;
+    margin: 30px auto 0;
     width: 85%;
     max-width: 420px;
   }
@@ -366,9 +407,487 @@ a:hover {
   }
 }
 
-/* =======================================
-   CARDS DE DESTAQUE
-======================================= */
+/* Vagas */
+
+.vaga-card {
+  background: var(--branco);
+  height: 260px;
+  width: 100%;
+  border-radius: 18px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  overflow: hidden;
+  position: relative;
+
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.vaga-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
+}
+
+.vaga-card-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 12px;
+  width: 100%;
+  background: var(--accent-blue);
+
+  border-radius: 18px 18px 0 0;
+  z-index: 1;
+  transition: height .35s ease;
+}
+
+.vaga-card:hover .vaga-card-top {
+  height: 260px;
+}
+
+.vaga-card:hover .vaga-card-content {
+  opacity: 0;
+  transform: translateY(25px);
+}
+
+.vaga-card-content {
+  position: relative;
+  z-index: 2;
+  padding: 22px 20px;
+  margin-top: 12px;
+
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+
+.vaga-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.vaga-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vaga-avatar {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 30px;
+  border: none;
+  background: var(--primary-light-5);
+
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vaga-avatar.fallback i {
+  font-size: 22px;
+  color: var(--primary-dark-3);
+}
+
+.vaga-empresa-nome {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-blue);
+
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+
+
+.vaga-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.vaga-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.vaga-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  background: var(--primary-light-5);
+  padding: 5px 12px;
+  border-radius: 30px;
+
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary-dark-3);
+}
+
+.vaga-meta i {
+  color: var(--primary-dark-3);
+}
+
+
+/* Overlay vagas públicas */
+
+.vaga-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: .4s ease;
+}
+
+.vaga-card:hover .vaga-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlay-btn-vertical {
+  width: 65%;
+  padding: 10px 17px;
+
+  background: var(--accent-blue-light-1);
+  backdrop-filter: blur(12px);
+
+  border-radius: 50px;
+
+  display: flex;
+  flex-direction: row;
+  /* ícone + texto */
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  font-size: 1rem;
+  font-weight: 700;
+
+  color: var(--accent-blue-light-5);
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: .25s ease;
+}
+
+/* Ícone */
+.overlay-btn-vertical i {
+  font-size: 14px;
+}
+
+/* HOVER */
+.overlay-btn-vertical:hover {
+  background: var(--primary-light-4);
+  color: var(--primary);
+}
+
+/* versão “candidatar-se” */
+.overlay-btn-vertical.apply {
+  background: var(--accent-blue-light-1);
+  color: var(--accent-blue-light-5);
+}
+
+.overlay-btn-vertical.apply:hover {
+  background: var(--primary-light-4);
+  color: var(--primary);
+}
+
+/* Paginação */
+
+.pagination-modern {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin-top: 40px;
+}
+
+.page-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e8f5f4;
+    color: var(--accent-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all .25s ease;
+    border: 1px solid #d2e7e5;
+}
+
+.page-btn:hover {
+    background: var(--accent-blue-light-4);
+    transform: translateY(-2px);
+}
+
+.page-btn.disabled {
+    opacity: .4;
+    cursor: default;
+    transform: none;
+}
+
+
+.page-numbers {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.page-number {
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    background: var(--accent-blue-light-4);
+    color: var(--accent-blue);
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.page-number:hover {
+  color: var(--accent-blue-light-1);
+}
+
+.page-number.active {
+    background: var(--accent-blue);
+    color: var(--branco);
+    pointer-events: none;
+}
+
+
+/* Pontinhos de separação */
+.page-separator {
+    color: var(--primary-light-4);
+    font-weight: 700;
+    padding: 0 4px;
+    user-select: none;
+}
+
+
+/* Modal Vagas */
+
+.modal-vaga {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(15, 27, 40, 0.55);
+  backdrop-filter: blur(6px);
+
+  padding: 20px;
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+.modal-vaga:target {
+  display: flex;
+}
+
+.modal-content-vaga {
+  width: 100%;
+  max-width: 700px;
+
+  background: var(--branco);
+  border-radius: 22px;
+  padding: 40px;
+  padding-bottom: 60px;
+
+  position: relative;
+  animation: modalIn .25s ease;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes modalIn {
+  0% {
+    transform: scale(.85);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  width: 44px;
+  height: 44px;
+
+  border-radius: 50%;
+  background: var(--branco);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 1.3rem;
+  color: var(--gray-800);
+  transition: 0.2s;
+}
+
+.modal-close:hover {
+  background: var(--primary-light-4);
+}
+
+.modal-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.tag-chip {
+  background: var(--primary-light-5);
+
+  padding: 6px 12px;
+  border-radius: 20px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary-dark-3);
+}
+
+/* chip da data */
+.modal-date-chip {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+
+  font-size: 15px;
+  font-style: italic;
+  color: var(--gray-600);
+
+
+  padding: 6px 14px;
+  border-radius: 50px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.modal-btn-apply {
+  display: block;
+  margin-top: 28px;
+
+  padding: 13px 16px;
+  background: var(--accent-blue);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+
+
+  color: var(--branco);
+  border-radius: 30px;
+
+  font-weight: 700;
+  text-align: center;
+  transition: .25s ease;
+}
+
+
+.modal-btn-apply:hover {
+  text-decoration: none;
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+
+/* Filtro de Vagas */
+
+.filtro-card {
+  background: var(--branco);
+  border-radius: 18px;
+
+  padding: 24px;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.filtro-card h5 {
+  color: var(--accent-blue);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.filtro-card label {
+  font-weight: 600;
+  color: var(--accent-blue);
+  font-size: 14px;
+}
+
+.filtro-card select,
+.filtro-card input {
+  border-radius: 10px;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: 2px solid var(--accent-blue);
+
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #345460;
+
+  background: var(--primary-light-5);
+}
+
+.filtro-card select:focus,
+.filtro-card input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 2px rgba(33, 118, 174, 0.18);
+}
+
+.filtro-card button {
+  background-color: var(--accent-blue);
+  color: var(--branco);
+  border-radius: 30px;
+  padding: 12px 0;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+
+}
+
+.filtro-card button:hover {
+  background-color: var(--accent-blue);
+  color: var(--branco);
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* Cards Estáticos */
 .feature-card {
   background: #fff;
   border-radius: 16px;
@@ -436,7 +955,8 @@ a:hover {
   background: #93b9ee;
 }
 
-/* === PERFIL CARROSSEL === */
+/* Perfis de Formação */
+
 .perfil-carousel-container {
   position: relative;
   overflow: hidden;
@@ -449,15 +969,10 @@ a:hover {
 .perfil-carousel {
   position: relative;
   height: 360px;
-  /* mantém espaço para os cards */
   width: 100%;
   display: block;
-  /* obrigatório */
 }
 
-/* ===========================
-   BASE DO CARD (posicionamento)
-=========================== */
 .perfil-card {
   position: absolute;
   top: 0;
@@ -476,15 +991,12 @@ a:hover {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
-
-/* ========= CARD CENTRAL ========= */
 .perfil-card.center {
   transform: translateX(-50%) scale(1.05);
   opacity: 1;
   filter: blur(0);
   z-index: 5;
 }
-
 
 .perfil-card.left {
   transform: translateX(calc(-50% - 340px)) scale(0.88);
@@ -500,7 +1012,6 @@ a:hover {
   z-index: 4;
 }
 
-/* ======== CARDS ESCONDIDOS ======== */
 .perfil-card.hidden {
   opacity: 0;
   transform: translateX(-50%) scale(0.55);
@@ -510,13 +1021,12 @@ a:hover {
 }
 
 
-/* === TOPO DO CARD === */
 .perfil-top {
   position: relative;
   height: 140px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  overflow: visible; /* mantém a imagem limpa sem cortar o ícone */
+  overflow: visible;
 }
 
 .perfil-top img {
@@ -527,10 +1037,9 @@ a:hover {
   border-top-right-radius: 16px;
 }
 
-/* === ÍCONE SOBREPOSTO === */
 .perfil-icon {
   position: absolute;
-  bottom: -35px; /* desce metade pra ficar encaixado */
+  bottom: -35px;
   left: 20px;
   background: #fff;
   width: 80px;
@@ -541,21 +1050,19 @@ a:hover {
   justify-content: center;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
   border: 5px solid #fff;
-  z-index: 3; 
+  z-index: 3;
   overflow: hidden;
 }
+
 .perfil-icon img,
 .perfil-icon i {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 50%; 
+  border-radius: 50%;
   font-size: 1.8rem;
 }
 
-
-
-/* === CONTEÚDO DO CARD === */
 .perfil-body {
   padding: 55px 22px 25px 22px;
   text-align: left;
@@ -591,12 +1098,11 @@ a:hover {
   transform: translateY(-2px);
 }
 
-/* === BOTÕES === */
 .perfil-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: #205072;
+  background: var(--accent-blue);
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -611,7 +1117,7 @@ a:hover {
 }
 
 .perfil-btn:hover {
-  background: #2cb67d;
+  background: var(--primary);
 }
 
 .perfil-prev {
@@ -622,7 +1128,6 @@ a:hover {
   right: 0;
 }
 
-/* === SOMBRA NAS LATERAIS === */
 .perfil-carousel-container::before,
 .perfil-carousel-container::after {
   content: "";
@@ -634,48 +1139,184 @@ a:hover {
   pointer-events: none;
 }
 
-.perfil-carousel-container::before {
-  left: 0;
-  background: linear-gradient(to right, #d7ffe4 40%, transparent 100%);
+
+/* ===========================
+   HERO DO PERFIL
+=========================== */
+
+.perfil-hero {
+    min-height: 60vh;
+    background: var(--hero-img) center/cover no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.perfil-carousel-container::after {
-  right: 0;
-  background: linear-gradient(to left, #d7ffe4 40%, transparent 100%);
+.perfil-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+}
+
+.perfil-hero-content {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.perfil-hero-content h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+}
+
+.perfil-hero-content p {
+    margin-top: 5px;
+    font-size: 1.1rem;
+    opacity: .9;
 }
 
 
-/* =======================================
-   SEÇÕES DUPLAS (Estudantes / Empresas)
-======================================= */
 
-/* verde clarinha — 'Para Estudantes' */
+/* ===========================
+   BLOCO / CARD PRINCIPAL
+=========================== */
+
+.perfil-section-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+    margin-bottom: 32px;
+}
+
+
+
+/* ===========================
+   TÍTULO COM LINHA COLORIDA
+=========================== */
+
+.section-title-linha {
+    display: flex;
+    align-items: center;
+    font-weight: 800;
+    color: #222;
+    font-size: 1.25rem;
+    margin-bottom: 18px;
+    gap: 10px;
+}
+
+.section-title-linha .linha {
+    display: inline-block;
+    width: 6px;
+    height: 24px;
+    border-radius: 10px;
+    background: #6C63FF; /* cor padrão */
+}
+
+
+
+/* ===========================
+   COMPETÊNCIAS (CHIPS)
+=========================== */
+
+.comp-chip {
+    display: inline-block;
+    padding: 8px 14px;
+    background: #f8f9ff;
+    border: 1px solid #d9dcff;
+    border-radius: 10px;
+    font-size: .9rem;
+    font-weight: 600;
+    color: #333;
+    margin: 6px;
+    white-space: nowrap;
+}
+
+
+
+/* ===========================
+   ÁREAS DE ATUAÇÃO – CARDS
+=========================== */
+
+.area-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+    text-align: center;
+    height: 100%;
+    transition: .25s ease;
+}
+
+.area-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+.area-card-icon {
+    font-size: 2.8rem;
+    color: #6C63FF;
+    margin-bottom: 12px;
+}
+
+.area-card h6 {
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.area-card p {
+    font-size: .92rem;
+    color: #666;
+}
+
+
+
+/* ===========================
+   RESPONSIVIDADE
+=========================== */
+
+@media (max-width: 768px) {
+    .perfil-hero {
+        height: 200px;
+    }
+
+    .perfil-hero-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .perfil-hero-content p {
+        font-size: 1rem;
+    }
+
+    .perfil-section-card {
+        padding: 22px;
+    }
+}
+
+/* Seções Duplas*/
+
 .section-dupla {
   padding: 40px 0;
-  /* altura boa pra imagem grande */
 }
 
-/* branca — 'Para Empresas' */
 .section-dupla:nth-of-type(even) {
   background: #fff;
 }
 
-/* layout base */
 .section-dupla .row {
   align-items: center;
-  /* centraliza imagem e texto verticalmente */
   --bs-gutter-x: 1rem;
-  /* espaço horizontal equilibrado */
 }
 
-/* imagem — grande, mas sem cortar */
 .section-dupla img {
   width: 100%;
   max-width: 600px;
-  /* controla largura máxima */
   height: auto;
   max-height: 480px;
-  /* garante altura elegante */
   object-fit: contain;
   display: block;
   margin: 0 auto;
@@ -686,16 +1327,12 @@ a:hover {
   padding-bottom: 0;
 }
 
-
-/* lista */
 .section-dupla ul {
   list-style: none;
   padding: 0;
   margin-bottom: 15px;
 }
 
-
-/* botão */
 .btn-dupla {
   display: inline-block;
   padding: 12px 40px;
@@ -732,7 +1369,6 @@ a:hover {
   color: var(--primary);
 }
 
-/* ajuste responsivo */
 @media (max-width: 576px) {
   .btn-dupla {
     display: block;
@@ -745,7 +1381,6 @@ a:hover {
   margin-right: 0;
 }
 
-/* ======== RESPONSIVO ======== */
 @media (max-width: 992px) {
   .section-dupla {
     padding: 50px 0;
@@ -774,9 +1409,7 @@ a:hover {
   }
 }
 
-/* =======================================
-   RODAPÉ
-======================================= */
+/* Rodapé */
 footer {
   padding: 40px 0 20px;
   color: #0b1a33;
@@ -785,13 +1418,9 @@ footer {
 
 .footer-logo img {
   max-height: 90px;
-  /* aumenta visualmente a logo */
   transform: scale(1.3);
-  /* “engrossa” o tamanho sem empurrar a barra */
   transform-origin: left center;
-  /* mantém alinhado à esquerda */
   margin-top: -6px;
-  /* corrige pequeno desalinhamento */
 }
 
 .footer-links a {
@@ -826,9 +1455,7 @@ footer {
   padding-top: 10px;
 }
 
-/* =======================================
-   CADASTRO - LINKIF CLEAN + ABAS REFINADAS
-======================================= */
+/* Cadastro */
 
 
 .cadastro-page {
@@ -854,10 +1481,6 @@ footer {
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* ===========================================
-   LADO ESQUERDO
-=========================================== */
-
 .left-panel {
   background: var(--branco);
   color: var(--accent-blue);
@@ -880,9 +1503,6 @@ footer {
   margin-bottom: 20px;
 }
 
-/* ===========================================
-   ABAS REFINADAS (seu estilo)
-=========================================== */
 .subtitulo {
   font-weight: 500;
   font-size: 0.95rem;
@@ -929,10 +1549,8 @@ footer {
   font-weight: 700;
   transform: translateY(-2px) scale(1.03);
   position: relative;
-  /* necessário */
 }
 
-/* BARRA LATERAL À ESQUERDA */
 .tab-btn.active::before,
 .refined-tab-btn.active::before,
 .refined-tab-btn.nav-link.active::before {
@@ -942,11 +1560,8 @@ footer {
   top: 0;
   height: 100%;
   width: 6px;
-  /* largura da barrinha */
   background: var(--primary-dark-1);
-  /* a cor que você quiser */
   border-radius: 4px 0 0 4px;
-  /* pontinha arredondada */
 }
 
 .tab-btn i,
@@ -954,17 +1569,12 @@ footer {
   font-size: 1.2rem;
 }
 
-/* Mobile */
 @media (max-width: 768px) {
   .tab-btn {
     padding: 10px 14px;
     font-size: 0.9rem;
   }
 }
-
-/* ===========================================
-   LADO DIREITO (FORMULÁRIOS)
-=========================================== */
 
 .right-panel {
   padding: 40px;
@@ -982,7 +1592,6 @@ footer {
   margin-bottom: 20px;
 }
 
-/* Card interno igual login */
 .content-card {
   background: radial-gradient(circle,
       #5BE88A 0%,
@@ -997,11 +1606,6 @@ footer {
   margin: 0 auto;
 }
 
-/* ===========================================
-   FIXES CRÍTICOS PARA ERROS DO FORM
-   (impedem layout quebrar, abas sumirem, etc.)
-=========================================== */
-/* impede que o conteúdo com erro aumente a altura/ largura inesperadamente */
 .right-panel .form-group,
 .right-panel .mb-3,
 .right-panel .form-floating {
@@ -1009,39 +1613,32 @@ footer {
   max-width: 100%;
 }
 
-/* fixa o right-panel no tamanho correto */
 .right-panel {
   flex: 1;
   min-width: 0;
 }
 
-/* corrige crispy-forms estourando layout */
 .form-group {
   margin-bottom: 14px !important;
 }
 
-/* a caixa de erro do crispy não deve empurrar tudo */
 .alert-danger {
   margin-bottom: 15px;
   padding: 8px 12px;
   font-size: 0.9rem;
 }
 
-/* remove espaçamento exagerado gerado pelos errors do crispy */
 .is-invalid,
 .was-validated .form-control:invalid {
   max-width: 100%;
 }
 
-/* evita que os errors quebrem o tamanho interno do campo */
 .invalid-feedback {
   font-size: 0.85rem;
   margin-top: 4px;
 }
 
-/* =======================================
-   LOGIN PAGE - LINKIF STYLE 
-======================================= */
+/* Login */
 
 .login-linkif {
   min-height: 100vh;
@@ -1055,7 +1652,6 @@ footer {
   padding: 40px 20px;
 }
 
-/* CARD PRINCIPAL */
 .login-container {
   display: flex;
   width: 950px;
@@ -1063,11 +1659,10 @@ footer {
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.158);
-  /* sombra em todo redor */
+
   transition: 0.3s ease;
 }
 
-/* ===== LADO ESQUERDO (FORM) ===== */
 .login-left {
   flex: 1;
   color: #616161;
@@ -1086,41 +1681,36 @@ footer {
       #4FD07D 90%);
 }
 
-
 .form-box {
   width: 100%;
   max-width: 360px;
 }
 
-* Campo padrão */ .login-container .form-control,
+.login-container .form-control,
 .cadastro-card .form-control,
 .cadastro-card .form-select {
   border: 1px solid #d9e3ea;
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 0.95rem;
-  color: var(--gray-200);
+  color: var(--gray-700);
   background: var(--primary-light-5);
   transition: all 0.25s ease;
 }
 
-/* Efeito no foco */
 .login-container .form-control:focus,
 .cadastro-card .form-control:focus,
 .login-container .form-select:focus,
 .cadastro-card .form-select:focus {
   background: #fff;
   border-color: var(--primary-light-1);
-  /* verde institucional */
   box-shadow: 0 0 0 0.15rem rgba(44, 182, 125, 0.25);
-  /* glow suave */
   outline: none;
 }
 
-/* Placeholder e tipografia */
 .login-container input::placeholder,
 .cadastro-card input::placeholder {
-  color: var(--gray-200);
+  color: var(--gray-700);
   font-size: 0.92rem;
 }
 
@@ -1137,7 +1727,6 @@ footer {
   color: var(--accent-blue-light-1);
 }
 
-/* Labels */
 .cadastro-card .form-label,
 .login-container .form-label {
   font-weight: 500;
@@ -1169,13 +1758,16 @@ footer {
   color: var(--gray-100)
 }
 
+.title-section {
+  color: var(--accent-blue);
+}
+
 .link-cadastro:hover {
   color: var(--accent-blue-light-1);
 
   text-decoration: underline;
 }
 
-/* ===== LADO DIREITO (LOGO) ===== */
 .login-right {
   flex: 1;
   background: var(--branco);
@@ -1186,11 +1778,6 @@ footer {
 
 }
 
-
-/*
-   RESPONSIVIDADE — CADASTRO LINKIF */
-
-/* ======  DESKTOP MEDIO (até 1200px) ====== */
 @media (max-width: 1200px) {
 
   .cadastro-card {
@@ -1202,7 +1789,6 @@ footer {
   }
 }
 
-/* ======  TABLET (até 992px) ====== */
 @media (max-width: 992px) {
 
   .cadastro-card {
@@ -1246,7 +1832,6 @@ footer {
   }
 }
 
-/* ======  MOBILE MAIOR (até 768px) ====== */
 @media (max-width: 768px) {
 
   .logo {
@@ -1262,7 +1847,6 @@ footer {
     padding: 22px;
   }
 
-  /* inputs lado-a-lado viram 100% */
   .form-box .col-md-6 {
     max-width: 100% !important;
     flex: 0 0 100%;
@@ -1274,7 +1858,6 @@ footer {
   }
 }
 
-/* ======  MOBILE PEQUENO (até 576px) ====== */
 @media (max-width: 576px) {
 
   .cadastro-page {
@@ -1319,189 +1902,6 @@ footer {
   }
 }
 
-/* VAGAS */
-.filtro-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 28px;
-  border: 1px solid #e7eef1;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-}
-
-.filtro-card h5 {
-  color: #205072;
-  font-weight: 700;
-  font-size: 20px;
-  margin-bottom: 15px;
-}
-
-.filtro-card label {
-  font-size: 13px;
-  font-weight: 600;
-  margin-top: 14px;
-  color: #42596a;
-}
-
-.filtro-card input,
-.filtro-card select {
-  width: 100%;
-  border: 1px solid #ccd9df;
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 14px;
-  background: #f9fbfc;
-  transition: .2s;
-}
-
-.filtro-card input:focus,
-.filtro-card select:focus {
-  border-color: var(--accent-blue);
-  background: #ffffff;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(32, 80, 114, 0.15);
-}
-
-/* Botão Filtrar */
-.filtro-card button {
-  border-radius: 10px;
-  font-weight: 600;
-  padding: 12px;
-  background: var(--accent-blue);
-  transition: .25s ease;
-}
-
-.filtro-card button:hover {
-  background: #1a405b;
-}
-
-/* ======================================================
-   GRID DE VAGAS
-   ====================================================== */
-
-.vaga-card {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 22px;
-  border: 1px solid #e2ecef;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  transition: .25s ease;
-  position: relative;
-  min-height: 220px;
-}
-
-.vaga-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-}
-
-/* Empresa */
-.vaga-empresa {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.empresa-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  object-fit: cover;
-  border: 2px solid var(--accent-blue-light-5);
-}
-
-.empresa-avatar-fallback {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background: var(--accent-blue-light-5);
-  color: #3f5464;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  font-size: 15px;
-}
-
-.empresa-nome {
-  font-weight: 700;
-  color: #205072;
-  font-size: 16px;
-}
-
-/* Data de publicação */
-.vaga-data {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  font-size: 12px;
-  color: #406772;
-  background: #eaf4f5;
-  padding: 4px 10px;
-  border-radius: 50px;
-  font-weight: 600;
-}
-
-/* Título */
-.vaga-titulo {
-  font-size: 20px;
-  line-height: 1.35;
-  color: #205072;
-  margin-bottom: 14px;
-  font-weight: 800;
-}
-
-/* Lista de informações */
-.vaga-info {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 18px 0;
-}
-
-.vaga-info li {
-  font-size: 15px;
-  color: #3d757a;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-}
-
-.vaga-info i {
-  margin-right: 8px;
-  color: var(--accent-blue);
-  font-size: 16px;
-}
-
-/* Botão */
-.vaga-card a.btn {
-  background: var(--accent-blue);
-  color: white;
-  font-weight: 600;
-  border-radius: 12px;
-  padding: 10px 0;
-  transition: .25s;
-  font-size: 15px;
-}
-
-.vaga-card a.btn:hover {
-  background: #1a405b;
-}
-
-/* ======================================================
-   RESPONSIVIDADE
-   ====================================================== */
-
-@media (max-width: 992px) {
-  .filtro-card {
-    margin-bottom: 25px;
-  }
-}
-
-@media (max-width: 768px) {
-  .vaga-card {
-    padding: 20px;
-  }
-}
 
 /* =======================================
    SEÇÃO DE CONTATO — estilo LinkIF
@@ -1592,69 +1992,70 @@ footer {
     transform: translateY(0);
   }
 }
-/* ---------- HERO ESTUDANTE ---------- */
+
+/* HERO ESTUDANTE — versão mais espaçosa */
 
 .hero-estudante {
   position: relative;
-  min-height: 50vh;
-  padding: 90px 0;
+  min-height: 60vh;
+  padding: 100px 0;
   overflow: hidden;
 
   background: linear-gradient(135deg,
-      rgba(83,117,197,0.20) 0%,
-      rgba(41,212,95,0.25) 50%,
-      rgba(89,54,163,0.22) 100%);
+      rgba(83, 117, 197, 0.20) 0%,
+      rgba(41, 212, 95, 0.25) 50%,
+      rgba(89, 54, 163, 0.22) 100%);
 }
 
-.hero-estudante::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right,
-      rgba(15, 2, 97, 0.10) 25%,
-      rgba(255, 255, 255, 0) 80%);
-  z-index: 1;
-}
-
-/* AQUI ESTÁ A MAGIA */
 .hero-inner {
   position: relative;
   z-index: 3;
 
   width: 100%;
-  max-width: 1200px;  /* limita a largura para não ficar estourado */
-  margin: 0 auto;     /* centraliza */
-  padding: 0 30px;    /* respiro lateral */
+  max-width: 1400px;
+  /* AUMENTA a largura total */
+  margin: 0 auto;
+  padding: 0 70px;
+  /* MAIS respiro lateral */
 }
 
-/* TIPOGRAFIA */
+/* texto mais respirado */
 .hero-inner h1 {
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 20px;
   color: #205072;
-  margin-bottom: 16px;
 }
 
 .hero-inner p {
-  font-size: 1.25rem;
-  max-width: 600px;
-  line-height: 1.5;
-  margin-bottom: 30px;
+  font-size: 1.3rem;
+  line-height: 1.55;
+  max-width: 650px;
+  /* mais espaço pro texto respirar */
   opacity: .9;
+  margin-bottom: 32px;
   color: #205072;
 }
 
-/* IMAGEM */
+/* imagem reposicionada */
 .hero-estudante .hero-art {
   position: absolute;
-  right: 30px;
-  bottom: 5%;
-  max-width: 480px;
+
+  right: 50px;
+  /* joga mais pra direita */
+  top: 50%;
+  transform: translateY(-50%);
+
+  max-width: 520px;
+  /* imagem levemente maior */
   width: 100%;
   height: auto;
-  top: -70%;
+
   z-index: 2;
+  pointer-events: none;
 }
+
 
 /* =======================================
    FEATURE CARDS - ESTUDANTES
@@ -1892,4 +2293,103 @@ footer {
   justify-content: center;
   z-index: 20000;
   transition: transform 0.5s ease, opacity 2s ease;
+}
+.table thead th {
+  background: #f3f6ff;
+  color: #1b1f5b;
+  font-weight: 700;
+  border-bottom: 2px solid #e1e5f2;
+}
+
+.table tbody tr:hover {
+  background: #f8fbff;
+}
+
+.table td {
+  padding: 14px 12px !important;
+}
+/* ============================
+   FILTRO HORIZONTAL
+============================ */
+
+.filtro-horizontal {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+
+    background: #ffffff;
+    padding: 18px 22px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+    border: 1px solid #e8edf3;
+    margin-bottom: 35px;
+    flex-wrap: wrap;
+}
+
+/* Cada item do filtro (nome, curso, etc) */
+.filtro-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+    flex: 1;
+}
+
+.filtro-item label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1b1f5b;
+    margin-bottom: 4px;
+}
+
+/* Inputs */
+.filtro-item input,
+.filtro-item select {
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    border: 1px solid #d7dee9 !important;
+    background: #f8fafc;
+    transition: .25s ease;
+}
+
+.filtro-item input:focus,
+.filtro-item select:focus {
+    border-color: #205072 !important;
+    box-shadow: 0 0 0 3px rgba(32,80,114,0.15);
+    background: white;
+}
+
+/* Botão */
+.btn-filtro {
+    background: #205072;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 11px 22px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: .25s;
+}
+
+.btn-filtro i {
+    margin-right: 6px;
+    font-size: 16px;
+    position: relative;
+    top: 1px;
+}
+
+.btn-filtro:hover {
+    background: #173c50;
+}
+
+/* Mobile responsivo */
+@media (max-width: 768px) {
+    .filtro-horizontal {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-filtro {
+        width: 100%;
+        justify-content: center;
+    }
 }

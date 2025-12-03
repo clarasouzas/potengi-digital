@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% load django_tables2 %}
+
+{% block title %}Visualizar Estudantes — LinkIF{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero hero-estudante">
+  <div class="hero-inner">
+    <div class="text-area">
+      <h1>Visualizar Estudantes</h1>
+      <p>Conheça talentos dos cursos técnicos do IFRN e encontre perfis ideais para sua empresa.</p>
+    </div>
+    <img src="{% static 'assets/img/estudante.svg' %}" class="hero-art">
+  </div>
+</section>
+
+
+<div class="container py-5">
+
+  <!-- FILTRO HORIZONTAL -->
+<form method="get" class="filtro-horizontal">
+
+    <div class="filtro-item">
+        <label>{{ filtro.form.nome.label }}</label>
+        {{ filtro.form.nome }}
+    </div>
+
+    <div class="filtro-item">
+        <label>{{ filtro.form.curso.label }}</label>
+        {{ filtro.form.curso }}
+    </div>
+
+    <button class="btn-filtro" type="submit">
+        <i class="bi bi-funnel"></i> Filtrar
+    </button>
+
+</form>
+
+
+  <!-- TABELA -->
+  <div class="table-responsive">
+    {% render_table table %}
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,117 +1,126 @@
 {% extends "dashboard/base_dashboard.html" %}
+{% load static %}
 
-{% block titulo %} Dashboard - {{ request.user.nome|default:request.user.email }} {% endblock %}
+{% block titulo %}
+Painel do Aluno — {{ request.user.nome|default:request.user.email }}
+{% endblock %}
 
 {% block conteudo %}
 
-<div class="container">
+<div class="dashboard-container">
 
-    <!-- Cabeçalho -->
-    <h2 class="mb-4 fw-bold">
-        Visão Geral
-    </h2>
+<h2 class="mb-4 d-flex align-items-center title-dashboard">
+    Visão Geral
+</h2>
 
-    <!-- Aviso sobre aprovação -->
-    {% if not request.user.is_approved %}
-    <div class="alert alert-warning d-flex align-items-center" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        Seu cadastro ainda não foi aprovado pela coordenação. 
-        Você poderá se candidatar às vagas assim que for aprovado.
+{% if not request.user.is_approved %}
+<div class="approval-alert shadow-sm">
+
+    <i class="bi bi-hourglass-split alert-icon"></i>
+
+    <div class="alert-text">
+        Seu cadastro está <b>aguardando aprovação</b> pela coordenação.<br>
+        Assim que aprovado, todas as funcionalidades serão liberadas.
     </div>
-    {% endif %}
 
-    <!-- Resumo rápido -->
+</div>
+{% endif %}
+{% if request.user.is_approved %}
     <div class="row g-4 mb-4">
-
+        
+        <!-- Vagas disponíveis -->
         <div class="col-md-4">
-            <div class="card shadow-sm p-4 h-100">
+            <div class="soft-card h-100 p-4">
                 <div class="d-flex align-items-center">
                     <div class="icon-box bg-primary text-white me-3">
                         <i class="bi bi-briefcase fs-4"></i>
                     </div>
                     <div>
-                        <h5 class="fw-bold mb-0">{{ vagas|length }}</h5>
-                        <small class="text-muted">Vagas Disponíveis</small>
+                        <h4 class="fw-bold mb-0">{{ vagas|length }}</h4>
+                        <small class="text-muted">Vagas disponíveis</small>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Candidaturas ativas -->
         <div class="col-md-4">
-            <div class="card shadow-sm p-4 h-100">
+            <div class="soft-card h-100 p-4">
                 <div class="d-flex align-items-center">
                     <div class="icon-box bg-success text-white me-3">
-                        <i class="bi bi-file-earmark-check fs-4"></i>
+                        <i class="bi bi-check2-circle fs-4"></i>
                     </div>
                     <div>
-                        <h5 class="fw-bold mb-0">{{ candidaturas_ativas|length }}</h5>
-                        <small class="text-muted">Candidaturas Ativas</small>
+                        <h4 class="fw-bold mb-0">{{ candidaturas_ativas|length }}</h4>
+                        <small class="text-muted">Candidaturas ativas</small>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Recomendadas -->
         <div class="col-md-4">
-            <div class="card shadow-sm p-4 h-100">
+            <div class="soft-card h-100 p-4">
                 <div class="d-flex align-items-center">
                     <div class="icon-box bg-info text-white me-3">
-                        <i class="bi bi-bookmark-heart fs-4"></i>
+                        <i class="bi bi-stars fs-4"></i>
                     </div>
                     <div>
-                        <h5 class="fw-bold mb-0">{{ recomendadas|length }}</h5>
-                        <small class="text-muted">Vagas Recomendadas</small>
+                        <h4 class="fw-bold mb-0">{{ recomendadas|length }}</h4>
+                        <small class="text-muted">Recomendadas para você</small>
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
-
-    <!-- Últimas candidaturas -->
-    <div class="card shadow-sm p-4 mb-4">
+    <div class="soft-card p-4 mb-4">
         <h5 class="fw-bold text-primary mb-3">
-            <i class="bi bi-send-check me-1"></i> Suas últimas candidaturas
+            <i class="bi bi-send-check me-1"></i>
+            Suas últimas candidaturas
         </h5>
 
         {% if candidaturas_ultimas %}
-            <ul class="list-group list-group-flush">
-                {% for c in candidaturas_ultimas %}
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>
-                        <strong>{{ c.vaga.titulo }}</strong>
-                        <br>
-                        <small class="text-muted">
-                            {{ c.data_candidatura|date:"d/m/Y H:i" }} — {{ c.get_status_display }}
-                        </small>
-                    </span>
-                    <a href="{% url 'dashboard:aluno_candidaturas' %}" class="btn btn-outline-primary btn-sm">
-                        Ver
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
+        <ul class="list-group list-group-flush">
+            {% for c in candidaturas_ultimas %}
+            <li class="list-group-item d-flex justify-content-between">
+                <span>
+                    <strong>{{ c.vaga.titulo }}</strong><br>
+                    <small class="text-muted">
+                        {{ c.data_candidatura|date:"d/m/Y H:i" }} — {{ c.get_status_display }}
+                    </small>
+                </span>
+                <a href="{% url 'dashboard:aluno_candidaturas' %}"
+                   class="btn btn-outline-primary btn-sm">
+                    Ver
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
         {% else %}
             <p class="text-muted">Você ainda não se candidatou a nenhuma vaga.</p>
         {% endif %}
     </div>
 
-    <!-- Vagas recomendadas (com base no curso) -->
-    <div class="card shadow-sm p-4 mb-4">
+    <div class="soft-card p-4 mb-4">
         <h5 class="fw-bold text-primary mb-3">
-            <i class="bi bi-stars me-1"></i> Vagas recomendadas para você
+            <i class="bi bi-magic me-1"></i>
+            Vagas recomendadas para você
         </h5>
 
         {% if recomendadas %}
         <div class="row g-3">
             {% for v in recomendadas %}
             <div class="col-md-6">
-                <div class="card border p-3 h-100">
+                <div class="border rounded p-3 h-100">
                     <h6 class="fw-bold">{{ v.titulo }}</h6>
                     <p class="text-muted small">{{ v.empresa.nome|default:v.empresa.email }}</p>
+
                     <p class="small mb-1"><i class="bi bi-geo-alt"></i> {{ v.cidade }}</p>
                     <p class="small mb-2"><i class="bi bi-briefcase"></i> {{ v.get_tipo_display }}</p>
 
-                    <a href="{% url 'linkif:vaga_detalhe' v.id %}" class="btn btn-sm btn-primary w-100 mt-2">
+                    <a href="{% url 'linkif:vaga_detalhe' v.id %}"
+                       class="btn btn-sm btn-primary w-100 mt-2">
                         Ver detalhes
                     </a>
                 </div>
@@ -123,38 +132,33 @@
         {% endif %}
     </div>
 
-    <!-- Atalhos rápidos -->
-    <div class="card shadow-sm p-4">
-        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-lightning-charge me-1"></i> Atalhos rápidos</h5>
+    <div class="soft-card p-4">
+        <h5 class="fw-bold text-primary mb-3">
+            <i class="bi bi-lightning-charge me-1"></i>
+            Atalhos rápidos
+        </h5>
 
         <div class="d-flex flex-wrap gap-3">
 
-            <a href="{% url 'dashboard:aluno_candidaturas' %}" class="btn btn-outline-primary">
-                <i class="bi bi-file-earmark-check me-1"></i> Minhas candidaturas
+            <a href="{% url 'dashboard:aluno_candidaturas' %}"
+               class="btn btn-outline-primary">
+               <i class="bi bi-file-earmark-check me-1"></i> Minhas candidaturas
             </a>
 
-            <a href="{% url 'linkif:listar_vagas' %}" class="btn btn-outline-success">
-                <i class="bi bi-briefcase me-1"></i> Ver todas as vagas
+            <a href="{% url 'linkif:para_estudantes' %}"
+               class="btn btn-outline-success">
+               <i class="bi bi-briefcase me-1"></i> Ver todas as vagas
             </a>
 
-            <a href="{% url 'dashboard:perfil' %}" class="btn btn-outline-secondary">
-                <i class="bi bi-person-lines-fill me-1"></i> Editar perfil
+            <a href="{% url 'dashboard:perfil' %}"
+               class="btn btn-outline-secondary">
+               <i class="bi bi-person-lines-fill me-1"></i> Editar perfil
             </a>
 
         </div>
     </div>
 
 </div>
-
-<style>
-.icon-box {
-    width: 48px;
-    height: 48px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:10px;
-}
-</style>
+{% endif %}
 
 {% endblock %}
