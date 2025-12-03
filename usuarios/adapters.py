@@ -1,8 +1,6 @@
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
-from django.contrib import messages
-from django.shortcuts import redirect
 from django.urls import reverse
 import requests
 
@@ -11,34 +9,18 @@ User = get_user_model()
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     
     def _is_suap_email(self, email):
-        """
-        Verifica se o email é de domínio do SUAP/IFRN
-        """
-        suap_domains = [
-            'academico.ifrn.edu.br',
-            'escolar.ifrn.edu.br', 
-            'ifrn.edu.br',
-        ]
-        
+        suap_domains = ['academico.ifrn.edu.br', 'escolar.ifrn.edu.br', 'ifrn.edu.br']
         if not email or '@' not in email:
             return False
-            
         domain = email.split('@')[1].lower()
         return domain in suap_domains
     
     def pre_social_login(self, request, sociallogin):
-        """
-        Executado ANTES do login social
-        Aqui podemos capturar o tipo da sessão
-        """
         tipo_sessao = request.session.get('social_login_type')
         if tipo_sessao:
             sociallogin.state['user_type'] = tipo_sessao
-            
+    
     def populate_user(self, request, sociallogin, data):
-        """
-        Popula o usuário com dados do provedor social
-        """
         user = super().populate_user(request, sociallogin, data)
         
         provider = sociallogin.account.provider
@@ -47,9 +29,7 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         if provider == 'suap':
             user.tipo = 'aluno'
             user.is_approved = True
-            
-            extra_data = sociallogin.account.extra_data
-            user.nome = extra_data.get('nome_usual', '').strip()
+            user.nome = sociallogin.account.extra_data.get('nome_usual', '').strip()
             user.curso = ''
             
         elif provider == 'google':
@@ -91,9 +71,8 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     
     def save_user(self, request, sociallogin, form=None):
         user = super().save_user(request, sociallogin, form=form)
-        
         user.save()
-                
+        
         if sociallogin.account.provider == 'google':
             self._download_google_photo(user, sociallogin)
         elif sociallogin.account.provider == 'suap':
@@ -102,31 +81,34 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         
         return user
     
-    def get_connect_redirect_url(self, request, socialaccount):
-        """
-        Redireciona após login social
-        """
-        from django.urls import reverse
+    def get_login_redirect_url(self, request):
+        if not request.user.is_authenticated:
+            return super().get_login_redirect_url(request)
         
-        user = socialaccount.user
+        user = request.user
+        
+        from allauth.socialaccount.models import SocialAccount
+        try:
+            social_account = SocialAccount.objects.get(user=user)
+        except SocialAccount.DoesNotExist:
+            return super().get_login_redirect_url(request)
+        
+        provider = social_account.provider
         
         if 'social_login_type' in request.session:
             del request.session['social_login_type']
         
-        if request.session.get('social_login_needs_type'):
-            del request.session['social_login_needs_type']
-            return reverse('usuarios:escolher_tipo')
         
-        if not user.tipo:
-            return reverse('usuarios:escolher_tipo')
+        if provider == 'google':
+            if user.tipo == 'aluno':
+                if not user.curso:
+                    return reverse('usuarios:completar_cadastro')
+            
+            elif user.tipo == 'empresa':
+                if not user.telefone or not user.cidade:
+                    return reverse('usuarios:completar_cadastro')
         
-        if user.tipo == 'empresa' and not user.is_approved:
-            return reverse('usuarios:aguardando_aprovacao')
-        
-        if user.tipo == 'aluno' and not user.is_approved:
-            return reverse('usuarios:aguardando_aprovacao_aluno')
-        
-        return reverse('linkif:index')
+        return reverse('usuarios:redirecionar_dashboard')
         
     def _download_google_photo(self, user, sociallogin):
         try:

@@ -1,0 +1,107 @@
+{% load static crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Completar Cadastro - LinkIF</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="left-area d-flex align-items-center">
+        <button id="toggleSidebar" class="btn btn-topbar me-2 invisible">
+            <i class="bi bi-list fs-3"></i>
+        </button>
+        <a href="{% url 'linkif:index' %}">
+            <img src="{% static 'assets/img/logo.png' %}" class="topbar-logo">
+        </a>
+    </div>
+</header>
+
+{% if messages %}
+<div class="global-alert-container">
+    {% for message in messages %}
+    <div class="global-alert {% if 'success' in message.tags %}success{% endif %}">
+        <span><i class="bi bi-info-circle me-2"></i>{{ message }}</span>
+        <span class="close-btn" onclick="this.parentElement.remove()">×</span>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<main class="content-area">
+    <div class="container" style="max-width: 820px;">
+
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Quase lá! Preencha os dados restantes para completar seu cadastro.
+    </div>
+
+    <h3 class="mb-4 fw-bold">
+        <i class="bi bi-person-lines-fill me-2"></i> Completar Cadastro
+    </h3>
+
+    <div class="card shadow-sm p-4">
+
+        <!-- FOTO -->
+        <div class="text-center mb-4">
+            {% if foto %}
+                <img src="{{ foto }}" class="perfil-foto-preview rounded-circle shadow">
+            {% else %}
+                <div class="no-photo-icon">
+                    <i class="{{ icone }} fs-1 text-secondary"></i>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- SEÇÃO DO PERFIL -->
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                {{ form|crispy }}
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-check2-circle me-1"></i> Salvar Alterações
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+</main>
+
+<style>
+.perfil-foto-preview {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 100%;
+    border: 4px solid #2C7F67;
+}
+
+.no-photo-icon {
+    width: 100px;
+    height: 100px;
+    background: #e5e5e5;
+    border-radius: 100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card h5 {
+    border-left: 4px solid #2C7F67;
+    padding-left: 10px;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 {% extends "dashboard/base_dashboard.html" %}
 
-{% block titulo %}Dashboard{{ request.user.nome }}{% endblock %}
+{% block titulo %}Dashboard - {{ request.user.nome|default:request.user.email }}{% endblock %}
 
 {% block conteudo %}
 
@@ -11,6 +11,15 @@
 
 <!-- ===================== RESUMO ===================== -->
 <div class="row g-4 mb-4">
+
+    <!-- Aviso sobre aprovação -->
+    {% if not request.user.is_approved %}
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Seu cadastro ainda não foi aprovado pela coordenação. 
+        Você poderá cadastrar vagas assim que for aprovado.
+    </div>
+    {% endif %}
 
     <div class="col-md-4">
         <div class="soft-card p-4 text-center">
