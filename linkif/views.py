@@ -9,41 +9,25 @@ from .filters import VagaFilter
 from .models import (
     Vaga,
     Candidatura,
-    Mensagem,
     SiteConfig,
-    HomeContent,
     PerfilFormacao,
-    Feature,
 )
 
 from .forms import VagaForm, CandidaturaForm, ContatoForm
-from usuarios.models import Usuario   # único modelo agora
+from usuarios.models import Usuario   
 
 
-# ================================
-# AUXILIARES
-# ================================
-def is_coordenador(user):
-    return user.is_authenticated and user.tipo == "coordenador"
-
-def is_empresa(user):
-    return user.is_authenticated and user.tipo == "empresa"
 
 def is_aluno(user):
     return user.is_authenticated and user.tipo == "aluno"
 
 
-# ================================
-# HOME
-# ================================
 def index(request):
     site = SiteConfig.objects.first()
-    home = HomeContent.objects.first()
     vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")[:6]
 
-    perfis = list(PerfilFormacao.objects.all().order_by("ordem", "nome"))
-    if len(perfis) > 3:
-        perfis = perfis + perfis[:2]
+    # Carrega apenas os perfis REAIS, sem duplicar
+    perfis = PerfilFormacao.objects.all().order_by("ordem", "nome")
 
     form = ContatoForm(request.POST or None)
 
@@ -59,31 +43,10 @@ def index(request):
 
     return render(request, "linkif/index.html", {
         "site": site,
-        "home": home,
         "vagas": vagas,
-        "perfis": perfis,
+        "perfis": perfis,  
         "form": form,
     })
-
-
-# ================================
-# LISTAR VAGAS
-# ================================
-def listar_vagas(request):
-    vagas_qs = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
-
-    filtro = VagaFilter(request.GET, queryset=vagas_qs)
-    vagas_filtradas = filtro.qs
-
-    paginator = Paginator(vagas_filtradas, 6)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, "linkif/vagas.html", {
-        "vagas": page_obj,
-        "filtro": filtro,
-    })
-
 
 # ================================
 # CANDIDATURA
@@ -147,26 +110,24 @@ def perfil_detalhe(request, perfil_id):
     })
 
 
-# ================================
-# PÁGINAS ESTÁTICAS
-# ================================
 def para_estudantes(request):
-    home = HomeContent.objects.first()
-    features = Feature.objects.filter(tipo="estudante")
+    vagas_qs = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
+
+    filtro = VagaFilter(request.GET, queryset=vagas_qs)
+    vagas_filtradas = filtro.qs
+
+    paginator = Paginator(vagas_filtradas, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "linkif/para_estudantes.html", {
-        "home": home,
-        "features": features,
+        "vagas": page_obj,
+        "filtro": filtro,
     })
 
 
 def para_empresas(request):
-    home = HomeContent.objects.first()
-    features = Feature.objects.filter(tipo="empresa")
-
     return render(request, "linkif/para_empresas.html", {
-        "home": home,
-        "features": features,
     })
 
 

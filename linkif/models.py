@@ -137,7 +137,6 @@ class Candidatura(models.Model):
 
     vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE, related_name="candidaturas")
 
-    # aluno agora é Usuario(tipo="aluno")
     aluno = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -159,31 +158,6 @@ class Candidatura(models.Model):
         return f"{self.aluno.nome or self.aluno.email} → {self.vaga.titulo}"
 
 
-# =====================================================
-# MENSAGENS INTERNAS
-# =====================================================
-class Mensagem(models.Model):
-    remetente = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="mensagens_enviadas",
-    )
-    destinatario = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="mensagens_recebidas",
-    )
-    conteudo = models.TextField()
-    data_envio = models.DateTimeField(default=timezone.now)
-    lida = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ["-data_envio"]
-        verbose_name = "Mensagem"
-        verbose_name_plural = "Mensagens"
-
-    def __str__(self):
-        return f"{self.remetente.email} → {self.destinatario.email}"
 
 
 # =====================================================
@@ -209,6 +183,10 @@ class MensagemContato(models.Model):
 # CONFIGURAÇÃO DO SITE
 # =====================================================
 class SiteConfig(models.Model):
+    titulo_banner = models.CharField(max_length=200, default="Da ideia à prática, do campus à carreira.")
+    subtitulo_banner = models.CharField(max_length=255, default="Aprender, se conectar e crescer: seu futuro começa aqui.")
+    imagem_banner = models.ImageField(upload_to="home/", blank=True, null=True)
+    
     nome_site = models.CharField("Nome do site", max_length=100, default="LinkIF")
     descricao_curta = models.TextField(
         default="Conectando talentos técnicos do IFRN às melhores oportunidades profissionais."
@@ -233,57 +211,3 @@ class SiteConfig(models.Model):
             return self.logo.url
         return "/static/assets/img/logo.svg"
 
-
-# =====================================================
-# CONTEÚDO DA HOME
-# =====================================================
-class HomeContent(models.Model):
-    titulo_banner = models.CharField(max_length=200, default="Da ideia à prática, do campus à carreira.")
-    subtitulo_banner = models.CharField(max_length=255, default="Aprender, se conectar e crescer: seu futuro começa aqui.")
-    imagem_banner = models.ImageField(upload_to="home/", blank=True, null=True)
-
-
-    card1_titulo = models.CharField(max_length=100, default="Plataforma Integrada")
-    card1_texto = models.TextField(default="Um ambiente criado para centralizar oportunidades profissionais.")
-    card1_icon = models.ImageField(upload_to="home/icons/", blank=True, null=True)
-
-    card2_titulo = models.CharField(max_length=100, default="Conexão Estratégica")
-    card2_texto = models.TextField(default="Aproxima estudantes e empresas.")
-    card2_icon = models.ImageField(upload_to="home/icons/", blank=True, null=True)
-
-    card3_titulo = models.CharField(max_length=100, default="Porta de entrada")
-    card3_texto = models.TextField(default="Transforme formação técnica em experiência real.")
-    card3_icon = models.ImageField(upload_to="home/icons/", blank=True, null=True)
-
-    atualizado_em = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "Conteúdo da Home"
-        verbose_name_plural = "Conteúdos da Home"
-
-    def __str__(self):
-        return "Conteúdo da Home"
-
-
-# =====================================================
-# FEATURES (Estudantes e Empresas)
-# =====================================================
-class Feature(models.Model):
-    TIPO_CHOICES = [
-        ("estudante", "Para Estudantes"),
-        ("empresa", "Para Empresas"),
-    ]
-
-    tipo = models.CharField("Tipo", max_length=20, choices=TIPO_CHOICES)
-    icone = models.CharField("Ícone Bootstrap", max_length=50)
-    titulo = models.CharField(max_length=120)
-    descricao = models.TextField()
-    ordem = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        ordering = ["tipo", "ordem"]
-        verbose_name = "Feature"
-        verbose_name_plural = "Features"
-
-    def __str__(self):
-        return f"{self.titulo} — {self.get_tipo_display()}"

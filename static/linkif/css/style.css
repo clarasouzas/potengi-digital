@@ -74,7 +74,8 @@ body {
 }
 
 .text-secondary {
-  color: var(--gray-100)
+  font-size: large;
+  color: var(--gray-500)
 }
 
 .cor {
@@ -256,12 +257,13 @@ a:hover {
 }
 
 .text-area p {
-  font-size: 1.25rem;
+  font-size: larger;
   color: #205072;
   opacity: .90;
   margin-bottom: 32px;
   max-width: 85%;
 }
+
 .botoes-hero {
   margin-top: 32px;
 }
@@ -296,7 +298,9 @@ a:hover {
 }
 
 
-
+.title-section{
+  color: var(--accent-blue);
+}
 /* ARTE */
 .hero-art-wrapper {
   display: flex;
@@ -377,6 +381,10 @@ a:hover {
   transform: translateY(-2px);
 }
 
+.title-card-index {
+  color: var(--accent-blue);
+}
+
 .feature-top {
   height: 150px;
   border-radius: 16px 16px 0 0;
@@ -439,71 +447,113 @@ a:hover {
 }
 
 .perfil-carousel {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  gap: 30px;
-  transition: transform 0.6s ease;
-  will-change: transform;
+  position: relative;
+  height: 360px;
+  /* mantém espaço para os cards */
+  width: 100%;
+  display: block;
+  /* obrigatório */
 }
 
-/* === CARD BASE === */
+/* ===========================
+   BASE DO CARD (posicionamento)
+=========================== */
 .perfil-card {
-  flex: 0 0 300px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 300px;
+
+  transform: translateX(-50%) scale(0.80);
+  opacity: 0.35;
+  filter: blur(1px);
+
+  transition: transform .45s ease, opacity .45s ease, filter .45s ease;
+  z-index: 1;
+
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  transition: all 0.4s ease;
-  transform: scale(0.88);
-  opacity: 0.5;
-  filter: blur(1px);
 }
 
-.perfil-card.active {
-  transform: scale(1.08);
+
+/* ========= CARD CENTRAL ========= */
+.perfil-card.center {
+  transform: translateX(-50%) scale(1.05);
   opacity: 1;
   filter: blur(0);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-  z-index: 3;
+  z-index: 5;
 }
 
+
+.perfil-card.left {
+  transform: translateX(calc(-50% - 340px)) scale(0.88);
+  opacity: 0.75;
+  filter: blur(0.4px);
+  z-index: 4;
+}
+
+.perfil-card.right {
+  transform: translateX(calc(-50% + 340px)) scale(0.88);
+  opacity: 0.75;
+  filter: blur(0.4px);
+  z-index: 4;
+}
+
+/* ======== CARDS ESCONDIDOS ======== */
+.perfil-card.hidden {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.55);
+  filter: blur(2px);
+  pointer-events: none;
+  z-index: 0;
+}
 
 
 /* === TOPO DO CARD === */
 .perfil-top {
   position: relative;
   height: 140px;
-  overflow: hidden;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  overflow: visible; /* mantém a imagem limpa sem cortar o ícone */
 }
 
 .perfil-top img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 
 /* === ÍCONE SOBREPOSTO === */
 .perfil-icon {
   position: absolute;
-  bottom: -35px;
+  bottom: -35px; /* desce metade pra ficar encaixado */
   left: 20px;
   background: #fff;
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
   border: 5px solid #fff;
-  z-index: 2;
+  z-index: 3; 
+  overflow: hidden;
 }
-
+.perfil-icon img,
 .perfil-icon i {
-  color: #205072;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%; 
   font-size: 1.8rem;
 }
+
+
 
 /* === CONTEÚDO DO CARD === */
 .perfil-body {
@@ -512,30 +562,32 @@ a:hover {
 }
 
 .perfil-body h5 {
-  color: #1b1f5b;
+  color: var(--accent-blue);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
 .perfil-body p {
-  color: #555;
+  color: var(--gray-600);
   font-size: 0.92rem;
-  min-height: 60px;
+  min-height: 40px;
 }
 
 .btn-ver-mais {
-  background: #205072;
+  background: var(--accent-blue);
   color: #fff;
   border: none;
   padding: 8px 20px;
-  border-radius: 8px;
+  border-radius: 30px;
   text-decoration: none;
   transition: 0.3s;
 }
 
 .btn-ver-mais:hover {
-  background: #2cb67d;
+  text-decoration: none;
+  background: var(--primary);
   transform: translateY(-2px);
 }
 
@@ -554,7 +606,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
+  z-index: 10;
   transition: 0.3s ease;
 }
 
@@ -592,18 +644,6 @@ a:hover {
   background: linear-gradient(to left, #d7ffe4 40%, transparent 100%);
 }
 
-/* === RESPONSIVO === */
-@media (max-width: 992px) {
-  .perfil-card {
-    flex: 0 0 260px;
-  }
-}
-
-@media (max-width: 768px) {
-  .perfil-card {
-    flex: 0 0 80%;
-  }
-}
 
 /* =======================================
    SEÇÕES DUPLAS (Estudantes / Empresas)
@@ -1552,156 +1592,68 @@ footer {
     transform: translateY(0);
   }
 }
+/* ---------- HERO ESTUDANTE ---------- */
 
-/* ESTUDANTES E EMPRESAS*/
-
-
-/* === ESTUDANTES === */
 .hero-estudante {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
   min-height: 50vh;
+  padding: 90px 0;
+  overflow: hidden;
+
   background: linear-gradient(135deg,
-      rgba(83, 117, 197, 0.20) 0%,
-      rgba(41, 212, 95, 0.25) 50%,
-      rgba(89, 54, 163, 0.22) 100%);
-  padding: 100px 0 80px 0;
+      rgba(83,117,197,0.20) 0%,
+      rgba(41,212,95,0.25) 50%,
+      rgba(89,54,163,0.22) 100%);
 }
 
 .hero-estudante::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(15, 2, 97, 0.08) 35%, rgba(255, 255, 255, 0) 80%);
+  background: linear-gradient(to right,
+      rgba(15, 2, 97, 0.10) 25%,
+      rgba(255, 255, 255, 0) 80%);
   z-index: 1;
 }
 
-.hero-estudante .container {
+/* AQUI ESTÁ A MAGIA */
+.hero-inner {
   position: relative;
-  z-index: 2;
-  color: #1b1f5b;
-  max-width: 72%;
-  margin-left: 6%;
+  z-index: 3;
+
+  width: 100%;
+  max-width: 1200px;  /* limita a largura para não ficar estourado */
+  margin: 0 auto;     /* centraliza */
+  padding: 0 30px;    /* respiro lateral */
 }
 
-.hero-estudante h1 {
-  font-size: 3.4rem;
+/* TIPOGRAFIA */
+.hero-inner h1 {
+  font-size: 3rem;
   font-weight: 800;
-  line-height: 1.2;
-  margin-bottom: 16px;
-}
-
-.hero-estudante p {
-  font-size: 1.3rem;
-  color: #333;
-  line-height: 1.5;
-  max-width: 90%;
-  margin-bottom: 35px;
-}
-
-/* === EMPRESAS === */
-.hero-empresas {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
-  min-height: 75vh;
-  background: linear-gradient(to right, #dff9f2 0%, #f4fffa 30%, #dff9f2 100%);
-  padding: 100px 0 80px 0;
-}
-
-.hero-empresas::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, rgba(32, 80, 114, 0.12) 35%, rgba(255, 255, 255, 0) 80%);
-  z-index: 1;
-}
-
-.hero-empresas .container {
-  position: relative;
-  z-index: 2;
   color: #205072;
-  max-width: 72%;
-  margin-left: 6%;
-}
-
-.hero-empresas h1 {
-  font-size: 3.4rem;
-  font-weight: 800;
-  line-height: 1.2;
   margin-bottom: 16px;
 }
 
-.hero-empresas p {
-  font-size: 1.3rem;
-  color: #333;
+.hero-inner p {
+  font-size: 1.25rem;
+  max-width: 600px;
   line-height: 1.5;
-  max-width: 90%;
-  margin-bottom: 35px;
+  margin-bottom: 30px;
+  opacity: .9;
+  color: #205072;
 }
 
-/* === IMAGEM (hero-art) === */
-.hero-estudante .hero-art,
-.hero-empresas .hero-art {
+/* IMAGEM */
+.hero-estudante .hero-art {
   position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 58%;
+  right: 30px;
+  bottom: 5%;
+  max-width: 480px;
+  width: 100%;
   height: auto;
-  object-fit: contain;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* === BOTÕES IGUAL AO HERO BASE === */
-.botoes {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.botoes a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 28px;
-  border-radius: 40px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
-  border: none;
-}
-
-/* botão principal (verde) */
-.botao-principal {
-  background: linear-gradient(135deg, #205072, #356e8c);
-  color: #ffffff;
-}
-
-.botao-principal:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #205072, #356e8c);
-  color: #fff;
-}
-
-/* botão secundário (azul petróleo) */
-.botao-secundario {
-  background: linear-gradient(135deg, #205072, #356e8c);
-  color: #fff;
-}
-
-.botao-secundario:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #173c54, #2a5b70);
+  top: -70%;
+  z-index: 2;
 }
 
 /* =======================================

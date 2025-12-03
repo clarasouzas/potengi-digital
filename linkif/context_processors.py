@@ -1,4 +1,4 @@
-from .models import SiteConfig, HomeContent
+from .models import SiteConfig
 
 def site_context(request):
     """
@@ -6,11 +6,9 @@ def site_context(request):
     a todos os templates do site.
     """
     site_config = SiteConfig.objects.first()
-    home_content = HomeContent.objects.first()
 
     return {
         "site_config": site_config,
-        "home_content": home_content,
     }
 def splash_screen_processor(request):
     show_splash = False

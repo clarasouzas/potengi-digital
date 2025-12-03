@@ -13,24 +13,25 @@
 
       <!-- TEXTO -->
       <div class="col-lg-6 col-md-7 text-area">
+
         <h1>{{ home.titulo_banner|default:"Da ideia à prática, do campus à carreira." }}</h1>
         <p>{{ home.subtitulo_banner|default:"Aprender, se conectar e crescer: seu futuro começa aqui." }}</p>
 
-       <div class="botoes-hero">
-  {% if not user.is_authenticated %}
-    <a href="{% url 'usuarios:login' %}" class="btn-hero">
-      <i class="bi bi-arrow-right-circle me-2"></i>
-      Começar Agora
-    </a>
-  {% endif %}
-</div>
-        
+        <div class="botoes-hero">
+          {% if not user.is_authenticated %}
+            <a href="{% url 'usuarios:login' %}" class="btn-hero">
+              <i class="bi bi-arrow-right-circle me-2"></i>
+              Começar Agora
+            </a>
+          {% endif %}
+        </div>
+
       </div>
 
       <!-- IMAGEM -->
       <div class="col-lg-6 col-md-5 hero-art-wrapper">
-        {% if home.imagem_banner %}
-          <img src="{{ home.imagem_banner.url }}" alt="Hero LinkIF" class="hero-art">
+        {% if site_config.imagem_banner %}
+          <img src="{{ site_config.imagem_banner.url }}" alt="Hero LinkIF" class="hero-art">
         {% else %}
           <img src="{% static 'assets/img/banner_hero.svg' %}" alt="Hero LinkIF" class="hero-art">
         {% endif %}
@@ -40,18 +41,19 @@
   </div>
 </section>
 
+
 <!-- =======================
        SOBRE
 ======================== -->
 <section class="py-5 bg-white" id="sobre">
   <div class="container text-center">
-    
-    <h2 class="fw-bold" >
-      {{ home.titulo_sobre|default:"O que é o LinkIF?" }}
-    </h2>
+
+    <h2 class="fw-bold title-section">O que é o LinkIF?</h2>
 
     <p class="mb-5 text-secondary">
-      {{ home.texto_sobre|default:"O LinkIF é uma plataforma do IFRN – Campus São Paulo do Potengi que conecta estudantes, ex-alunos e empresas, centralizando estágios e oportunidades de trabalho na região." }}
+      O LinkIF é uma plataforma do IFRN – Campus São Paulo do Potengi que
+      conecta estudantes, ex-alunos e empresas, centralizando estágios
+      e oportunidades de trabalho na região.
     </p>
 
     <div class="row g-4 justify-content-center">
@@ -61,15 +63,13 @@
         <div class="feature-card p-4 text-center h-100 icon-azul">
           <div class="feature-top">
             <div class="feature-icon">
-              {% if home.card1_icon %}
-                <img src="{{ home.card1_icon.url }}">
-              {% else %}
-                <img src="{% static 'assets/img/icon1.png' %}">
-              {% endif %}
+              <img src="{% static 'assets/img/icon1.png' %}">
             </div>
           </div>
-          <h5 class="fw-bold mt-3">{{ home.card1_titulo|default:"Plataforma Integrada" }}</h5>
-          <p  class="text-secondary">{{ home.card1_texto|default:"Um ambiente digital criado para centralizar estágios e oportunidades profissionais no Potengi." }}</p>
+          <h5 class="fw-bold mt-3 title-card-index">Plataforma Integrada</h5>
+          <p class="text-secondary">
+            Um ambiente digital criado para centralizar estágios e oportunidades profissionais no Potengi.
+          </p>
         </div>
       </div>
 
@@ -78,15 +78,13 @@
         <div class="feature-card p-4 text-center h-100 icon-verde">
           <div class="feature-top">
             <div class="feature-icon">
-              {% if home.card2_icon %}
-                <img src="{{ home.card2_icon.url }}">
-              {% else %}
-                <img src="{% static 'assets/img/icon2.png' %}">
-              {% endif %}
+              <img src="{% static 'assets/img/icon2.png' %}">
             </div>
           </div>
-          <h5 class="fw-bold mt-3">{{ home.card2_titulo|default:"Conexão Estratégica" }}</h5>
-          <p class="text-secondary">{{ home.card2_texto|default:"Coloca em diálogo estudantes  e empresas, aproximando o IFRN do mercado de trabalho." }}</p>
+          <h5 class="fw-bold mt-3 title-card-index">Conexão Estratégica</h5>
+          <p class="text-secondary">
+            Coloca em diálogo estudantes e empresas, aproximando o IFRN do mercado de trabalho.
+          </p>
         </div>
       </div>
 
@@ -95,21 +93,20 @@
         <div class="feature-card p-4 text-center h-100 icon-lilas">
           <div class="feature-top">
             <div class="feature-icon">
-              {% if home.card3_icon %}
-                <img src="{{ home.card3_icon.url }}">
-              {% else %}
-                <img src="{% static 'assets/img/icon3.png' %}">
-              {% endif %}
+              <img src="{% static 'assets/img/icon3.png' %}">
             </div>
           </div>
-          <h5 class="fw-bold mt-3">{{ home.card3_titulo|default:"Porta de entrada" }}</h5>
-          <p  class="text-secondary">{{ home.card3_texto|default:"Mais que um sistema, o LinkIF é o caminho para transformar formação técnica em experiência real." }}</p>
+          <h5 class="fw-bold mt-3 title-card-index">Porta de Entrada</h5>
+          <p class="text-secondary">
+            O LinkIF é o caminho para transformar formação técnica em experiência real.
+          </p>
         </div>
       </div>
 
     </div>
   </div>
 </section>
+
 
 
 
@@ -120,12 +117,14 @@
   <div class="container">
 
     <div class="text-center mb-5">
-      <h2 class="fw-bold">Perfis de Formação</h2>
-      <p class="text-secondary">Conheça as áreas de formação dos alunos do IFRN – Campus São Paulo do Potengi e descubra as competências que conectam educação e mercado de trabalho.</p>
+      <h2 class="fw-bold title-section">Perfis de Formação</h2>
+      <p class="text-secondary">
+      Conheça as áreas de formação dos alunos do IFRN – Campus São Paulo do Potengi 
+      e descubra as competências que conectam educação e mercado de trabalho. 
+      </p>
     </div>
 
     <div class="perfil-carousel-container">
-
       <button class="perfil-btn perfil-prev"><i class="bi bi-chevron-left"></i></button>
 
       <div class="perfil-carousel">
@@ -151,9 +150,7 @@
           <div class="perfil-body">
             <h5>{{ perfil.nome }}</h5>
 
-            <p>
-              {{ perfil.descricao|default:"Descrição ainda não cadastrada."|truncatewords:18 }}
-            </p>
+            <p>{{ perfil.descricao|truncatewords:18 }}</p>
 
             <a href="{% url 'linkif:perfil_detalhe' perfil.id %}" class="btn-ver-mais">
               Ver Mais
@@ -165,7 +162,6 @@
       </div>
 
       <button class="perfil-btn perfil-next"><i class="bi bi-chevron-right"></i></button>
-
     </div>
   </div>
 </section>
@@ -179,48 +175,34 @@
   <div class="container">
 
     <div class="text-center mb-5">
-      <h2 class="fw-bold">Para Estudantes</h2>
-      <p class="text-secondary">Mostre suas habilidades, monte seu perfil profissional e encontre 
-                                oportunidades que combinam com você.</p>
+      <h2 class="fw-bold title-section">Para Estudantes</h2>
+      <p class="text-secondary">
+        Mostre suas habilidades, monte seu perfil profissional e encontre oportunidades que combinam com você.
+      </p>
     </div>
 
     <div class="row align-items-center gx-5 gy-2">
 
       <div class="col-md-6 text-center">
-        {% if home.imagem_estudantes %}
-          <img src="{{ home.imagem_estudantes.url }}" class="img-ilustra">
-        {% else %}
-          <img src="{% static 'assets/img/estudante.png' %}" class="img-ilustra">
-        {% endif %}
+        <img src="{% static 'assets/img/estudante.svg' %}" class="img-ilustra">
       </div>
 
       <div class="col-md-5 texto-dupla">
+
         <ul class="lista-check">
-        <li>
-          <i class="bi bi-check-circle-fill me-2 "></i>
-            Vagas e estágios alinhados ao seu perfil.
-        </li>
-        <li>
-          <i class="bi bi-check-circle-fill me-2 "></i>
-            Perfil inteligente com destaque para suas competências.
-        </li>
-        <li>
-          <i class="bi bi-check-circle-fill me-2 "></i>
-            Contato direto com empresas da região.
-        </li>
-        <li>
-          <i class="bi bi-check-circle-fill me-2"></i>
-          Certificados e experiências que impulsionam sua trajetória.
-        </li>
-</ul>
+          <li><i class="bi bi-check-circle-fill me-2"></i> Vagas e estágios alinhados ao seu perfil.</li>
+          <li><i class="bi bi-check-circle-fill me-2"></i> Monte seu perfil profissional e mostre suas competências.</li>
+          <li><i class="bi bi-check-circle-fill me-2"></i> Abra portas ao ganhar visibilidade no mercado local.</li>
+          <li><i class="bi bi-check-circle-fill me-2"></i> Dê o próximo passo rumo à sua carreira.</li>
+        </ul>
 
         <a href="{% url 'linkif:para_estudantes' %}" class="btn-dupla">Ver Mais</a>
+
       </div>
 
     </div>
   </div>
 </section>
-
 
 
 <!-- =======================
@@ -228,50 +210,37 @@
 ======================== -->
 <section class="section-dupla bg-branco cor" id="empresas">
   <div class="container">
-     <div class="text-center mb-5">
-      <h2 class="fw-bold">Para Empresas</h2>
-      <p class="text-secondary">Aproxima sua instituição de talentos em formação
-                                no IFRN, capacitados para agregar valor e resultados.</p>
+
+    <div class="text-center mb-5">
+      <h2 class="fw-bold title-section">Para Empresas</h2>
+      <p class="text-secondary">
+        Com o LinkIF, você divulga vagas, identifica estudantes com competências alinhadas 
+        ao seu negócio e participa diretamente da formação profissional da região. 
+      </p>
     </div>
 
     <div class="row align-items-center flex-row-reverse gx-5 gy-4">
 
       <div class="col-md-6 text-center">
-        {% if home.imagem_empresas %}
-          <img src="{{ home.imagem_empresas.url }}" class="img-ilustra">
-        {% else %}
-          <img src="{% static 'assets/img/empresa.png' %}" class="img-ilustra">
-        {% endif %}
+        <img src="{% static 'assets/img/empresa.svg' %}" class="img-ilustra">
       </div>
 
       <div class="col-md-5 texto-dupla">
 
         <ul class="lista-check">
-          <li>
-            <i class="bi bi-check-circle-fill me-2 "></i>
-            Divulgue oportunidades de estágio com agilidade.
-          </li>
-          <li>
-            <i class="bi bi-check-circle-fill me-2 "></i>E
-            ncontre talentos qualificados para sua empresa.
-          </li>
-          <li>
-            <i class="bi bi-check-circle-fill me-2 "></i>
-            Explore perfis completos de estudantes.
-          </li>
-          <li>
-            <i class="bi bi-check-circle-fill me-2 "></i>
-            Fortaleça parcerias estratégicas com o IFRN.
-          </li>
-</ul>
+          <li><i class="bi bi-check-circle-fill me-2"></i> Estabeleça conexões com talentos em formação.</li>
+          <li><i class="bi bi-check-circle-fill me-2"></i> Explore perfis detalhados de estudantes do IFRN.</li>
+          <li><i class="bi bi-check-circle-fill me-2"></i> Gerencie vagas e candidaturas de forma eficiente.</li>
+          <li><i class="bi bi-check-circle-fill me-2"></i> Fortaleça parcerias com a comunidade acadêmica do IFRN.</li>
+        </ul>
+
         <a href="{% url 'linkif:para_empresas' %}" class="btn-dupla">Ver Mais</a>
 
-</div>
+      </div>
 
     </div>
   </div>
 </section>
-
 
 
 <!-- =======================
@@ -283,97 +252,101 @@
     <div class="row justify-content-center align-items-start">
 
       <div class="col-12 text-center mb-5">
-        <h3 class="fw-bold">Contato</h3>
+        <h3 class="fw-bold title-section">Contato</h3>
         <p class="text-secondary">Entre em contato conosco.</p>
       </div>
 
-      <!-- FORM -->
       <div class="col-md-6">
-        <form method="POST" class="animate-fade">
+        <form method="POST">
           {% csrf_token %}
           {{ form|crispy }}
+
           <button type="submit" class="btn-enviar mt-3">
             <i class="bi bi-send-fill me-2"></i> Enviar Mensagem
           </button>
         </form>
       </div>
 
-      <!-- CONTATO INFO -->
       <div class="col-md-6 ps-md-5 mt-5 mt-md-0">
+
         <h5 class="fw-bold mb-3">
-          {{ site_config.nome_site|default:"LinkIF" }} — Campus São Paulo do Potengi
+          IFRN — Campus São Paulo do Potengi
         </h5>
 
-        <p><i class="bi bi-geo-alt-fill icon-contato me-2"></i>{{ site_config.endereco|default:"Endereço não informado" }}</p>
-        <p><i class="bi bi-telephone-fill icon-contato me-2"></i>{{ site_config.telefone|default:"(84) 90000-0000" }}</p>
-        <p><i class="bi bi-envelope-fill icon-contato me-2"></i>{{ site_config.email_contato|default:"contato@ifrn.edu.br" }}</p>
-
+        <p><i class="bi bi-geo-alt-fill icon-contato me-2"></i>
+          {{ site_config.endereco|default:"Endereço não informado" }}
+        </p> 
+        <p><i class="bi bi-telephone-fill icon-contato me-2"></i>
+          {{ site_config.telefone|default:"(84) 90000-0000" }}
+        </p> 
+        <p><i class="bi bi-envelope-fill icon-contato me-2"></i>
+          {{ site_config.email_contato|default:"contato@ifrn.edu.br" }}
+        </p> {% if site_config.mapa_embed %} 
+        <div class="ratio ratio-16x9 mt-3"> 
+          {{ site_config.mapa_embed|safe }} 
+        </div> {% else %} 
+        <img src="https://via.placeholder.com/300x200.png" class="img-fluid rounded mt-3 shadow-sm"> {% endif %}
+        </div>
         {% if site_config.mapa_embed %}
-          <div class="ratio ratio-16x9 mt-3">
-            {{ site_config.mapa_embed|safe }}
-          </div>
-        {% else %}
-          <img src="https://via.placeholder.com/300x200.png"
-               class="img-fluid rounded mt-3 shadow-sm">
+          <div class="ratio ratio-16x9 mt-3">{{ site_config.mapa_embed|safe }}</div>
         {% endif %}
+
       </div>
 
     </div>
   </div>
 </section>
-
-
-<!-- =======================
-   JS CARROSSEL
-======================== -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const carousel = document.querySelector(".perfil-carousel");
-  const cards = Array.from(document.querySelectorAll(".perfil-card"));
-  const prevBtn = document.querySelector(".perfil-prev");
-  const nextBtn = document.querySelector(".perfil-next");
-  const total = cards.length;
+    const cards = Array.from(document.querySelectorAll(".perfil-card"));
+    const prevBtn = document.querySelector(".perfil-prev");
+    const nextBtn = document.querySelector(".perfil-next");
 
-  let index = 1;
-  let transitioning = false;
+    if (!cards.length) return;
 
-  function updateCarousel() {
-    const cardWidth = cards[0].offsetWidth + 30;
-    const containerWidth = document.querySelector(".perfil-carousel-container").offsetWidth;
-    const offset = (containerWidth / 2) - (cardWidth / 2);
-    const moveX = offset - index * cardWidth;
+    let total = cards.length;
+    let index = 0; // card central inicial
 
-    carousel.style.transition = "transform 0.6s ease";
-    carousel.style.transform = `translateX(${moveX}px)`;
+    function updateCarousel() {
+        cards.forEach(c => c.classList.remove("left", "center", "right", "hidden"));
 
-    cards.forEach((card, i) => {
-      card.classList.remove("active");
-      if (i === index) card.classList.add("active");
+        if (total === 1) {
+            cards[0].classList.add("center");
+            return;
+        }
+
+        if (total === 2) {
+            cards[index].classList.add("center");
+            cards[(index + 1) % total].classList.add("right");
+            return;
+        }
+
+        let left  = (index - 1 + total) % total;
+        let right = (index + 1) % total;
+
+        cards[left].classList.add("left");
+        cards[index].classList.add("center");
+        cards[right].classList.add("right");
+
+        for (let i = 0; i < total; i++) {
+            if (i !== left && i !== index && i !== right) {
+                cards[i].classList.add("hidden");
+            }
+        }
+    }
+
+    nextBtn.addEventListener("click", () => {
+        index = (index + 1) % total;
+        updateCarousel();
     });
-  }
 
-  function next() {
-    if (transitioning) return;
-    transitioning = true;
-    index = (index + 1) % total;
+    prevBtn.addEventListener("click", () => {
+        index = (index - 1 + total) % total;
+        updateCarousel();
+    });
+
     updateCarousel();
-    setTimeout(() => transitioning = false, 600);
-  }
-
-  function prev() {
-    if (transitioning) return;
-    transitioning = true;
-    index = (index - 1 + total) % total;
-    updateCarousel();
-    setTimeout(() => transitioning = false, 600);
-  }
-
-  nextBtn.addEventListener("click", next);
-  prevBtn.addEventListener("click", prev);
-
-  updateCarousel();
-  window.addEventListener("resize", () => updateCarousel());
 });
-</script>
 
+</script>
 {% endblock %}

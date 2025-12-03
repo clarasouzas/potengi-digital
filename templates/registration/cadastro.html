@@ -28,8 +28,9 @@
              LADO ESQUERDO (LOGO + ABAS)
         ============================ -->
         <aside class="left-panel">
-
-            <img src="{% static 'assets/img/logo.svg' %}" class="logo" alt="LinkIF">
+            <a href="{% url 'linkif:index' %}">
+                <img src="{% static 'assets/img/logo.svg' %}" class="logo" alt="LinkIF">                
+            </a>
 
             <p class="subtitulo">Escolha o tipo de usuário</p>
 

@@ -18,7 +18,9 @@
       <div class="login-container d-flex">
 
         <div class="login-right d-flex align-items-center justify-content-center">
-          <img src="{% static 'assets/img/logo.svg' %}" alt="LinkIF" class="logo-login">
+          <a href="{% url 'linkif:index' %}">
+            <img src="{% static 'assets/img/logo.svg' %}" alt="LinkIF" class="logo-login">
+          </a>
         </div>
 
         <div class="login-left">
