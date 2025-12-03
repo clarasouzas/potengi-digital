@@ -92,6 +92,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'usuarios.middleware.SocialLoginRedirectMiddleware',
 ]
 
 
@@ -214,6 +215,7 @@ AUTH_USER_MODEL = "usuarios.Usuario"
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'  # ou 'mandatory'
 
 # Forms customizados:
 # ACCOUNT_FORMS = {
@@ -225,7 +227,6 @@ ACCOUNT_UNIQUE_EMAIL = True
 # ============================
 # Configurações Social Account
 # ============================
-SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
 
