@@ -1,12 +1,17 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
-from .models import Vaga, Candidatura, MensagemContato, PerfilFormacao,Competencia, AreaAtuacaoPerfil
-
+from .models import Vaga, Candidatura, MensagemContato, PerfilFormacao,Competencia, AreaAtuacaoPerfil,SiteConfig
 class PerfilFormacaoForm(forms.ModelForm):
     class Meta:
         model = PerfilFormacao
-        fields = "__all__"
+        fields = [
+            "nome",
+            "descricao",
+            "descricao_curta",
+            "imagem",
+            "logo",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -18,25 +23,37 @@ class CompetenciaForm(forms.ModelForm):
     class Meta:
         model = Competencia
         fields = ["texto"]
+        widgets = {
+            "texto": forms.TextInput(attrs={
+                "class": "form-control mb-2",
+                "placeholder": "Digite uma competência..."
+            })
+        }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["texto"].widget.attrs.update({
-            "class": "form-control mb-2",
-            "placeholder": "Digite uma competência..."
-        })
 
 
 class AreaAtuacaoForm(forms.ModelForm):
     class Meta:
         model = AreaAtuacaoPerfil
         fields = ["titulo", "descricao"]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["titulo"].widget.attrs.update({"class": "form-control mb-2"})
-        self.fields["descricao"].widget.attrs.update({"class": "form-control mb-2"})
-
+        widgets = {
+            "titulo": forms.TextInput(attrs={"class": "form-control mb-2"}),
+            "descricao": forms.Textarea(attrs={"class": "form-control mb-2", "rows": 3}),
+        }
+class SiteConfigForm(forms.ModelForm):
+    class Meta:
+        model = SiteConfig
+        fields = "__all__"
+        widgets = {
+            "titulo_banner": forms.TextInput(attrs={"class": "form-control mb-3"}),
+            "subtitulo_banner": forms.TextInput(attrs={"class": "form-control mb-3"}),
+            "descricao_curta": forms.Textarea(attrs={"class": "form-control mb-3", "rows": 3}),
+            "email_contato": forms.EmailInput(attrs={"class": "form-control mb-3"}),
+            "telefone": forms.TextInput(attrs={"class": "form-control mb-3"}),
+            "endereco": forms.TextInput(attrs={"class": "form-control mb-3"}),
+            "instagram": forms.URLInput(attrs={"class": "form-control mb-3"}),
+            "mapa_embed": forms.Textarea(attrs={"class": "form-control mb-3", "rows": 3}),
+        }
 # =====================================================
 # FORMULÁRIO DE VAGA (para empresas)
 # =====================================================

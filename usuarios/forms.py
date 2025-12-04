@@ -118,16 +118,30 @@ class CoordenadorEditForm(forms.ModelForm):
         model = Usuario
         fields = ["nome", "setor"]
 
-
 # ======================================
 # EDIÇÃO — ADMIN (EMAIL | TIPO | APROVAÇÃO)
 # ======================================
 class UsuarioEditFormSimples(forms.ModelForm):
+
+    STATUS_CHOICES = [
+        (True, "Aprovado"),
+        (False, "Reprovado"),
+    ]
+
+    is_approved = forms.ChoiceField(
+        label="Status de aprovação",
+        choices=STATUS_CHOICES,
+        widget=forms.RadioSelect(attrs={"class": "status-radio"})
+    )
+
     class Meta:
         model = Usuario
         fields = ["email", "tipo", "is_approved"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for f in self.fields.values():
-            f.widget.attrs.update({"class": "form-control"})
+
+        # estilos dos campos normais
+        for f_name, f in self.fields.items():
+            if f_name != "is_approved":   # evita quebrar o RadioSelect
+                f.widget.attrs.update({"class": "form-control"})

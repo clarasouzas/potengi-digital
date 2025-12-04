@@ -1,31 +1,43 @@
 {% extends "dashboard/base_dashboard.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block titulo %}Editar Vaga{% endblock %}
 
 {% block conteudo %}
 
-<div class="page-title mb-4 title-dashboard">
-    <i class="bi bi-pencil-square me-2"></i>
-    <span>Editar vaga</span>
-</div>
+<div class="candidatar-wrapper">
 
-<div class="soft-card p-4">
-
-    <!-- INFO DA VAGA (título pequeno e elegante) -->
-    <div class="mb-3">
-        <p class="mb-1 text-muted small">Você está editando:</p>
-        <h5 class="fw-semibold">{{ vaga.titulo }}</h5>
+    <!-- TÍTULO DA PÁGINA -->
+    <div class="title-dashboard mb-4">
+        <i class="bi bi-pencil-square me-2"></i>
+        <span>Editar vaga</span>
     </div>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
+    <!-- CARD DO FORMULÁRIO (padrão candidatura) -->
+    <div class="candidatura-card mb-4">
 
-        <button class="soft-btn-primary w-100 mt-3" type="submit">
-            <i class="bi bi-check-circle me-1"></i> Atualizar vaga
-        </button>
-    </form>
+        <!-- INFO DA VAGA -->
+        <h5 class=" section-title fw-semibold mb-3">{{ vaga.titulo }}</h5>
+
+        <!-- FORM -->
+        <form method="post" enctype="multipart/form-data" class="form-styled">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <button class="btn-apply w-100 mt-3" type="submit">
+                <i class="bi bi-check-circle me-1"></i> Atualizar vaga
+            </button>
+        </form>
+
+    </div>
+
+    <!-- VOLTAR -->
+    <div class="text-center mt-3">
+        <a href="{% url 'dashboard:empresa_vagas' %}" class="btn-go-back">
+            <i class="bi bi-arrow-left"></i> Voltar para minhas vagas
+        </a>
+    </div>
 
 </div>
 

@@ -1,121 +1,136 @@
 {% extends "dashboard/base_dashboard.html" %}
-
-{% block titulo %}Dashboard - {{ request.user.nome }}{% endblock %}
+{% load static %}
 
 {% block conteudo %}
 
-<h2 class="mb-4 d-flex align-items-center title-dashboard">
-    <i class="bi bi-building me-2 "></i>
-    Visão Geral
-</h2>
+<!-- HERO DO PAINEL -->
+<div class="hero-dashboard rail-bleed mb-4">
 
-<!-- ===================== MENSAGEM DE APROVAÇÃO ===================== -->
-{% if not request.user.is_approved %}
-<div class="approval-alert shadow-sm">
+  <div class="hero-text">
+    <small class="hero-hello">Olá, {{ user.nome|default:user.email }}</small>
+    <h3 class="hero-title">Gerencie suas vagas com facilidade</h3>
+    <p class="hero-subtitle">Acompanhe o status das vagas e visualize as mais recentes.</p>
+  </div>
 
-    <i class="bi bi-hourglass-split alert-icon"></i>
-
-    <div class="alert-text">
-        Seu cadastro está <b>aguardando aprovação</b> pela coordenação.<br>
-        Assim que aprovado, todas as funcionalidades serão liberadas.
-    </div>
-
-</div>
-{% endif %}
-
-
-{% if request.user.is_approved %}
-
-<!-- ===================== RESUMO ===================== -->
-<div class="row g-4 mb-4">
-
-    <div class="col-md-4">
-        <div class="soft-card p-4 text-center">
-            <i class="bi bi-briefcase-fill text-primary fs-2 mb-2"></i>
-            <h4 class="fw-bold">{{ total_vagas }}</h4>
-            <p class="text-muted m-0">Vagas cadastradas</p>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="soft-card p-4 text-center">
-            <i class="bi bi-clock-history text-warning fs-2 mb-2"></i>
-            <h4 class="fw-bold">{{ vagas_pendentes }}</h4>
-            <p class="text-muted m-0">Aguardando aprovação</p>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="soft-card p-4 text-center">
-            <i class="bi bi-people-fill text-success fs-2 mb-2"></i>
-            <h4 class="fw-bold">{{ total_candidaturas }}</h4>
-            <p class="text-muted m-0">Candidaturas recebidas</p>
-        </div>
-    </div>
+  <div class="hero-illustration">
+    <img src="{% static 'assets/img/hero-em-dash.svg' %}" alt="Dashboard Empresa — LinkIF">
+  </div>
 
 </div>
 
-<!-- ===================== AÇÕES RÁPIDAS ===================== -->
-<h4 class="fw-semibold mb-3">Ações rápidas</h4>
 
-<div class="row g-3 mb-4">
-    <div class="col-md-4">
-        <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="quick-action">
-            <i class="bi bi-plus-circle fs-2 mb-2"></i>
-            <span>Cadastrar nova vaga</span>
-        </a>
-    </div>
+<div class="dashboard-wrapper">
 
-    <div class="col-md-4">
-        <a href="{% url 'dashboard:empresa_vagas' %}" class="quick-action">
-            <i class="bi bi-list-check fs-2 mb-2"></i>
-            <span>Minhas vagas</span>
-        </a>
-    </div>
+  <h2 class="title-dashboard mb-4">Visão Geral</h2>
 
-    <div class="col-md-4">
-        <a href="{% url 'dashboard:empresa_candidaturas' %}" class="quick-action">
-            <i class="bi bi-person-lines-fill fs-2 mb-2"></i>
-            <span>Candidaturas recebidas</span>
-        </a>
+
+  <!-- AVISO DE APROVAÇÃO -->
+  {% if not request.user.is_approved %}
+  <div class="approval-box shadow-sm">
+      <i class="bi bi-hourglass-split"></i>
+      <div>
+          Seu perfil está <b>em análise pela coordenação</b>.<br>
+          Assim que aprovado, todos os recursos serão liberados.
+      </div>
+  </div>
+  {% endif %}
+
+
+  {% if request.user.is_approved %}
+
+  <!-- MÉTRICAS -->
+  <div class="row g-4 mb-4">
+
+      <div class="col-md-4">
+          <div class="metric-card">
+              <div class="metric-icon"><i class="bi bi-briefcase-fill"></i></div>
+              <div>
+                  <h3>{{ total_vagas }}</h3>
+                  <p>Vagas cadastradas</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-4">
+          <div class="metric-card">
+              <div class="metric-icon"><i class="bi bi-clock-history"></i></div>
+              <div>
+                  <h3>{{ vagas_pendentes }}</h3>
+                  <p>Aguardando aprovação</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-4">
+          <div class="metric-card">
+              <div class="metric-icon"><i class="bi bi-people-fill"></i></div>
+              <div>
+                  <h3>{{ total_candidaturas }}</h3>
+                  <p>Candidaturas recebidas</p>
+              </div>
+          </div>
+      </div>
+
+  </div>
+
+
+
+  <!-- ÚLTIMAS VAGAS CADASTRADAS (AGORA NO ESTILO ALUNA) -->
+  <div class="section-card mb-4">
+
+      <h5 class="section-title">
+          <i class="bi bi-briefcase me-1"></i>
+          Suas últimas vagas cadastradas
+      </h5>
+
+      {% if vagas_recentes %}
+      <ul class="list-group list-group-flush">
+
+          {% for vaga in vagas_recentes %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+
+              <div>
+                  <strong>{{ vaga.titulo }}</strong><br>
+
+                  <small class="text-muted">
+                      {{ vaga.get_status_display }} — {{ vaga.data_publicacao|date:"d/m/Y" }}
+                  </small>
+
+                  <p class="text-muted small mt-1 mb-0">
+                      {{ vaga.descricao|truncatewords:20 }}
+                  </p>
+              </div>
+
+    
+
+          </li>
+          {% endfor %}
+
+      </ul>
+        {% else %}
+        <div class="empty-state-wrapper d-flex align-items-center gap-3 py-4">
+
+            <!-- ILUSTRAÇÃO -->
+            <div class="empty-state-image">
+                <img src="{% static 'assets/img/empty.svg' %}" alt="Nenhuma vaga cadastrada" class="empty-img">
+            </div>
+
+            <!-- TEXTO -->
+            <div class="empty-state-text">
+                <h5 class="fw-bold mb-1">Ops, parece que você ainda não cadastrou nenhuma vaga!</h5>
+                <p class="text-muted m-0">
+                    Crie sua primeira vaga para começar a receber candidaturas.
+                </p>
+            </div>
+
     </div>
+    {% endif %}
+
+
+  </div>
+
+  {% endif %}
+
 </div>
-
-<!-- ===================== ÚLTIMAS VAGAS ===================== -->
-<h4 class="fw-semibold mb-3">Últimas vagas cadastradas</h4>
-
-<div class="row g-4">
-
-    {% for vaga in vagas_recentes %}
-    <div class="col-md-6 col-lg-4">
-        <div class="vaga-mini-card shadow-sm p-3 rounded">
-
-            <h5 class="fw-bold mb-1">{{ vaga.titulo }}</h5>
-
-            <span class="badge 
-                {% if vaga.status == 'aprovada' %}bg-success
-                {% elif vaga.status == 'pendente' %}bg-warning text-dark
-                {% else %}bg-danger
-                {% endif %}
-            ">
-                {{ vaga.get_status_display }}
-            </span>
-
-            <p class="text-muted mt-2 small">
-                {{ vaga.descricao|truncatewords:20 }}
-            </p>
-
-            <a href="{% url 'dashboard:empresa_vagas' %}" class="text-decoration-none small text-primary">
-                Ver detalhes →
-            </a>
-        </div>
-    </div>
-    {% empty %}
-    <p class="text-muted">Você ainda não cadastrou nenhuma vaga.</p>
-    {% endfor %}
-
-</div>
-
-{% endif %}
 
 {% endblock %}

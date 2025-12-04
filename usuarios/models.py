@@ -23,6 +23,7 @@ class Usuario(AbstractUser):
     foto = models.ImageField(upload_to="foto-perfil/", blank=True, null=True)
     curriculo = models.FileField(upload_to="curriculos/", blank=True, null=True)
     portfolio = models.URLField(blank=True, null=True)
+    resumo = models.TextField(blank=True, null=True)
 
     # empresa
     cnpj = models.CharField(max_length=18, blank=True, null=True)

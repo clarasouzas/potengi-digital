@@ -14,8 +14,8 @@
       <!-- TEXTO -->
       <div class="col-lg-6 col-md-7 text-area">
 
-        <h1>{{ home.titulo_banner|default:"Da ideia à prática, do campus à carreira." }}</h1>
-        <p>{{ home.subtitulo_banner|default:"Aprender, se conectar e crescer: seu futuro começa aqui." }}</p>
+        <h1>{{ site_config.titulo_banner|default:"Da ideia à prática, do campus à carreira." }}</h1>
+        <p>{{ site_config.subtitulo_banner|default:"Aprender, se conectar e crescer: seu futuro começa aqui." }}</p>
 
         <div class="botoes-hero">
           {% if not user.is_authenticated %}
@@ -41,10 +41,7 @@
   </div>
 </section>
 
-
-<!-- =======================
-       SOBRE
-======================== -->
+<!-- ===================== SOBRE ===================== -->
 <section class="py-5 bg-white" id="sobre">
   <div class="container text-center">
 
@@ -63,7 +60,7 @@
         <div class="feature-card p-4 text-center h-100 icon-azul">
           <div class="feature-top">
             <div class="feature-icon">
-              <img src="{% static 'assets/img/icon1.png' %}">
+              <i class="bi bi-grid-fill"></i>
             </div>
           </div>
           <h5 class="fw-bold mt-3 title-card-index">Plataforma Integrada</h5>
@@ -78,7 +75,7 @@
         <div class="feature-card p-4 text-center h-100 icon-verde">
           <div class="feature-top">
             <div class="feature-icon">
-              <img src="{% static 'assets/img/icon2.png' %}">
+              <i class="bi bi-link-45deg"></i>
             </div>
           </div>
           <h5 class="fw-bold mt-3 title-card-index">Conexão Estratégica</h5>
@@ -93,7 +90,7 @@
         <div class="feature-card p-4 text-center h-100 icon-lilas">
           <div class="feature-top">
             <div class="feature-icon">
-              <img src="{% static 'assets/img/icon3.png' %}">
+              <i class="bi bi-door-open-fill"></i>
             </div>
           </div>
           <h5 class="fw-bold mt-3 title-card-index">Porta de Entrada</h5>
@@ -104,15 +101,12 @@
       </div>
 
     </div>
+
   </div>
 </section>
 
 
-
-
-<!-- =======================
-   PERFIS DE FORMAÇÃO
-======================== -->
+<!-- ===================== PERFIS ===================== -->
 <section class="cor py-5" id="perfis">
   <div class="container">
 
@@ -167,10 +161,7 @@
 </section>
 
 
-
-<!-- =======================
-     PARA ESTUDANTES
-======================== -->
+<!-- ===================== PARA ESTUDANTES ===================== -->
 <section class="section-dupla" id="estudante">
   <div class="container">
 
@@ -205,9 +196,7 @@
 </section>
 
 
-<!-- =======================
-      PARA EMPRESAS
-======================== -->
+<!-- ===================== PARA EMPRESAS ===================== -->
 <section class="section-dupla bg-branco cor" id="empresas">
   <div class="container">
 
@@ -243,9 +232,8 @@
 </section>
 
 
-<!-- =======================
-      CONTATO
-======================== -->
+
+<!-- ===================== CONTATO ===================== -->
 <section class="contato py-5" id="contato">
   <div class="container">
 
@@ -281,21 +269,24 @@
         </p> 
         <p><i class="bi bi-envelope-fill icon-contato me-2"></i>
           {{ site_config.email_contato|default:"contato@ifrn.edu.br" }}
-        </p> {% if site_config.mapa_embed %} 
-        <div class="ratio ratio-16x9 mt-3"> 
-          {{ site_config.mapa_embed|safe }} 
-        </div> {% else %} 
-        <img src="https://via.placeholder.com/300x200.png" class="img-fluid rounded mt-3 shadow-sm"> {% endif %}
-        </div>
-        {% if site_config.mapa_embed %}
-          <div class="ratio ratio-16x9 mt-3">{{ site_config.mapa_embed|safe }}</div>
-        {% endif %}
+        </p>
 
+        {% if site_config.mapa_embed %}
+          <div class="ratio ratio-16x9 mt-3"> 
+            {{ site_config.mapa_embed|safe }} 
+          </div>
+        {% else %}
+          <img src="https://via.placeholder.com/300x200.png" class="img-fluid rounded mt-3 shadow-sm">
+        {% endif %}
       </div>
 
     </div>
+
   </div>
 </section>
+
+
+<!-- ===================== SCRIPT DO CARROSSEL ===================== -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const cards = Array.from(document.querySelectorAll(".perfil-card"));
@@ -347,6 +338,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateCarousel();
 });
-
 </script>
+
 {% endblock %}

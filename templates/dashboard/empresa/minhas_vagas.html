@@ -5,113 +5,159 @@
 
 {% block conteudo %}
 
-<h2 class="mb-4 d-flex align-items-center title-dashboard">
-    <i class="bi bi-briefcase me-2"></i>
-    Minhas Vagas
+<h2 class="title-dashboard mb-4">
+    <i class="bi bi-briefcase me-2"></i>Minhas Vagas
 </h2>
 
-<div class="row g-4">
+{% if vagas %}
+
+<div class="row g-3">
 
     {% for vaga in vagas %}
-    <div class="col-md-6 col-lg-4">
-        <div class="vaga-card">
+    <div class="col-12 col-md-6 col-lg-4">
 
-            <!-- Capa superior -->
-            <div class="vaga-card-top"></div>
+        <div class="card-list">
 
-            <!-- Overlay com ações -->
-            <div class="vaga-overlay">
-                <!-- VER DETALHES (abre modal CSS) -->
-                <a href="#modal-vaga-{{ vaga.id }}" class="overlay-btn view">
-                    <i class="bi bi-eye-fill"></i>
-                </a>
+            <!-- Título -->
+            <div class="card-title">{{ vaga.titulo }}</div>
 
-                <!-- EDITAR -->
-                <a href="{% url 'dashboard:empresa_editar_vaga' vaga.id %}" 
-                   class="overlay-btn edit">
-                    <i class="bi bi-pencil-square"></i>
-                </a>
-
-                <!-- EXCLUIR -->
-                <a href="{% url 'dashboard:empresa_excluir_vaga' vaga.id %}" 
-                   class="overlay-btn delete">
-                    <i class="bi bi-trash-fill"></i>
-                </a>
+            <!-- Empresa -->
+            <div class="card-meta">
+                <i class="bi bi-building me-1"></i>
+                {{ vaga.empresa.nome }}
             </div>
 
-            <!-- Conteúdo -->
-            <div class="vaga-card-content">
+            <!-- Cidade -->
+            <div class="card-meta">
+                <i class="bi bi-geo-alt me-1"></i>
+                {{ vaga.cidade|default:"Cidade não informada" }}
+            </div>
 
-                <div class="vaga-card-header">
-                    <h5 class="vaga-title">{{ vaga.titulo }}</h5>
+            <!-- Status -->
+            <div class="mt-2">
+                {% if vaga.status == "pendente" %}
+                    <span class="badge pend"><i class="bi bi-hourglass-split me-1"></i>Pendente</span>
 
-                    <span class="vaga-label label-{{ vaga.status }}">
-                        {{ vaga.get_status_display }}
-                    </span>
-                </div>
+                {% elif vaga.status == "aprovada" %}
+                    <span class="badge aprov"><i class="bi bi-check2-circle me-1"></i>Aprovada</span>
 
-                <p class="vaga-desc">
-                    {{ vaga.descricao|truncatewords:22 }}
-                </p>
+                {% elif vaga.status == "reprovada" %}
+                    <span class="badge recs"><i class="bi bi-x-circle me-1"></i>Reprovada</span>
+
+                {% elif vaga.status == "encerrada" %}
+                    <span class="badge anls"><i class="bi bi-slash-circle me-1"></i>Encerrada</span>
+                {% endif %}
+            </div>
+
+            <!-- AÇÕES -->
+            <div class="card-actions">
+
+                <!-- abrir modal -->
+                <a href="#modal-vaga-{{ vaga.id }}" class="btn-outline-action">
+                    <i class="bi bi-eye"></i> Ver
+                </a>
+
+                <a href="{% url 'dashboard:empresa_editar_vaga' vaga.id %}"
+                   class="btn-outline-action">
+                    <i class="bi bi-pencil"></i> Editar
+                </a>
+
+                <a href="{% url 'dashboard:empresa_excluir_vaga' vaga.id %}"
+                   class="btn-outline-action">
+                    <i class="bi bi-trash"></i> Excluir
+                </a>
 
             </div>
 
         </div>
     </div>
 
-    <!-- ===========================
-         MODAL CSS-ONLY DA VAGA
-    ============================ -->
+
+    <!-- =====================================================
+         MODAL — MESMA ESTRUTURA DA PÁGINA DE CANDIDATURAS
+    ====================================================== -->
     <div id="modal-vaga-{{ vaga.id }}" class="modal-vaga">
 
         <div class="modal-content-vaga">
 
-            <!-- FECHAR MODAL -->
-            <a href="#" class="modal-close">
-                <i class="bi bi-x-lg"></i>
-            </a>
+            <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
 
-            <h3 class="modal-title">{{ vaga.titulo }}</h3>
+            <h3 class="title-section fw-bold">{{ vaga.titulo }}</h3>
 
-            <p><strong>Status:</strong> {{ vaga.get_status_display }}</p>
-            <p><strong>Tipo:</strong> {{ vaga.get_tipo_display }}</p>
-            <p><strong>Modalidade:</strong> {{ vaga.get_modalidade_display }}</p>
+            <div class="modal-badges">
 
-            {% if vaga.remuneracao %}
-            <p><strong>Remuneração:</strong> R$ {{ vaga.remuneracao }}</p>
-            {% endif %}
+                <span class="tag-chip">
+                    <i class="bi bi-buildings"></i> {{ vaga.empresa.nome|upper }}
+                </span>
 
-            <p><strong>Cidade:</strong> {{ vaga.cidade }}</p>
-            <p><strong>Bairro:</strong> {{ vaga.bairro }}</p>
+                <span class="tag-chip">
+                    <i class="bi bi-geo-alt"></i> {{ vaga.cidade|default:"-" }}/RN
+                </span>
+
+                <span class="tag-chip">
+                    <i class="bi bi-briefcase"></i> {{ vaga.get_tipo_display }}
+                </span>
+
+                {% if vaga.remuneracao %}
+                <span class="tag-chip">
+                    <i class="bi bi-cash"></i> R$ {{ vaga.remuneracao }}
+                </span>
+                {% endif %}
+
+            </div>
 
             <hr>
 
-            <p><strong>Descrição Completa:</strong></p>
-            <p>{{ vaga.descricao }}</p>
+            <h5 class="title-section">Descrição</h5>
+            <p>{{ vaga.descricao|default:"Sem descrição informada." }}</p>
 
             {% if vaga.requisitos %}
-            <hr>
-            <p><strong>Requisitos:</strong></p>
+            <h5 class="title-section">Requisitos</h5>
             <p>{{ vaga.requisitos }}</p>
             {% endif %}
 
-            <hr>
-
-            <p class="text-muted small">
-                Publicada pela empresa:
-                <strong>{{ vaga.empresa.nome }}</strong>
-            </p>
+            {% if vaga.data_publicacao %}
+            <span class="modal-date-chip">
+                Publicada em {{ vaga.data_publicacao|date:"d/m/Y" }}
+            </span>
+            {% endif %}
 
         </div>
+
     </div>
     <!-- fim modal -->
 
-    {% empty %}
-    <div class="text-center mt-4">
-        <p class="text-muted">Você ainda não cadastrou nenhuma vaga.</p>
-    </div>
     {% endfor %}
 
 </div>
+
+{% else %}
+
+<div class="empty-state-wrapper py-5"
+     style="
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:32px;
+        text-align:left;
+     ">
+
+    <!-- IMAGEM GRANDE -->
+    <img src="{% static 'assets/img/empty.svg' %}"
+         alt="Nenhuma candidatura recebida"
+         class="empty-img"
+         style="width: 340px; height:auto; flex-shrink:0;">
+
+    <!-- TEXTO -->
+    <div class="empty-state-text">
+        <h5 class="fw-bold mb-2">Você ainda não cadastrou nenhuma vaga</h5>
+
+        <p class="text-muted m-0" style="max-width:480px;">
+            Adicione sua primeira vaga para começar a receber candidaturas dos alunos.
+        </p>
+    </div>
+
+</div>
+{% endif %}
 
 {% endblock %}

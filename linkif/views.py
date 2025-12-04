@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django_tables2 import RequestConfig
 
 from .filters import VagaFilter,AlunoFilter
-from .tables import AlunoTable
+from .tables import UsuarioTabela
 from .models import (
     Vaga,
     Candidatura,
@@ -24,7 +24,7 @@ def is_aluno(user):
 
 
 def index(request):
-    site = SiteConfig.objects.first()
+    site_config = SiteConfig.objects.first()
     vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")[:6]
 
     # Carrega apenas os perfis REAIS, sem duplicar
@@ -43,7 +43,7 @@ def index(request):
             return redirect("linkif:index")
 
     return render(request, "linkif/index.html", {
-        "site": site,
+        "site": site_config,
         "vagas": vagas,
         "perfis": perfis,  
         "form": form,
@@ -127,7 +127,7 @@ def para_estudantes(request):
     })
 
 
-@login_required
+
 def para_empresas(request):
     return render(request, "linkif/para_empresas.html", {
     })
@@ -142,7 +142,7 @@ def explorar_perfis(request):
     qs = Usuario.objects.filter(tipo="aluno", is_approved=True).order_by("nome")
 
     filtro = AlunoFilter(request.GET, queryset=qs)
-    table = AlunoTable(filtro.qs)
+    table = UsuarioTabela(filtro.qs)
 
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
 

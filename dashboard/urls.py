@@ -30,8 +30,9 @@ urlpatterns = [
     path(
     "empresa/candidatura/<int:cand_id>/",
     views.empresa_candidatura_detalhe,
-    name="empresa_candidatura_detalhe"
-),
+    name="empresa_candidatura_detalhe"),
+    path("alunos/<int:pk>/", views.ver_perfil_aluno, name="ver_perfil_aluno"),
+
 
     # ==============================
     # COORDENAÇÃO — PAINEL
@@ -136,6 +137,12 @@ path(
     name="remover_area"
 ),
 
+path("empresas/<int:pk>/", views.ver_perfil_empresa, name="ver_perfil_empresa"),
+path("coordenacao/reprovar-empresa/<int:user_id>/",
+     views.reprovar_empresa_action, name="reprovar_empresa_action"),
+path("coordenacao/reprovar-aluno/<int:user_id>/",
+     views.reprovar_aluno_action, name="reprovar_aluno_action"),
+path("configuracoes/site/", views.site_config, name="site_config"),
 
     # ==============================
     # PERFIL

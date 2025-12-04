@@ -2,79 +2,115 @@
 {% load static %}
 
 {% block titulo %}
-    {% if perfil %}Editar Perfil: {{ perfil.nome }}{% else %}Novo Perfil de Formação{% endif %}
+    {% if perfil %}
+        Editar Perfil: {{ perfil.nome }}
+    {% else %}
+        Novo Perfil de Formação
+    {% endif %}
 {% endblock %}
 
 {% block conteudo %}
 
-<h2 class="page-title mb-4">
+<h2 class="title-dashboard mb-4">
     <i class="bi bi-diagram-3 me-2"></i>
-    {% if perfil %}Editar Perfil de Formação{% else %}Criar Novo Perfil de Formação{% endif %}
+    {% if perfil %}
+        Editar Perfil de Formação
+    {% else %}
+        Criar Novo Perfil de Formação
+    {% endif %}
 </h2>
 
-<div class="card shadow-sm">
-    <div class="card-body">
+<!-- CARD DO FORM -->
+<div class="soft-card p-4 mb-4">
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+    <h5 class="section-title mb-3">
+        <i class="bi bi-info-circle me-1 "></i> Informações do Perfil
+    </h5>
 
-            {{ form.as_p }}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-            <button class="btn btn-success">
+        {{ form.as_p }}
+
+        <div class="d-flex gap-2 mt-3">
+            <button class="btn-save w-100">
                 <i class="bi bi-save me-1"></i> Salvar
             </button>
 
-            <a href="{% url 'dashboard:listar_perfis' %}" class="btn btn-secondary ms-2">
-                Voltar
+            <a href="{% url 'dashboard:listar_perfis' %}" class="btn-cancel w-100"
+               style="background: var(--gray-300); color: var(--gray-900); box-shadow:none;">
+                <i class="bi bi-arrow-left me-1"></i> Voltar
             </a>
-        </form>
-    </div>
+        </div>
+    </form>
+
 </div>
 
+
 {% if perfil %}
-<hr class="my-4">
+<!-- ======================== COMPETÊNCIAS ========================= -->
 
-<h4><i class="bi bi-layers me-2"></i> Competências</h4>
+<div class="soft-card p-4 mb-4">
+    <h5 class="section-title mb-3">
+        <i class="bi bi-layers me-1"></i> Competências
+    </h5>
 
-<form method="post" action="{% url 'dashboard:adicionar_competencia' perfil.id %}" class="d-flex gap-2 mb-3">
-    {% csrf_token %}
-    <input type="text" name="nome" class="form-control" placeholder="Adicionar nova competência..." required>
-    <button class="btn btn-primary">Adicionar</button>
-</form>
+    <form method="post" action="{% url 'dashboard:adicionar_competencia' perfil.id %}" class="d-flex gap-2 mb-3">
+        {% csrf_token %}
+        <input type="text" name="texto" class="form-control" placeholder="Adicionar nova competência..." required>
+        <button class="btn-save">Adicionar</button>
+    </form>
 
-<ul class="list-group mb-4">
-    {% for c in competencias %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        {{ c.nome }}
-        <a href="{% url 'dashboard:remover_competencia' c.id %}" class="btn btn-sm btn-danger">
-            <i class="bi bi-x-circle"></i>
-        </a>
-    </li>
-    {% empty %}
-    <li class="list-group-item text-muted">Nenhuma competência cadastrada.</li>
-    {% endfor %}
-</ul>
+    {% if competencias %}
+    <ul class="linkif-list-group">
+        {% for c in competencias %}
+        <li class="list-item">
+            <span>{{ c.texto }}</span>
 
-<h4><i class="bi bi-diagram-3-fill me-2"></i> Áreas de Atuação</h4>
+            <a href="{% url 'dashboard:remover_competencia' c.id %}" class="btn-danger-table">
+               <i class="bi bi-x-circle"></i>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p class="text-muted m-0">Nenhuma competência cadastrada.</p>
+    {% endif %}
+</div>
 
-<form method="post" action="{% url 'dashboard:adicionar_area' perfil.id %}" class="d-flex gap-2 mb-3">
-    {% csrf_token %}
-    <input type="text" name="nome" class="form-control" placeholder="Adicionar nova área..." required>
-    <button class="btn btn-primary">Adicionar</button>
-</form>
 
-<ul class="list-group">
-    {% for a in areas %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        {{ a.nome }}
-        <a href="{% url 'dashboard:remover_area' a.id %}" class="btn btn-sm btn-danger">
-            <i class="bi bi-x-circle"></i>
-        </a>
-    </li>
-    {% empty %}
-    <li class="list-group-item text-muted">Nenhuma área cadastrada.</li>
-    {% endfor %}
-</ul>
+<!-- ======================== ÁREAS DE ATUAÇÃO ========================= -->
+
+<div class="soft-card p-4 mb-4">
+
+    <h5 class="section-title mb-3">
+        <i class="bi bi-diagram-3-fill me-1"></i> Áreas de Atuação
+    </h5>
+
+    <form method="post" action="{% url 'dashboard:adicionar_area' perfil.id %}" class="d-flex gap-2 mb-3">
+        {% csrf_token %}
+        <input type="text" name="titulo" class="form-control" placeholder="Adicionar nova área..." required>
+        <input type="text" name="descricao" class="form-control" placeholder="Descrição (opcional)">
+        <button class="btn-save">Adicionar</button>
+    </form>
+
+    {% if areas %}
+    <ul class="linkif-list-group">
+        {% for a in areas %}
+        <li class="list-item">
+            <span>{{ a.titulo }}</span>
+
+            <a href="{% url 'dashboard:remover_area' a.id %}" class="btn-danger-table">
+                <i class="bi bi-x-circle"></i>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p class="text-muted m-0">Nenhuma área cadastrada.</p>
+    {% endif %}
+</div>
+
 {% endif %}
 
 {% endblock %}

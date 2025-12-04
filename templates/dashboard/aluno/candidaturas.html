@@ -1,75 +1,127 @@
 {% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block titulo %}Minhas Candidaturas{% endblock %}
 
 {% block conteudo %}
 
-<h2 class="mb-4">Minhas Candidaturas</h2>
+<h2 class="title-dashboard mb-4">
+    <i class="bi-file-earmark-check me-2"></i>Minhas Candidaturas
+</h2>
 
 {% if candidaturas %}
+
 <div class="row g-3">
 
     {% for c in candidaturas %}
     <div class="col-12 col-md-6 col-lg-4">
+
         <div class="card-list">
 
-            <!-- Título da vaga -->
             <div class="card-title">{{ c.vaga.titulo }}</div>
 
-            <!-- Empresa -->
             <div class="card-meta">
                 <i class="bi bi-building me-1"></i>
-                {{ c.vaga.empresa.nome_empresa }}
+                {{ c.vaga.empresa.nome }}
             </div>
 
-            <!-- Data de candidatura -->
             <div class="card-meta">
                 <i class="bi bi-calendar2-week me-1"></i>
                 {{ c.data_candidatura|date:"d/m/Y" }}
             </div>
 
-            <!-- Status da candidatura -->
             <div class="mt-2">
                 {% if c.status == "pendente" %}
-                    <span class="badge bg-warning text-dark px-3 py-2">
-                        <i class="bi bi-hourglass-split me-1"></i> Pendente
-                    </span>
+                    <span class="badge pend"><i class="bi bi-hourglass-split me-1"></i>Pendente</span>
                 {% elif c.status == "em_analise" %}
-                    <span class="badge bg-info text-dark px-3 py-2">
-                        <i class="bi bi-search me-1"></i> Em análise
-                    </span>
+                    <span class="badge anls"><i class="bi bi-search me-1"></i>Em análise</span>
                 {% elif c.status == "aprovado" %}
-                    <span class="badge bg-success px-3 py-2">
-                        <i class="bi bi-check2-circle me-1"></i> Aprovado
-                    </span>
+                    <span class="badge aprov"><i class="bi bi-check2-circle me-1"></i>Aprovado</span>
                 {% elif c.status == "recusado" %}
-                    <span class="badge bg-danger px-3 py-2">
-                        <i class="bi bi-x-circle me-1"></i> Recusado
-                    </span>
+                    <span class="badge recs"><i class="bi bi-x-circle me-1"></i>Recusado</span>
                 {% endif %}
             </div>
 
-            <!-- Ações -->
             <div class="card-actions">
 
-                <a href="{% url 'linkif:candidatar_vaga' c.vaga.id %}"
-                   class="btn-outline-action">
+                <!-- AGORA ABRE O MODAL COM :target -->
+                <a href="#modal-{{ c.id }}" class="btn-outline-action">
                     <i class="bi bi-eye"></i> Ver Vaga
                 </a>
 
                 <a href="{% url 'dashboard:cancelar_candidatura' c.id %}"
-                   class="btn-delete">
+                   class="btn-outline-action">
                     <i class="bi bi-trash"></i> Cancelar
                 </a>
 
             </div>
         </div>
     </div>
+
+
+    <!-- ======================================================
+         MODAL DETALHES DA VAGA — MESMAS CLASSES DA SUA PÁGINA
+    ====================================================== -->
+    <div id="modal-{{ c.id }}" class="modal-vaga">
+
+        <div class="modal-content-vaga">
+
+            <!-- fechar modal -->
+            <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+
+            <h3 class="title-section fw-bold">{{ c.vaga.titulo }}</h3>
+
+            <div class="modal-badges">
+                <span class="tag-chip"><i class="bi bi-buildings"></i> {{ c.vaga.empresa.nome|upper }}</span>
+                <span class="tag-chip"><i class="bi bi-geo-alt"></i> {{ c.vaga.cidade }}/RN</span>
+                <span class="tag-chip"><i class="bi bi-briefcase"></i> {{ c.vaga.get_tipo_display }}</span>
+
+                {% if c.vaga.remuneracao %}
+                <span class="tag-chip"><i class="bi bi-cash"></i> R$ {{ c.vaga.remuneracao }}</span>
+                {% endif %}
+            </div>
+
+            <hr>
+
+            <h5 class="title-section">Descrição</h5>
+            <p>{{ c.vaga.descricao|default:"Sem descrição informada." }}</p>
+
+            <h5 class="title-section">Requisitos</h5>
+            <p>{{ c.vaga.requisitos|default:"Nenhum requisito informado." }}</p>
+
+            {% if c.vaga.data_publicacao %}
+            <span class="modal-date-chip">
+                Publicada em {{ c.vaga.data_publicacao|date:"d/m/Y" }}
+            </span>
+            {% endif %}
+
+        </div>
+    </div>
+
     {% endfor %}
 </div>
-
 {% else %}
-<p class="text-muted">
-    Você ainda não se candidatou a nenhuma vaga.
-</p>
+
+<div class="empty-state-wrapper d-flex align-items-center gap-3 py-4">
+
+    <!-- ILUSTRAÇÃO -->
+    <div class="empty-state-image">
+        <img src="{% static 'assets/img/empty.svg' %}" 
+             alt="Nenhuma candidatura encontrada" 
+             class="empty-img">
+    </div>
+
+    <!-- TEXTO -->
+    <div class="empty-state-text">
+        <h5 class="fw-bold mb-1">Você ainda não se candidatou a nenhuma vaga!</h5>
+        <p class="text-muted m-0">
+            Explore as oportunidades e envie sua primeira candidatura.
+        </p>
+    </div>
+
+</div>
+
 {% endif %}
+
 
 {% endblock %}

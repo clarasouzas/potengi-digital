@@ -4,8 +4,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.utils import timezone
-from linkif.models import PerfilFormacao, Competencia, AreaAtuacaoPerfil,Vaga, Candidatura
-from linkif.forms import PerfilFormacaoForm, CompetenciaForm, AreaAtuacaoForm,VagaForm
+from django_tables2 import RequestConfig
+from django.core.paginator import Paginator
+from linkif.models import PerfilFormacao, Competencia, AreaAtuacaoPerfil,Vaga, Candidatura,SiteConfig
+from linkif.forms import PerfilFormacaoForm, CompetenciaForm, AreaAtuacaoForm,VagaForm, SiteConfigForm
 
 from usuarios.models import Usuario
 
@@ -13,10 +15,18 @@ from usuarios.forms import (
     AlunoEditForm,
     EmpresaEditForm,
     CoordenadorEditForm,
-    UsuarioEditFormSimples
+    UsuarioEditFormSimples,
 )
 
 from django.shortcuts import redirect
+from dashboard.tables import (
+    CandidaturasRecebidasTable,
+    AprovarAlunosTable,
+    AprovarEmpresasTable, 
+    AprovarVagasTable,
+    UsuariosTable,
+    PerfisFormacaoTable,
+)
 from django.contrib import messages
 
 def requer_aprovacao(tipo):
@@ -85,14 +95,17 @@ def aluno_painel(request):
 @login_required
 @user_passes_test(lambda u: u.tipo == "aluno")
 @requer_aprovacao("aluno")
-def aluno_candidaturas(request):
 
-    candidaturas = Candidatura.objects.filter(
-        aluno=request.user
-    ).order_by("-data_candidatura")
+def aluno_candidaturas(request):
+    lista = Candidatura.objects.filter(aluno=request.user).order_by('-data_candidatura')
+
+    paginator = Paginator(lista, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "dashboard/aluno/candidaturas.html", {
-        "candidaturas": candidaturas,
+        "candidaturas": page_obj,
+        "page_obj": page_obj
     })
 @login_required
 @user_passes_test(lambda u: u.tipo == "aluno")
@@ -204,13 +217,30 @@ def empresa_excluir_vaga(request, vaga_id):
 @user_passes_test(lambda u: u.tipo == "empresa")
 @requer_aprovacao("empresa")
 def empresa_candidaturas(request):
-    candidaturas = Candidatura.objects.filter(
-        vaga__empresa=request.user
-    ).order_by("-data_candidatura")
+    candidaturas = Candidatura.objects.filter(vaga__empresa=request.user)
 
-    return render(request, "dashboard/empresa/candidaturas_recebidas.html", {
-        "candidaturas": candidaturas,
+    table = CandidaturasRecebidasTable(candidaturas)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
+
+    return render(request, "dashboard/empresa/candidaturas_tabela.html", {
+        "table": table
     })
+@login_required
+def ver_perfil_aluno(request, pk):
+    aluno = get_object_or_404(Usuario, id=pk, tipo="aluno")
+    
+    # Permitir empresa, coordenação e o próprio aluno
+    if request.user.tipo not in ["empresa", "coordenador"] and request.user != aluno:
+        return redirect("dashboard:inicio")
+
+    return render(request, "dashboard/aluno/perfil_publico.html", {
+        "aluno": aluno
+    })
+@login_required
+def ver_perfil_empresa(request, pk):
+    empresa = get_object_or_404(Usuario, pk=pk, tipo="empresa")
+    return render(request, "dashboard/empresa/perfil_empresa.html", {"empresa": empresa})
+
 @login_required
 @user_passes_test(lambda u: u.tipo == "empresa")
 @requer_aprovacao("empresa")
@@ -268,10 +298,12 @@ def coordenacao_painel(request):
 @user_passes_test(is_coordenador)
 def aprovar_alunos(request):
     alunos = Usuario.objects.filter(tipo="aluno", is_approved=False)
-    return render(request, "dashboard/coordenacao/aprovar_alunos.html", {
-        "alunos": alunos
-    })
+    table = AprovarAlunosTable(alunos)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
+    return render(request, "dashboard/coordenacao/aprovar_alunos.html", {
+        "table": table
+    })
 
 @login_required
 @user_passes_test(is_coordenador)
@@ -281,16 +313,25 @@ def aprovar_aluno_action(request, user_id):
     aluno.save()
     messages.success(request, "Aluno aprovado com sucesso.")
     return redirect("dashboard:aprovar_alunos")
+@login_required
+@user_passes_test(is_coordenador)
+def reprovar_aluno_action(request, user_id):
+    aluno = get_object_or_404(Usuario, id=user_id, tipo="aluno")
 
+    aluno.delete()  
 
-# ------------------------ Aprovar Empresas ------------------------
-
+    messages.success(request, "Aluno reprovado e removido do sistema.")
+    return redirect("dashboard:aprovar_alunos")
 @login_required
 @user_passes_test(is_coordenador)
 def aprovar_empresas(request):
     empresas = Usuario.objects.filter(tipo="empresa", is_approved=False)
+
+    table = AprovarEmpresasTable(empresas)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+
     return render(request, "dashboard/coordenacao/aprovar_empresas.html", {
-        "empresas": empresas
+        "table": table
     })
 
 
@@ -300,20 +341,28 @@ def aprovar_empresa_action(request, user_id):
     empresa = get_object_or_404(Usuario, id=user_id, tipo="empresa")
     empresa.is_approved = True
     empresa.save()
-    messages.success(request, "Empresa aprovada com sucesso.")
+    messages.success(request, "Empresa aprovada com sucesso!")
     return redirect("dashboard:aprovar_empresas")
 
-
+@login_required
+@user_passes_test(is_coordenador)
+def reprovar_empresa_action(request, user_id):
+    empresa = get_object_or_404(Usuario, id=user_id, tipo="empresa")
+    empresa.delete()
+    messages.error(request, "Empresa rejeitada e removida.")
+    return redirect("dashboard:aprovar_empresas")
 # ------------------------ Aprovar Vagas ------------------------
 
 @login_required
 @user_passes_test(is_coordenador)
 def aprovar_vagas(request):
-    vagas = Vaga.objects.filter(status="pendente").order_by("-id")
-    return render(request, "dashboard/coordenacao/aprovar_vagas.html", {
-        "vagas": vagas
-    })
+    vagas = Vaga.objects.filter(status="pendente")
+    table = AprovarVagasTable(vagas)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
+    return render(request, "dashboard/coordenacao/aprovar_vagas.html", {
+        "table": table
+    })
 
 @login_required
 @user_passes_test(is_coordenador)
@@ -383,11 +432,13 @@ def coordenacao_empresa_excluir(request, empresa_id):
 @login_required
 @user_passes_test(is_coordenador)
 def coordenacao_usuarios(request):
-    usuarios = Usuario.objects.all().order_by("-id")
-    return render(request, "dashboard/coordenacao/usuarios_list.html", {
-        "usuarios": usuarios
-    })
+    usuarios = Usuario.objects.all().order_by("tipo", "nome")
+    table = UsuariosTable(usuarios)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
+    return render(request, "dashboard/coordenacao/usuarios_list.html", {
+        "table": table
+    })
 
 @login_required
 @user_passes_test(is_coordenador)
@@ -440,8 +491,18 @@ def tornar_admin(request, user_id):
 
 @login_required
 def meu_perfil(request):
+    user = request.user
+
+    # Foto (só funciona se existir campo user.foto)
+    foto = user.foto.url if hasattr(user, "foto") and user.foto else None
+
+    # Ícone único para todos os tipos
+    icone = "bi bi-person-circle"
+
     return render(request, "dashboard/meu_perfil.html", {
-        "perfil": request.user
+        "perfil": user,
+        "foto": foto,
+        "icone": icone,
     })
 
 
@@ -478,10 +539,12 @@ def editar_perfil(request):
 @user_passes_test(is_coordenador)
 def listar_perfis(request):
     perfis = PerfilFormacao.objects.all()
-    return render(request, "dashboard/coordenacao/perfis_lista.html", {
-        "perfis": perfis
-    })
+    table = PerfisFormacaoTable(perfis)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
+    return render(request, "dashboard/coordenacao/perfis_lista.html", {
+        "table": table
+    })
 
 @login_required
 @user_passes_test(is_coordenador)
@@ -500,18 +563,16 @@ def editar_perfil_formacao(request, pk=None):
     else:
         form = PerfilFormacaoForm(instance=perfil)
 
-    competencias = Competencia.objects.filter(perfil=perfil) if perfil else []
-    areas = AreaAtuacaoPerfil.objects.filter(perfil=perfil) if perfil else []
-
     return render(request, "dashboard/coordenacao/perfil_form.html", {
         "form": form,
         "perfil": perfil,
-        "competencias": competencias,
-        "areas": areas,
+        "competencias": perfil.competencias.all() if perfil else [],
+        "areas": perfil.areas.all() if perfil else [],
     })
 
-
-
+# ==========================================================
+# EXCLUIR PERFIL
+# ==========================================================
 @login_required
 @user_passes_test(is_coordenador)
 def excluir_perfil_formacao(request, pk):
@@ -521,57 +582,131 @@ def excluir_perfil_formacao(request, pk):
     return redirect("dashboard:listar_perfis")
 
 
+# ==========================================================
+# ADICIONAR COMPETÊNCIA
+# ==========================================================
 @login_required
 @user_passes_test(is_coordenador)
 def adicionar_competencia(request, perfil_id):
     perfil = get_object_or_404(PerfilFormacao, pk=perfil_id)
 
     if request.method == "POST":
-        form = CompetenciaForm(request.POST)
-        if form.is_valid():
-            comp = form.save(commit=False)
-            comp.perfil = perfil
-            comp.save()
-            return redirect("dashboard:editar_perfil_formacao", pk=perfil.id)
+        texto = request.POST.get("texto", "").strip()
 
+        if not texto:
+            messages.error(request, "A competência não pode estar vazia.")
+            return redirect("dashboard:editar_perfil_formacao", pk=perfil_id)
 
+        if perfil.competencias.filter(texto__iexact=texto).exists():
+            messages.warning(request, "Esta competência já está cadastrada.")
+            return redirect("dashboard:editar_perfil_formacao", pk=perfil_id)
+
+        Competencia.objects.create(perfil=perfil, texto=texto)
+        messages.success(request, "Competência adicionada com sucesso!")
+    
+    return redirect("dashboard:editar_perfil_formacao", pk=perfil_id)
+
+# ==========================================================
+# REMOVER COMPETÊNCIA
+# ==========================================================
 @login_required
 @user_passes_test(is_coordenador)
 def remover_competencia(request, pk):
     comp = get_object_or_404(Competencia, pk=pk)
     perfil_id = comp.perfil.id
     comp.delete()
+    messages.success(request, "Competência removida.")
     return redirect("dashboard:editar_perfil_formacao", pk=perfil_id)
 
 
+# ==========================================================
+# ADICIONAR ÁREA
+# ==========================================================
 @login_required
 @user_passes_test(is_coordenador)
 def adicionar_area(request, perfil_id):
     perfil = get_object_or_404(PerfilFormacao, pk=perfil_id)
 
     if request.method == "POST":
-        form = AreaAtuacaoForm(request.POST)
-        if form.is_valid():
-            area = form.save(commit=False)
-            area.perfil = perfil
-            area.save()
-            return redirect("dashboard:editar_perfil_formacao", pk=perfil.id)
+        titulo = request.POST.get("titulo", "").strip()
+        descricao = request.POST.get("descricao", "").strip()
+
+        if not titulo:
+            messages.error(request, "A área deve ter um título.")
+            return redirect("dashboard:editar_perfil_formacao", pk=perfil_id)
+
+        AreaAtuacaoPerfil.objects.create(
+            perfil=perfil,
+            titulo=titulo,
+            descricao=descricao
+        )
+
+        messages.success(request, "Área adicionada!")
+    
+    return redirect("dashboard:editar_perfil_formacao", pk=perfil_id)
 
 
+# ==========================================================
+# REMOVER ÁREA
+# ==========================================================
 @login_required
 @user_passes_test(is_coordenador)
 def remover_area(request, pk):
     area = get_object_or_404(AreaAtuacaoPerfil, pk=pk)
     perfil_id = area.perfil.id
     area.delete()
+    messages.success(request, "Área removida.")
     return redirect("dashboard:editar_perfil_formacao", pk=perfil_id)
-
 
 # ===========================================================
 # RELATÓRIOS
 # ===========================================================
-
 @login_required
 @user_passes_test(is_coordenador)
 def relatorios(request):
-    return render(request, "dashboard/coordenacao/relatorios.html")
+
+    total_usuarios = Usuario.objects.count()
+    total_alunos = Usuario.objects.filter(tipo="aluno").count()
+    total_empresas = Usuario.objects.filter(tipo="empresa").count()
+
+    vagas_pendentes = Vaga.objects.filter(status="pendente").count()
+    vagas_aprovadas = Vaga.objects.filter(status="aprovada").count()
+    vagas_reprovadas = Vaga.objects.filter(status="reprovada").count()
+
+    candidaturas_total = Candidatura.objects.count()
+    candidaturas_aprovadas = Candidatura.objects.filter(status="aprovado").count()
+    candidaturas_recusadas = Candidatura.objects.filter(status="recusado").count()
+    candidaturas_pendentes = Candidatura.objects.filter(status="pendente").count()
+
+    return render(request, "dashboard/coordenacao/relatorios.html", {
+        "total_usuarios": total_usuarios,
+        "total_alunos": total_alunos,
+        "total_empresas": total_empresas,
+
+        "vagas_pendentes": vagas_pendentes,
+        "vagas_aprovadas": vagas_aprovadas,
+        "vagas_reprovadas": vagas_reprovadas,
+
+        "candidaturas_total": candidaturas_total,
+        "candidaturas_aprovadas": candidaturas_aprovadas,
+        "candidaturas_recusadas": candidaturas_recusadas,
+        "candidaturas_pendentes": candidaturas_pendentes,
+    })
+@login_required
+@user_passes_test(is_coordenador)
+def site_config(request):
+    config = SiteConfig.objects.first()
+
+    if request.method == "POST":
+        form = SiteConfigForm(request.POST, request.FILES, instance=config)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Configurações atualizadas com sucesso!")
+            return redirect("dashboard:site_config")
+    else:
+        form = SiteConfigForm(instance=config)
+
+    return render(request, "dashboard/coordenacao/site_config.html", {
+        "form": form,
+        "config": config
+    })

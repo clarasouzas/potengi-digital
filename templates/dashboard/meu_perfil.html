@@ -3,130 +3,153 @@
 
 {% block conteudo %}
 
-<h2 class="page-title mb-4 title-dashboard">Meu Perfil</h2>
+<h2 class="title-dashboard mb-4">Meu Perfil</h2>
 
-<div class="card shadow-sm border-0 p-4">
+<div class="perfil-card shadow-sm">
 
-    <div class="row g-4 align-items-center">
+    <div class="row g-4">
 
         <!-- ==========================
-             FOTO + NOME
+             FOTO + AÇÕES
         =========================== -->
-        <div class="col-md-4 text-center">
+        <div class="col-lg-4 text-center">
 
-            <div class="p-4 rounded" style="background:#E7E8FB;">
+            <div class="perfil-foto-wrapper">
                 {% if foto %}
-                    <img src="{{ foto }}" class="avatar-lg rounded-circle shadow-sm"
-                    style="width:130px;height:130px;object-fit:cover;">
+                    <img src="{{ foto }}" class="perfil-foto">
                 {% else %}
-                    <i class="{{ icone }} rounded-circle d-inline-flex justify-content-center align-items-center"
-                    style="font-size:70px;width:130px;height:130px;background:white;color:#7a7a7a;"></i>
+                    <div class="perfil-foto-placeholder">
+                        <i class="{{ icone }}"></i>
+                    </div>
                 {% endif %}
             </div>
 
-            <h5 class="mt-3 mb-0 fw-semibold">
+            <h5 class="mt-3 fw-semibold perfil-nome">
                 {{ user.nome|default:user.email }}
             </h5>
 
-            <p class="text-muted small mb-3">{{ user.email }}</p>
+            <p class="perfil-email">{{ user.email }}</p>
 
-            <a href="{% url 'dashboard:editar_perfil' %}" class="btn btn-outline-primary btn-sm">
+            <a href="{% url 'dashboard:editar_perfil' %}" class="btn perfil-btn-editar">
                 <i class="bi bi-pencil me-1"></i> Editar Perfil
             </a>
+
         </div>
 
         <!-- ==========================
-             INFORMAÇÕES
+             DADOS DO PERFIL
         =========================== -->
-        <div class="col-md-8">
+        <div class="col-lg-8">
 
-            <div class="ps-md-4 border-start">
+            <div class="perfil-info">
 
-                <!-- Tipo -->
-                <div class="mb-3">
-                    <span class="label-title">Tipo de Usuário</span>
-                    <div class="value text-capitalize">{{ user.tipo }}</div>
+                <!-- E-mail -->
+                <div class="perfil-item">
+                    <span class="perfil-label">E-mail</span>
+                    <div class="perfil-value">{{ user.email }}</div>
                 </div>
 
-                <!-- Email -->
-                <div class="mb-3">
-                    <span class="label-title">E-mail</span>
-                    <div class="value">{{ user.email }}</div>
-                </div>
-
-                <!-- CAMPOS PARA ALUNO -->
                 {% if user.tipo == "aluno" %}
 
-                <div class="mb-3">
-                    <span class="label-title">Nome</span>
-                    <div class="value">{{ user.nome|default:"—" }}</div>
-                </div>
-
-                <div class="mb-3">
-                    <span class="label-title">Curso</span>
-                    <div class="value">{{ user.curso|default:"—" }}</div>
-                </div>
-
-                <div class="mb-3">
-                    <span class="label-title">Portfólio</span>
-                    <div class="value">
-                        {% if user.portfolio %}
-                            <a href="{{ user.portfolio }}" target="_blank">Abrir portfólio</a>
-                        {% else %}
-                            —
-                        {% endif %}
+                    <div class="perfil-item">
+                        <span class="perfil-label">Nome</span>
+                        <div class="perfil-value">{{ user.nome|default:"—" }}</div>
                     </div>
-                </div>
+
+                    <div class="perfil-item">
+                        <span class="perfil-label">Curso</span>
+                        <div class="perfil-value">{{ user.curso|default:"—" }}</div>
+                    </div>
+
+                    <!-- TELEFONE DO ALUNO -->
+                    <div class="perfil-item">
+                        <span class="perfil-label">Telefone</span>
+                        <div class="perfil-value">
+                            {% if user.telefone %}{{ user.telefone }}{% else %}—{% endif %}
+                        </div>
+                    </div>
+
+                    <!-- RESUMO DO ALUNO -->
+                    <div class="perfil-item">
+                        <span class="perfil-label">Resumo</span>
+                        <div class="perfil-value">
+                            {% if user.resumo %}
+                                {{ user.resumo|linebreaksbr }}
+                            {% else %}
+                                — 
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="perfil-item">
+                        <span class="perfil-label">Currículo</span>
+                        <div class="perfil-value">
+                            {% if user.curriculo %}
+                                <a href="{{ user.curriculo.url }}" class="perfil-link" target="_blank">Ver Currículo</a>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="perfil-item">
+                        <span class="perfil-label">Portfólio</span>
+                        <div class="perfil-value">
+                            {% if user.portfolio %}
+                                <a href="{{ user.portfolio }}" class="perfil-link" target="_blank">Abrir portfólio</a>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </div>
+                    </div>
 
                 {% endif %}
 
-                <!-- CAMPOS PARA EMPRESA -->
                 {% if user.tipo == "empresa" %}
 
-                <div class="mb-3">
-                    <span class="label-title">Nome da Empresa</span>
-                    <div class="value">{{ user.nome|default:"—" }}</div>
-                </div>
+                    <div class="perfil-item">
+                        <span class="perfil-label">Nome da Empresa</span>
+                        <div class="perfil-value">{{ user.nome|default:"—" }}</div>
+                    </div>
 
-                <div class="mb-3">
-                    <span class="label-title">CNPJ</span>
-                    <div class="value">{{ user.cnpj|default:"—" }}</div>
-                </div>
+                    <div class="perfil-item">
+                        <span class="perfil-label">CNPJ</span>
+                        <div class="perfil-value">{{ user.cnpj|default:"—" }}</div>
+                    </div>
 
-                <div class="mb-3">
-                    <span class="label-title">Telefone</span>
-                    <div class="value">{{ user.telefone|default:"—" }}</div>
-                </div>
+                    <div class="perfil-item">
+                        <span class="perfil-label">Telefone</span>
+                        <div class="perfil-value">{{ user.telefone|default:"—" }}</div>
+                    </div>
 
-                <div class="mb-3">
-                    <span class="label-title">Cidade</span>
-                    <div class="value">{{ user.cidade|default:"—" }}</div>
-                </div>
+                    <div class="perfil-item">
+                        <span class="perfil-label">Cidade</span>
+                        <div class="perfil-value">{{ user.cidade|default:"—" }}</div>
+                    </div>
 
-                <div class="mb-3">
-                    <span class="label-title">Descrição</span>
-                    <div class="value">{{ user.descricao|default:"—" }}</div>
-                </div>
+                    <div class="perfil-item">
+                        <span class="perfil-label">Descrição</span>
+                        <div class="perfil-value">{{ user.descricao|default:"—" }}</div>
+                    </div>
 
                 {% endif %}
 
-                <!-- CAMPOS PARA COORDENAÇÃO -->
                 {% if user.tipo == "coordenador" %}
 
-                <div class="mb-3">
-                    <span class="label-title">Nome</span>
-                    <div class="value">{{ user.nome|default:"—" }}</div>
-                </div>
+                    <div class="perfil-item">
+                        <span class="perfil-label">Nome</span>
+                        <div class="perfil-value">{{ user.nome|default:"—" }}</div>
+                    </div>
 
-                <div class="mb-3">
-                    <span class="label-title">Setor</span>
-                    <div class="value">{{ user.descricao|default:"—" }}</div>
-                    {# você pode trocar para user.setor caso queira criar esse campo #}
-                </div>
+                    <div class="perfil-item">
+                        <span class="perfil-label">Setor</span>
+                        <div class="perfil-value">{{ user.descricao|default:"—" }}</div>
+                    </div>
 
                 {% endif %}
 
             </div>
+
         </div>
 
     </div>

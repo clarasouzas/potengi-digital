@@ -1,0 +1,39 @@
+{% load django_tables2 %}
+
+<table {% if table.attrs %}{{ table.attrs.as_html }}{% endif %}>
+
+    <thead>
+        <tr>
+            {% for column in table.columns %}
+                <th class="orderable">
+                    {{ column.header }}
+                </th>
+            {% endfor %}
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for row in table.paginated_rows %}
+            <tr>
+                {% for column, cell in row.items %}
+                    <td>
+                        {{ cell }}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="{{ table.columns|length }}" class="text-center py-4 text-muted">
+                    Nenhum registro encontrado.
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% if table.page %}
+<div class="pagination-wrapper">
+    {% bootstrap_pagination table.page %}
+</div>
+{% endif %}
