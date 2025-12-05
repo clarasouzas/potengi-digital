@@ -1,0 +1,17 @@
+[
+  { "model": "linkif.areaatuacaoperfil", "pk": 1, "fields": { "perfil": 1, "titulo": "Desenvolvimento Web", "descricao": "Programação de sites, sistemas e aplicações." }},
+  { "model": "linkif.areaatuacaoperfil", "pk": 2, "fields": { "perfil": 1, "titulo": "DevOps e Infraestrutura", "descricao": "Automação, servidores e deploy." }},
+  { "model": "linkif.areaatuacaoperfil", "pk": 3, "fields": { "perfil": 1, "titulo": "Design Digital", "descricao": "Interfaces, experiência do usuário e prototipagem." }},
+
+  { "model": "linkif.areaatuacaoperfil", "pk": 4, "fields": { "perfil": 2, "titulo": "Construção Civil", "descricao": "Execução e acompanhamento de obras." }},
+  { "model": "linkif.areaatuacaoperfil", "pk": 5, "fields": { "perfil": 2, "titulo": "Projetos Técnicos", "descricao": "Elaboração e interpretação de plantas." }},
+  { "model": "linkif.areaatuacaoperfil", "pk": 6, "fields": { "perfil": 2, "titulo": "Topografia", "descricao": "Medições, levantamentos e análises do terreno." }},
+
+  { "model": "linkif.areaatuacaoperfil", "pk": 7, "fields": { "perfil": 3, "titulo": "Gestão Ambiental", "descricao": "Projetos sustentáveis e licenciamento." }},
+  { "model": "linkif.areaatuacaoperfil", "pk": 8, "fields": { "perfil": 3, "titulo": "Laboratório Ambiental", "descricao": "Análises, testes e monitoramento." }},
+  { "model": "linkif.areaatuacaoperfil", "pk": 9, "fields": { "perfil": 3, "titulo": "Educação Ambiental", "descricao": "Projetos educativos e comunitários." }},
+
+  { "model": "linkif.areaatuacaoperfil", "pk": 10, "fields": { "perfil": 4, "titulo": "Ensino", "descricao": "Docência em Matemática." }},
+  { "model": "linkif.areaatuacaoperfil", "pk": 11, "fields": { "perfil": 4, "titulo": "Pesquisa Acadêmica", "descricao": "Produção científica e investigação teórica." }},
+  { "model": "linkif.areaatuacaoperfil", "pk": 12, "fields": { "perfil": 4, "titulo": "Extensão Universitária", "descricao": "Projetos e ações com a comunidade." }}
+]

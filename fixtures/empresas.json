@@ -1,0 +1,102 @@
+[
+  {
+    "model": "usuarios.usuario",
+    "pk": 10,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$E1$zEbksuZ8YMm6==",
+      "is_superuser": false,
+      "username": "tec_solutions",
+      "email": "contato@tecsol.com",
+      "tipo": "empresa",
+      "nome": "Tec Solutions",
+      "cnpj": "11.111.111/0001-11",
+      "cidade": "Natal",
+      "telefone": "(84) 99999-0001",
+      "descricao": "Empresa especializada em desenvolvimento de sistemas e suporte técnico.",
+      "setor": "Tecnologia",
+      "is_approved": true,
+      "is_staff": false,
+      "is_active": true
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 11,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$E2$Cskd21xZ0p0==",
+      "is_superuser": false,
+      "username": "potengi_engenharia",
+      "email": "engenharia@potengi.com",
+      "tipo": "empresa",
+      "nome": "Potengi Engenharia",
+      "cnpj": "22.222.222/0001-22",
+      "cidade": "São Paulo do Potengi",
+      "telefone": "(84) 98888-0002",
+      "descricao": "Empresa de construção civil atuante em obras públicas e privadas.",
+      "setor": "Construção Civil",
+      "is_approved": true,
+      "is_staff": false,
+      "is_active": true
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 12,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$E3$dke221zYq0==",
+      "is_superuser": false,
+      "username": "bioambiental",
+      "email": "contato@bioambiental.com",
+      "tipo": "empresa",
+      "nome": "BioAmbiental Consultoria",
+      "cnpj": "33.333.333/0001-33",
+      "cidade": "Natal",
+      "telefone": "(84) 98877-3003",
+      "descricao": "Consultoria em gestão ambiental, licenciamento e análises ambientais.",
+      "setor": "Gestão Ambiental",
+      "is_approved": true,
+      "is_staff": false,
+      "is_active": true
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 13,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$E4$ska28719sa==",
+      "is_superuser": false,
+      "username": "promath",
+      "email": "contato@promath.com",
+      "tipo": "empresa",
+      "nome": "ProMath Educacional",
+      "cnpj": "44.444.444/0001-44",
+      "cidade": "Natal",
+      "telefone": "(84) 98877-8008",
+      "descricao": "Instituição voltada a projetos educacionais e formação docente.",
+      "setor": "Educação",
+      "is_approved": true,
+      "is_staff": false,
+      "is_active": true
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 14,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$E5$sla098123ad==",
+      "is_superuser": false,
+      "username": "natalsoft",
+      "email": "contato@natalsoft.com",
+      "tipo": "empresa",
+      "nome": "NatalSoft",
+      "cnpj": "55.555.555/0001-55",
+      "cidade": "Natal",
+      "telefone": "(84) 98844-5050",
+      "descricao": "Desenvolvedora de softwares educativos e sistemas institucionais.",
+      "setor": "Tecnologia",
+      "is_approved": true,
+      "is_staff": false,
+      "is_active": true
+    }
+  }
+]

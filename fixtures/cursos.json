@@ -1,0 +1,42 @@
+[
+  {
+    "model": "linkif.perfilformacao",
+    "pk": 2,
+    "fields": {
+      "nome": "Informática para Internet",
+      "descricao": "O curso Técnico em Informática para Internet forma profissionais capazes de desenvolver soluções tecnológicas voltadas ao ambiente web, abrangendo desde a criação de interfaces amigáveis até a construção de sistemas completos, seguros e escaláveis. A formação inclui fundamentos de programação, banco de dados, design digital, infraestrutura de redes e tecnologias emergentes. O estudante aprende a atuar em projetos reais, desenvolvendo competências que o preparam para o mercado de trabalho, empreendedorismo e continuidade dos estudos na área de tecnologia.",
+      "imagem": "media/perfis/informatica.jpg",
+      "logo": ""
+    }
+  },
+  {
+    "model": "linkif.perfilformacao",
+    "pk": 1,
+    "fields": {
+      "nome": "Edificações",
+      "descricao": "O curso Técnico em Edificações capacita profissionais para atuar em todas as etapas do processo construtivo, desde a elaboração e interpretação de projetos arquitetônicos e estruturais até o acompanhamento e fiscalização de obras. A formação oferece uma base abrangente em tecnologias construtivas, gerenciamento de obras, topografia, materiais de construção e normas técnicas. O estudante se torna apto a trabalhar com planejamento, execução, controle de qualidade e segurança do trabalho, contribuindo para soluções eficientes e sustentáveis na construção civil.",
+      "imagem": "",
+      "logo": ""
+    }
+  },
+  {
+    "model": "linkif.perfilformacao",
+    "pk": 3,
+    "fields": {
+      "nome": "Meio Ambiente",
+      "descricao": "O curso Técnico em Meio Ambiente prepara profissionais para atuar na preservação, gestão e recuperação de recursos naturais, com foco em sustentabilidade e impacto ambiental. A formação contempla análises laboratoriais, monitoramento ambiental, legislação, educação ambiental e gestão de resíduos. O estudante aprende a identificar problemas ambientais, propor soluções, apoiar processos de licenciamento e desenvolver ações que contribuam para a conservação do meio ambiente e a promoção de práticas sustentáveis em empresas, instituições públicas e comunidades.",
+      "imagem": "",
+      "logo": ""
+    }
+  },
+  {
+    "model": "linkif.perfilformacao",
+    "pk": 4,
+    "fields": {
+      "nome": "Licenciatura em Matemática",
+      "descricao": "O curso de Licenciatura em Matemática oferece uma formação ampla e aprofundada para futuros docentes e pesquisadores da área. O estudante desenvolve habilidades em raciocínio lógico, resolução de problemas, análise matemática e construção de argumentos rigorosos, além de vivenciar práticas pedagógicas que o preparam para atuar com competência no ensino básico e superior. A formação integra conteúdos matemáticos (como cálculo, álgebra, geometria e estatística) com metodologias de ensino, tecnologias educacionais e pesquisa acadêmica, possibilitando atuação qualificada em diversos contextos educacionais.",
+      "imagem": "",
+      "logo": ""
+    }
+  }
+]

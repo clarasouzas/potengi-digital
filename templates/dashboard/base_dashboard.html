@@ -12,7 +12,7 @@
     <!-- Fonte -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- CSS principal -->
+    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
 </head>
 
@@ -31,14 +31,13 @@
         </a>
     </div>
 
-    <!-- USER DROPDOWN -->
     <div class="right-area">
         <div class="dropdown">
 
-            <a data-bs-toggle="dropdown" class="d-flex align-items-center pointer">
+            <a class="d-flex align-items-center pointer" data-bs-toggle="dropdown">
 
                 {% if request.user.foto %}
-                    <img src="{{ request.user.foto.url }}" class="avatar" alt="Foto de perfil">
+                    <img src="{{ request.user.foto.url }}" class="avatar">
                 {% else %}
                     <i class="bi bi-person-circle avatar-icon"></i>
                 {% endif %}
@@ -48,9 +47,7 @@
 
             <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
 
-                <li class="dropdown-header">
-                    Olá, {{ request.user.nome|default:request.user.email }}
-                </li>
+                <li class="dropdown-header">Olá, {{ request.user.nome|default:request.user.email }}</li>
 
                 <li>
                     <a href="{% url 'dashboard:perfil' %}" class="dropdown-item custom-dropdown-item">
@@ -74,13 +71,11 @@
 </header>
 
 
-
-<!-- ===================== ALERTAS ===================== -->
+<!-- ===================== MESSAGES ===================== -->
 {% if messages %}
 <div class="global-alert-container">
     {% for message in messages %}
-        <div class="
-            global-alert
+        <div class="global-alert 
             {% if 'success' in message.tags %}success{% endif %}
             {% if 'error' in message.tags %}error{% endif %}
             {% if 'warning' in message.tags %}warning{% endif %}
@@ -94,8 +89,7 @@
 {% endif %}
 
 
-
-<!-- ===================== WRAPPER LAYOUT ===================== -->
+<!-- ===================== WRAPPER ===================== -->
 <div class="wrapper">
 
     <!-- ===================== SIDEBAR ===================== -->
@@ -103,27 +97,31 @@
 
         <div class="sidebar-section-title">MENU</div>
 
-        <!-- ============================ ALUNO ============================ -->
-        {% if request.user.tipo == "aluno" %}
+        <!-- ========== ALUNO ========== -->
+        {% if perms.usuarios.acesso_aluno and not request.user.is_superuser %}
+
             <a href="{% url 'dashboard:aluno_painel' %}" class="sidebar-item">
                 <i class="bi bi-house me-2"></i> Meu Painel
             </a>
 
-            {% if request.user.is_approved %}
+            {% if perms.usuarios.aluno_aprovado %}
                 <a href="{% url 'dashboard:aluno_candidaturas' %}" class="sidebar-item">
                     <i class="bi bi-file-earmark-check me-2"></i> Minhas Candidaturas
                 </a>
             {% endif %}
+
         {% endif %}
 
 
-        <!-- ============================ EMPRESA ============================ -->
-        {% if request.user.tipo == "empresa" %}
+        <!-- ========== EMPRESA ========== -->
+        {% if perms.usuarios.acesso_empresa and not request.user.is_superuser %}
+
             <a href="{% url 'dashboard:empresa_painel' %}" class="sidebar-item">
                 <i class="bi bi-house me-2"></i> Meu Painel
             </a>
 
-            {% if request.user.is_approved %}
+            {% if perms.usuarios.empresa_aprovada %}
+
                 <a href="{% url 'dashboard:empresa_vagas' %}" class="sidebar-item">
                     <i class="bi bi-briefcase me-2"></i> Minhas Vagas
                 </a>
@@ -135,12 +133,14 @@
                 <a href="{% url 'dashboard:empresa_candidaturas' %}" class="sidebar-item">
                     <i class="bi bi-people me-2"></i> Candidaturas Recebidas
                 </a>
+
             {% endif %}
+
         {% endif %}
 
 
-        <!-- ============================ COORDENADOR ============================ -->
-        {% if request.user.tipo == "coordenador" %}
+        <!-- ========== COORDENAÇÃO ========== -->
+        {% if perms.usuarios.acesso_coordenacao %}
 
             <a href="{% url 'dashboard:coordenacao_painel' %}" class="sidebar-item">
                 <i class="bi bi-house me-2"></i> Painel Geral
@@ -182,6 +182,7 @@
 
         {% endif %}
 
+
         <hr class="divider">
 
         <a href="{% url 'linkif:index' %}" class="sidebar-item">
@@ -191,14 +192,12 @@
     </aside>
 
 
-
-    <!-- ===================== ÁREA DE CONTEÚDO ===================== -->
+    <!-- ===================== CONTENT AREA ===================== -->
     <main class="content-area">
         {% block conteudo %}{% endblock %}
     </main>
 
-</div> <!-- wrapper -->
-
+</div>
 
 
 <!-- ===================== SCRIPTS ===================== -->

@@ -1,0 +1,29 @@
+[
+  { "model": "linkif.competencia", "pk": 1, "fields": { "perfil": 1, "texto": "Desenvolvimento Web Frontend" }},
+  { "model": "linkif.competencia", "pk": 2, "fields": { "perfil": 1, "texto": "Programação Backend" }},
+  { "model": "linkif.competencia", "pk": 3, "fields": { "perfil": 1, "texto": "APIs REST e integração" }},
+  { "model": "linkif.competencia", "pk": 4, "fields": { "perfil": 1, "texto": "Banco de Dados e SQL" }},
+  { "model": "linkif.competencia", "pk": 5, "fields": { "perfil": 1, "texto": "Versionamento e Git" }},
+  { "model": "linkif.competencia", "pk": 6, "fields": { "perfil": 1, "texto": "Infraestrutura e Deploy Web" }},
+
+  { "model": "linkif.competencia", "pk": 7, "fields": { "perfil": 2, "texto": "Leitura e interpretação de projetos" }},
+  { "model": "linkif.competencia", "pk": 8, "fields": { "perfil": 2, "texto": "Materiais e tecnologias da construção" }},
+  { "model": "linkif.competencia", "pk": 9, "fields": { "perfil": 2, "texto": "Topografia aplicada" }},
+  { "model": "linkif.competencia", "pk": 10, "fields": { "perfil": 2, "texto": "Execução de obras" }},
+  { "model": "linkif.competencia", "pk": 11, "fields": { "perfil": 2, "texto": "Segurança do trabalho" }},
+  { "model": "linkif.competencia", "pk": 12, "fields": { "perfil": 2, "texto": "Gerenciamento e fiscalização de obras" }},
+
+  { "model": "linkif.competencia", "pk": 13, "fields": { "perfil": 3, "texto": "Gestão ambiental e sustentabilidade" }},
+  { "model": "linkif.competencia", "pk": 14, "fields": { "perfil": 3, "texto": "Monitoramento e análises ambientais" }},
+  { "model": "linkif.competencia", "pk": 15, "fields": { "perfil": 3, "texto": "Tratamento de resíduos" }},
+  { "model": "linkif.competencia", "pk": 16, "fields": { "perfil": 3, "texto": "Legislação e licenciamento ambiental" }},
+  { "model": "linkif.competencia", "pk": 17, "fields": { "perfil": 3, "texto": "Educação ambiental" }},
+  { "model": "linkif.competencia", "pk": 18, "fields": { "perfil": 3, "texto": "Análises laboratoriais ambientais" }},
+
+  { "model": "linkif.competencia", "pk": 19, "fields": { "perfil": 4, "texto": "Cálculo diferencial e integral" }},
+  { "model": "linkif.competencia", "pk": 20, "fields": { "perfil": 4, "texto": "Geometria analítica" }},
+  { "model": "linkif.competencia", "pk": 21, "fields": { "perfil": 4, "texto": "Álgebra linear" }},
+  { "model": "linkif.competencia", "pk": 22, "fields": { "perfil": 4, "texto": "Estatística e probabilidade" }},
+  { "model": "linkif.competencia", "pk": 23, "fields": { "perfil": 4, "texto": "Didática da Matemática" }},
+  { "model": "linkif.competencia", "pk": 24, "fields": { "perfil": 4, "texto": "Pesquisa e formação docente" }}
+]

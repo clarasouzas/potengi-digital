@@ -29,11 +29,13 @@
 
       <!-- LOGO -->
       <a class="navbar-brand" href="{% url 'linkif:index' %}">
+
         {% if site_config.logo %}
           <img src="{{ site_config.logo.url }}" alt="{{ site_config.nome_site|default:'LinkIF' }}">
         {% else %}
           <img src="{% static 'assets/img/logo.svg' %}" alt="{{ site_config.nome_site|default:'LinkIF' }}">
         {% endif %}
+
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -42,56 +44,71 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
 
-
-  {% if request.resolver_match.url_name == "index" %}
-      <!-- MENU DA HOME -->
-      <ul class="navbar-nav mx-auto">
-        <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
-        <li class="nav-item"><a class="nav-link" href="#estudante">Para Estudantes</a></li>
-        <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
-        <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
-      </ul>
-  {% else %}
-      <!-- PLACEHOLDER PARA MANTER A LOGO CENTRALIZADA -->
-      <div class="flex-grow-1"></div>
-  {% endif %}
-
-</div>
-
-       <!-- LOGIN / DASHBOARD -->
-<div class="ms-3 d-flex align-items-center">
-
-  {% if user.is_authenticated %}
-
-    <a href="{% url 'dashboard:inicio' %}" class="navbar-avatar-link">
-
-      {% if request.user.foto %}
-          <img src="{{ request.user.foto.url }}" class="avatar" alt="Foto de perfil">
-      {% else %}
-          <i class="bi bi-person-circle avatar-icon"></i>
-      {% endif %}
-
-    </a>
-
-  {% else %}
-
-    <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">
-      <i class="bi bi-box-arrow-in-right me-2"></i> Entrar
-    </a>
-
-    <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">
-      <i class="bi bi-person-plus me-2"></i> Cadastre-se
-    </a>
-
-  {% endif %}
-</div>
+        {% if request.resolver_match.url_name == "index" %}
+        <!-- MENU DA HOME -->
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+          <li class="nav-item"><a class="nav-link" href="#estudante">Para Estudantes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+        </ul>
+        {% else %}
+        <!-- Placeholder para centralizar logo -->
+        <div class="flex-grow-1"></div>
+        {% endif %}
 
       </div>
+
+      <!-- LOGIN / DASHBOARD -->
+      <div class="ms-3 d-flex align-items-center">
+
+        {% if user.is_authenticated %}
+
+          <a href="{% url 'dashboard:inicio' %}" class="navbar-avatar-link">
+
+            {% if request.user.foto %}
+                <img src="{{ request.user.foto.url }}" class="avatar" alt="Foto de perfil">
+            {% else %}
+                <i class="bi bi-person-circle avatar-icon"></i>
+            {% endif %}
+
+          </a>
+
+        {% else %}
+
+          <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">
+            <i class="bi bi-box-arrow-in-right me-2"></i> Entrar
+          </a>
+
+          <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">
+            <i class="bi bi-person-plus me-2"></i> Cadastre-se
+          </a>
+
+        {% endif %}
+      </div>
+
     </div>
   </nav>
 
   <!-- Espaço da navbar fixa -->
   <div style="height:70px;"></div>
+
+  <!-- Mensagens do Django -->
+  {% if messages %}
+  <div class="container mt-2">
+    {% for message in messages %}
+      <div 
+        class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm"
+        style="border-radius: 10px;"
+        role="alert"
+      >
+        <i class="bi bi-info-circle me-2"></i>
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <!-- CONTEÚDO DA PÁGINA -->
   <main id="main-content">

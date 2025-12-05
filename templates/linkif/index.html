@@ -144,7 +144,7 @@
           <div class="perfil-body">
             <h5>{{ perfil.nome }}</h5>
 
-            <p>{{ perfil.descricao|truncatewords:18 }}</p>
+            <p>{{ perfil.descricao|truncatewords:6 }}</p>
 
             <a href="{% url 'linkif:perfil_detalhe' perfil.id %}" class="btn-ver-mais">
               Ver Mais
