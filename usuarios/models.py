@@ -9,10 +9,9 @@ class Usuario(AbstractUser):
         ("coordenador", "Coordenação"),
     ]
 
-    username = None
     email = models.EmailField("E-mail", unique=True)
 
-    # tipo
+    # tipo de usuário
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
 
     # dados gerais
@@ -30,14 +29,13 @@ class Usuario(AbstractUser):
     telefone = models.CharField(max_length=20, blank=True, null=True)
     cidade = models.CharField(max_length=100, blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
-
     setor = models.CharField(max_length=120, blank=True, null=True)
 
     # controle
     is_approved = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["username"]  # necessário pro createsuperuser
 
     def __str__(self):
-        return f"{self.email} ({self.tipo})"
+        return f"{self.username} — {self.email} ({self.tipo})"
