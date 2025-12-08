@@ -168,6 +168,7 @@ class MensagemContato(models.Model):
     email = models.EmailField("E-mail")
     mensagem = models.TextField("Mensagem")
     data_envio = models.DateTimeField(default=timezone.now)
+    resposta = models.TextField(blank=True, null=True)
     respondido = models.BooleanField(default=False)
 
     class Meta:

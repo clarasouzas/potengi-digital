@@ -17,11 +17,16 @@ urlpatterns = [
         views.cancelar_candidatura,
         name="cancelar_candidatura"
     ),
+    path("aluno/mensagens/", views.aluno_mensagens, name="aluno_mensagens"),
+    path("aluno/mensagens/enviar/", views.enviar_mensagem, name="enviar_mensagem"),
 
 
     # Empresa
     path("empresa/", views.empresa_painel, name="empresa_painel"),
 
+    path("empresa/mensagens/", views.empresa_mensagens, name="empresa_mensagens"),
+    path("empresa/mensagens/enviar/", views.enviar_mensagem, name="enviar_mensagem"),
+    
     # Vagas
     path("empresa/vagas/", views.empresa_vagas, name="empresa_vagas"),
     path("empresa/vagas/cadastrar/", views.empresa_cadastrar_vaga, name="empresa_cadastrar_vaga"),
@@ -168,4 +173,9 @@ urlpatterns = [
 
     # Relatórios
     path("coordenacao/relatorios/", views.relatorios, name="relatorios"),
+    
+    #Mensagens
+    path("coordenacao/mensagens/", views.mensagens_contato, name="mensagens_contato"),
+    path("mensagens/<int:pk>/responder/", views.responder_mensagem, name="responder_mensagem"),
+
 ]

@@ -43,7 +43,7 @@ class AreaAtuacaoForm(forms.ModelForm):
 class SiteConfigForm(forms.ModelForm):
     class Meta:
         model = SiteConfig
-        fields = "__all__"
+        exclude = ["logo", "nome_site", "imagem_banner"]
         widgets = {
             "titulo_banner": forms.TextInput(attrs={"class": "form-control mb-3"}),
             "subtitulo_banner": forms.TextInput(attrs={"class": "form-control mb-3"}),

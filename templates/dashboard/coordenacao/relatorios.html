@@ -10,18 +10,22 @@
     Relatórios Gerais do Sistema
 </h2>
 
+
 <!-- ===========================
-     SEÇÃO: CADASTROS
-============================ -->
+     SEÇÃO: USUÁRIOS
+=========================== -->
 <div class="soft-card p-4 mb-5">
     <h5 class="section-title mb-4">
-        <i class="bi bi-people-fill me-2"></i> Usuários Cadastrados
+        <i class="bi bi-people-fill me-2"></i>
+        Usuários Cadastrados
     </h5>
 
     <div class="report-grid">
-        
+
         <div class="report-box">
-            <div class="icon primary"><i class="bi bi-person-lines-fill"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-person-lines-fill"></i>
+            </div>
             <div class="info">
                 <h3>{{ total_usuarios }}</h3>
                 <p>Total de Usuários</p>
@@ -29,7 +33,9 @@
         </div>
 
         <div class="report-box">
-            <div class="icon info"><i class="bi bi-mortarboard-fill"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
             <div class="info">
                 <h3>{{ total_alunos }}</h3>
                 <p>Alunos Registrados</p>
@@ -37,7 +43,9 @@
         </div>
 
         <div class="report-box">
-            <div class="icon purple"><i class="bi bi-building"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-building"></i>
+            </div>
             <div class="info">
                 <h3>{{ total_empresas }}</h3>
                 <p>Empresas Parceiras</p>
@@ -49,19 +57,21 @@
 
 
 
-
 <!-- ===========================
      SEÇÃO: VAGAS
-============================ -->
+=========================== -->
 <div class="soft-card p-4 mb-5">
     <h5 class="section-title mb-4">
-        <i class="bi bi-briefcase-fill me-2"></i> Status das Vagas
+        <i class="bi bi-briefcase-fill me-2"></i>
+        Status das Vagas
     </h5>
 
     <div class="report-grid">
 
         <div class="report-box">
-            <div class="icon warn"><i class="bi bi-hourglass-split"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
             <div class="info">
                 <h3>{{ vagas_pendentes }}</h3>
                 <p>Vagas Pendentes</p>
@@ -69,7 +79,9 @@
         </div>
 
         <div class="report-box">
-            <div class="icon success"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
             <div class="info">
                 <h3>{{ vagas_aprovadas }}</h3>
                 <p>Vagas Aprovadas</p>
@@ -77,7 +89,9 @@
         </div>
 
         <div class="report-box">
-            <div class="icon danger"><i class="bi bi-x-circle-fill"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-x-circle-fill"></i>
+            </div>
             <div class="info">
                 <h3>{{ vagas_reprovadas }}</h3>
                 <p>Vagas Reprovadas</p>
@@ -89,19 +103,21 @@
 
 
 
-
 <!-- ===========================
      SEÇÃO: CANDIDATURAS
-============================ -->
+=========================== -->
 <div class="soft-card p-4">
     <h5 class="section-title mb-4">
-        <i class="bi bi-send-check-fill me-2"></i> Candidaturas dos Estudantes
+        <i class="bi bi-send-check-fill me-2"></i>
+        Candidaturas dos Estudantes
     </h5>
 
     <div class="report-grid">
 
         <div class="report-box">
-            <div class="icon primary"><i class="bi bi-send"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-send"></i>
+            </div>
             <div class="info">
                 <h3>{{ candidaturas_total }}</h3>
                 <p>Total de Candidaturas</p>
@@ -109,7 +125,9 @@
         </div>
 
         <div class="report-box">
-            <div class="icon success"><i class="bi bi-check2-circle"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-check2-circle"></i>
+            </div>
             <div class="info">
                 <h3>{{ candidaturas_aprovadas }}</h3>
                 <p>Candidaturas Aprovadas</p>
@@ -117,7 +135,9 @@
         </div>
 
         <div class="report-box">
-            <div class="icon danger"><i class="bi bi-x-circle"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-x-circle"></i>
+            </div>
             <div class="info">
                 <h3>{{ candidaturas_recusadas }}</h3>
                 <p>Candidaturas Recusadas</p>
@@ -125,10 +145,12 @@
         </div>
 
         <div class="report-box">
-            <div class="icon warn"><i class="bi bi-hourglass"></i></div>
+            <div class="metric-icon">
+                <i class="bi bi-hourglass"></i>
+            </div>
             <div class="info">
                 <h3>{{ candidaturas_pendentes }}</h3>
-                <p>Em Análise / Pendentes</p>
+                <p>Pendentes / Em Análise</p>
             </div>
         </div>
 

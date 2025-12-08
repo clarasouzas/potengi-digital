@@ -100,7 +100,7 @@ def para_empresas(request):
 @login_required
 @permission_required("usuarios.can_explorar_alunos", raise_exception=True)
 def explorar_perfis(request):
-    qs = Usuario.objects.filter(tipo="aluno", is_approved=True).order_by("nome")
+    qs = Usuario.objects.filter(tipo="aluno", is_approved=True).order_by("username")
 
     filtro = AlunoFilter(request.GET, queryset=qs)
     table = UsuarioTabela(filtro.qs)
@@ -111,6 +111,19 @@ def explorar_perfis(request):
         "table": table,
         "filtro": filtro,
     })
+    
+@login_required
+def ver_perfil_aluno(request, pk):
+
+    aluno = get_object_or_404(Usuario, id=pk, tipo="aluno")
+
+    if request.user.tipo not in ["empresa", "coordenador"] and request.user != aluno:
+        return redirect("dashboard:inicio")
+
+    return render(request, "dashboard/aluno/perfil_publico.html", {
+        "aluno": aluno
+    })
+    
 def vaga_detalhe(request, vaga_id):
     vaga = get_object_or_404(Vaga, id=vaga_id, status="aprovada")
     site_config = SiteConfig.objects.first()

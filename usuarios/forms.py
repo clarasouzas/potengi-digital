@@ -23,11 +23,10 @@ class UsuarioCreationForm(UserCreationForm):
 # CADASTRO — ALUNO
 # ======================================
 class AlunoCreationForm(UsuarioCreationForm):
-    nome = forms.CharField(max_length=120)
     curso = forms.CharField(max_length=100)
 
     class Meta(UsuarioCreationForm.Meta):
-        fields = ["nome", "curso"] + UsuarioCreationForm.Meta.fields
+        fields = ["curso", "username"] + UsuarioCreationForm.Meta.fields
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -42,7 +41,7 @@ class AlunoCreationForm(UsuarioCreationForm):
                 Column("email", css_class="col-md-12"),
             ),
             Row(
-                Column("nome", css_class="col-md-6"),
+                Column("username", css_class="col-md-6"),
                 Column("curso", css_class="col-md-6"),
             ),
             Row(
@@ -57,13 +56,12 @@ class AlunoCreationForm(UsuarioCreationForm):
 # ======================================
 
 class EmpresaCreationForm(UsuarioCreationForm):
-    nome = forms.CharField(label="Nome da empresa", max_length=150)
     cnpj = forms.CharField(max_length=18)
     telefone = forms.CharField(max_length=20)
 
     class Meta(UsuarioCreationForm.Meta):
         fields = [
-            "nome", "cnpj", "telefone"
+            "username", "cnpj", "telefone", 
         ] + UsuarioCreationForm.Meta.fields
 
     def __init__(self, *args, **kwargs):
@@ -76,7 +74,7 @@ class EmpresaCreationForm(UsuarioCreationForm):
 
         self.helper.layout = Layout(
             Row(
-                Column("nome", css_class="col-md-6"),                
+                Column("username", css_class="col-md-6"),                
                 Column("telefone", css_class="col-md-6"),
             ),
             Row(
@@ -98,7 +96,7 @@ class EmpresaCreationForm(UsuarioCreationForm):
 class AlunoEditForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ["nome", "curso", "foto", "curriculo", "portfolio"]
+        fields = ["username", "curso", "foto", "curriculo", "portfolio","resumo"]
 
 
 # ======================================
@@ -107,7 +105,7 @@ class AlunoEditForm(forms.ModelForm):
 class EmpresaEditForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ["nome", "telefone", "cidade", "descricao", "foto"]
+        fields = ["username", "telefone", "cidade", "descricao", "foto"]
 
 
 # ======================================
@@ -116,7 +114,7 @@ class EmpresaEditForm(forms.ModelForm):
 class CoordenadorEditForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ["nome", "setor"]
+        fields = ["username", "setor"]
 
 # ======================================
 # EDIÇÃO — ADMIN (EMAIL | TIPO | APROVAÇÃO)

@@ -17,7 +17,8 @@ from linkif.models import (
     AreaAtuacaoPerfil,
     Vaga,
     Candidatura,
-    SiteConfig
+    SiteConfig,
+    MensagemContato
 )
 
 from linkif.forms import (
@@ -25,7 +26,8 @@ from linkif.forms import (
     CompetenciaForm,
     AreaAtuacaoForm,
     VagaForm,
-    SiteConfigForm
+    SiteConfigForm,
+    ContatoForm
 )
 
 from usuarios.models import Usuario
@@ -43,6 +45,9 @@ from dashboard.tables import (
     AprovarVagasTable,
     UsuariosTable,
     PerfisFormacaoTable,
+    MensagensContatoTable,
+    AlunoMensagensTable,
+    EmpresaMensagensTable
 )
 
 def requer_aprovacao(tipo):
@@ -152,6 +157,29 @@ def cancelar_candidatura(request, cand_id):
         "dashboard/aluno/cancelar_candidatura.html",
         {"candidatura": candidatura}
     )
+def aluno_mensagens(request):
+    msgs = MensagemContato.objects.filter(
+        email=request.user.email,
+        respondido=True
+    ).order_by('-data_envio')
+
+    table = AlunoMensagensTable(msgs)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+
+    form = ContatoForm(initial={"nome": request.user.username , "email": request.user.email})
+
+    return render(request, "dashboard/aluno/mensagens.html", {
+        "table": table,
+        "form": form,
+    })
+
+def enviar_mensagem(request):
+    if request.method == "POST":
+        form = ContatoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Mensagem enviada com sucesso!")
+    return redirect("dashboard:aluno_mensagens")
 
 # Empresa
 
@@ -177,7 +205,21 @@ def empresa_painel(request):
     }
 
     return render(request, "dashboard/empresa/painel.html", context)
+def empresa_mensagens(request):
+    msgs = MensagemContato.objects.filter(
+        email=request.user.email,
+        respondido=True
+    ).order_by('-data_envio')
 
+    table = EmpresaMensagensTable(msgs)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+
+    form = ContatoForm(initial={"nome": request.user.username , "email": request.user.email})
+
+    return render(request, "dashboard/empresa/mensagens.html", {
+        "table": table,
+        "form": form,
+    })
 @login_required
 @permission_required("usuarios.acesso_empresa", raise_exception=True)
 @permission_required("usuarios.empresa_aprovada", raise_exception=True)
@@ -491,7 +533,7 @@ def coordenacao_empresa_excluir(request, empresa_id):
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def coordenacao_usuarios(request):
 
-    usuarios = Usuario.objects.all().order_by("tipo", "nome")
+    usuarios = Usuario.objects.all().order_by("tipo", "username")
 
     table = UsuariosTable(usuarios)
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
@@ -764,3 +806,28 @@ def editar_perfil(request):
     return render(request, "dashboard/editar_perfil.html", {
         "form": form
     })
+@login_required
+@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+def mensagens_contato(request):
+    mensagens = MensagemContato.objects.all()
+
+    table = MensagensContatoTable(mensagens)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+
+    return render(request, "dashboard/coordenacao/mensagens_contato.html", {
+        "table": table,
+    })
+def responder_mensagem(request, pk):
+    msg = get_object_or_404(MensagemContato, id=pk)
+
+    if request.method == "POST":
+        resposta = request.POST.get("resposta")
+
+        msg.respondido = True
+        msg.resposta = resposta
+        msg.save()
+
+        messages.success(request, "Resposta enviada com sucesso!")
+        return redirect("dashboard:mensagens_contato")
+
+    return redirect("dashboard:mensagens_contato")

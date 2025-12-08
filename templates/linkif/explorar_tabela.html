@@ -6,7 +6,6 @@
 
 {% block content %}
 
-<!-- HERO -->
 <section class="hero hero-estudante">
   <div class="hero-inner">
     <div class="text-area">
@@ -17,32 +16,30 @@
   </div>
 </section>
 
-
 <div class="container py-5">
 
-  <!-- FILTRO HORIZONTAL -->
-<form method="get" class="filtro-horizontal">
+  <!-- FILTRO -->
+  <form method="get" class="filtro-horizontal">
 
-    <div class="filtro-item">
-        <label>{{ filtro.form.nome.label }}</label>
-        {{ filtro.form.nome }}
-    </div>
+      <div class="filtro-item">
+          <label>{{ filtro.form.nome.label }}</label>
+          {{ filtro.form.nome }}
+      </div>
 
-    <div class="filtro-item">
-        <label>{{ filtro.form.curso.label }}</label>
-        {{ filtro.form.curso }}
-    </div>
+      <div class="filtro-item">
+          <label>{{ filtro.form.curso.label }}</label>
+          {{ filtro.form.curso }}
+      </div>
 
-    <button class="btn-filtro" type="submit">
-        <i class="bi bi-funnel"></i> Filtrar
-    </button>
+      <button class="btn-filtro" type="submit">
+          <i class="bi bi-funnel"></i> Filtrar
+      </button>
 
-</form>
-
+  </form>
 
   <!-- TABELA -->
-  <div class="table-responsive">
-    {% render_table table %}
+  <div class="table-container mt-4">
+      {% render_table table %}
   </div>
 
 </div>

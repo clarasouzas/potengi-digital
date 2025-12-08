@@ -1,5 +1,5 @@
 import django_tables2 as tables
-from linkif.models import Candidatura, Vaga,PerfilFormacao
+from linkif.models import Candidatura, Vaga,PerfilFormacao, MensagemContato
 from usuarios.models import Usuario
 
 
@@ -67,7 +67,7 @@ class AprovarAlunosTable(tables.Table):
     acoes = tables.TemplateColumn(
         template_code="""
         <a href="#aprovar-{{ record.id }}" class="btn-table">Aprovar</a>
-        <a href="#rejeitar-{{ record.id }}" class="btn-table btn-danger-table">Rejeitar</a>
+        <a href="#rejeitar-{{ record.id }}" class="btn-delete">Rejeitar</a>
         """,
         verbose_name="Ações",
         orderable=False
@@ -98,7 +98,7 @@ class AprovarEmpresasTable(tables.Table):
     acoes = tables.TemplateColumn(
         template_code="""
         <a href="#aprovar-{{ record.id }}" class="btn-table">Aprovar</a>
-        <a href="#rejeitar-{{ record.id }}" class="btn-table btn-danger-table">Rejeitar</a>
+        <a href="#rejeitar-{{ record.id }}" class="btn-delete">Rejeitar</a>
         """,
         verbose_name="Ações",
         orderable=False
@@ -135,7 +135,7 @@ class AprovarVagasTable(tables.Table):
     acoes = tables.TemplateColumn(
         template_code="""
         <a href="#aprovar-{{ record.id }}" class="btn-table">Aprovar</a>
-        <a href="#reprovar-{{ record.id }}" class="btn-table btn-danger-table">Reprovar</a>
+        <a href="#reprovar-{{ record.id }}" class="btn-delete">Reprovar</a>
         """,
         verbose_name="Ações",
         orderable=False
@@ -255,4 +255,175 @@ class PerfisFormacaoTable(tables.Table):
     class Meta:
         model = PerfilFormacao
         fields = ["nome", "competencias", "areas", "acoes"]
+        attrs = {"class": "linkif-table"}
+class MensagensContatoTable(tables.Table):
+
+    nome = tables.TemplateColumn(
+        template_code="""
+        <span class="table-text fw-bold">
+            <i class="bi bi-person-circle me-2"></i>
+            {{ record.nome|truncatechars:25 }}
+        </span>
+        """,
+        verbose_name="Nome",
+        orderable=True
+    )
+
+    email = tables.TemplateColumn(
+        template_code="""
+        <span class="table-text">
+            {{ record.email|truncatechars:30 }}
+        </span>
+        """,
+        verbose_name="E-mail",
+        orderable=True
+    )
+
+    data_envio = tables.TemplateColumn(
+        template_code="""
+        <span class="table-text">
+            {{ record.data_envio|date:"d/m/Y H:i" }}
+        </span>
+        """,
+        verbose_name="Enviado em",
+        orderable=True
+    )
+
+    respondido = tables.TemplateColumn(
+        template_code="""
+        {% if record.respondido %}
+            <span class="badge aprov">
+                <i class="bi bi-check2-circle me-1"></i> Respondido
+            </span>
+        {% else %}
+            <span class="badge pend">
+                <i class="bi bi-hourglass-split me-1"></i> Pendente
+            </span>
+        {% endif %}
+        """,
+        verbose_name="Status",
+        orderable=False
+    )
+
+    acoes = tables.TemplateColumn(
+        template_code="""
+        <div class="table-actions">
+
+            <!-- Ver detalhes da mensagem -->
+            <a href="#mensagem-{{ record.id }}" class="btn-table">
+                Ver
+            </a>
+
+            <!-- Botão RESPONDER -->
+            {% if not record.respondido %}
+                <a href="#responder-{{ record.id }}" class="btn-table btn-danger-table">
+                    Responder
+                </a>
+            {% endif %}
+
+        </div>
+        """,
+        verbose_name="Ações",
+        orderable=False
+    )
+
+    class Meta:
+        model = MensagemContato
+        fields = ["nome", "email", "data_envio", "respondido", "acoes"]
+        attrs = {"class": "linkif-table"}
+class AlunoMensagensTable(tables.Table):
+
+    mensagem = tables.TemplateColumn(
+        template_code="""
+        <span class='table-text'>
+            {{ record.mensagem|truncatechars:40 }}
+        </span>
+        """,
+        verbose_name="Mensagem enviada",
+        orderable=False
+    )
+
+    data_envio = tables.TemplateColumn(
+        template_code="""
+        <span class="table-text">
+            {{ record.data_envio|date:"d/m/Y H:i" }}
+        </span>
+        """,
+        verbose_name="Enviada em",
+        orderable=True
+    )
+
+    resposta = tables.TemplateColumn(
+        template_code="""
+        <span class="table-text">
+            {{ record.resposta|truncatechars:40 }}
+        </span>
+        """,
+        verbose_name="Resposta",
+        orderable=False
+    )
+
+    acoes = tables.TemplateColumn(
+        template_code="""
+        <div class="table-actions">
+            <a href="#mensagem-{{ record.id }}" class="btn-table">
+                Ver
+            </a>
+        </div>
+        """,
+        verbose_name="Ações",
+        orderable=False
+    )
+
+    class Meta:
+        model = MensagemContato
+        fields = ["mensagem", "data_envio", "resposta", "acoes"]
+        attrs = {"class": "linkif-table"}
+class EmpresaMensagensTable(tables.Table):
+
+    mensagem = tables.TemplateColumn(
+        template_code="""
+        <span class='table-text'>
+            {{ record.mensagem|truncatechars:40 }}
+        </span>
+        """,
+        verbose_name="Mensagem enviada",
+        orderable=False
+    )
+
+    data_envio = tables.TemplateColumn(
+        template_code="""
+        <span class="table-text">
+            {{ record.data_envio|date:"d/m/Y H:i" }}
+        </span>
+        """,
+        verbose_name="Enviada em",
+        orderable=True
+    )
+
+    resposta = tables.TemplateColumn(
+        template_code="""
+        <span class="table-text">
+            {{ record.resposta|truncatechars:40 }}
+        </span>
+        """,
+        verbose_name="Resposta",
+        orderable=False
+    )
+
+    acoes = tables.TemplateColumn(
+        template_code="""
+        <div class="table-actions">
+            <a href="#mensagem-{{ record.id }}" class="btn-table">
+                Ver
+            </a>
+        </div>
+        """,
+        verbose_name="Ações",
+        orderable=False
+    )
+
+    class Meta:
+        model = MensagemContato
+        fields = ["mensagem", "data_envio", "resposta", "acoes"]
         attrs = {"class": "linkif-table"}

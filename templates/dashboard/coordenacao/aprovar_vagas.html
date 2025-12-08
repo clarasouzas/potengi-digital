@@ -22,30 +22,42 @@
 {% for row in table.page.object_list %}
 {% with vaga=row.record %}
 
-<!-- MODAL APROVAR -->
 <div id="aprovar-{{ vaga.id }}" class="modal-vaga">
+
     <div class="modal-content-vaga">
 
-        <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+        <!-- Botão Fechar -->
+        <a href="#" class="modal-close">
+            <i class="bi bi-x-lg"></i>
+        </a>
 
-        <h3 class="fw-bold mb-3">Aprovar Vaga</h3>
+        <!-- Título -->
+        <h3 class="fw-bold mb-3" style="color: var(--accent-blue)">
+             <i class="bi bi-check-circle me-2"></i>
+            Aprovar Vaga
+        </h3>
 
+        <!-- Texto -->
         <p class="text-muted">
             Deseja realmente aprovar a vaga
             <strong>{{ vaga.titulo }}</strong> da empresa
             <strong>{{ vaga.empresa.nome|default:vaga.empresa.email }}</strong>?
         </p>
 
+        <!-- Botões -->
         <div class="d-flex gap-3 mt-4">
-            <a href="{% url 'dashboard:aprovar_vaga_action' vaga.id %}" 
-               class="modal-btn-apply">
-                Aprovar vaga
+
+            <a href="{% url 'dashboard:aprovar_vaga_action' vaga.id %}"
+               class="btn-table flex-grow-1 text-center">
+                Aprovar
             </a>
 
-            <a href="#" class="modal-btn-apply"
+            <a href="#" 
+               class="btn-table flex-grow-1 text-center"
                style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
                 Cancelar
             </a>
+
         </div>
 
     </div>
@@ -53,31 +65,46 @@
 
 <!-- MODAL REPROVAR -->
 <div id="reprovar-{{ vaga.id }}" class="modal-vaga">
+
     <div class="modal-content-vaga">
 
-        <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+        <!-- Botão Fechar -->
+        <a href="#" class="modal-close">
+            <i class="bi bi-x-lg"></i>
+        </a>
 
-        <h3 class="fw-bold mb-3 text-danger">Reprovar Vaga</h3>
+        <!-- Título -->
+        <h3 class="fw-bold mb-3 " style="color: var(--accent-red)">
+            <i class="bi bi-x-octagon me-2"></i>
+            Reprovar vaga
+        </h3>
 
+        <!-- Texto -->
         <p class="text-muted">
-            Tem certeza que deseja <strong>reprovar</strong> a vaga
+            Tem certeza que deseja reprovar
             <strong>{{ vaga.titulo }}</strong>?
         </p>
 
+        <!-- Botões -->
         <div class="d-flex gap-3 mt-4">
-            <a href="{% url 'dashboard:reprovar_vaga_action' vaga.id %}" 
-               class="modal-btn-apply" style="background:#c53030;">
+
+            <a href="{% url 'dashboard:reprovar_vaga_action' vaga.id %}"
+               class="btn-delete btn-table flex-grow-1 text-center">
                 Reprovar
             </a>
 
-            <a href="#" class="modal-btn-apply"
+            <a href="#"
+               class="btn-table flex-grow-1 text-center"
                style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
                 Cancelar
             </a>
+
         </div>
 
     </div>
+
 </div>
+
 
 {% endwith %}
 {% endfor %}

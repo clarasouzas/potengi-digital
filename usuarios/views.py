@@ -57,16 +57,3 @@ def cadastro_empresa(request):
         })
 
     return redirect("usuarios:cadastro")
-def redirecionar_dashboard(request):
-    user = request.user
-
-    if user.tipo == "aluno":
-        return redirect("dashboard:aluno")
-
-    if user.tipo == "empresa":
-        return redirect("dashboard:empresa")
-
-    if user.tipo == "coordenador":
-        return redirect("dashboard:coord")
-
-    return redirect("index")

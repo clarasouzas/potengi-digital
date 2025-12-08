@@ -25,4 +25,6 @@ urlpatterns = [
 
     # Vizualizar Alunos (coordenação e empresas)
     path("explorar/", views.explorar_perfis, name="explorar"),
+    path("alunos/<int:pk>/", views.ver_perfil_aluno, name="ver_perfil_aluno"),
+
 ]

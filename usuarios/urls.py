@@ -4,7 +4,6 @@ from .views import (
     cadastro,
     cadastro_aluno,
     cadastro_empresa,
-    redirecionar_dashboard,
 )
 
 app_name = "usuarios"
@@ -23,6 +22,4 @@ urlpatterns = [
          auth_views.LogoutView.as_view(),
          name="logout"),
 
-    # redirecionamento pós-login
-    path("dashboard/", redirecionar_dashboard, name="redirecionar_dashboard"),
 ]

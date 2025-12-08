@@ -12,7 +12,6 @@ class Usuario(AbstractUser):
     # dados básicos
     email = models.EmailField("E-mail", unique=True)
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
-    nome = models.CharField(max_length=120, blank=True, null=True)
 
     # aluno
     curso = models.CharField(max_length=100, blank=True, null=True)
