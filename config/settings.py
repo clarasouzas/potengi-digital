@@ -119,10 +119,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# Email
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-
 # Modelo de usuário customizado
 AUTH_USER_MODEL = "usuarios.Usuario"
 
@@ -134,3 +130,7 @@ LOGOUT_REDIRECT_URL = "linkif:index"
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Email
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

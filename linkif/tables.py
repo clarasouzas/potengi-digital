@@ -10,7 +10,7 @@ class UsuarioTabela(tables.Table):
     """, verbose_name="Estudante")
 
     curso = tables.TemplateColumn("""
-        <span class="table-text desc">{{ record.curso|default:"—" }}</span>
+        <span class="table-text desc1">{{ record.curso|default:"—" }}</span>
     """, verbose_name="Curso")
 
     class Meta:

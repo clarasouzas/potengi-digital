@@ -72,8 +72,9 @@
 
 
 <!-- ===================== MESSAGES ===================== -->
-{% if messages %}
+ {% if messages %}
 <div class="global-alert-container">
+
     {% for message in messages %}
         <div class="global-alert 
             {% if 'success' in message.tags %}success{% endif %}
@@ -81,12 +82,19 @@
             {% if 'warning' in message.tags %}warning{% endif %}
             {% if 'info' in message.tags %}info{% endif %}
         ">
-            <span><i class="bi bi-info-circle me-2"></i>{{ message }}</span>
+            
+            <span class="alert-text">
+                <i class="bi bi-info-circle me-2"></i>
+                {{ message }}
+            </span>
+
             <span class="close-btn" onclick="this.parentElement.remove()">×</span>
         </div>
     {% endfor %}
+
 </div>
 {% endif %}
+
 
 
 <!-- ===================== WRAPPER ===================== -->

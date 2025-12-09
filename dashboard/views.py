@@ -296,7 +296,7 @@ def empresa_excluir_vaga(request, vaga_id):
 
     if request.method == "POST":
         vaga.delete()
-        messages.success(request, "Vaga excluída com sucesso.")
+        messages.error(request, "Vaga excluída com sucesso.")
         return redirect("dashboard:empresa_vagas")
 
     return render(request, "dashboard/empresa/confirmar_exclusao.html", {
@@ -410,7 +410,7 @@ def reprovar_aluno_action(request, user_id):
     aluno = get_object_or_404(Usuario, id=user_id, tipo="aluno")
     aluno.delete()
 
-    messages.success(request, "Aluno reprovado e removido do sistema.")
+    messages.error(request, "Aluno reprovado e removido do sistema.")
     return redirect("dashboard:aprovar_alunos")
 
 @login_required
@@ -571,7 +571,7 @@ def coordenacao_usuario_excluir(request, user_id):
 
     usuario.delete()
 
-    messages.success(request, "Usuário excluído com sucesso.")
+    messages.error(request, "Usuário excluído com sucesso.")
     return redirect("dashboard:usuarios")
 
 @login_required
@@ -637,7 +637,7 @@ def excluir_perfil_formacao(request, pk):
     perfil = get_object_or_404(PerfilFormacao, pk=pk)
     perfil.delete()
 
-    messages.success(request, "Perfil removido com sucesso.")
+    messages.error(request, "Perfil removido com sucesso.")
     return redirect("dashboard:listar_perfis")
 
 @login_required
@@ -670,7 +670,7 @@ def remover_competencia(request, pk):
     perfil_id = competencia.perfil.id
 
     competencia.delete()
-    messages.success(request, "Competência removida.")
+    messages.error(request, "Competência removida.")
 
     return redirect("dashboard:editar_perfil_formacao", pk=perfil_id)
 
@@ -706,7 +706,7 @@ def remover_area(request, pk):
     perfil_id = area.perfil.id
 
     area.delete()
-    messages.success(request, "Área removida.")
+    messages.error(request, "Área removida.")
 
     return redirect("dashboard:editar_perfil_formacao", pk=perfil_id)
 
