@@ -14,7 +14,7 @@ urlpatterns = [
     path("cadastro/aluno/", cadastro_aluno, name="cadastro_aluno"),
     path("cadastro/empresa/", cadastro_empresa, name="cadastro_empresa"),
 
-    # login/logout do Django
+    # login/logout 
     path("login/",
          auth_views.LoginView.as_view(template_name="registration/login.html"),
          name="login"),

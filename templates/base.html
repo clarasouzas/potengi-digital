@@ -17,11 +17,7 @@
 
 <body>
 
-  {% if show_splash %}
-    <div id="splash-screen">
-      <img src="{% static 'assets/img/logo.svg' %}" alt="Logo LinkIF" class="splash-logo">
-    </div>
-  {% endif %}
+ 
 
   <!-- NAVBAR -->
   <nav class="cor navbar navbar-expand-lg shadow-sm fixed-top">
@@ -171,24 +167,6 @@
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Splash -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const splash = document.getElementById("splash-screen");
-      const main = document.getElementById("main-content");
-
-      if (splash) {
-        setTimeout(() => {
-          splash.classList.add("hide");
-          setTimeout(() => {
-            splash.style.display = "none";
-            if (main) main.classList.add("show");
-          }, 500);
-        }, 1500);
-      }
-    });
-  </script>
 
   {% block scripts %}{% endblock %}
 

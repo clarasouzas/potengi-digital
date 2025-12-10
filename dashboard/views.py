@@ -103,11 +103,13 @@ def aluno_painel(request):
         .filter(aluno=request.user)
         .order_by("-data_candidatura")[:5]
     )
-
     recomendadas = (
-        Vaga.objects
-        .filter(curso__nome=request.user.curso, status="aprovada")[:4]
+        Vaga.objects.filter(
+            curso=request.user.curso,
+            status="aprovada"
+        )[:4]
     )
+
 
     return render(request, "dashboard/aluno/painel.html", {
         "vagas": vagas,
@@ -392,8 +394,10 @@ def aprovar_alunos(request):
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
     return render(request, "dashboard/coordenacao/aprovar_alunos.html", {
-        "table": table
+        "table": table,
+        "total": alunos.count(),
     })
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_aluno_action(request, user_id):
@@ -423,9 +427,10 @@ def aprovar_empresas(request):
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
     return render(request, "dashboard/coordenacao/aprovar_empresas.html", {
-        "table": table
+        "table": table,
+        "total": empresas.count(),
     })
-    
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_empresa_action(request, user_id):
@@ -458,8 +463,11 @@ def aprovar_vagas(request):
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
     return render(request, "dashboard/coordenacao/aprovar_vagas.html", {
-        "table": table
+        "table": table,
+        "total": vagas.count(),
     })
+
+
     
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
@@ -528,7 +536,6 @@ def coordenacao_empresa_excluir(request, empresa_id):
     messages.success(request, "Empresa removida com sucesso.")
 
     return redirect("dashboard:empresas")
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def coordenacao_usuarios(request):
@@ -539,9 +546,11 @@ def coordenacao_usuarios(request):
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
     return render(request, "dashboard/coordenacao/usuarios_list.html", {
-        "table": table
+        "table": table,
+        "total": usuarios.count(),
+
     })
-    
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def coordenacao_usuario_editar(request, user_id):
@@ -601,8 +610,10 @@ def listar_perfis(request):
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
     return render(request, "dashboard/coordenacao/perfis_lista.html", {
-        "table": table
+        "table": table,
+        "total": perfis.count(),
     })
+
     
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)

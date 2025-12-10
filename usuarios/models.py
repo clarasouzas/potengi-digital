@@ -49,9 +49,8 @@ class Usuario(AbstractUser):
             ("empresa_aprovada", "Empresa aprovada pela coordenação"),
         ]
 
-    # -------------------------------------
-    # APLICAÇÃO AUTOMÁTICA DE PERMISSÕES
-    # -------------------------------------
+    # APLICAÇÃO DE PERMISSÕES
+    
     def aplicar_permissoes_por_tipo(self):
         """Define permissões automáticas conforme tipo + aprovação."""
 

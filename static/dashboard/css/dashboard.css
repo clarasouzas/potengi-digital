@@ -156,6 +156,28 @@ body {
 .sidebar.closed .label {
     display: none;
 }
+/* quando sidebar fechar, some com títulos das seções */
+.sidebar.closed .sidebar-section-title {
+    display: none;
+}
+
+/* esconder texto do link sem mexer no HTML */
+.sidebar.closed .sidebar-item {
+    font-size: 0;           /* texto some */
+    padding-left: 26px;     /* ajusta alinhamento */
+}
+
+/* ícone mantém tamanho */
+.sidebar.closed .sidebar-item i {
+    font-size: 20px;
+    margin-right: 0 !important;
+}
+
+/* remover animação de hover que move a esquerda */
+.sidebar.closed .sidebar-item:hover {
+    padding-left: 26px;
+    border-left: none;
+}
 
 
 .perfil-card {
@@ -390,9 +412,14 @@ body {
     }
 
     .hero-text {
-        max-width: 75%;
+        max-width: 55%;
     }
-
+    .hero-subtitle{
+        font-size: 14px;
+    }
+    .hero-title{
+        font-size: 18px;
+    }
     .hero-illustration {
         right: 2%;
         width: 35%;
@@ -410,7 +437,7 @@ body {
     }
 
     .hero-text {
-        max-width: 100%;
+        max-width: 60%;
     }
 
     .hero-illustration {
@@ -423,7 +450,7 @@ body {
     }
 }
 
-.content-area {
+#main-content {
     flex: 1;
     padding: 35px 35px 60px;
 }
@@ -439,7 +466,7 @@ body {
     margin-left: 20px;
     font-size: 28px;
     font-weight: 700;
-    color: #e24a4a;
+    color: var(--accent-red);
     margin-bottom: 25px;
 }
 
@@ -566,7 +593,7 @@ body {
 
 .status-badge.recs {
     background: #ffe3e3;
-    color: #8b1f1f;
+    color: var(--accent-red);
     box-shadow: inset 0 0 0 1px #f4b1b1;
 }
 
@@ -852,17 +879,17 @@ body {
     background: var(--branco);
     border-radius: 16px;
     padding: 32px;
-    border-left: 6px solid #d64545;
+    border-left: 6px solid var(--accent-red);
 }
 
 .delete-title {
     font-size: 22px;
     font-weight: 800;
-    color: #b73232;
+    color: var(--accent-red);
 }
 
 .soft-btn-danger {
-    background: #e24a4a;
+    background: var(--accent-red);
     color: #fff;
 
     padding: 12px 18px;
@@ -882,7 +909,7 @@ body {
 }
 
 .soft-btn-danger:hover {
-    background: #c73838;
+    background: var(--accent-red);
     text-decoration: none;
 }
 
@@ -975,13 +1002,13 @@ body {
 .form-styled select:focus {
     outline: none;
     border-color: var(--accent-blue);
-    background: #fff;
+    background: var(--branco);
     box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
 }
 
 .btn-apply {
     background: var(--accent-blue);
-    color: #fff;
+    color: var(--branco);
     padding: 12px;
     border-radius: 30px;
     font-weight: 600;
@@ -1085,11 +1112,11 @@ body {
 
 .badge.recs {
     background: #ffe3e3;
-    color: red;
+    color: var(--accent-red);
 }
 
 .badge.recs i {
-    color: red;
+    color: var(--accent-red);
 }
 
 .btn-outline-action {
@@ -1546,4 +1573,45 @@ body {
     margin: 0;
     font-size: 13px;
     color: var(--gray-600);
+}
+
+/* SPLASH */
+.splash-logo {
+  width: 300px;
+  opacity: 0;
+  animation: splashFade 0.5s ease forwards;
+}
+
+@keyframes splashFade {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Quando a tela sobe */
+#splash-screen.hide {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+#main-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bs-body-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+  transition: transform 0.5s ease, opacity 2s ease;
 }
