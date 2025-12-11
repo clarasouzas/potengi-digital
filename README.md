@@ -1,4 +1,4 @@
-<img src="static/assets/img/logo.svg" width="300">
+<img src="static/assets/img/logo.svg" width="200"height="100">
 
 # Sobre o Projeto — Potengi Digital
 
