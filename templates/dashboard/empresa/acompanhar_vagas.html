@@ -14,40 +14,6 @@
     {% render_table table %}
 </div>
 
-<!-- PAGINAÇÃO IGUAL À DO table.html -->
-{% if table.page and table.paginator.count > 12 %}
-<div class="pagination-modern mt-3">
-
-    {% if table.page.has_previous %}
-        <a href="?page={{ table.page.previous_page_number }}" class="page-btn">
-            <i class="bi bi-chevron-left"></i>
-        </a>
-    {% else %}
-        <span class="page-btn disabled"><i class="bi bi-chevron-left"></i></span>
-    {% endif %}
-
-    <div class="page-numbers">
-        {% for num in table.paginator.page_range %}
-            {% if num == table.page.number %}
-                <span class="page-number active">{{ num }}</span>
-            {% else %}
-                <a href="?page={{ num }}" class="page-number">{{ num }}</a>
-            {% endif %}
-        {% endfor %}
-    </div>
-
-    {% if table.page.has_next %}
-        <a href="?page={{ table.page.next_page_number }}" class="page-btn">
-            <i class="bi bi-chevron-right"></i>
-        </a>
-    {% else %}
-        <span class="page-btn disabled"><i class="bi bi-chevron-right"></i></span>
-    {% endif %}
-
-</div>
-{% endif %}
-<!-- FIM PAGINAÇÃO -->
-
 
 
 <!-- =========================================================
