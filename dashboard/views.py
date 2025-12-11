@@ -241,12 +241,12 @@ def empresa_vagas(request):
     return render(request, "dashboard/empresa/minhas_vagas.html", {
         "vagas": vagas,
     })
-    
 @login_required
 @permission_required("usuarios.can_post_vaga", raise_exception=True)
 def empresa_cadastrar_vaga(request):
 
-    if not request.user.is_approved:
+    # Bloqueia apenas EMPRESA pendente
+    if request.user.tipo == "empresa" and not request.user.is_approved:
         messages.warning(request, "Aguarde sua empresa ser aprovada pela coordenação.")
         return redirect("dashboard:empresa_painel")
 
@@ -265,7 +265,7 @@ def empresa_cadastrar_vaga(request):
     return render(request, "dashboard/empresa/cadastrar_vaga.html", {
         "form": form,
     })
-    
+
 @login_required
 @permission_required("usuarios.acesso_empresa", raise_exception=True)
 @permission_required("usuarios.empresa_aprovada", raise_exception=True)

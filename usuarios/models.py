@@ -9,7 +9,9 @@ class Usuario(AbstractUser):
         ("coordenador", "Coordenação"),
     ]
 
-    # dados básicos
+    # ================================
+    # CAMPOS DO USUÁRIO
+    # ================================
     email = models.EmailField("E-mail", unique=True)
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
 
@@ -30,69 +32,68 @@ class Usuario(AbstractUser):
     # controle
     is_approved = models.BooleanField(default=False)
     status_aprovacao = models.CharField(
-    max_length=20,
-    choices=[
-        ("pendente", "Pendente"),
-        ("aprovado", "Aprovado"),
-        ("reprovado", "Reprovado"),
-    ],
-    default="pendente"
-)
-
+        max_length=20,
+        choices=[
+            ("pendente", "Pendente"),
+            ("aprovado", "Aprovado"),
+            ("reprovado", "Reprovado"),
+        ],
+        default="pendente"
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 
+    # ================================
+    # PERMISSÕES DO SISTEMA
+    # ================================
     class Meta:
         permissions = [
-            # acesso geral por tipo
             ("acesso_aluno", "Pode acessar a área do aluno"),
             ("acesso_empresa", "Pode acessar a área da empresa"),
             ("acesso_coordenacao", "Pode acessar a área da coordenação"),
 
-            # permissões especiais
             ("can_candidatar", "Pode se candidatar a vagas"),
             ("can_explorar_alunos", "Pode visualizar perfis de alunos"),
             ("can_post_vaga", "Pode cadastrar vaga"),
 
-            # aprovado
             ("aluno_aprovado", "Aluno aprovado pela coordenação"),
             ("empresa_aprovada", "Empresa aprovada pela coordenação"),
-            
         ]
 
-    # APLICAÇÃO DE PERMISSÕES
-    
+    # ================================
+    # PERMISSÕES AUTOMÁTICAS
+    # ================================
     def aplicar_permissoes_por_tipo(self):
         """Define permissões automáticas conforme tipo + aprovação."""
 
         self.user_permissions.clear()
         codigos = []
 
-        # aluno
+        # ----------------- ALUNO -----------------
         if self.tipo == "aluno":
             codigos.append("acesso_aluno")
             codigos.append("can_candidatar")
+
             if self.is_approved:
                 codigos.append("aluno_aprovado")
 
-        # empresa
+        # ----------------- EMPRESA -----------------
         elif self.tipo == "empresa":
             codigos.append("acesso_empresa")
+            codigos.append("can_explorar_alunos")
+
             if self.is_approved:
                 codigos.append("can_post_vaga")
                 codigos.append("empresa_aprovada")
 
-            # Empresa pode explorar perfis?
-            codigos.append("can_explorar_alunos")
-
-        # coordenação
+        # ----------------- COORDENAÇÃO -----------------
         elif self.tipo == "coordenador":
-            codigos.append("can_post_vaga")
             codigos.append("acesso_coordenacao")
+            codigos.append("can_post_vaga")
             codigos.append("can_explorar_alunos")
 
-        # aplica permissões existentes
+        # aplica permissões
         for codename in codigos:
             try:
                 perm = Permission.objects.get(codename=codename)
@@ -100,8 +101,20 @@ class Usuario(AbstractUser):
             except Permission.DoesNotExist:
                 pass
 
+    # ================================
+    # SAVE COM CORREÇÃO DO SUPERUSER
+    # ================================
     def save(self, *args, **kwargs):
+
+        # SE FOR SUPERUSER → vira coordenação aprovada automaticamente
+        if self.is_superuser:
+            self.tipo = "coordenador"
+            self.is_approved = True
+            self.status_aprovacao = "aprovado"
+
         super().save(*args, **kwargs)
+
+        # depois de salvar, aplica permissões
         self.aplicar_permissoes_por_tipo()
 
     def __str__(self):
