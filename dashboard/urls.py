@@ -32,6 +32,16 @@ urlpatterns = [
     path("empresa/vagas/cadastrar/", views.empresa_cadastrar_vaga, name="empresa_cadastrar_vaga"),
     path("empresa/vagas/editar/<int:vaga_id>/", views.empresa_editar_vaga, name="empresa_editar_vaga"),
     path("empresa/vagas/excluir/<int:vaga_id>/", views.empresa_excluir_vaga, name="empresa_excluir_vaga"),
+    path(
+    "empresa/acompanhar_vagas/",
+    views.empresa_acompanhar_vagas,
+    name="empresa_acompanhar_vagas"
+    ),
+    path(
+        "empresa/vagas/etapa/<int:vaga_id>/",
+        views.empresa_atualizar_etapa,
+        name="empresa_atualizar_etapa"
+    ),
 
     # Candidaturas
     path("empresa/candidaturas/", views.empresa_candidaturas, name="empresa_candidaturas"),
@@ -44,6 +54,8 @@ urlpatterns = [
     # Perfis públicos
     path("alunos/<int:pk>/", views.ver_perfil_aluno, name="ver_perfil_aluno"),
     path("empresas/<int:pk>/", views.ver_perfil_empresa, name="ver_perfil_empresa"),
+
+    path("vaga/<int:vaga_id>/etapa/", views.atualizar_etapa_vaga, name="atualizar_etapa_vaga"),
 
 
     # Coordenação - Painel
@@ -77,7 +89,7 @@ urlpatterns = [
         name="reprovar_aluno_action"
     ),
 
-    # Aprovar / reprovar vagas
+    # Vagas
     path(
         "coordenacao/vagas/<int:vaga_id>/aprovar/",
         views.aprovar_vaga_action,
@@ -88,6 +100,17 @@ urlpatterns = [
         views.reprovar_vaga_action,
         name="reprovar_vaga_action"
     ),
+    path(
+        "coordenacao/vagas/",
+        views.acompanhar_vagas,
+        name="acompanhar_vagas"
+    ),
+    path(
+        "coordenacao/vagas/etapa/<int:vaga_id>/",
+        views.atualizar_etapa_vaga,
+        name="atualizar_etapa_vaga"
+    ),
+
 
 
     # Coordenação - Gerenciar Usuários

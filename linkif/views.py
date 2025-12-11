@@ -82,7 +82,10 @@ def perfil_detalhe(request, perfil_id):
         "site_config": site_config,
     })
 def para_estudantes(request):
-    vagas_qs = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")
+    # agora só mostra vagas publicadas
+    vagas_qs = Vaga.objects.filter(
+        etapa="publicada"
+    ).order_by("-data_publicacao")
 
     filtro = VagaFilter(request.GET, queryset=vagas_qs)
     vagas_filtradas = filtro.qs
@@ -95,6 +98,7 @@ def para_estudantes(request):
         "vagas": page_obj,
         "filtro": filtro,
     })
+
 def para_empresas(request):
     return render(request, "linkif/para_empresas.html")
 @login_required

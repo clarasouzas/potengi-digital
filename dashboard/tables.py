@@ -430,3 +430,169 @@ class EmpresaMensagensTable(tables.Table):
         fields = ["mensagem", "data_envio", "resposta", "acoes"]
         template_name = "dashboard/table.html"
         attrs = {"class": "linkif-table"}
+import django_tables2 as tables
+from linkif.models import Vaga
+
+
+class AcompanharVagasTable(tables.Table):
+
+    titulo = tables.TemplateColumn(
+        template_code="""
+        <span class="table-text ">{{ record.titulo|truncatechars:30 }}</span>
+        """,
+        verbose_name="Título"
+    )
+
+    empresa = tables.TemplateColumn(
+        template_code="""
+        <span class="table-text">
+            {{ record.empresa.nome|default:record.empresa.email|truncatechars:22 }}
+        </span>
+        """,
+        verbose_name="Empresa"
+    )
+
+    curso = tables.TemplateColumn(
+        template_code="""
+        {% if record.curso %}
+            {{ record.curso.nome }}
+        {% else %}
+            —
+        {% endif %}
+        """,
+        verbose_name="Curso"
+    )
+
+    # STATUS BADGE — perfeito
+    status = tables.TemplateColumn(
+        template_code="""
+         <div class=".badge">
+        {% if record.status == "aprovada" %}
+            <span class="badge aprov"><i class="bi bi-check-circle"></i> Aprovada</span>
+
+        {% elif record.status == "pendente" %}
+            <span class="badge pend"><i class="bi bi-hourglass-split"></i> Pendente</span>
+
+        {% elif record.status == "reprovada" %}
+            <span class="badge recs"><i class="bi bi-x-circle"></i> Reprovada</span>
+
+        {% elif record.status == "encerrada" %}
+            <span class="badge info"><i class="bi bi-lock"></i> Encerrada</span>
+
+        {% else %}
+            <span class="badge info">{{ record.get_status_display }}</span>
+        {% endif %}
+        </div>
+        """,
+        verbose_name="Status"
+    )
+
+    # ETAPA BADGE — perfeito
+    etapa = tables.TemplateColumn(
+        template_code="""
+        <div class=".badge">
+        {% if record.etapa == "pendente_aprovacao" %}
+            <span class="badge pend"><i class="bi bi-hourglass"></i> Pendente aprovação</span>
+
+        {% elif record.etapa == "publicada" %}
+            <span class="badge aprov"><i class="bi bi-megaphone"></i> Publicada</span>
+
+        {% elif record.etapa == "inscricoes_fechadas" %}
+            <span class="badge recs"><i class="bi bi-door-closed"></i> Inscrições fechadas</span>
+
+        {% elif record.etapa == "analise_curriculos" %}
+            <span class="badge info"><i class="bi bi-search"></i> Análise de currículos</span>
+
+        {% elif record.etapa == "entrevistas" %}
+            <span class="badge info"><i class="bi bi-people"></i> Entrevistas</span>
+
+        {% elif record.etapa == "finalizada" %}
+            <span class="badge aprov"><i class="bi bi-flag"></i> Finalizada</span>
+
+        {% else %}
+            <span class="badge info">{{ record.get_etapa_display }}</span>
+        {% endif %}
+        </div>
+        """,
+        verbose_name="Etapa"
+    )
+    candidaturas = tables.TemplateColumn(
+        template_code="""
+            <span class="table-text">{{ record.candidaturas.count }}</span>
+        """,
+        verbose_name="Candidatos"
+    )
+    acoes = tables.TemplateColumn(
+        template_code="""
+        <div class="acoes-wrapper">
+        <a href="#gerenciar-{{ record.id }}" class="btn-table">Gerenciar</a>
+        </div>
+        """,
+        verbose_name="Ações"
+    )
+
+    class Meta:
+        model = Vaga
+        fields = ["titulo", "empresa", "curso", "status", "etapa","candidaturas", "acoes"]
+        template_name = "dashboard/table.html"
+        attrs = {"class": "linkif-table"}
+class AcompanharVagasEmpresaTable(tables.Table):
+
+    titulo = tables.TemplateColumn(
+        template_code="""
+            <span class="table-text ">
+                <i class="bi bi-briefcase me-2"></i>
+                {{ record.titulo|truncatechars:25 }}
+            </span>
+        """,
+        verbose_name="Título",
+        orderable=True
+    )
+
+    tipo = tables.Column(verbose_name="Tipo")
+    modalidade = tables.Column(verbose_name="Modalidade")
+
+    etapa = tables.TemplateColumn(
+        template_code="""
+        <div class=".badge">
+        {% if record.etapa == "pendente_aprovacao" %}
+            <span class="badge pend"><i class="bi bi-hourglass"></i> Pendente aprovação</span>
+
+        {% elif record.etapa == "publicada" %}
+            <span class="badge aprov"><i class="bi bi-megaphone"></i> Publicada</span>
+
+        {% elif record.etapa == "inscricoes_fechadas" %}
+            <span class="badge recs"><i class="bi bi-door-closed"></i> Inscrições fechadas</span>
+
+        {% elif record.etapa == "analise_curriculos" %}
+            <span class="badge info"><i class="bi bi-search"></i> Análise de currículos</span>
+
+        {% elif record.etapa == "entrevistas" %}
+            <span class="badge info"><i class="bi bi-people"></i> Entrevistas</span>
+
+        {% elif record.etapa == "finalizada" %}
+            <span class="badge aprov"><i class="bi bi-flag"></i> Finalizada</span>
+
+        {% else %}
+            <span class="badge info">{{ record.get_etapa_display }}</span>
+        {% endif %}
+        </div>
+        """,
+        verbose_name="Etapa"
+    )
+
+    acoes = tables.TemplateColumn(
+        template_code="""
+        <div class="acoes-wrapper">
+            <a href="#etapa-{{ record.id }}" class="btn-table">Gerenciar</a>
+        </div>
+        """,
+        verbose_name="Ações",
+        orderable=False
+    )
+
+    class Meta:
+        model = Vaga
+        fields = ["titulo", "tipo", "modalidade", "etapa", "acoes"]
+        template_name = "dashboard/table.html"
+        attrs = {"class": "linkif-table"}

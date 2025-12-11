@@ -1,0 +1,113 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load django_tables2 %}
+{% load static %}
+
+{% block conteudo %}
+
+<h2 class="title-dashboard mb-4">
+    <i class="bi bi-list-check me-2"></i>
+    Acompanhar Vagas
+</h2>
+
+{% if table.page.object_list %}
+<div class="table-container">
+    {% render_table table %}
+</div>
+
+<!-- PAGINAÇÃO IGUAL À DO table.html -->
+{% if table.page and table.paginator.count > 12 %}
+<div class="pagination-modern mt-3">
+
+    {% if table.page.has_previous %}
+        <a href="?page={{ table.page.previous_page_number }}" class="page-btn">
+            <i class="bi bi-chevron-left"></i>
+        </a>
+    {% else %}
+        <span class="page-btn disabled"><i class="bi bi-chevron-left"></i></span>
+    {% endif %}
+
+    <div class="page-numbers">
+        {% for num in table.paginator.page_range %}
+            {% if num == table.page.number %}
+                <span class="page-number active">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}" class="page-number">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    {% if table.page.has_next %}
+        <a href="?page={{ table.page.next_page_number }}" class="page-btn">
+            <i class="bi bi-chevron-right"></i>
+        </a>
+    {% else %}
+        <span class="page-btn disabled"><i class="bi bi-chevron-right"></i></span>
+    {% endif %}
+
+</div>
+{% endif %}
+<!-- FIM PAGINAÇÃO -->
+
+
+
+<!-- =========================================================
+     MODAIS DE EDITAR ETAPA — UM POR VAGA
+========================================================= -->
+{% for row in table.page.object_list %}
+    {% with vaga=row.record %}
+
+<div id="etapa-{{ vaga.id }}" class="modal-vaga">
+
+    <div class="modal-content-vaga">
+
+        <!-- botão fechar -->
+        <a href="#" class="modal-close">
+            <i class="bi bi-x-lg"></i>
+        </a>
+
+        <!-- título -->
+        <h3 class="fw-bold mb-3" style="color: var(--accent-blue);">
+            <i class="bi bi-gear me-2"></i>
+            Gerenciar Etapa da Vaga
+        </h3>
+
+        <!-- nome da vaga -->
+        <p class="text-muted mb-3">
+            <strong>{{ vaga.titulo }}</strong>
+        </p>
+
+        <!-- formulário -->
+        <form action="{% url 'dashboard:empresa_atualizar_etapa' vaga.id %}" method="post">
+            {% csrf_token %}
+
+            <label class="form-label fw-semibold">Etapa</label>
+
+            <select name="nova_etapa" class="form-select mb-3">
+
+                {% for valor, label in etapa_choices %}
+                    {% if valor != "pendente_aprovacao" and valor != "publicada" %}
+                        <option value="{{ valor }}"
+                            {% if valor == vaga.etapa %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+
+            </select>
+
+
+            <button class="btn-apply w-100">
+                <i class="bi bi-save me-1"></i>
+                Atualizar
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+    {% endwith %}
+{% endfor %}
+{% endif %}
+
+{% endblock %}

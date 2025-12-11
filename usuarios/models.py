@@ -43,10 +43,12 @@ class Usuario(AbstractUser):
             # permissões especiais
             ("can_candidatar", "Pode se candidatar a vagas"),
             ("can_explorar_alunos", "Pode visualizar perfis de alunos"),
+            ("can_post_vaga", "Pode cadastrar vaga"),
 
             # aprovado
             ("aluno_aprovado", "Aluno aprovado pela coordenação"),
             ("empresa_aprovada", "Empresa aprovada pela coordenação"),
+            
         ]
 
     # APLICAÇÃO DE PERMISSÕES
@@ -68,6 +70,7 @@ class Usuario(AbstractUser):
         elif self.tipo == "empresa":
             codigos.append("acesso_empresa")
             if self.is_approved:
+                codigos.append("can_post_vaga")
                 codigos.append("empresa_aprovada")
 
             # Empresa pode explorar perfis?
@@ -75,6 +78,7 @@ class Usuario(AbstractUser):
 
         # coordenação
         elif self.tipo == "coordenador":
+            codigos.append("can_post_vaga")
             codigos.append("acesso_coordenacao")
             codigos.append("can_explorar_alunos")
 

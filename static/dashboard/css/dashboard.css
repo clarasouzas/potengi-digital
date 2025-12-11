@@ -586,7 +586,20 @@ body {
     color: var(--gray-800);
     margin-bottom: 14px;
 }
+.vaga-wrapper {
+     width: 75%;
+    margin: 0 auto;
+    padding: 20px 30px;
+    display: block; /* tira o flex que apertava */
+}
 
+/* MOBILE / TABLET */
+@media (max-width: 768px) {
+    .vaga-wrapper {
+        width: 95% !important;   /* ocupa quase tudo */
+        padding: 10px 15px !important;
+    }
+}
 .vaga-detail-desc {
     color: var(--gray-700);
     line-height: 1.6;
@@ -1867,4 +1880,209 @@ body {
         font-size: 16px !important;
         margin-left: 10px !important;
     }
+}
+@media (max-width: 768px) {
+
+    /* ===== título ===== */
+    .title-dashboard {
+        font-size: 1.4rem;
+    }
+
+    /* ===== cards ===== */
+    .soft-card,
+    .section-card,
+    .soft-box {
+        padding: 18px !important;
+        border-radius: 12px;
+    }
+
+    /* ===== estrutura do candidato ===== */
+    .soft-card .d-flex {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+    }
+
+    /* ===== botão ver perfil ===== */
+    .btn-outline-action,
+    .btn-apply,
+    .btn-dash {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    /* ===== foto ===== */
+    img.rounded-circle {
+        width: 55px !important;
+        height: 55px !important;
+    }
+
+    /* ===== textos longos ===== */
+    .text-break,
+    .perfil-value,
+    .perfil-item,
+    p,
+    strong,
+    span {
+        word-break: break-word !important;
+        white-space: normal !important;
+    }
+
+    /* ===== grid ===== */
+    .row > [class*="col-"] {
+        width: 100% !important;
+    }
+
+    /* ===== modal responsivo ===== */
+    .modal-content-vaga {
+        width: 92% !important;
+        padding: 20px !important;
+        border-radius: 14px;
+        margin: 40px auto !important;
+    }
+
+    /* ===== tabela rolável ===== */
+    .table-container,
+    .linkif-table-wrapper {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 650px;
+    }
+}
+
+/* ===============================================
+   BADGES DE ETAPAS PARA A TABELA DE VAGAS
+   (compatível com o HTML atual que você usa)
+   =============================================== */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* --- PENDENTE (horário / esperando) --- */
+.badge.pend {
+    background: var(--accent-yellow);
+    color:var(--accent-yellow-dark-1);
+}
+
+/* --- APROVADO / PUBLICADO / FINALIZADA --- */
+.badge.aprov {
+    background:var(--primary-light-5);
+    color: var(--primary-dark-3);
+}
+
+/* --- REPROVADO / FECHADO --- */
+.badge.recs {
+    background: var(--accent-red-light-2);
+    color: var(--accent-red);
+}
+
+/* --- INFORMATIVO: análise, entrevistas, etc --- */
+.badge.info {
+    background: var(--accent-blue-light-5);
+    color: var(--accent-blue);
+}
+
+/* Ícones dentro das badges */
+.badge i {
+    font-size: 1rem;
+    line-height: 0;
+}
+/* ======== RESPONSIVIDADE DAS BADGES ======== */
+
+/* Telas menores que 768px (tablets e celulares grandes) */
+@media (max-width: 768px) {
+    .badge {
+        padding: 5px 10px;
+        font-size: .7rem;
+        gap: 4px;
+        border-radius: 14px;
+    }
+
+    .badge i {
+        font-size: 0.85rem;
+    }
+}
+
+/* Telas menores que 576px (celulares padrão) */
+@media (max-width: 576px) {
+    .badge {
+        max-width: 300px;
+        padding: 4px 8px;
+        font-size: .66rem;
+        gap: 3px;
+        border-radius: 12px;
+        white-space: normal; /* permite quebrar em 2 linhas se necessário */
+        text-align: center;
+    }
+
+    .badge i {
+        font-size: 0.75rem;
+    }
+}
+
+/* Telas muito pequenas (menos de 420px) */
+@media (max-width: 420px) {
+    .badge {
+        padding: 3px 6px;
+        font-size: .58rem;
+        border-radius: 10px;
+    }
+
+    .badge i {
+        font-size: 0.7rem;
+    }
+}
+
+/* ====== GRUPO ====== */
+.sidebar-group {
+    margin-bottom: 6px;
+}
+
+.sidebar-group-btn {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--gray-100);
+    font-weight: 600;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.sidebar-group-btn:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.sidebar-group .arrow {
+    transition: transform .25s ease;
+}
+
+/* ====== MENU FECHADO ====== */
+.sidebar-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease;
+    padding-left: 8px;
+}
+
+/* ====== MENU ABERTO ====== */
+.sidebar-group.open .sidebar-submenu {
+    max-height: 700px; /* suficiente para vários itens */
+}
+
+.sidebar-group.open .arrow {
+    transform: rotate(180deg);
 }

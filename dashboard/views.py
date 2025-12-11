@@ -1,5 +1,5 @@
 # dashboard/views.py
-
+from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import (
     login_required,
@@ -47,7 +47,9 @@ from dashboard.tables import (
     PerfisFormacaoTable,
     MensagensContatoTable,
     AlunoMensagensTable,
-    EmpresaMensagensTable
+    EmpresaMensagensTable,
+    AcompanharVagasTable,
+    AcompanharVagasEmpresaTable
 )
 
 def requer_aprovacao(tipo):
@@ -241,9 +243,7 @@ def empresa_vagas(request):
     })
     
 @login_required
-@permission_required("usuarios.acesso_empresa", raise_exception=True)
-@permission_required("usuarios.empresa_aprovada", raise_exception=True)
-@requer_aprovacao("empresa")
+@permission_required("usuarios.can_post_vaga", raise_exception=True)
 def empresa_cadastrar_vaga(request):
 
     if not request.user.is_approved:
@@ -367,6 +367,85 @@ def ver_perfil_empresa(request, pk):
     empresa = get_object_or_404(Usuario, pk=pk, tipo="empresa")
     return render(request, "dashboard/empresa/perfil_empresa.html", {"empresa": empresa})
 
+
+@login_required
+@permission_required("usuarios.acesso_empresa", raise_exception=True)
+def empresa_acompanhar_vagas(request):
+
+    # empresa só gerencia vagas aprovadas/publicadas
+    vagas = Vaga.objects.filter(
+        empresa=request.user,
+        status="aprovada"  # só aparece quando coordenação aprova
+    ).order_by("-data_publicacao")
+
+    table = AcompanharVagasEmpresaTable(vagas)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+
+    etapa_choices = Vaga.ETAPA_CHOICES
+
+    return render(request, "dashboard/empresa/acompanhar_vagas.html", {
+        "table": table,
+        "etapa_choices": etapa_choices,
+    })
+@login_required
+@permission_required("usuarios.acesso_empresa", raise_exception=True)
+def empresa_atualizar_etapa(request, vaga_id):
+
+    vaga = get_object_or_404(
+        Vaga,
+        id=vaga_id,
+        empresa=request.user,
+        status="aprovada"  # impedir mexer em vagas pendentes
+    )
+
+    if request.method == "POST":
+        nova = request.POST.get("nova_etapa")
+        if nova in dict(Vaga.ETAPA_CHOICES):
+            vaga.etapa = nova
+            vaga.save()
+            messages.success(request, "Etapa atualizada com sucesso!")
+        else:
+            messages.error(request, "Etapa inválida.")
+
+    return redirect("dashboard:empresa_acompanhar_vagas")
+
+@login_required
+def atualizar_etapa_vaga(request, vaga_id):
+    vaga = get_object_or_404(Vaga, id=vaga_id)
+
+    user = request.user
+
+    # COORDENAÇÃO pode atualizar sempre
+    if user.tipo == "coordenador":
+        pode_editar = True
+
+    # EMPRESA só pode editar se a vaga estiver aprovada / publicada
+    elif user.tipo == "empresa":
+        pode_editar = vaga.status == "aprovada"
+    else:
+        pode_editar = False
+
+    if not pode_editar:
+        messages.error(request, "Você não tem permissão para alterar a etapa desta vaga.")
+        return redirect("dashboard:empresa_vagas")
+
+    # processa alteração
+    nova_etapa = request.POST.get("nova_etapa")
+    if nova_etapa not in dict(Vaga.ETAPA_CHOICES):
+        messages.error(request, "Etapa inválida.")
+        return redirect("dashboard:empresa_vagas")
+
+    vaga.etapa = nova_etapa
+
+    # se for publicada pela coordenação → também marca como aprovada
+    if nova_etapa == "publicada" and user.tipo == "coordenador":
+        vaga.status = "aprovada"
+        vaga.data_publicacao = timezone.now()
+
+    vaga.save()
+
+    messages.success(request, "Etapa da vaga atualizada com sucesso.")
+    return redirect(request.META.get("HTTP_REFERER", "dashboard:empresa_vagas"))
 # Coordenação 
 
 @login_required
@@ -477,26 +556,77 @@ def aprovar_vaga_action(request, vaga_id):
 
     vaga = get_object_or_404(Vaga, id=vaga_id)
 
+    # muda status
     vaga.status = "aprovada"
-    vaga.data_publicacao = timezone.now()
+
+    # muda etapa automaticamente
+    vaga.etapa = "publicada"
+
+    # registra aprovado por + data
     vaga.aprovado_por = request.user
+    vaga.data_publicacao = timezone.now()
 
     vaga.save()
 
-    messages.success(request, "Vaga aprovada e publicada.")
+    messages.success(request, "Vaga aprovada e publicada com sucesso!")
     return redirect("dashboard:aprovar_vagas")
+
 
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def reprovar_vaga_action(request, vaga_id):
 
     vaga = get_object_or_404(Vaga, id=vaga_id)
+
     vaga.status = "reprovada"
+    vaga.etapa = "rascunho"
+
     vaga.save()
 
     messages.warning(request, "Vaga reprovada.")
     return redirect("dashboard:aprovar_vagas")
 
+
+
+@login_required
+@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+def acompanhar_vagas(request):
+
+    qs = Vaga.objects.all().order_by('-data_publicacao', '-id')
+
+    table = AcompanharVagasTable(qs)
+    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+
+    return render(request, "dashboard/coordenacao/acompanhar_vagas.html", {
+        "table": table,
+        "etapa_choices": Vaga.ETAPA_CHOICES,
+    })
+
+@login_required
+@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+def atualizar_etapa_vaga(request, vaga_id):
+
+    vaga = get_object_or_404(Vaga, id=vaga_id)
+
+    if request.method == "POST":
+        nova = request.POST.get("nova_etapa")
+
+        if nova not in dict(Vaga.ETAPA_CHOICES):
+            messages.error(request, "Etapa inválida.")
+            return redirect("dashboard:acompanhar_vagas")
+
+        vaga.etapa = nova
+
+        # automático: coordenação mudou → já publica
+        if nova == "publicada":
+            vaga.status = "aprovada"
+            if not vaga.data_publicacao:
+                vaga.data_publicacao = timezone.now()
+
+        vaga.save()
+        messages.success(request, "Etapa atualizada com sucesso.")
+
+    return redirect("dashboard:acompanhar_vagas")
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def coordenacao_empresas(request):

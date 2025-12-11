@@ -162,7 +162,9 @@
                 <a href="{% url 'dashboard:empresa_candidaturas' %}" class="sidebar-item">
                     <i class="bi bi-people me-2"></i> Candidaturas Recebidas
                 </a>
-
+                <a href="{% url 'dashboard:empresa_acompanhar_vagas' %}" class="sidebar-item">
+                    <i class="bi bi-bookmark me-2"></i> Acompanhar Vagas
+                </a>
             {% endif %}
 
         {% endif %}
@@ -184,9 +186,16 @@
             <a href="{% url 'dashboard:aprovar_empresas' %}" class="sidebar-item">
                 <i class="bi bi-building-check me-2"></i> Aprovar Empresas
             </a>
-
+            
+            <div class="sidebar-section-title mt-3"> Vagas </div>
             <a href="{% url 'dashboard:aprovar_vagas' %}" class="sidebar-item">
                 <i class="bi bi-check2-circle me-2"></i> Aprovar Vagas
+            </a>
+            <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="sidebar-item">
+                    <i class="bi bi-plus-circle me-2"></i> Cadastrar Vaga
+            </a>
+            <a href="{% url 'dashboard:acompanhar_vagas' %}" class="sidebar-item">
+                    <i class="bi bi-bookmark me-2"></i> Acompanhar Vagas
             </a>
 
             <div class="sidebar-section-title mt-3">Gestão</div>

@@ -44,7 +44,17 @@ class AreaAtuacaoPerfil(models.Model):
 # =====================================================
 # VAGAS
 # =====================================================
+
 class Vaga(models.Model):
+    ETAPA_CHOICES = [
+        ("pendente_aprovacao", "Pendente aprovação"),
+        ("publicada", "Publicada"),
+        ("inscricoes_fechadas", "Inscrições fechadas"),
+        ("analise_curriculos", "Análise de currículos"),
+        ("entrevistas", "Entrevistas"),
+        ("finalizada", "Finalizada"),
+    ]
+    
     TIPO_CHOICES = [
         ("estagio", "Estágio"),
         ("emprego", "Emprego"),
@@ -63,7 +73,13 @@ class Vaga(models.Model):
         ("reprovada", "Reprovada"),
         ("encerrada", "Encerrada"),
     ]
-
+    
+    
+    etapa = models.CharField(
+        max_length=30,
+        choices=ETAPA_CHOICES,
+        default="pendente_aprovacao"
+    )
     # Empresa agora é Usuario(tipo="empresa")
     empresa = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -130,10 +146,19 @@ class Vaga(models.Model):
 class Candidatura(models.Model):
     STATUS_CHOICES = [
         ("pendente", "Pendente"),
-        ("em_analise", "Em análise"),
+        ("analisando", "Currículo em análise"),
+        ("pre_selecionado", "Pré-selecionado"),
+        ("entrevista", "Entrevista agendada"),
+        ("finalista", "Finalista"),
         ("aprovado", "Aprovado"),
         ("recusado", "Recusado"),
     ]
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pendente"
+    )
 
     vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE, related_name="candidaturas")
 
@@ -145,7 +170,6 @@ class Candidatura(models.Model):
     )
 
     data_candidatura = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pendente")
     mensagem = models.TextField("Mensagem do candidato", blank=True)
 
     class Meta:

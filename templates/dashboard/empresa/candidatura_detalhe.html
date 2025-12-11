@@ -12,45 +12,35 @@
 
 <div class="soft-card p-4">
 
-    <!-- =====================================================
-         TÍTULO DA VAGA
-    ====================================================== -->
-    <h3 class="fw-bold mb-3" style="color:#205072">{{ candidatura.vaga.titulo }}</h3>
+    <!-- Título da vaga -->
+    <h3 class="fw-bold mb-3 text-break" style="color:#205072">
+        {{ candidatura.vaga.titulo }}
+    </h3>
 
     <!-- =====================================================
-         CARD DO CANDIDATO
+         PERFIL DO CANDIDATO (RESPONSIVO)
     ====================================================== -->
     <h5 class="section-title mb-3">Informações do candidato</h5>
 
-    <div class="soft-card p-3 mb-4 d-flex align-items-center justify-content-between">
+    <div class="soft-card p-3 mb-4 d-flex flex-column flex-md-row 
+                align-items-start align-items-md-center justify-content-between gap-3">
 
-        <!-- FOTO + NOME -->
+        <!--  NOME -->
         <div class="d-flex align-items-center gap-3">
-
-            {% if candidatura.aluno.foto %}
-                <img src="{{ candidatura.aluno.foto.url }}"
-                     class="rounded-circle"
-                     style="width:60px;height:60px;object-fit:cover;">
-            {% else %}
-                <div class="rounded-circle d-flex align-items-center justify-content-center"
-                     style="width:60px;height:60px;background:#ececec;">
-                    <i class="bi bi-person text-secondary fs-3"></i>
-                </div>
-            {% endif %}
-
-            <div>
-                <h5 class="fw-semibold m-0">
+            <div class="text-break">
+                <h5 class="fw-semibold m-0 text-break">
                     {{ candidatura.aluno.nome|default:candidatura.aluno.email }}
                 </h5>
-                <p class="text-muted small m-0">{{ candidatura.aluno.email }}</p>
+                <p class="text-muted small m-0 text-break">
+                    {{ candidatura.aluno.email }}
+                </p>
             </div>
-
         </div>
 
         <!-- BOTÃO VER PERFIL -->
         <a href="{% url 'dashboard:ver_perfil_aluno' candidatura.aluno.id %}"
-           class="btn-outline-action"
-           style="padding:10px 18px; width: 150px; height: 50px;">
+           class="btn-outline-action w-100 w-md-auto text-center"
+           style="padding:10px 18px; height: 50px;">
             <i class="bi bi-person-vcard me-1"></i>
             Ver Perfil
         </a>
@@ -58,11 +48,11 @@
     </div>
 
     <!-- =====================================================
-         DADOS DA CANDIDATURA
+         DADOS DA CANDIDATURA (RESPONSIVO)
     ====================================================== -->
     <div class="row g-3 mb-4">
 
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
             <div class="perfil-item">
                 <span class="perfil-label">Data da candidatura</span>
                 <div class="perfil-value">
@@ -71,7 +61,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
             <div class="perfil-item">
                 <span class="perfil-label">Status atual</span>
                 <div class="perfil-value">
@@ -91,7 +81,8 @@
     <h5 class="section-title mb-3">Mensagem enviada</h5>
 
     {% if candidatura.mensagem %}
-        <div class="soft-box p-3 mb-4" style="background:#f8f9fc;border-radius:12px;">
+        <div class="soft-box p-3 mb-4"
+             style="background:#f8f9fc;border-radius:12px;word-break: break-word;">
             {{ candidatura.mensagem|linebreaksbr }}
         </div>
     {% else %}
@@ -99,7 +90,7 @@
     {% endif %}
 
     <!-- =====================================================
-         ALTERAR STATUS
+         ALTERAR STATUS (RESPONSIVO)
     ====================================================== -->
     <h5 class="section-title mb-3">Alterar status da candidatura</h5>
 
@@ -107,7 +98,6 @@
         {% csrf_token %}
 
         <select name="status" class="form-select shadow-sm">
-
             <option value="em_analise"
                 {% if candidatura.status == "em_analise" %}selected{% endif %}>
                 Em análise
@@ -122,7 +112,6 @@
                 {% if candidatura.status == "recusado" %}selected{% endif %}>
                 Reprovado
             </option>
-
         </select>
 
         <button class="btn-apply w-100 mt-3">
