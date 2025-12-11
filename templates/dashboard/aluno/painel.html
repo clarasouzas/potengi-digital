@@ -130,7 +130,7 @@ Painel do Aluno — {{ request.user.nome|default:request.user.email }}
         <div class="row g-3">
             
             {% for v in recomendadas %}
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="vaga-card">
                     <h6 class="fw-bold">{{ v.titulo }}</h6>
                     <p class="text-muted small">{{ v.empresa.nome|default:v.empresa.email }}</p>

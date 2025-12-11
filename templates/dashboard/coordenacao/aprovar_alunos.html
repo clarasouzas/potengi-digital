@@ -114,14 +114,11 @@
 
 {% else %}
 
-<!-- ESTADO VAZIO -->
 <div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
 
-    <div class="empty-state-image">
-        <img src="{% static 'assets/img/empty.svg' %}"
-             class="empty-img"
-             style="width: 420px; max-width: 100%;">
-    </div>
+    <img src="{% static 'assets/img/empty.svg' %}"
+         class="empty-img"
+         style="width: 420px; max-width: 100%;">
 
     <div class="empty-state-text" style="max-width: 380px;">
         <h5 class="fw-bold mb-2">Nenhum aluno aguardando aprovação</h5>
@@ -131,7 +128,6 @@
     </div>
 
 </div>
-
 {% endif %}
 
 {% endblock %}

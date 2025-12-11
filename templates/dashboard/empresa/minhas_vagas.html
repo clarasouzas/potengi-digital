@@ -132,32 +132,22 @@
 </div>
 
 {% else %}
+<div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
 
-<div class="empty-state-wrapper py-5"
-     style="
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        gap:32px;
-        text-align:left;
-     ">
-
-    <!-- IMAGEM GRANDE -->
     <img src="{% static 'assets/img/empty.svg' %}"
-         alt="Nenhuma candidatura recebida"
          class="empty-img"
-         style="width: 340px; height:auto; flex-shrink:0;">
+         style="width: 420px; max-width: 100%;">
 
-    <!-- TEXTO -->
-    <div class="empty-state-text">
+    <div class="empty-state-text" style="max-width: 380px;">
         <h5 class="fw-bold mb-2">Você ainda não cadastrou nenhuma vaga</h5>
-
-        <p class="text-muted m-0" style="max-width:480px;">
+        <p class="text-muted m-0">
             Adicione sua primeira vaga para começar a receber candidaturas dos alunos.
+        </p>
         </p>
     </div>
 
 </div>
+
 {% endif %}
 
 {% endblock %}

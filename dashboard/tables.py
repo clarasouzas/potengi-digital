@@ -181,7 +181,7 @@ class UsuariosTable(tables.Table):
         </a>
         """,
         verbose_name="Usuário",
-        orderable=True
+        orderable=False
     )
 
     tipo = tables.TemplateColumn(
@@ -257,7 +257,7 @@ class PerfisFormacaoTable(tables.Table):
 
     acoes = tables.TemplateColumn(
         template_code="""
-        <div class="table-actions">
+        <div class="acoes-wrapper">
             <a href="{% url 'dashboard:editar_perfil_formacao' record.id %}"
                class="btn-table">Editar</a>
 
@@ -322,7 +322,7 @@ class MensagensContatoTable(tables.Table):
 
     acoes = tables.TemplateColumn(
         template_code="""
-        <div class="table-actions">
+        <div class="acoes-wrapper">
             <a href="#mensagem-{{ record.id }}" class="btn-table">Ver</a>
 
             {% if not record.respondido %}
@@ -373,7 +373,7 @@ class AlunoMensagensTable(tables.Table):
 
     acoes = tables.TemplateColumn(
         template_code="""
-        <div class="table-actions">
+        <div class="acoes-wrapper">
             <a href="#mensagem-{{ record.id }}" class="btn-table">Ver</a>
         </div>
         """,
@@ -417,7 +417,7 @@ class EmpresaMensagensTable(tables.Table):
 
     acoes = tables.TemplateColumn(
         template_code="""
-        <div class="table-actions">
+        <div class="acoes-wrapper">
             <a href="#mensagem-{{ record.id }}" class="btn-table">Ver</a>
         </div>
         """,

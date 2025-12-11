@@ -103,12 +103,14 @@ def aluno_painel(request):
         .filter(aluno=request.user)
         .order_by("-data_candidatura")[:5]
     )
-    recomendadas = (
-        Vaga.objects.filter(
-            curso=request.user.curso,
-            status="aprovada"
-        )[:4]
-    )
+    if request.user.curso:
+        recomendadas = Vaga.objects.filter(
+            status="aprovada",
+            curso__nome=request.user.curso
+        )[:3]
+    else:
+        recomendadas = Vaga.objects.none()
+
 
 
     return render(request, "dashboard/aluno/painel.html", {
@@ -191,7 +193,7 @@ def empresa_painel(request):
     usuario = request.user
 
     vagas = Vaga.objects.filter(empresa=usuario)
-    vagas_recentes = vagas.order_by("-id")[:6]
+    vagas_recentes = vagas.order_by("-id")[:4]
 
     total_vagas = vagas.count()
     vagas_pendentes = vagas.filter(status="pendente").count()

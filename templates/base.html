@@ -17,77 +17,111 @@
 
 <body>
 
- 
+<!-- ===================== NAVBAR ===================== -->
+<nav class="cor navbar navbar-expand-lg shadow-sm fixed-top">
+  <div class="container">
 
-  <!-- NAVBAR -->
-  <nav class="cor navbar navbar-expand-lg shadow-sm fixed-top">
-    <div class="container">
+    <!-- LOGO -->
+    <a class="navbar-brand" href="{% url 'linkif:index' %}">
+      {% if site_config.logo %}
+        <img src="{{ site_config.logo.url }}" alt="{{ site_config.nome_site|default:'LinkIF' }}">
+      {% else %}
+        <img src="{% static 'assets/img/logo.svg' %}" alt="{{ site_config.nome_site|default:'LinkIF' }}">
+      {% endif %}
+    </a>
 
-      <!-- LOGO -->
-      <a class="navbar-brand" href="{% url 'linkif:index' %}">
+    <!-- HAMBURGUER -->
+    <button class="navbar-toggler ms-auto custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavMobile">
+      <span class="hamburger-icon"></span>
+    </button>
 
-        {% if site_config.logo %}
-          <img src="{{ site_config.logo.url }}" alt="{{ site_config.nome_site|default:'LinkIF' }}">
-        {% else %}
-          <img src="{% static 'assets/img/logo.svg' %}" alt="{{ site_config.nome_site|default:'LinkIF' }}">
-        {% endif %}
+    <!-- ===================== MENU ===================== -->
+    <div class="collapse navbar-collapse" id="navbarNavMobile">
 
-      </a>
+      {% if request.resolver_match.url_name == "index" %}
+      <ul class="navbar-nav mx-auto text-center mt-3 mt-lg-0">
+        <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+        <li class="nav-item"><a class="nav-link" href="#formacao">Formação Profissional</a></li>
+        <li class="nav-item"><a class="nav-link" href="#estudante">Para Estudantes</a></li>
+        <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+      </ul>
+      {% else %}
+      <div class="flex-grow-1"></div>
+      {% endif %}
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarNav">
-
-        {% if request.resolver_match.url_name == "index" %}
-        <!-- MENU DA HOME -->
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
-          <li class="nav-item"><a class="nav-link" href="#estudante">Para Estudantes</a></li>
-          <li class="nav-item"><a class="nav-link" href="#empresas">Para Empresas</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
-        </ul>
-        {% else %}
-        <!-- Placeholder para centralizar logo -->
-        <div class="flex-grow-1"></div>
-        {% endif %}
-
-      </div>
-
-      <!-- LOGIN / DASHBOARD -->
-      <div class="ms-3 d-flex align-items-center">
+      <!-- ===================== BOTÕES / AVATAR ===================== -->
+      <div class="d-flex justify-content-center mt-4 mt-lg-0 gap-3 flex-column flex-lg-row align-items-center">
 
         {% if user.is_authenticated %}
 
-          <a href="{% url 'dashboard:inicio' %}" class="navbar-avatar-link">
+        <!-- DROPDOWN DO AVATAR -->
+        <li class="nav-item dropdown list-unstyled">
+          <a class="nav-link dropdown-toggle d-flex align-items-center navbar-avatar-link"
+             href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
-            {% if request.user.foto %}
-                <img src="{{ request.user.foto.url }}" class="avatar" alt="Foto de perfil">
+            {% if user.foto %}
+              <img src="{{ user.foto.url }}" class="avatar rounded-circle" width="40" height="40">
             {% else %}
-                <i class="bi bi-person-circle avatar-icon"></i>
+              <i class="bi bi-person-circle avatar-icon"></i>
             {% endif %}
-
           </a>
+
+          <ul class="dropdown-menu dropdown-menu-end user-dropdown shadow-lg" aria-labelledby="userDropdown">
+
+            <!-- Cabeçalho com nome e email -->
+            <li class="px-3 py-2 border-bottom">
+              <div class="d-flex align-items-center">
+                {% if user.foto %}
+                  <img src="{{ user.foto.url }}" width="35" height="35" class="rounded-circle me-2" style="object-fit:cover;">
+                {% else %}
+                  <i class="bi bi-person-circle fs-1 me-2" style="color:var(--accent-blue)"></i>
+                {% endif %}
+                <div style="line-height: 1.1">
+                  <strong style="color:var(--accent-blue)">{{ user.nome|default:user.username }}</strong><br>
+                  <small class="text-muted" >{{ user.email }}</small>
+                </div>
+              </div>
+            </li>
+
+            <!-- Itens -->
+            <li>
+              <a class="dropdown-item py-2" style="color:var(--accent-blue)" href="{% url 'dashboard:inicio' %}">
+                <i class="bi bi-house me-2" style="color:var(--accent-blue)"></i>
+                 Meu Painel
+              </a>
+            </li>
+
+            <li>
+              <form method="post" action="{% url 'usuarios:logout' %}">
+                {% csrf_token %}
+                <button class="dropdown-item py-2" type="submit" style="color:var(--accent-blue)">
+                  <i class="bi bi-box-arrow-right me-2" style="color:var(--accent-blue)"></i> Sair
+                </button>
+              </form>
+            </li>
+          </ul>
+        </li>
 
         {% else %}
+        <!-- BOTÕES DESLOGADO -->
+        <a href="{% url 'usuarios:login' %}" class="btn-entrar w-auto">
+          <i class="bi bi-box-arrow-in-right me-2"></i> Entrar
+        </a>
 
-          <a href="{% url 'usuarios:login' %}" class="btn-entrar me-2">
-            <i class="bi bi-box-arrow-in-right me-2"></i> Entrar
-          </a>
-
-          <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese">
-            <i class="bi bi-person-plus me-2"></i> Cadastre-se
-          </a>
-
+        <a href="{% url 'usuarios:cadastro' %}" class="btn-cadastrese w-auto">
+          <i class="bi bi-person-plus me-2"></i> Cadastre-se
+        </a>
         {% endif %}
       </div>
 
     </div>
-  </nav>
+  </div>
+</nav>
 
-  <!-- Espaço da navbar fixa -->
-  <div style="height:70px;"></div>
+
+<!-- Espaço da navbar fixa -->
+<div style="height:70px;"></div>
 
   <!-- Mensagens do Django -->
  {% if messages %}

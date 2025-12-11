@@ -23,6 +23,8 @@
     --accent-red: #da3b3b;
     --accent-red-light-1: #e58c8c;
     --accent-red-light-2: #ffe4e4;
+    --accent-yellow: #eaff83;
+    --accent-yellow-dark-1: #7c9500;
     --gray-100: #F8F9FA;
     --gray-200: #EDEFF1;
     --gray-300: #D8DBDF;
@@ -99,26 +101,46 @@ body {
     height: 70px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 6px;
     cursor: pointer;
 }
 
 .avatar-icon {
-    font-size: 46px;
+    font-size: 55px;
+    margin-bottom: 15px;
     color: var(--accent-blue);
 }
 
 /* Sidebar */
 .sidebar {
-    width: 250px;
+    min-width: 260px;
+    width: 260px;
     background: var(--accent-blue);
-    min-height: 100vh;
+    min-height: 120vh;
     padding-top: 20px;
     transition: .3s ease;
+    flex-shrink: 0;
 }
 
 .sidebar.closed {
-    width: 80px;
+    width: 80px !important;
+    min-width: 80px !important;
+}
+
+/* ícones centralizados quando fechada */
+.sidebar.closed .sidebar-item {
+    font-size: 0 !important;
+    justify-content: center !important;
+    padding: 12px !important;
+}
+
+.sidebar.closed .sidebar-item i {
+    margin: 0 !important;
+    font-size: 22px !important;
+}
+
+/* esconder títulos das seções */
+.sidebar.closed .sidebar-section-title {
+    display: none !important;
 }
 
 .sidebar-section-title {
@@ -527,7 +549,7 @@ body {
 .metric-icon {
     width: 60px;
     height: 60px;
-    border-radius: 30px;
+    border-radius: 100%;
     background: var(--accent-blue-light-4);
     display: flex;
     justify-content: center;
@@ -586,8 +608,8 @@ body {
 }
 
 .status-badge.pend {
-    background: #fff7d9;
-    color: #7a6200;
+    background:var(--accent-yellow);
+    color:var(--accent-yellow-dark-1);
     box-shadow: inset 0 0 0 1px #f2e5a5;
 }
 
@@ -776,59 +798,76 @@ body {
 
 
 /* Dropdown */
-
-.dropdown-arrow {
-    margin-right: 40px;
-    font-size: 16px;
-    margin-left: -2px !important;
-    color: var(--accent-blue);
+/* seta do dashboard igual à da página pública */
+.dash-arrow {
+    width: 0;
+    height: 0;
+    margin-right: 30px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 7px solid var(--accent-blue);
     transition: transform .25s ease;
 }
 
-.dropdown.show .dropdown-arrow {
+/* gira a seta quando o dropdown abre */
+.dashboard-dropdown.show .dash-arrow {
     transform: rotate(180deg);
 }
 
-.custom-dropdown {
+/* remove seta do Bootstrap */
+.dashboard-toggle::after {
+    display: none !important;
+}
+
+/* dropdown com visual igual ao público */
+.dash-dropdown-menu {
     border-radius: 12px;
     padding: 8px 0;
-    box-shadow: 0 6px 20px #3eaf8f36;
     border: none;
+    box-shadow: 0 6px 20px #3eaf8f36;
     min-width: 200px;
+    animation: fadeDrop .25s ease;
 }
 
-.dropdown-header {
-    padding: 12px 20px 8px;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--accent-blue-light-1);
-    white-space: nowrap;
+@keyframes fadeDrop {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-.custom-dropdown-item {
+/* itens */
+.dash-item {
     padding: 10px 18px;
-    font-size: 15px;
     display: flex;
     align-items: center;
     border-radius: 6px;
-    transition: 0.25s ease;
     color: var(--accent-blue-light-1) !important;
+    transition: .25s ease;
+    font-size: 15px;
 }
 
-.custom-dropdown-item i {
-    color: var(--accent-blue-light-1) !important;
+.dash-item i {
     font-size: 18px;
-    transition: 0.25s ease;
+    color: var(--accent-blue-light-1);
+    transition: .25s ease;
 }
 
-.custom-dropdown-item:hover {
+.dash-item:hover {
     background: var(--accent-blue-light-5);
     padding-left: 24px;
 }
 
-.custom-dropdown-item:hover i {
+.dash-item:hover i {
     transform: scale(1.15);
 }
+
+/* cabeçalho */
+.dash-dropdown-menu .dropdown-header {
+    padding: 12px 20px 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent-blue-light-1);
+}
+
 
 .vaga-card {
     background: #fafafa;
@@ -944,6 +983,8 @@ body {
 ================================ */
 /* Wrapper geral centralizado */
 .candidatar-wrapper {
+    display: flex;
+    min-height: 100vh;
     max-width: 990px;
     margin: 0 auto;
     padding: 10px 20px;
@@ -1083,12 +1124,12 @@ body {
 
 
 .badge.pend {
-    background: var(--accent-blue-light-5);
-    color: var(--accent-blue);
+    background:var(--accent-yellow);
+    color:var(--accent-yellow-dark-1);
 }
 
 .badge.pend i {
-    color: var(--accent-blue);
+    color: var(--accent-yellow-dark-1);
 }
 
 .badge.anls {
@@ -1334,11 +1375,17 @@ body {
     color: var(--accent-blue);
     text-decoration: none;
 }
+.table-container {
+    width: 100%;
+    overflow-x: auto;   /* permite rolar pro lado */
+}
+
+.table-container table {
+    min-width: 600px;   /* evita quebrar o layout */
+}
 
 .linkif-table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 8px;
 }
 
 .linkif-table thead th {
@@ -1360,7 +1407,8 @@ body {
     padding: 14px 16px;
     text-align: left !important;
     vertical-align: middle;
-    border-right: 1px solid var(--accent-blue-light-4);
+    border-bottom: 1px solid var(--gray-300);
+    border-right: 1px solid var(--gray-300);
 }
 
 .linkif-table tbody td:last-child {
@@ -1603,6 +1651,9 @@ body {
 #main-content {
   opacity: 1;
   visibility: visible;
+  min-width: 0;
+  padding: 20px;
+  flex: 1;
 }
 
 #splash-screen {
@@ -1614,4 +1665,206 @@ body {
   justify-content: center;
   z-index: 20000;
   transition: transform 0.5s ease, opacity 2s ease;
+}
+/* ============================================================
+   MOBILE MINI — sidebar fechada mas toggle funcionando
+============================================================ */
+@media (max-width: 768px) {
+
+    /* ===== sidebar automaticamente fechada ===== */
+    .sidebar {
+        width: 50px !important;
+        min-width: 50px !important;
+    }
+
+    /* tudo quando FECHADA */
+    .sidebar.closed {
+        width: 50px !important;
+        min-width: 50px !important;
+    }
+
+    /* tudo quando ABERTA */
+    .sidebar.open {
+        width: 150px !important;
+        min-width: 150px !important;
+    }
+    .sidebar.open + #main-content {
+        margin-left: 50px !important;
+    }
+    .wrapper {
+        display: flex;
+        width: 100%;
+    }
+    /* ===== ITENS DO SIDEBAR ===== */
+    .sidebar-item {
+        justify-content: center !important;
+        padding: 8px !important;
+        font-size: 0 !important;
+    }
+
+    .sidebar-item i {
+        font-size: 18px !important;
+        margin: 0 !important;
+    }
+
+    /* quando sidebar estiver ABERTA */
+    .sidebar.open .sidebar-item {
+        font-size: 0.8rem !important;
+        justify-content: flex-start !important;
+        gap: 10px !important;
+        padding-left: 10px !important;
+    }
+
+    .sidebar.open .sidebar-item i {
+        font-size: 20px !important;
+    }
+
+    /* títulos */
+    .sidebar-section-title {
+        display: none !important;
+    }
+    .sidebar.open .sidebar-section-title {
+        display: block !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+        height: 65px !important;
+        padding: 0 14px !important;
+    }
+
+    .topbar-logo {
+        height: 65px !important;
+    }
+
+    .btn-topbar i {
+        font-size: 30px !important;
+    }
+    /* Avatar no topbar */
+    .avatar,
+    .avatar-icon {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 25px !important;
+    }
+
+    /* Avatar grande do perfil */
+    .perfil-foto,
+    .perfil-foto-placeholder,
+    .perfil-foto-edit,
+    .perfil-foto-placeholder-edit {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 25px !important;
+    }
+    /* ===== CONTENT MINI DE VERDADE ===== */
+    #main-content {
+        padding: 10px !important;
+    }
+
+    .title-dashboard {
+        font-size: 1.2rem !important;
+        margin-bottom: 10px !important;
+    }
+
+    .section-card,
+    .metric-card,
+    .vaga-card,
+    .soft-card,
+    .candidatura-card {
+        padding: 12px !important;
+        border-radius: 10px !important;
+    }
+
+    /* ===== HERO MINI ===== */
+    .hero-dashboard {
+        padding: 16px !important;
+        border-radius: 16px !important;
+        flex-direction: column !important;
+        text-align: center;
+        height: auto !important;
+    }
+
+    .hero-title {
+        font-size: 1rem !important;
+        margin-bottom: 6px !important;
+    }
+
+    .hero-subtitle,
+    .hero-hello {
+        font-size: 0.75rem !important;
+    }
+
+    .hero-illustration {
+        width: 55% !important;
+        max-width: 160px !important;
+        margin-top: 12px !important;
+        position: relative !important;
+        right: 0 !important;
+        top: 0 !important;
+    }
+
+    /* ===== Botões MINI ===== */
+    .btn-dash,
+    .btn-save,
+    .btn-cancel,
+    .btn-apply,
+    .btn-outline-action,
+    .btn-table,
+    .btn-delete {
+        padding: 8px 12px !important;
+        font-size: 0.75rem !important;
+        border-radius: 20px !important;
+    }
+
+    /* ===== TABELA MINI ===== */
+    .linkif-table thead th {
+        font-size: 0.82rem !important;
+        padding: 10px !important;
+    }
+
+    .linkif-table tbody td {
+        font-size: 0.78rem !important;
+        padding: 10px !important;
+    }
+    /* ===== EMPTY STATE ===== */
+    .empty-img {
+        width: 180px !important;
+    }
+
+    .empty-state-text h5 {
+        font-size: 0.9rem !important;
+    }
+
+    .empty-state-text p {
+        font-size: 0.5rem !important;
+    }
+     .global-alert-container {
+        top: 12px;
+    }
+
+    .global-alert {
+        min-width: unset;
+        max-width: 90%;
+        width: 90%;
+
+        padding: 10px 14px !important;
+        border-radius: 10px !important;
+
+        margin-bottom: 8px !important;
+    }
+
+    .alert-text {
+        font-size: 0.85rem !important;
+    }
+
+    .global-alert i {
+        font-size: 1rem !important;
+    }
+
+    .close-btn {
+        font-size: 16px !important;
+        margin-left: 10px !important;
+    }
 }

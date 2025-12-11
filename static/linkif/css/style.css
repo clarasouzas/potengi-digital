@@ -74,10 +74,22 @@ body {
   font-family: "Montserrat", sans-serif;
   background-color: #fff;
   color: #5E6468;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 0.88rem;
+  }
 }
 
 .text-secondary {
-  font-size: large;
   color: var(--gray-500)
 }
 
@@ -87,6 +99,18 @@ body {
 
 section {
   padding: 50px 0;
+}
+
+@media (max-width: 768px) {
+  section {
+    padding: 35px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 25px 0;
+  }
 }
 
 a {
@@ -124,6 +148,37 @@ a:hover {
   transform: scale(2);
   transform-origin: left center;
   margin-top: -1px;
+}
+
+/* CELULAR PEQUENO (bem maior) */
+@media (max-width: 480px) {
+  .navbar-brand img {
+    transform: scale(2);
+    /* AQUI vc regula o tamanho 👈 */
+    max-height: 60px;
+    /* mantém altura real */
+    transform-origin: left center;
+  }
+}
+
+/* CELULAR MÉDIO / MOBILE GERAL */
+@media (max-width: 768px) {
+  .navbar-brand img {
+    transform: scale(1.8);
+    /* aumenta bastante */
+    max-height: 60px;
+    transform-origin: left center;
+  }
+}
+
+/* TABLET / iPAD */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .navbar-brand img {
+    transform: scale(2.2);
+    /* bem maior no iPad */
+    max-height: 70px;
+    transform-origin: left center;
+  }
 }
 
 .navbar-nav .nav-item {
@@ -226,6 +281,185 @@ a:hover {
   color: var(--primary);
 }
 
+
+/* Remove o ícone padrão */
+.navbar-toggler-icon {
+  display: none !important;
+}
+
+/* botão sem borda feia */
+/* Centraliza o hamburger verticalmente com a logo */
+.custom-toggler {
+  display: flex;
+  align-items: center;
+  /* centraliza no eixo do conteúdo */
+  justify-content: center;
+  height: 55px;
+  /* mesma altura visual da logo */
+  padding: 0 6px;
+}
+
+
+.hamburger-icon {
+  display: inline-block;
+  position: relative;
+
+  width: 28px;
+  height: 3px;
+  border: none;
+  background-color: #205072;
+  border-radius: 5px;
+
+  top: 0;
+  /* reseta qualquer deslocamento */
+}
+
+.hamburger-icon::before,
+.hamburger-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+
+  width: 28px;
+  height: 3px;
+  border: none;
+  background-color: #205072;
+  border-radius: 5px;
+}
+
+.hamburger-icon::before {
+  top: -8px;
+}
+
+.hamburger-icon::after {
+  top: 8px;
+}
+
+
+/* opcional: hover */
+.custom-toggler:hover .hamburger-icon,
+.custom-toggler:hover .hamburger-icon::before,
+.custom-toggler:hover .hamburger-icon::after {
+  border: none;
+  background-color: var(--primary);
+  /* muda a cor ao passar o mouse */
+}
+
+
+/* Esconde botões e avatar no topo em mobile */
+@media (max-width: 768px) {
+
+  .btn-entrar,
+  .btn-cadastrese,
+  .avatar,
+  .avatar-icon {
+    display: none;
+  }
+}
+
+
+
+/* EXIBE esses itens dentro do menu mobile */
+@media (max-width: 768px) {
+
+  #navbarNavMobile .btn-entrar,
+  #navbarNavMobile .btn-cadastrese,
+  #navbarNavMobile .avatar,
+  #navbarNavMobile .avatar-icon {
+    display: inline-flex !important;
+  }
+}
+
+/* Centraliza o menu no mobile */
+@media (max-width: 768px) {
+  .navbar-nav {
+    text-align: center;
+  }
+}
+
+/* Avatar dentro do menu mobile */
+.navbar-avatar-link .avatar {
+  width: 55px;
+  height: 55px;
+}
+
+.navbar-avatar-link .avatar-icon {
+  font-size: 55px;
+  color: var(--accent-blue);
+}
+
+.navbar-avatar-link .avatar-icon:hover {
+  color: var(--primary);
+}
+
+/* AVATAR */
+.navbar-avatar-link img,
+.avatar {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Ícone quando não tem foto */
+.avatar-icon {
+  font-size: 38px;
+  color: var(--accent-blue);
+}
+
+/* DROPDOWN */
+.user-dropdown {
+  border-radius: 10px !important;
+  padding: 0 !important;
+  overflow: hidden;
+  animation: fadeDropdown 0.15s ease-out;
+}
+
+@keyframes fadeDropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-dropdown .dropdown-item {
+  padding: 10px 18px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  transition: 0.25s ease;
+  color: var(--accent-blue-light-1) !important;
+}
+
+.user-dropdown .dropdown-item i {
+  color: var(--accent-blue-light-1) !important;
+  font-size: 18px;
+  transition: 0.25s ease;
+}
+
+.dropdown-item:hover {
+  background: var(--accent-blue-light-5);
+  padding-left: 24px;
+  text-decoration: none;
+}
+
+.dropdown-item:hover i {
+  transform: scale(1.15);
+}
+
+/* Mobile: avatar e itens alinhados à direita */
+@media (max-width: 768px) {
+  #navbarNavMobile .dropdown-menu {
+    text-align: right;
+  }
+}
+
 /* =========================================================
    HERO PRINCIPAL — mesmo estilo do HERO ESTUDANTE
 ========================================================= */
@@ -234,7 +468,7 @@ a:hover {
   position: relative;
   overflow: hidden;
 
-  min-height: 60vh;
+  min-height: 70vh;
   /* altura equilibrada */
   padding: 90px 0;
   /* top/bottom igual ao de estudantes */
@@ -367,7 +601,7 @@ a:hover {
 
   .hero {
     min-height: auto;
-    padding: 60px 0;
+    padding: 50px 0;
   }
 
   .hero-container {
@@ -395,12 +629,15 @@ a:hover {
 }
 
 @media (max-width: 576px) {
+
   .text-area h1 {
     font-size: 2rem;
+    max-width: 700px;
+
   }
 
   .text-area p {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 
   .hero-art {
@@ -415,6 +652,7 @@ a:hover {
   background: var(--branco);
   height: 260px;
   width: 100%;
+  max-width: 100%;
   border-radius: 18px;
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -533,11 +771,11 @@ a:hover {
 
   font-size: 13px;
   font-weight: 500;
-  color: var(--primary-dark-3);
+  color: var(--accent-blue);
 }
 
 .vaga-meta i {
-  color: var(--primary-dark-3);
+  color: var(--accent-blue);
 }
 
 
@@ -863,8 +1101,7 @@ a:hover {
   padding: 10px 14px;
   font-size: 14px;
   color: #345460;
-
-  background: var(--primary-light-5);
+  background-color: var(--b);
 }
 
 .filtro-card select:focus,
@@ -898,6 +1135,9 @@ a:hover {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s;
   margin: auto;
+  max-width: 100%;
+  width: 100%;
+
 }
 
 .feature-card:hover {
@@ -927,7 +1167,7 @@ a:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
 }
 
 .feature-icon i {
@@ -1109,8 +1349,11 @@ a:hover {
   color: #fff;
   border: none;
   border-radius: 50%;
+
+  /* tamanho padrão (desktop) */
   width: 45px;
   height: 45px;
+
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1122,6 +1365,26 @@ a:hover {
 .perfil-btn:hover {
   background: var(--primary);
 }
+
+@media (max-width: 768px) {
+  .perfil-btn {
+    width: 38px;
+    height: 38px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+@media (max-width: 480px) {
+  .perfil-btn {
+    width: 32px;
+    height: 32px;
+    top: 55%;
+    /* desce um pouquinho, fica mais centralizado */
+    transform: translateY(-50%);
+  }
+}
+
 
 .perfil-prev {
   left: 0;
@@ -1752,6 +2015,74 @@ footer {
 .btn-login-linkif:hover {
   box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35);
 }
+/* ===================== RESPONSIVIDADE DO LOGIN ===================== */
+
+/* Tablets e celulares maiores */
+@media (max-width: 992px) {
+
+  /* container vira coluna */
+  .login-container {
+    flex-direction: column;
+    width: 95%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* LOGO EM CIMA */
+  .login-right {
+    order: 1;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  /* FORM EMBAIXO */
+  .login-left {
+    order: 2;
+    padding: 2.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo-login {
+    width: 230px;
+  }
+
+  .content-card {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 576px) {
+
+  .login-right {
+    padding: 25px 10px;
+  }
+
+  .logo-login {
+    width: 180px;
+  }
+
+  .login-left {
+    padding: 1.7rem !important;
+  }
+
+  .content-card {
+    padding: 18px;
+    border-radius: 12px;
+    width: 100%;
+  }
+
+  .form-box {
+    max-width: 100%;
+  }
+
+  .desc {
+    font-size: 0.9rem;
+  }
+}
 
 .link-cadastro {
   color: var(--accent-blue);
@@ -2060,6 +2391,157 @@ footer {
   pointer-events: none;
 }
 
+/* ============================================================
+   RESPONSIVIDADE — PÁGINA "PARA ESTUDANTES"
+   Ajusta hero, cards, filtro, vagas e modais
+============================================================ */
+
+/* ======== HERO ======== */
+@media (max-width: 992px) {
+
+  .hero-estudante {
+    padding: 40px 20px !important;
+    text-align: center;
+  }
+
+  .hero-estudante .hero-inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .hero-estudante .text-area h1 {
+    font-size: 2rem;
+  }
+
+  .hero-estudante .text-area p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .hero-art {
+    width: 260px;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .hero-estudante .text-area h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-art {
+    width: 210px;
+  }
+}
+
+
+/* ======== CARDS DO "O QUE OFERECEMOS" ======== */
+@media (max-width: 768px) {
+  .feature-card {
+    padding: 30px 20px !important;
+  }
+
+  .feature-icon i {
+    font-size: 40px !important;
+  }
+}
+
+
+/* ======== LAYOUT: FILTRO + LISTA DE VAGAS ======== */
+@media (max-width: 992px) {
+
+  #vagas .row {
+    flex-direction: column;
+  }
+
+  .filtro-card {
+    margin-bottom: 25px;
+  }
+
+  .vaga-card {
+    margin: 0 auto;
+  }
+}
+
+
+/* ======== CARDS DE VAGAS ======== */
+
+@media (max-width: 768px) {
+  .vaga-card {
+    height: auto;
+  }
+
+  .vaga-title {
+    font-size: 1.05rem;
+  }
+
+  .vaga-meta span {
+    font-size: 0.85rem;
+  }
+}
+
+
+/* ======== MODAL DE VAGA ======== */
+
+@media (max-width: 576px) {
+
+  .modal-content-vaga {
+    width: 92% !important;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 25px !important;
+  }
+
+  .modal-content-vaga h3 {
+    font-size: 1.3rem;
+  }
+
+  .modal-content-vaga .tag-chip {
+    font-size: 0.85rem;
+    padding: 5px 8px;
+  }
+
+  .modal-btn-apply {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
+/* ======== PAGINAÇÃO ======== */
+
+@media (max-width: 576px) {
+  .pagination-modern {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .page-numbers {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .page-number {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+
+/* ======== SEÇÃO "COMO FUNCIONA" ======== */
+
+@media (max-width: 768px) {
+
+  .como-funciona .feature-card {
+    padding: 28px 20px !important;
+  }
+
+  .como-funciona .title-card-index {
+    font-size: 1.05rem !important;
+  }
+}
 
 /* =======================================
    FEATURE CARDS - ESTUDANTES
@@ -2304,6 +2786,67 @@ footer {
 .btn-filtro:hover {
   opacity: .9;
 }
+/* ================================
+   HERO — comportamento igual à página pública
+   Imagem desce no mobile
+================================= */
+
+/* DESKTOP (mantém absoluto à direita) */
+.hero-estudante .hero-art {
+  position: absolute;
+  right: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* MOBILE / TABLET — imagem VAI PARA BAIXO */
+@media (max-width: 992px) {
+
+  .hero-estudante {
+    padding: 60px 20px !important;
+    text-align: center;
+  }
+
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 !important;
+  }
+
+  .hero-estudante .hero-art {
+    position: relative !important;
+    top: unset !important;
+    right: unset !important;
+    transform: none !important;
+    margin-top: 25px;
+    width: 75%;
+    max-width: 330px;
+    height: auto;
+  }
+
+  .hero-inner h1 {
+    font-size: 2rem !important;
+  }
+
+  .hero-inner p {
+    font-size: 1rem !important;
+    max-width: 90%;
+    margin: 0 auto 20px auto;
+  }
+}
+
+/* CELULAR PEQUENO */
+@media (max-width: 576px) {
+  .hero-estudante .hero-art {
+    width: 85%;
+    max-width: 260px;
+  }
+
+  .hero-inner h1 {
+    font-size: 1.7rem !important;
+  }
+}
 
 /* ===== TABELA ===== */
 .usuario-table {
@@ -2435,70 +2978,117 @@ footer {
 
 
 .global-alert-container {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
 }
 
 /* Card da mensagem */
 .global-alert {
-    padding: 15px 22px;
-    border-radius: 14px;
-    min-width: 380px;
-    max-width: 600px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
+  padding: 15px 22px;
+  border-radius: 14px;
+  min-width: 380px;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
 
 /* cores */
 .global-alert.success {
-    color: var(--gray-600);
-    background: var(--primary-light-5);
-    border-left: 3px solid var(--primary-dark-3);
+  color: var(--gray-600);
+  background: var(--primary-light-5);
+  border-left: 3px solid var(--primary-dark-3);
 }
 
 .global-alert.error {
-    color: var(--gray-600);
-    background: var(--accent-red-light-2);
-    border-left: 3px solid var(--accent-red);
+  color: var(--gray-600);
+  background: var(--accent-red-light-2);
+  border-left: 3px solid var(--accent-red);
 }
 
 .global-alert.warning {
-    color: var(--gray-600);
-    background: var(--accent-blue-light-4);
-    border-left: 3px solid var(--accent-purple);
+  color: var(--gray-600);
+  background: var(--accent-blue-light-4);
+  border-left: 3px solid var(--accent-purple);
 }
 
 .global-alert.info {
-    color: var(--gray-600);
-    background: var(--accent-blue-light-5);
-    border-left: 3px solid var(--accent-blue);
+  color: var(--gray-600);
+  background: var(--accent-blue-light-5);
+  border-left: 3px solid var(--accent-blue);
 }
 
 /* texto */
 .alert-text {
-    display: flex;
-    align-items: center;
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--gray-700);
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--gray-700);
 }
 
 /* botão de fechar */
 .close-btn {
-    font-size: 20px;
-    margin-left: 14px;
-    cursor: pointer;
-    color: var(--gray-700);
-    transition: 0.2s ease;
+  font-size: 20px;
+  margin-left: 14px;
+  cursor: pointer;
+  color: var(--gray-700);
+  transition: 0.2s ease;
 }
 
 .close-btn:hover {
-    transform: scale(1.2);
-    color: var(--gray-900);
+  transform: scale(1.2);
+  color: var(--gray-900);
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+  select,
+    .soft-card select,
+    .form-styled select,
+    .filtro-horizontal select {
+        height: 42px !important;
+        padding: 6px 10px !important;
+        font-size: 0.95rem !important;
+        border-radius: 8px !important;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    textarea {
+        padding: 8px 10px !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* labels não ficam gigantes */
+    label {
+        font-size: 0.9rem !important;
+    }
+
+}
+
+.startt {
+  align-items: start;
 }

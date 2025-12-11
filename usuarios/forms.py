@@ -23,11 +23,12 @@ class UsuarioCreationForm(UserCreationForm):
 
 class AlunoCreationForm(UsuarioCreationForm):
 
-    curso = forms.ModelChoiceField(
-        queryset=PerfilFormacao.objects.all(),
-        empty_label="Selecione seu curso",
-        widget=forms.Select(attrs={"class": "form-select"})
+    curso = forms.ChoiceField(
+    choices=[(p.nome, p.nome) for p in PerfilFormacao.objects.all()],
+    widget=forms.Select(attrs={"class": "form-select"}),
+    required=True
     )
+
 
     class Meta(UsuarioCreationForm.Meta):
         fields = ["curso", "username"] + UsuarioCreationForm.Meta.fields
