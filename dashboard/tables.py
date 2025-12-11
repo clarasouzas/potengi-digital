@@ -33,10 +33,12 @@ class CandidaturasRecebidasTable(tables.Table):
 
     acoes = tables.TemplateColumn(
         template_code="""
+        <div class="acoes-wrapper">
         <a href="{% url 'dashboard:empresa_candidatura_detalhe' record.id %}"
            class="btn-table">
             Ver detalhes
         </a>
+        </div>
         """,
         verbose_name="Ações",
         orderable=False
@@ -71,8 +73,10 @@ class AprovarAlunosTable(tables.Table):
 
     acoes = tables.TemplateColumn(
         template_code="""
+        <div class="acoes-wrapper">
         <a href="#aprovar-{{ record.id }}" class="btn-table">Aprovar</a>
         <a href="#rejeitar-{{ record.id }}" class="btn-delete">Rejeitar</a>
+        </div>
         """,
         verbose_name="Ações",
         orderable=False
@@ -107,8 +111,10 @@ class AprovarEmpresasTable(tables.Table):
 
     acoes = tables.TemplateColumn(
         template_code="""
+        <div class="acoes-wrapper">
         <a href="#aprovar-{{ record.id }}" class="btn-table">Aprovar</a>
         <a href="#rejeitar-{{ record.id }}" class="btn-delete">Reprovar</a>
+        </div>
         """,
         verbose_name="Ações",
         orderable=False
@@ -150,8 +156,10 @@ class AprovarVagasTable(tables.Table):
 
     acoes = tables.TemplateColumn(
         template_code="""
+        <div class="acoes-wrapper">
         <a href="#aprovar-{{ record.id }}" class="btn-table">Aprovar</a>
         <a href="#reprovar-{{ record.id }}" class="btn-delete">Reprovar</a>
+        </div>
         """,
         verbose_name="Ações",
         orderable=False
