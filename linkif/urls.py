@@ -13,7 +13,6 @@ urlpatterns = [
     path("para-empresas/", views.para_empresas, name="para_empresas"),
 
     # Perfis de Formação
-    path("perfis/", views.perfil_cursos, name="perfil_cursos"),
     path("perfis/<int:perfil_id>/", views.perfil_detalhe, name="perfil_detalhe"),
 
     # Vagas Públicas (listagem)

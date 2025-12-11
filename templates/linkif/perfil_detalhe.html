@@ -35,7 +35,7 @@
 
 
     <!-- ===========================
-         COMPETÊNCIAS E HABILIDADES
+         COMPETÊNCIAS
     =========================== -->
     <div class="perfil-section-card">
         <h4 class="section-title-linha">
@@ -66,17 +66,17 @@
 
             {% if perfil.areas.all %}
                 {% for area in perfil.areas.all %}
-                <div class="col-md-4">
-                    <div class="area-card">
+                    <div class="col-md-4">
+                        <div class="area-card">
 
-                        <div class="area-card-icon">
-                            <i class="bi bi-ui-checks-grid"></i>
+                            <div class="area-card-icon">
+                                <i class="bi bi-ui-checks-grid"></i>
+                            </div>
+
+                            <h6>{{ area.titulo }}</h6>
+                            <p>{{ area.descricao|default:"Sem descrição." }}</p>
                         </div>
-
-                        <h6>{{ area.titulo }}</h6>
-                        <p>{{ area.descricao|default:"Sem descrição." }}</p>
                     </div>
-                </div>
                 {% endfor %}
             {% else %}
                 <p class="text-muted ps-2">Nenhuma área cadastrada.</p>
@@ -84,7 +84,66 @@
 
         </div>
     </div>
+<!-- ===========================
+     ESTUDANTES DO CURSO
+     (VISÍVEL PARA EMPRESA / COORDENAÇÃO)
+=========================== -->
+{% if request.user.is_authenticated and request.user.tipo in "empresa coordenador" %}
+
+
+    <div class="perfil-section-card ">
+
+        <h4 class="section-title-linha">
+            <span class="linha"></span>
+            Estudantes deste Curso
+        </h4>
+
+        <p class="text-secondary">
+            Lista de estudantes vinculados ao curso <b>{{ perfil.nome }}</b>.
+        </p>
+
+        <div class="row g-4 mt-1">
+
+            {% for aluno in alunos %}
+            <div class="col-md-4">
+                <div class="area-card">
+
+                    <div class="area-card-icon">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+
+                    <h6>{{ aluno.username }}</h6>
+
+                    <p class="text-muted">
+                        {% if aluno.resumo %}
+                            {{ aluno.resumo|truncatewords:12 }}
+                        {% else %}
+                            Estudante cadastrado neste curso.
+                        {% endif %}
+                    </p>
+
+                </div>
+            </div>
+            
+            {% endfor %}
+
+        </div>
+
+        <!-- BOTÃO CENTRALIZADO -->
+        <div class="text-center mt-4">
+            <a href="{% url 'linkif:explorar' %}?curso={{ perfil.nome }}" class="btn-dupla">
+                <i class="bi bi-search me-2"></i> Ver todos os estudantes de {{ perfil.nome }}
+            </a>
+        </div>
+
 
 </div>
+
+{% endif %}
+</div>
+
+
+
+
 
 {% endblock %}

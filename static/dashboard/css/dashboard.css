@@ -509,7 +509,23 @@ body {
     color: var(--accent-purple);
     font-size: 30px;
 }
+.reproval-box {
+    background: var(--accent-red-light-2);
+    border-left: 6px solid var(--accent-red);
+    padding: 20px 24px;
+    border-radius: 12px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 30px;
+    color: var(--accent-red);
+    box-shadow: 0 4px 14px rgba(89, 54, 163, 0.25);
+}
 
+.reproval-box i {
+    color: var(--accent-red);
+    font-size: 30px;
+}
 .btn-dash {
     display: flex;
     align-items: center;

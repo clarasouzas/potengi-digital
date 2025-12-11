@@ -29,6 +29,16 @@ class Usuario(AbstractUser):
 
     # controle
     is_approved = models.BooleanField(default=False)
+    status_aprovacao = models.CharField(
+    max_length=20,
+    choices=[
+        ("pendente", "Pendente"),
+        ("aprovado", "Aprovado"),
+        ("reprovado", "Reprovado"),
+    ],
+    default="pendente"
+)
+
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]

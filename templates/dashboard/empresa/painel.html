@@ -24,16 +24,27 @@
   <h2 class="title-dashboard mb-4">Visão Geral</h2>
 
 
-  <!-- AVISO DE APROVAÇÃO -->
-  {% if not request.user.is_approved %}
-  <div class="approval-box shadow-sm">
-      <i class="bi bi-hourglass-split"></i>
-      <div>
-          Seu perfil está <b>em análise pela coordenação</b>.<br>
-          Assim que aprovado, todos os recursos serão liberados.
-      </div>
-  </div>
-  {% endif %}
+  <!-- AVISO DE STATUS DE APROVAÇÃO -->
+{% if request.user.status_aprovacao == "pendente" %}
+<div class="approval-box shadow-sm">
+    <i class="bi bi-hourglass-split"></i>
+    <div>
+        Seu perfil está <b>em análise pela coordenação</b>.<br>
+        Assim que aprovado, todos os recursos serão desbloqueados.
+    </div>
+</div>
+
+{% elif request.user.status_aprovacao == "reprovado" %}
+<div class="reproval-box shadow-sm" >
+    <i class="bi bi-x-circle"></i>
+    <div>
+        Seu cadastro foi <b>reprovado pela coordenação</b>.<br>
+        O acesso às funcionalidades permanece bloqueado.<br>
+        Caso necessário, entre em contato com o suporte.
+    </div>
+</div>
+{% endif %}
+
 
 
   {% if request.user.is_approved %}

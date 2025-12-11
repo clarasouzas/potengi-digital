@@ -379,7 +379,7 @@ def empresa_acompanhar_vagas(request):
     ).order_by("-data_publicacao")
 
     table = AcompanharVagasEmpresaTable(vagas)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     etapa_choices = Vaga.ETAPA_CHOICES
 
@@ -469,7 +469,7 @@ def coordenacao_painel(request):
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_alunos(request):
 
-    alunos = Usuario.objects.filter(tipo="aluno", is_approved=False)
+    alunos = Usuario.objects.filter(tipo="aluno", status_aprovacao="pendente")
 
     table = AprovarAlunosTable(alunos)
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
@@ -478,31 +478,35 @@ def aprovar_alunos(request):
         "table": table,
         "total": alunos.count(),
     })
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_aluno_action(request, user_id):
+
     aluno = get_object_or_404(Usuario, id=user_id, tipo="aluno")
+
     aluno.is_approved = True
+    aluno.status_aprovacao = "aprovado"
     aluno.save()
+
     messages.success(request, "Aluno aprovado com sucesso.")
     return redirect("dashboard:aprovar_alunos")
- 
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def reprovar_aluno_action(request, user_id):
 
     aluno = get_object_or_404(Usuario, id=user_id, tipo="aluno")
-    aluno.delete()
 
-    messages.error(request, "Aluno reprovado e removido do sistema.")
+    aluno.is_approved = False
+    aluno.status_aprovacao = "reprovado"
+    aluno.save()
+
+    messages.error(request, "Aluno reprovado. O usuário permanecerá no sistema, mas sem acesso às funcionalidades.")
     return redirect("dashboard:aprovar_alunos")
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_empresas(request):
 
-    empresas = Usuario.objects.filter(tipo="empresa", is_approved=False)
+    empresas = Usuario.objects.filter(tipo="empresa", status_aprovacao="pendente")
 
     table = AprovarEmpresasTable(empresas)
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
@@ -511,7 +515,6 @@ def aprovar_empresas(request):
         "table": table,
         "total": empresas.count(),
     })
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_empresa_action(request, user_id):
@@ -519,20 +522,24 @@ def aprovar_empresa_action(request, user_id):
     empresa = get_object_or_404(Usuario, id=user_id, tipo="empresa")
 
     empresa.is_approved = True
+    empresa.status_aprovacao = "aprovado"
     empresa.save()
 
     messages.success(request, "Empresa aprovada com sucesso!")
     return redirect("dashboard:aprovar_empresas")
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def reprovar_empresa_action(request, user_id):
 
     empresa = get_object_or_404(Usuario, id=user_id, tipo="empresa")
-    empresa.delete()
 
-    messages.error(request, "Empresa rejeitada e removida.")
+    empresa.is_approved = False
+    empresa.status_aprovacao = "reprovado"
+    empresa.save()
+
+    messages.error(request, "Empresa reprovada. O cadastro será mantido, porém sem acesso às funcionalidades.")
     return redirect("dashboard:aprovar_empresas")
+
 
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
@@ -595,7 +602,7 @@ def acompanhar_vagas(request):
     qs = Vaga.objects.all().order_by('-data_publicacao', '-id')
 
     table = AcompanharVagasTable(qs)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     return render(request, "dashboard/coordenacao/acompanhar_vagas.html", {
         "table": table,
@@ -675,7 +682,7 @@ def coordenacao_usuarios(request):
     usuarios = Usuario.objects.all().order_by("tipo", "username")
 
     table = UsuariosTable(usuarios)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     return render(request, "dashboard/coordenacao/usuarios_list.html", {
         "table": table,

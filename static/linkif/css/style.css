@@ -1498,7 +1498,10 @@ a:hover {
   font-weight: 600;
   color: #333;
   margin: 6px;
-  white-space: nowrap;
+
+  max-width: 100%;
+  white-space: normal;
+  word-break: break-word;
 }
 
 
@@ -1542,25 +1545,65 @@ a:hover {
 
 
 
-/* ===========================
-   RESPONSIVIDADE
-=========================== */
+/* RESPONSIVIDADE*/
 
-@media (max-width: 768px) {
-  .perfil-hero {
-    height: 200px;
+@media (max-width: 992px) {
+  .area-card {
+    padding: 20px;
   }
 
-  .perfil-hero-content h1 {
-    font-size: 1.8rem;
+  .area-card-icon {
+    font-size: 2.4rem;
   }
 
-  .perfil-hero-content p {
+  .area-card h6 {
     font-size: 1rem;
   }
 
-  .perfil-section-card {
-    padding: 22px;
+  .area-card p {
+    font-size: .88rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .area-card {
+    margin-bottom: 12px;
+  }
+
+  /* Força os cards a ocuparem 100% quando necessário */
+  .col-md-4 {
+    width: 100%;
+  }
+
+  .area-card-icon {
+    font-size: 2.2rem;
+  }
+
+  .area-card h6 {
+    font-size: .95rem;
+  }
+
+  .area-card p {
+    font-size: .85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .area-card {
+    padding: 18px;
+  }
+
+  .area-card-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+
+  .area-card h6 {
+    font-size: .9rem;
+  }
+
+  .area-card p {
+    font-size: .8rem;
   }
 }
 

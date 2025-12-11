@@ -65,14 +65,7 @@ def candidatar_vaga(request, vaga_id):
         "form": form,
         "vaga": vaga,
     })
-def perfil_cursos(request):
-    perfis = PerfilFormacao.objects.all()
-    site_config = SiteConfig.objects.first()
 
-    return render(request, "linkif/perfil_cursos.html", {
-        "perfis": perfis,
-        "site_config": site_config,
-    })
 def perfil_detalhe(request, perfil_id):
     perfil = get_object_or_404(PerfilFormacao, id=perfil_id)
     site_config = SiteConfig.objects.first()
@@ -104,7 +97,12 @@ def para_empresas(request):
 @login_required
 @permission_required("usuarios.can_explorar_alunos", raise_exception=True)
 def explorar_perfis(request):
-    qs = Usuario.objects.filter(tipo="aluno", is_approved=True).order_by("username")
+    qs = Usuario.objects.filter(tipo="aluno", is_approved=True)
+
+    # FILTRA PELO CURSO VINDO DA URL
+    curso = request.GET.get("curso")
+    if curso:
+        qs = qs.filter(curso__icontains=curso)
 
     filtro = AlunoFilter(request.GET, queryset=qs)
     table = UsuarioTabela(filtro.qs)
@@ -114,7 +112,9 @@ def explorar_perfis(request):
     return render(request, "linkif/explorar_tabela.html", {
         "table": table,
         "filtro": filtro,
+        "curso_selecionado": curso
     })
+
     
 @login_required
 def ver_perfil_aluno(request, pk):
