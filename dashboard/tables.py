@@ -171,7 +171,6 @@ class AprovarVagasTable(tables.Table):
         template_name = "dashboard/table.html"
         attrs = {"class": "linkif-table"}
 
-
 # ============================================================
 #  USUÁRIOS (GERENCIAR)
 # ============================================================
@@ -185,7 +184,7 @@ class UsuariosTable(tables.Table):
                  {% else %}#{% endif %}"
            class="table-link">
             <i class="bi bi-person-circle me-2"></i>
-            {{ record.nome|default:record.email|truncatechars:20 }}
+            {{ record.username|default:record.email|truncatechars:20 }}
         </a>
         """,
         verbose_name="Usuário",
@@ -194,26 +193,43 @@ class UsuariosTable(tables.Table):
 
     tipo = tables.TemplateColumn(
         template_code="""
-        <span class="table-text">{{ record.get_tipo_display }}</span>
+        {% if record.is_superuser %}
+            <span class="table-text">Coordenação (Superusuário)</span>
+        {% else %}
+            <span class="table-text">{{ record.get_tipo_display }}</span>
+        {% endif %}
         """,
         verbose_name="Tipo"
     )
 
+   
     status = tables.TemplateColumn(
-        template_code="""
-        {% if record.is_approved %}
+    template_code="""
+        {% if record.is_superuser %}
             <span class="badge aprov">
-                <i class="bi bi-check2-circle me-1"></i>Aprovado
+                <i class="bi bi-check2-circle me-1"></i> Aprovado
             </span>
+
+        {% elif record.status_aprovacao == 'aprovado' %}
+            <span class="badge aprov">
+                <i class="bi bi-check2-circle me-1"></i> Aprovado
+            </span>
+
+        {% elif record.status_aprovacao == 'reprovado' %}
+            <span class="badge recs">
+                <i class="bi bi-x-circle me-1"></i> Reprovado
+            </span>
+
         {% else %}
             <span class="badge pend">
-                <i class="bi bi-hourglass-split me-1"></i>Pendente
+                <i class="bi bi-hourglass-split me-1"></i> Pendente
             </span>
         {% endif %}
-        """,
-        verbose_name="Status",
-        orderable=False
-    )
+    """,
+    verbose_name="Status",
+    orderable=False
+)
+
 
     acoes = tables.TemplateColumn(
         template_code="""
@@ -234,6 +250,7 @@ class UsuariosTable(tables.Table):
         fields = ["nome", "tipo", "status", "acoes"]
         template_name = "dashboard/table.html"
         attrs = {"class": "linkif-table"}
+
 
 
 # ============================================================

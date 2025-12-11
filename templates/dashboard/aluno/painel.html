@@ -24,8 +24,8 @@ Painel do Aluno — {{ request.user.nome|default:request.user.email }}
 
     <h2 class="title-dashboard mb-4">Visão Geral</h2>
 
-    <!-- AVISO DE STATUS DE APROVAÇÃO -->
-{% if request.user.status_aprovacao == "pendente" %}
+<!-- AVISO DE STATUS DE APROVAÇÃO -->
+{% if request.user.status_aprovacao == 'pendente' and not request.user.is_superuser %}
 <div class="approval-box shadow-sm">
     <i class="bi bi-hourglass-split"></i>
     <div>
@@ -34,8 +34,8 @@ Painel do Aluno — {{ request.user.nome|default:request.user.email }}
     </div>
 </div>
 
-{% elif request.user.status_aprovacao == "reprovado" %}
-<div class="reproval-box shadow-sm" >
+{% elif request.user.status_aprovacao == 'reprovado' and not request.user.is_superuser %}
+<div class="reproval-box shadow-sm">
     <i class="bi bi-x-circle"></i>
     <div>
         Seu cadastro foi <b>reprovado pela coordenação</b>.<br>
@@ -43,6 +43,10 @@ Painel do Aluno — {{ request.user.nome|default:request.user.email }}
         Caso necessário, entre em contato com o suporte.
     </div>
 </div>
+{% endif %}
+
+{% if request.user.status_aprovacao == 'aprovado' %}
+    <!-- tudo que é liberado só para aprovados -->
 {% endif %}
 
 

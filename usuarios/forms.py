@@ -170,9 +170,6 @@ class CoordenadorEditForm(forms.ModelForm):
         fields = ["username", "setor"]
 
 
-# ============================================
-#   EDIÇÃO — ADMIN (EMAIL | TIPO | APROVAÇÃO)
-# ============================================
 class UsuarioEditFormSimples(forms.ModelForm):
 
     STATUS_CHOICES = [
@@ -190,9 +187,16 @@ class UsuarioEditFormSimples(forms.ModelForm):
         model = Usuario
         fields = ["email", "tipo", "is_approved"]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def save(self, commit=True):
+        instancia = super().save(commit=False)
 
-        for f_name, f in self.fields.items():
-            if f_name != "is_approved":
-                f.widget.attrs.update({"class": "form-control"})
+        aprovado = self.cleaned_data["is_approved"] == "True"
+
+        # === ATUALIZA AMBOS OS CAMPOS ===
+        instancia.is_approved = aprovado
+        instancia.status_aprovacao = "aprovado" if aprovado else "reprovado"
+
+        if commit:
+            instancia.save()
+
+        return instancia

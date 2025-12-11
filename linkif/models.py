@@ -44,7 +44,6 @@ class AreaAtuacaoPerfil(models.Model):
 # =====================================================
 # VAGAS
 # =====================================================
-
 class Vaga(models.Model):
     ETAPA_CHOICES = [
         ("pendente_aprovacao", "Pendente aprovação"),
@@ -74,13 +73,12 @@ class Vaga(models.Model):
         ("encerrada", "Encerrada"),
     ]
     
-    
     etapa = models.CharField(
         max_length=30,
         choices=ETAPA_CHOICES,
         default="pendente_aprovacao"
     )
-    # Empresa agora é Usuario(tipo="empresa")
+
     empresa = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -115,7 +113,6 @@ class Vaga(models.Model):
     data_inicio = models.DateField("Data de início", null=True, blank=True)
     data_fim = models.DateField("Data de término", null=True, blank=True)
 
-    # Coordenador agora é Usuario(tipo="coordenador")
     aprovado_por = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -132,8 +129,7 @@ class Vaga(models.Model):
         verbose_name_plural = "Vagas"
 
     def __str__(self):
-        # empresa.nome é o campo "nome" do Usuario
-        return f"{self.titulo} — {self.empresa.nome or self.empresa.email}"
+        return f"{self.titulo} — {self.empresa.username or self.empresa.email}"
 
     @property
     def is_disponivel(self):
@@ -179,13 +175,11 @@ class Candidatura(models.Model):
         verbose_name_plural = "Candidaturas"
 
     def __str__(self):
-        return f"{self.aluno.nome or self.aluno.email} → {self.vaga.titulo}"
-
-
+        return f"{self.aluno.username or self.aluno.email} → {self.vaga.titulo}"
 
 
 # =====================================================
-# MENSAGENS DE CONTATO (formulário público)
+# MENSAGENS DE CONTATO
 # =====================================================
 class MensagemContato(models.Model):
     nome = models.CharField("Nome", max_length=150)
@@ -235,4 +229,3 @@ class SiteConfig(models.Model):
         if self.logo and hasattr(self.logo, "url"):
             return self.logo.url
         return "/static/assets/img/logo.svg"
-

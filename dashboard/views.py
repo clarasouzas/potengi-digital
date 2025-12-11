@@ -83,10 +83,13 @@ def inicio(request):
     return redirect("dashboard:coordenacao_painel")
 
 # Aluno 
-
 @login_required
 @permission_required("usuarios.acesso_aluno", raise_exception=True)
 def aluno_painel(request):
+    print("STATUS:", request.user.status_aprovacao)
+    print("APPROVED:", request.user.is_approved)
+    print("SUPERUSER:", request.user.is_superuser)
+    request.user.refresh_from_db()  # ATUALIZA OS DADOS DO USUÁRIO
 
     vagas = (
         Vaga.objects
@@ -105,6 +108,7 @@ def aluno_painel(request):
         .filter(aluno=request.user)
         .order_by("-data_candidatura")[:5]
     )
+
     if request.user.curso:
         recomendadas = Vaga.objects.filter(
             status="aprovada",
@@ -113,14 +117,13 @@ def aluno_painel(request):
     else:
         recomendadas = Vaga.objects.none()
 
-
-
     return render(request, "dashboard/aluno/painel.html", {
         "vagas": vagas,
         "candidaturas_ativas": candidaturas_ativas,
         "candidaturas_ultimas": candidaturas_ultimas,
         "recomendadas": recomendadas,
     })
+
     
 @login_required
 @permission_required("usuarios.acesso_aluno", raise_exception=True)
@@ -481,7 +484,6 @@ def aprovar_alunos(request):
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_aluno_action(request, user_id):
-
     aluno = get_object_or_404(Usuario, id=user_id, tipo="aluno")
 
     aluno.is_approved = True
@@ -490,18 +492,19 @@ def aprovar_aluno_action(request, user_id):
 
     messages.success(request, "Aluno aprovado com sucesso.")
     return redirect("dashboard:aprovar_alunos")
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def reprovar_aluno_action(request, user_id):
-
     aluno = get_object_or_404(Usuario, id=user_id, tipo="aluno")
 
-    aluno.is_approved = False
     aluno.status_aprovacao = "reprovado"
+    aluno.is_approved = False
     aluno.save()
 
-    messages.error(request, "Aluno reprovado. O usuário permanecerá no sistema, mas sem acesso às funcionalidades.")
+    messages.error(request, "Aluno reprovado pela coordenação.")
     return redirect("dashboard:aprovar_alunos")
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_empresas(request):
