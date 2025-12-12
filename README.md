@@ -11,7 +11,7 @@ Além da divulgação de vagas de estágio e jovem aprendiz, a plataforma fortal
 
 ---
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 - Cadastro e autenticação de diferentes perfis (alunos, ex-alunos, empresas e coordenação).  
 - Aprovação de empresas e validação de vagas pela Coordenação de Extensão.  
@@ -22,13 +22,13 @@ Além da divulgação de vagas de estágio e jovem aprendiz, a plataforma fortal
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 [![SkillIcons](https://skillicons.dev/icons?i=js,py,html,css,django,bootstrap)](https://skillicons.dev)
 
 ---
 
-## 👨‍💻 Equipe do Projeto
+## Equipe do Projeto
 
 ### **Discentes Desenvolvedores**
 - Clara Souza  
@@ -36,8 +36,7 @@ Além da divulgação de vagas de estágio e jovem aprendiz, a plataforma fortal
 - Elayne Fernandes  
 
 ### **Orientadores**
-- Prof.ª Fernanda Lígia  
-- Prof. Diego Cirilo  
+- Prof.ª Fernanda Lígia    
 
 > Este repositório faz parte do Projeto de Extensão **Potengi Digital**, alinhado ao PDI do IFRN e aos Objetivos de Desenvolvimento Sustentável (ODS 4, 8 e 9).
 
