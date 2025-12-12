@@ -2,118 +2,117 @@
 {% load django_tables2 %}
 {% load static %}
 
-{% block titulo %}Aprovar Alunos{% endblock %}
+{% block titulo %}
+Gerenciar {{ tipo|title }}
+{% endblock %}
 
 {% block conteudo %}
 
 <h2 class="title-dashboard mb-4">
-    <i class="bi bi-person-check me-2"></i>
-    Aprovar Alunos
+    {% if tipo == "aluno" %}
+        <i class="bi bi-people-fill me-2"></i>
+        Gerenciar Alunos
+    {% else %}
+        <i class="bi bi-building me-2"></i>
+        Gerenciar Empresas
+    {% endif %}
 </h2>
+
+<!-- ========================
+     FILTROS DE STATUS
+========================= -->
+<div class="mb-4 d-flex gap-2">
+    <a href="?status=pendente" class="btn-table">Pendentes</a>
+    <a href="?status=aprovado" class="btn-table">Aprovados</a>
+    <a href="?status=reprovado" class="btn-table">Reprovados</a>
+    <a href="." class="btn-table" style="background: var(--gray-200); color: var(--gray-800);">Limpar</a>
+</div>
 
 {% if table.page.object_list %}
 <div class="table-container">
     {% render_table table %}
 </div>
 
-<!-- ============================
-       MODAIS — APROVAR / REJEITAR
-================================ -->
+<!-- ========================
+     MODAIS PARA CADA LINHA
+========================= -->
 {% for row in table.page.object_list %}
-{% with aluno=row.record %}
+{% with user=row.record %}
 
-<!-- MODAL APROVAR -->
-<div id="aprovar-{{ aluno.id }}" class="modal-vaga">
-
+<!-- ===== MODAL APROVAR ===== -->
+<div id="aprovar-{{ user.id }}" class="modal-vaga">
     <div class="modal-content-vaga">
-
-        <!-- Botão Fechar -->
+        
         <a href="#" class="modal-close">
             <i class="bi bi-x-lg"></i>
         </a>
 
-        <!-- Título -->
         <h3 class="fw-bold mb-3" style="color: var(--accent-blue);">
             <i class="bi bi-check-circle me-2"></i>
-            Aprovar Aluno
+            Aprovar {{ tipo|title }}
         </h3>
 
-        <!-- Texto -->
         <p class="text-muted">
             Tem certeza que deseja aprovar  
-            <strong>{{ aluno.nome|default:aluno.email }}</strong>?
+            <strong>{{ user.nome|default:user.email }}</strong>?
         </p>
 
-        <!-- Botões -->
         <div class="d-flex gap-3 mt-4">
-
-            <a href="{% url 'dashboard:aprovar_aluno_action' aluno.id %}"
-               class="btn-table flex-grow-1 text-center">
+            <a href="{% url 'dashboard:usuario_mudar_status' %}?acao=aprovar&usuario_id={{ user.id }}"
+                class="btn-table flex-grow-1 text-center">
                 Aprovar
             </a>
 
-            <a href="#"
-               class="btn-table flex-grow-1 text-center"
+            <a href="#" class="btn-table flex-grow-1 text-center"
                style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
                 Cancelar
             </a>
-
         </div>
 
     </div>
-
 </div>
 
-<!-- MODAL REJEITAR -->
-<div id="rejeitar-{{ aluno.id }}" class="modal-vaga">
-
+<!-- ===== MODAL REPROVAR ===== -->
+<div id="reprovar-{{ user.id }}" class="modal-vaga">
     <div class="modal-content-vaga">
-
-        <!-- Botão Fechar -->
+        
         <a href="#" class="modal-close">
             <i class="bi bi-x-lg"></i>
         </a>
 
-        <!-- Título -->
         <h3 class="fw-bold mb-3" style="color: var(--accent-red);">
             <i class="bi bi-x-octagon me-2"></i>
-            Reprovar Aluno
+            Reprovar {{ tipo|title }}
         </h3>
 
-        <!-- Texto -->
         <p class="text-muted">
-            Tem certeza que deseja rejeitar  
-            <strong>{{ aluno.nome|default:aluno.email }}</strong>?
+            Tem certeza que deseja reprovar  
+            <strong>{{ user.nome|default:user.email }}</strong>?
         </p>
 
-        <!-- Botões -->
         <div class="d-flex gap-3 mt-4">
-
-            <!-- Botão Rejeitar -->
-            <a href="{% url 'dashboard:reprovar_aluno_action' aluno.id %}"
+            <a href="{% url 'dashboard:usuario_mudar_status' %}?acao=reprovar&usuario_id={{ user.id }}"
                class="btn-delete btn-table flex-grow-1 text-center">
                 Reprovar
             </a>
 
-            <!-- Botão Cancelar -->
-            <a href="#"
-               class="btn-table flex-grow-1 text-center"
+            <a href="#" class="btn-table flex-grow-1 text-center"
                style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
                 Cancelar
             </a>
-
         </div>
 
     </div>
-
 </div>
-
 
 {% endwith %}
 {% endfor %}
 
 {% else %}
 
+<!-- ========================
+     EMPTY STATE
+========================= -->
 <div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
 
     <img src="{% static 'assets/img/empty.svg' %}"
@@ -121,13 +120,14 @@
          style="width: 420px; max-width: 100%;">
 
     <div class="empty-state-text" style="max-width: 380px;">
-        <h5 class="fw-bold mb-2">Nenhum aluno aguardando aprovação</h5>
+        <h5 class="fw-bold mb-2">Nenhum {{ tipo }} encontrado</h5>
         <p class="text-muted m-0">
-            Assim que novos alunos se cadastrarem, eles aparecerão aqui.
+            Assim que novos usuários forem cadastrados, aparecerão aqui.
         </p>
     </div>
 
 </div>
+
 {% endif %}
 
 {% endblock %}

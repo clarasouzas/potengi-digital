@@ -40,16 +40,14 @@ from usuarios.forms import (
 
 from dashboard.tables import (
     CandidaturasRecebidasTable,
-    AprovarAlunosTable,
-    AprovarEmpresasTable,
     AprovarVagasTable,
-    UsuariosTable,
     PerfisFormacaoTable,
     MensagensContatoTable,
     AlunoMensagensTable,
     EmpresaMensagensTable,
     AcompanharVagasTable,
-    AcompanharVagasEmpresaTable
+    AcompanharVagasEmpresaTable,
+    UsuariosGeraisTable
 )
 
 def requer_aprovacao(tipo):
@@ -252,6 +250,7 @@ def empresa_cadastrar_vaga(request):
     if request.user.tipo == "empresa" and not request.user.is_approved:
         messages.warning(request, "Aguarde sua empresa ser aprovada pela coordenação.")
         return redirect("dashboard:empresa_painel")
+
 
     form = VagaForm(request.POST or None)
 
@@ -470,17 +469,108 @@ def coordenacao_painel(request):
 
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def aprovar_alunos(request):
+def gerenciar_por_tipo(request, tipo):
+    """
+    tipo = 'aluno' ou 'empresa'
+    junta aprovados + pendentes + reprovados em uma tabela só
+    """
+    usuarios = Usuario.objects.filter(tipo=tipo).order_by("-id")
 
-    alunos = Usuario.objects.filter(tipo="aluno", status_aprovacao="pendente")
+    # Filtro por status (opcional)
+    status = request.GET.get("status")
+    if status in ("pendente", "aprovado", "reprovado"):
+        usuarios = usuarios.filter(status_aprovacao=status)
 
-    table = AprovarAlunosTable(alunos)
+    table = UsuariosGeraisTable(usuarios, request=request)
     RequestConfig(request, paginate={"per_page": 12}).configure(table)
 
-    return render(request, "dashboard/coordenacao/aprovar_alunos.html", {
+    return render(request, "dashboard/gerenciar_por_tipo.html", {
         "table": table,
-        "total": alunos.count(),
+        "tipo": tipo,
+        "total": usuarios.count(),
     })
+@login_required
+@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+def usuario_mudar_status(request):
+    usuario_id = request.POST.get("usuario_id")
+    acao = request.POST.get("nova_acao")
+
+    usuario = get_object_or_404(Usuario, id=usuario_id)
+
+    if usuario.is_superuser:
+        messages.error(request, "Não é possível alterar o status da coordenação.")
+        return redirect(request.META.get("HTTP_REFERER", "/"))
+
+    if acao == "aprovar":
+        usuario.status_aprovacao = "aprovado"
+        usuario.is_approved = True
+        usuario.save()
+        messages.success(request, "Usuário aprovado com sucesso.")
+
+    elif acao == "reprovar":
+        usuario.status_aprovacao = "reprovado"
+        usuario.is_approved = False
+        usuario.save()
+        messages.error(request, "Usuário reprovado.")
+
+    else:
+        messages.error(request, "Ação inválida.")
+
+    return redirect(request.META.get("HTTP_REFERER", "/"))
+@login_required
+@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+def usuario_excluir(request, pk):
+    usuario = get_object_or_404(Usuario, id=pk)
+
+    if usuario.is_superuser:
+        messages.error(request, "Não é possível excluir coordenação.")
+        return redirect(request.META.get("HTTP_REFERER", "/"))
+
+    usuario.delete()
+    messages.success(request, "Usuário excluído com sucesso.")
+    return redirect(request.META.get("HTTP_REFERER", "/"))
+@login_required
+@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+def usuario_editar(request, pk):
+    usuario = get_object_or_404(Usuario, id=pk)
+
+    form = UsuarioEditFormSimples(request.POST or None, instance=usuario)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Usuário atualizado com sucesso.")
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+        messages.error(request, "Erros no formulário.")
+
+    return render(request, "dashboard/coordenacao/usuarios_editar.html", {
+        "form": form,
+        "usuario": usuario
+    })
+@login_required
+@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+def aprovar_empresa_action(request, user_id):
+    empresa = get_object_or_404(Usuario, id=user_id, tipo="empresa")
+
+    empresa.is_approved = True
+    empresa.status_aprovacao = "aprovado"
+    empresa.save()
+
+    messages.success(request, "Empresa aprovada com sucesso!")
+    return redirect("dashboard:aprovar_empresas")
+
+@login_required
+@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+def reprovar_empresa_action(request, user_id):
+    empresa = get_object_or_404(Usuario, id=user_id, tipo="empresa")
+
+    empresa.is_approved = False
+    empresa.status_aprovacao = "reprovado"
+    empresa.save()
+
+    messages.error(request, "Empresa reprovada. O cadastro será mantido, porém sem acesso às funcionalidades.")
+    return redirect("dashboard:aprovar_empresas")
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_aluno_action(request, user_id):
@@ -498,52 +588,17 @@ def aprovar_aluno_action(request, user_id):
 def reprovar_aluno_action(request, user_id):
     aluno = get_object_or_404(Usuario, id=user_id, tipo="aluno")
 
-    aluno.status_aprovacao = "reprovado"
     aluno.is_approved = False
+    aluno.status_aprovacao = "reprovado"
     aluno.save()
 
     messages.error(request, "Aluno reprovado pela coordenação.")
     return redirect("dashboard:aprovar_alunos")
 
-@login_required
-@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def aprovar_empresas(request):
 
-    empresas = Usuario.objects.filter(tipo="empresa", status_aprovacao="pendente")
-
-    table = AprovarEmpresasTable(empresas)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
-
-    return render(request, "dashboard/coordenacao/aprovar_empresas.html", {
-        "table": table,
-        "total": empresas.count(),
-    })
-@login_required
-@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def aprovar_empresa_action(request, user_id):
-
-    empresa = get_object_or_404(Usuario, id=user_id, tipo="empresa")
-
-    empresa.is_approved = True
-    empresa.status_aprovacao = "aprovado"
-    empresa.save()
-
-    messages.success(request, "Empresa aprovada com sucesso!")
-    return redirect("dashboard:aprovar_empresas")
-@login_required
-@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def reprovar_empresa_action(request, user_id):
-
-    empresa = get_object_or_404(Usuario, id=user_id, tipo="empresa")
-
-    empresa.is_approved = False
-    empresa.status_aprovacao = "reprovado"
-    empresa.save()
-
-    messages.error(request, "Empresa reprovada. O cadastro será mantido, porém sem acesso às funcionalidades.")
-    return redirect("dashboard:aprovar_empresas")
-
-
+# ---------------------------------------------------------
+#   APROVAR VAGAS (mantido como estava)
+# ---------------------------------------------------------
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_vagas(request):
@@ -559,20 +614,14 @@ def aprovar_vagas(request):
     })
 
 
-    
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_vaga_action(request, vaga_id):
 
     vaga = get_object_or_404(Vaga, id=vaga_id)
 
-    # muda status
     vaga.status = "aprovada"
-
-    # muda etapa automaticamente
     vaga.etapa = "publicada"
-
-    # registra aprovado por + data
     vaga.aprovado_por = request.user
     vaga.data_publicacao = timezone.now()
 
@@ -597,7 +646,9 @@ def reprovar_vaga_action(request, vaga_id):
     return redirect("dashboard:aprovar_vagas")
 
 
-
+# ---------------------------------------------------------
+#   ACOMPANHAR VAGAS (mantido)
+# ---------------------------------------------------------
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def acompanhar_vagas(request):
@@ -611,6 +662,7 @@ def acompanhar_vagas(request):
         "table": table,
         "etapa_choices": Vaga.ETAPA_CHOICES,
     })
+
 
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
@@ -627,7 +679,6 @@ def atualizar_etapa_vaga(request, vaga_id):
 
         vaga.etapa = nova
 
-        # automático: coordenação mudou → já publica
         if nova == "publicada":
             vaga.status = "aprovada"
             if not vaga.data_publicacao:
@@ -639,91 +690,82 @@ def atualizar_etapa_vaga(request, vaga_id):
     return redirect("dashboard:acompanhar_vagas")
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def coordenacao_empresas(request):
+def coordenacao_minhas_vagas(request):
+    vagas = Vaga.objects.filter(empresa=request.user).order_by("-id")
 
-    empresas = Usuario.objects.filter(tipo="empresa").order_by("-id")
-
-    return render(request, "dashboard/coordenacao/empresas_list.html", {
-        "empresas": empresas
+    return render(request, "dashboard/coordenacao/minhas_vagas.html", {
+        "vagas": vagas
     })
-    
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def coordenacao_empresa_editar(request, empresa_id):
+def coordenacao_editar_vaga(request, vaga_id):
 
-    empresa = get_object_or_404(Usuario, id=empresa_id, tipo="empresa")
+    vaga = get_object_or_404(Vaga, id=vaga_id)
 
-    form = UsuarioEditFormSimples(request.POST or None, instance=empresa)
+    form = VagaForm(request.POST or None, instance=vaga)
 
     if request.method == "POST":
         if form.is_valid():
-            form.save()
-            messages.success(request, "Empresa atualizada com sucesso.")
-            return redirect("dashboard:empresas")
+            vaga = form.save(commit=False)
+
+            # coordenação pode atualizar sem alterar status
+            vaga.status = "aprovada"
+            vaga.etapa = vaga.etapa or "publicada"
+            vaga.save()
+
+            messages.success(request, "Vaga atualizada com sucesso!")
+            return redirect("dashboard:coordenacao_minhas_vagas")
 
         messages.error(request, "Corrija os erros do formulário.")
 
-    return render(request, "dashboard/coordenacao/empresa_editar.html", {
+    return render(request, "dashboard/coordenacao/editar_vaga.html", {
         "form": form,
-        "empresa": empresa
+        "vaga": vaga
     })
-    
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def coordenacao_empresa_excluir(request, empresa_id):
+def coordenacao_excluir_vaga(request, vaga_id):
 
-    empresa = get_object_or_404(Usuario, id=empresa_id, tipo="empresa")
+    vaga = get_object_or_404(Vaga, id=vaga_id)
 
-    empresa.delete()
-    messages.success(request, "Empresa removida com sucesso.")
+    if request.method == "POST":
+        vaga.delete()
+        messages.success(request, "Vaga excluída com sucesso.")
+        return redirect("dashboard:coordenacao_minhas_vagas")
 
-    return redirect("dashboard:empresas")
-@login_required
-@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def coordenacao_usuarios(request):
-
-    usuarios = Usuario.objects.all().order_by("tipo", "username")
-
-    table = UsuariosTable(usuarios)
-    RequestConfig(request, paginate={"per_page": 10}).configure(table)
-
-    return render(request, "dashboard/coordenacao/usuarios_list.html", {
-        "table": table,
-        "total": usuarios.count(),
-
+    return render(request, "dashboard/coordenacao/confirmar_exclusao.html", {
+        "vaga": vaga,
     })
 
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def coordenacao_usuario_editar(request, user_id):
+def coordenacao_cadastrar_vaga(request):
 
-    usuario = get_object_or_404(Usuario, id=user_id)
-
-    form = UsuarioEditFormSimples(request.POST or None, instance=usuario)
+    form = VagaForm(request.POST or None)
 
     if request.method == "POST":
         if form.is_valid():
-            form.save()
-            messages.success(request, "Usuário atualizado com sucesso.")
-            return redirect("dashboard:usuarios")
+            vaga = form.save(commit=False)
 
-        messages.error(request, "Erros no formulário.")
+            # a coordenação vira "empresa" dona da vaga
+            vaga.empresa = request.user   
 
-    return render(request, "dashboard/coordenacao/usuarios_editar.html", {
+            # criada já aprovada
+            vaga.status = "aprovada"
+            vaga.etapa = "publicada"
+
+            vaga.aprovado_por = request.user
+            vaga.data_publicacao = timezone.now()
+
+            vaga.save()
+
+            messages.success(request, "Vaga cadastrada e publicada com sucesso!")
+            return redirect("dashboard:coordenacao_minhas_vagas")
+
+    return render(request, "dashboard/coordenacao/cadastrar_vaga.html", {
         "form": form,
-        "usuario": usuario
     })
-    
-@login_required
-@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def coordenacao_usuario_excluir(request, user_id):
 
-    usuario = get_object_or_404(Usuario, id=user_id)
-
-    usuario.delete()
-
-    messages.error(request, "Usuário excluído com sucesso.")
-    return redirect("dashboard:usuarios")
 
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)

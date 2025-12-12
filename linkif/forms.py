@@ -192,13 +192,6 @@ class CandidaturaForm(forms.ModelForm):
         )
 
 
-# =====================================================
-# FORMULÁRIO DE MENSAGEM (para comunicação interna)
-# =====================================================
-
-from django import forms
-from .models import MensagemContato
-
 class ContatoForm(forms.ModelForm):
     class Meta:
         model = MensagemContato
@@ -211,5 +204,7 @@ class ContatoForm(forms.ModelForm):
         }
 
         widgets = {
+            'nome': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'email': forms.EmailInput(attrs={'readonly': 'readonly'}),
             'mensagem': forms.Textarea(attrs={'rows': 3}),
         }

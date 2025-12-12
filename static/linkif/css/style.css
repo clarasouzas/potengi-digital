@@ -3135,3 +3135,6 @@ footer {
 .startt {
   align-items: start;
 }
+.tab-content{
+  text-align: left;
+}

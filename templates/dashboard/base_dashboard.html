@@ -171,57 +171,72 @@
 
 
         <!-- ========== COORDENAÇÃO ========== -->
-        {% if perms.usuarios.acesso_coordenacao %}
+{% if perms.usuarios.acesso_coordenacao %}
 
-            <a href="{% url 'dashboard:coordenacao_painel' %}" class="sidebar-item">
-                <i class="bi bi-house me-2"></i> Painel Geral
-            </a>
+    <!-- PAINEL -->
+    <a href="{% url 'dashboard:coordenacao_painel' %}" class="sidebar-item">
+        <i class="bi bi-house me-2"></i> Painel Geral
+    </a>
 
-            <div class="sidebar-section-title mt-3">Aprovações</div>
+    <!-- ===========================
+          VAGAS
+    ============================ -->
+    <div class="sidebar-section-title mt-3">Vagas</div>
+    <a href="{% url 'dashboard:coordenacao_minhas_vagas' %}" class="sidebar-item">
+        <i class="bi bi-briefcase me-2"></i> Minhas Vagas
+    </a>
 
-            <a href="{% url 'dashboard:aprovar_alunos' %}" class="sidebar-item">
-                <i class="bi bi-person-check me-2"></i> Aprovar Alunos
-            </a>
 
-            <a href="{% url 'dashboard:aprovar_empresas' %}" class="sidebar-item">
-                <i class="bi bi-building-check me-2"></i> Aprovar Empresas
-            </a>
-            
-            <div class="sidebar-section-title mt-3"> Vagas </div>
-            <a href="{% url 'dashboard:aprovar_vagas' %}" class="sidebar-item">
-                <i class="bi bi-check2-circle me-2"></i> Aprovar Vagas
-            </a>
-            <a href="{% url 'dashboard:empresa_cadastrar_vaga' %}" class="sidebar-item">
-                    <i class="bi bi-plus-circle me-2"></i> Cadastrar Vaga
-            </a>
-            <a href="{% url 'dashboard:acompanhar_vagas' %}" class="sidebar-item">
-                    <i class="bi bi-bookmark me-2"></i> Acompanhar Vagas
-            </a>
+    <a href="{% url 'dashboard:coordenacao_cadastrar_vaga' %}" class="sidebar-item">
+        <i class="bi bi-plus-circle me-2"></i> Cadastrar Vaga
+    </a>
 
-            <div class="sidebar-section-title mt-3">Gestão</div>
+    <a href="{% url 'dashboard:acompanhar_vagas' %}" class="sidebar-item">
+        <i class="bi bi-bookmark me-2"></i> Acompanhar Vagas
+    </a>
 
-            <a href="{% url 'dashboard:usuarios' %}" class="sidebar-item">
-                <i class="bi bi-people me-2"></i> Gerenciar Usuários
-            </a>
+    <a href="{% url 'dashboard:aprovar_vagas' %}" class="sidebar-item">
+        <i class="bi bi-check2-circle me-2"></i> Aprovar Vagas
+    </a>
 
-            <a href="{% url 'dashboard:listar_perfis' %}" class="sidebar-item">
-                <i class="bi bi-diagram-3 me-2"></i> Perfis de Formação
-            </a>
 
-            <a href="{% url 'dashboard:relatorios' %}" class="sidebar-item">
-                <i class="bi bi-bar-chart me-2"></i> Relatórios
-            </a>
-            <a href="{% url 'dashboard:mensagens_contato' %}" class="sidebar-item">
-                <i class="bi bi-envelope-paper me-2"></i> Mensagens
-            </a>
+    <!-- ===========================
+          GESTÃO
+    ============================ -->
+    <div class="sidebar-section-title mt-3">Gestão</div>
 
-            <div class="sidebar-section-title mt-3">Configurações</div>
+    <a href="{% url 'dashboard:gerenciar_por_tipo' 'aluno' %}" class="sidebar-item">
+        <i class="bi bi-person-lines-fill me-2"></i> Gerenciar Alunos
+    </a>
 
-            <a href="{% url 'dashboard:site_config' %}" class="sidebar-item">
-                <i class="bi bi-gear me-2"></i> Informações do Site
-            </a>
+    <a href="{% url 'dashboard:gerenciar_por_tipo' 'empresa' %}" class="sidebar-item">
+        <i class="bi bi-building me-2"></i> Gerenciar Empresas
+    </a>
 
-        {% endif %}
+    <a href="{% url 'dashboard:listar_perfis' %}" class="sidebar-item">
+        <i class="bi bi-diagram-3 me-2"></i> Perfis de Formação
+    </a>
+
+    <a href="{% url 'dashboard:relatorios' %}" class="sidebar-item">
+        <i class="bi bi-bar-chart me-2"></i> Relatórios
+    </a>
+
+    <a href="{% url 'dashboard:mensagens_contato' %}" class="sidebar-item">
+        <i class="bi bi-envelope-paper me-2"></i> Mensagens
+    </a>
+
+
+    <!-- ===========================
+          CONFIGURAÇÕES
+    ============================ -->
+    <div class="sidebar-section-title mt-3">Configurações</div>
+
+    <a href="{% url 'dashboard:site_config' %}" class="sidebar-item">
+        <i class="bi bi-gear me-2"></i> Informações do Site
+    </a>
+
+{% endif %}
+
 
 
         <hr class="divider">

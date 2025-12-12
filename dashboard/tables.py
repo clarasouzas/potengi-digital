@@ -50,86 +50,7 @@ class CandidaturasRecebidasTable(tables.Table):
         template_name = "dashboard/table.html"
         attrs = {"class": "linkif-table"}
 
-
-# ============================================================
-#  APROVAR ALUNOS
-# ============================================================
-
-class AprovarAlunosTable(tables.Table):
-
-    nome = tables.TemplateColumn(
-        template_code="""
-        <a href="{% url 'dashboard:ver_perfil_aluno' record.id %}"
-           class="table-link">
-            <i class="bi bi-person-circle me-2"></i>
-            {{ record.nome|default:record.email|truncatechars:30 }}
-        </a>
-        """,
-        verbose_name="Aluno",
-        orderable=True
-    )
-
-    curso = tables.Column(verbose_name="Curso")
-
-    acoes = tables.TemplateColumn(
-        template_code="""
-        <div class="acoes-wrapper">
-        <a href="#aprovar-{{ record.id }}" class="btn-table">Aprovar</a>
-        <a href="#rejeitar-{{ record.id }}" class="btn-delete">Rejeitar</a>
-        </div>
-        """,
-        verbose_name="Ações",
-        orderable=False
-    )
-
-    class Meta:
-        model = Usuario
-        fields = ["nome", "curso", "acoes"]
-        template_name = "dashboard/table.html"
-        attrs = {"class": "linkif-table"}
-
-
-# ============================================================
-#  APROVAR EMPRESAS
-# ============================================================
-
-class AprovarEmpresasTable(tables.Table):
-
-    nome = tables.TemplateColumn(
-        template_code="""
-        <a href="{% url 'dashboard:ver_perfil_empresa' record.id %}"
-           class="table-link">
-            <i class="bi bi-building me-2"></i>
-            {{ record.nome|default:record.email|truncatechars:12 }}
-        </a>
-        """,
-        verbose_name="Empresa",
-        orderable=True
-    )
-
-    cidade = tables.Column(verbose_name="Cidade")
-
-    acoes = tables.TemplateColumn(
-        template_code="""
-        <div class="acoes-wrapper">
-        <a href="#aprovar-{{ record.id }}" class="btn-table">Aprovar</a>
-        <a href="#rejeitar-{{ record.id }}" class="btn-delete">Reprovar</a>
-        </div>
-        """,
-        verbose_name="Ações",
-        orderable=False
-    )
-
-    class Meta:
-        model = Usuario
-        fields = ["nome", "cidade", "acoes"]
-        template_name = "dashboard/table.html"
-        attrs = {"class": "linkif-table"}
-
-
-# ============================================================
 #  APROVAR VAGAS
-# ============================================================
 
 class AprovarVagasTable(tables.Table):
 
@@ -171,74 +92,99 @@ class AprovarVagasTable(tables.Table):
         template_name = "dashboard/table.html"
         attrs = {"class": "linkif-table"}
 
-# ============================================================
-#  USUÁRIOS (GERENCIAR)
-# ============================================================
+#  GERENCIAR USUÁRIOS 
 
-class UsuariosTable(tables.Table):
+class UsuariosGeraisTable(tables.Table):
 
+    # ===========================
+    # COLUNA: Nome + ícone
+    # ===========================
     nome = tables.TemplateColumn(
         template_code="""
-        <a href="{% if record.tipo == 'aluno' %}{% url 'dashboard:ver_perfil_aluno' record.id %}
-                 {% elif record.tipo == 'empresa' %}{% url 'dashboard:ver_perfil_empresa' record.id %}
-                 {% else %}#{% endif %}"
-           class="table-link">
+        <span class="table-text fw-bold">
             <i class="bi bi-person-circle me-2"></i>
-            {{ record.username|default:record.email|truncatechars:20 }}
-        </a>
+            {{ record.nome|default:record.email|truncatechars:22 }}
+        </span>
         """,
         verbose_name="Usuário",
-        orderable=False
+        orderable=True
     )
 
+    # ===========================
+    # TIPO (Aluno / Empresa)
+    # ===========================
     tipo = tables.TemplateColumn(
         template_code="""
-        {% if record.is_superuser %}
-            <span class="table-text">Coordenação (Superusuário)</span>
+        {% if record.tipo == 'aluno' %}
+            <span class="badge info"><i class="bi bi-mortarboard me-1"></i> Aluno</span>
+        {% elif record.tipo == 'empresa' %}
+            <span class="badge aprov"><i class="bi bi-building me-1"></i> Empresa</span>
         {% else %}
-            <span class="table-text">{{ record.get_tipo_display }}</span>
+            <span class="badge pend">Outro</span>
         {% endif %}
         """,
         verbose_name="Tipo"
     )
 
-   
-    status = tables.TemplateColumn(
-    template_code="""
-        {% if record.is_superuser %}
-            <span class="badge aprov">
-                <i class="bi bi-check2-circle me-1"></i> Aprovado
-            </span>
+    # ===========================
+    # Status Aprovação
+    # ===========================
+    status_aprovacao = tables.TemplateColumn(
+        template_code="""
+        {% if record.status_aprovacao == 'aprovado' %}
+            <span class="badge aprov"><i class="bi bi-check-circle"></i> Aprovado</span>
 
-        {% elif record.status_aprovacao == 'aprovado' %}
-            <span class="badge aprov">
-                <i class="bi bi-check2-circle me-1"></i> Aprovado
-            </span>
+        {% elif record.status_aprovacao == 'pendente' %}
+            <span class="badge pend"><i class="bi bi-hourglass-split"></i> Pendente</span>
 
         {% elif record.status_aprovacao == 'reprovado' %}
-            <span class="badge recs">
-                <i class="bi bi-x-circle me-1"></i> Reprovado
-            </span>
+            <span class="badge recs"><i class="bi bi-x-circle"></i> Reprovado</span>
 
         {% else %}
-            <span class="badge pend">
-                <i class="bi bi-hourglass-split me-1"></i> Pendente
-            </span>
+            <span class="badge info">{{ record.status_aprovacao }}</span>
         {% endif %}
-    """,
-    verbose_name="Status",
-    orderable=False
-)
+        """,
+        verbose_name="Status"
+    )
 
-
+    # ===========================
+    # AÇÕES (modal triggers)
+    # ===========================
     acoes = tables.TemplateColumn(
         template_code="""
         <div class="acoes-wrapper">
-            <a href="{% url 'dashboard:usuario_editar' record.id %}" class="btn-table">Editar</a>
 
-            {% if record.id != request.user.id %}
-                <a href="#excluir-{{ record.id }}" class="btn-delete">Excluir</a>
+            <!-- Ver perfil -->
+            {% if record.tipo == 'aluno' %}
+                <a href="{% url 'dashboard:ver_perfil_aluno' record.id %}" class="btn-table">
+                    Ver
+                </a>
+            {% elif record.tipo == 'empresa' %}
+                <a href="{% url 'dashboard:ver_perfil_empresa' record.id %}" class="btn-table">
+                    Ver
+                </a>
             {% endif %}
+
+            <!-- Aprovar -->
+            <a href="#aprovar-{{ record.id }}" class="btn-table">
+                Aprovar
+            </a>
+
+            <!-- Reprovar -->
+            <a href="#reprovar-{{ record.id }}" class="btn-delete">
+                Reprovar
+            </a>
+
+            <!-- Editar -->
+            <a href="{% url 'dashboard:usuario_editar' record.id %}" class="btn-table">
+                Editar
+            </a>
+
+            <!-- Excluir -->
+            <a href="{% url 'dashboard:usuario_excluir' record.id %}" class="btn-delete">
+                Excluir
+            </a>
+
         </div>
         """,
         verbose_name="Ações",
@@ -247,11 +193,9 @@ class UsuariosTable(tables.Table):
 
     class Meta:
         model = Usuario
-        fields = ["nome", "tipo", "status", "acoes"]
+        fields = ["nome", "tipo", "status_aprovacao", "acoes"]
         template_name = "dashboard/table.html"
         attrs = {"class": "linkif-table"}
-
-
 
 # ============================================================
 #  PERFIS DE FORMAÇÃO

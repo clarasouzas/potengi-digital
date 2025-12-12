@@ -10,20 +10,41 @@ from .tables import UsuarioTabela
 from .models import Vaga, Candidatura, SiteConfig, PerfilFormacao
 from .forms import VagaForm, CandidaturaForm, ContatoForm
 from usuarios.models import Usuario
+
 def index(request):
     site_config = SiteConfig.objects.first()
     vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")[:6]
     perfis = PerfilFormacao.objects.all().order_by("ordem", "nome")
 
-    form = ContatoForm(request.POST or None)
+    # SE O USUÁRIO ESTIVER LOGADO → preenche automaticamente
+    if request.user.is_authenticated:
+        form = ContatoForm(
+            request.POST or None,
+            initial={
+                "nome": request.user.username,
+                "email": request.user.email
+            }
+        )
+    else:
+        form = ContatoForm(request.POST or None)
 
+    # ENVIO DO FORM
     if request.method == "POST":
+
+        # impede usuários não logados de enviar
         if not request.user.is_authenticated:
             messages.warning(request, "Você precisa estar logada para enviar uma mensagem.")
             return redirect("usuarios:login")
 
         if form.is_valid():
-            form.save()
+            mensagem = form.save(commit=False)
+
+            # segurança extra: força nome e email do usuário logado
+            mensagem.nome = request.user.username
+            mensagem.email = request.user.email
+
+            mensagem.save()
+
             messages.success(request, "Mensagem enviada com sucesso!")
             return redirect("linkif:index")
 

@@ -583,6 +583,14 @@ body {
     padding: 24px;
     margin-bottom: 32px;
 }
+.section-card-simple {
+    margin-top: 50px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+
+}
 
 .section-card:hover {
     transform: translateY(-1px);

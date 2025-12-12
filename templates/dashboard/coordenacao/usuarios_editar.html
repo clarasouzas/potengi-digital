@@ -19,8 +19,6 @@
 
 <div class="soft-card p-4">
 
-
-    <!-- FORM -->
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
@@ -38,7 +36,8 @@
                 Salvar Alterações
             </button>
 
-            <a href="{% url 'dashboard:usuarios' %}"
+            <!-- CANCELAR → volta para a página correta (aluno ou empresa) -->
+            <a href="{% url 'dashboard:gerenciar_por_tipo' usuario.tipo %}"
                class="btn-cancel w-100">
                 <i class="bi bi-x-circle me-1"></i>
                 Cancelar

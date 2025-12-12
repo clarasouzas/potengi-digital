@@ -294,44 +294,67 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!cards.length) return;
 
     let total = cards.length;
-    let index = 0; // card central inicial
+    let index = total >= 3 ? 1 : 0; // 🔥 estado inicial: card do meio se houver 3+
 
     function updateCarousel() {
         cards.forEach(c => c.classList.remove("left", "center", "right", "hidden"));
 
+        // Caso: 1 card
         if (total === 1) {
             cards[0].classList.add("center");
+            prevBtn.style.visibility = "hidden";
+            nextBtn.style.visibility = "hidden";
             return;
         }
 
+        // Caso: 2 cards
         if (total === 2) {
             cards[index].classList.add("center");
-            cards[(index + 1) % total].classList.add("right");
+
+            if (index === 0) {
+                cards[1].classList.add("right");
+                prevBtn.style.visibility = "hidden";
+                nextBtn.style.visibility = "visible";
+            } else {
+                cards[0].classList.add("left");
+                prevBtn.style.visibility = "visible";
+                nextBtn.style.visibility = "hidden";
+            }
             return;
         }
 
-        let left  = (index - 1 + total) % total;
-        let right = (index + 1) % total;
+        // Caso: 3+ cards
+        let left  = index - 1;
+        let right = index + 1;
 
-        cards[left].classList.add("left");
+        if (left >= 0) cards[left].classList.add("left");
         cards[index].classList.add("center");
-        cards[right].classList.add("right");
+        if (right < total) cards[right].classList.add("right");
 
+        // Esconde demais
         for (let i = 0; i < total; i++) {
             if (i !== left && i !== index && i !== right) {
                 cards[i].classList.add("hidden");
             }
         }
+
+        // Controle das setas
+        prevBtn.style.visibility = index === 0 ? "hidden" : "visible";
+        nextBtn.style.visibility = index === total - 1 ? "hidden" : "visible";
     }
 
     nextBtn.addEventListener("click", () => {
-        index = (index + 1) % total;
-        updateCarousel();
+        if (index < total - 1) {
+            index++;
+            updateCarousel();
+        }
     });
 
     prevBtn.addEventListener("click", () => {
-        index = (index - 1 + total) % total;
-        updateCarousel();
+        if (index > 0) {
+            index--;
+            updateCarousel();
+        }
     });
 
     updateCarousel();
