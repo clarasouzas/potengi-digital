@@ -1,4 +1,4 @@
-<img src="static/assets/img/logo.svg" width="200" height="100">
+<img src="static/assets/img/logo.svg" width="300" height="150">
 
 # Sobre o Projeto — Potengi Digital
 
@@ -35,7 +35,7 @@ Além da divulgação de vagas de estágio e jovem aprendiz, a plataforma fortal
 - Joice Leilhany  
 - Elayne Fernandes  
 
-### **Orientadores**
+### **Orientadora**
 - Prof.ª Fernanda Lígia    
 
 > Este repositório faz parte do Projeto de Extensão **Potengi Digital**, alinhado ao PDI do IFRN e aos Objetivos de Desenvolvimento Sustentável (ODS 4, 8 e 9).
