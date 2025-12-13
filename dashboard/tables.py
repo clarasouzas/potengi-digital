@@ -101,13 +101,13 @@ class UsuariosGeraisTable(tables.Table):
     # ===========================
     nome = tables.TemplateColumn(
         template_code="""
-        <span class="table-text fw-bold">
+        <span class="table-text ">
             <i class="bi bi-person-circle me-2"></i>
             {{ record.nome|default:record.email|truncatechars:22 }}
         </span>
         """,
         verbose_name="Usuário",
-        orderable=True
+        orderable=False
     )
 
     # ===========================
@@ -146,54 +146,66 @@ class UsuariosGeraisTable(tables.Table):
         """,
         verbose_name="Status"
     )
+    aprovar = tables.TemplateColumn(
+    template_code="""
+    <div class="acoes-wrapper">
 
+        <a href="#modal-aprovar-{{ record.id }}" class="btn-table">
+            Aprovar
+        </a>
+
+        <a href="#modal-reprovar-{{ record.id }}" class="btn-delete">
+            Reprovar
+        </a>
+
+    </div>
+    """,
+    verbose_name="Aprovação",
+    orderable=False,
+    empty_values=()
+)
+
+    
     # ===========================
     # AÇÕES (modal triggers)
     # ===========================
     acoes = tables.TemplateColumn(
-        template_code="""
-        <div class="acoes-wrapper">
+    template_code="""
+    <div class="acoes-wrapper-btn">
 
-            <!-- Ver perfil -->
-            {% if record.tipo == 'aluno' %}
-                <a href="{% url 'dashboard:ver_perfil_aluno' record.id %}" class="btn-table">
-                    Ver
-                </a>
-            {% elif record.tipo == 'empresa' %}
-                <a href="{% url 'dashboard:ver_perfil_empresa' record.id %}" class="btn-table">
-                    Ver
-                </a>
-            {% endif %}
-
-            <!-- Aprovar -->
-            <a href="#aprovar-{{ record.id }}" class="btn-table">
-                Aprovar
+        {% if record.tipo == 'aluno' %}
+            <a href="{% url 'dashboard:ver_perfil_aluno' record.id %}"
+               class="btn-icon" title="Ver perfil">
+                <i class="bi bi-eye"></i>
             </a>
-
-            <!-- Reprovar -->
-            <a href="#reprovar-{{ record.id }}" class="btn-delete">
-                Reprovar
+        {% elif record.tipo == 'empresa' %}
+            <a href="{% url 'dashboard:ver_perfil_empresa' record.id %}"
+               class="btn-icon" title="Ver perfil">
+                <i class="bi bi-eye"></i>
             </a>
+        {% endif %}
 
-            <!-- Editar -->
-            <a href="{% url 'dashboard:usuario_editar' record.id %}" class="btn-table">
-                Editar
-            </a>
+        <a href="{% url 'dashboard:usuario_editar' record.id %}"
+           class="btn-icon" title="Editar">
+            <i class="bi bi-pencil-square"></i>
+        </a>
 
-            <!-- Excluir -->
-            <a href="{% url 'dashboard:usuario_excluir' record.id %}" class="btn-delete">
-                Excluir
-            </a>
+        <a href="#excluir-{{ record.id }}"
+           class="btn-icon btn-icon-danger" title="Excluir">
+            <i class="bi bi-trash"></i>
+        </a>
 
-        </div>
-        """,
-        verbose_name="Ações",
-        orderable=False
-    )
+    </div>
+    """,
+    verbose_name="Ações",
+    orderable=False,
+    empty_values=()
+)
+
 
     class Meta:
         model = Usuario
-        fields = ["nome", "tipo", "status_aprovacao", "acoes"]
+        fields = ["nome", "tipo", "status_aprovacao", "aprovar","acoes"]
         template_name = "dashboard/table.html"
         attrs = {"class": "linkif-table"}
 
@@ -214,33 +226,31 @@ class PerfisFormacaoTable(tables.Table):
         orderable=True
     )
 
-    competencias = tables.TemplateColumn(
-        template_code="{{ record.competencia_set.count }}",
-        verbose_name="Competências"
-    )
-
-    areas = tables.TemplateColumn(
-        template_code="{{ record.areaatuacaoperfil_set.count }}",
-        verbose_name="Áreas"
-    )
-
     acoes = tables.TemplateColumn(
-        template_code="""
-        <div class="acoes-wrapper">
-            <a href="{% url 'dashboard:editar_perfil_formacao' record.id %}"
-               class="btn-table">Editar</a>
+    template_code="""
+    <div class="acoes-wrapper-btn">
 
-            <a href="{% url 'dashboard:excluir_perfil_formacao' record.id %}"
-               class="btn-delete">Excluir</a>
-        </div>
-        """,
-        verbose_name="Ações",
-        orderable=False
-    )
+        <a href="{% url 'dashboard:editar_perfil_formacao' record.id %}"
+           class="btn-icon" title="Editar">
+            <i class="bi bi-pencil-square"></i>
+        </a>
+
+        <a href="#excluir-perfil-{{ record.id }}"
+           class="btn-icon btn-icon-danger"
+           title="Excluir">
+            <i class="bi bi-trash"></i>
+        </a>
+
+    </div>
+    """,
+    verbose_name="Ações",
+    orderable=False,
+    empty_values=()
+)
 
     class Meta:
         model = PerfilFormacao
-        fields = ["nome", "competencias", "areas", "acoes"]
+        fields = ["nome", "acoes"]
         template_name = "dashboard/table.html"
         attrs = {"class": "linkif-table"}
 
@@ -492,13 +502,24 @@ class AcompanharVagasTable(tables.Table):
         verbose_name="Candidatos"
     )
     acoes = tables.TemplateColumn(
-        template_code="""
-        <div class="acoes-wrapper">
-        <a href="#gerenciar-{{ record.id }}" class="btn-table">Gerenciar</a>
-        </div>
-        """,
-        verbose_name="Ações"
-    )
+    template_code="""
+    <div class="acoes-wrapper">
+
+        {% if record.empresa_id == request.user.id %}
+            <a href="#gerenciar-{{ record.id }}" class="btn-table">
+                Gerenciar
+            </a>
+        {% else %}
+            <span class="text-muted"</span>
+        {% endif %}
+
+    </div>
+    """,
+    verbose_name="Ações",
+    orderable=False,
+    empty_values=()
+)
+
 
     class Meta:
         model = Vaga
@@ -509,13 +530,12 @@ class AcompanharVagasEmpresaTable(tables.Table):
 
     titulo = tables.TemplateColumn(
         template_code="""
-            <span class="table-text ">
+            <span class="table-text">
                 <i class="bi bi-briefcase me-2"></i>
                 {{ record.titulo|truncatechars:25 }}
             </span>
         """,
-        verbose_name="Título",
-        orderable=True
+        verbose_name="Título"
     )
 
     tipo = tables.Column(verbose_name="Tipo")
@@ -523,29 +543,19 @@ class AcompanharVagasEmpresaTable(tables.Table):
 
     etapa = tables.TemplateColumn(
         template_code="""
-        <div class=".badge">
         {% if record.etapa == "pendente_aprovacao" %}
             <span class="badge pend"><i class="bi bi-hourglass"></i> Pendente aprovação</span>
-
         {% elif record.etapa == "publicada" %}
             <span class="badge aprov"><i class="bi bi-megaphone"></i> Publicada</span>
-
         {% elif record.etapa == "inscricoes_fechadas" %}
             <span class="badge recs"><i class="bi bi-door-closed"></i> Inscrições fechadas</span>
-
         {% elif record.etapa == "analise_curriculos" %}
             <span class="badge info"><i class="bi bi-search"></i> Análise de currículos</span>
-
         {% elif record.etapa == "entrevistas" %}
             <span class="badge info"><i class="bi bi-people"></i> Entrevistas</span>
-
         {% elif record.etapa == "finalizada" %}
             <span class="badge aprov"><i class="bi bi-flag"></i> Finalizada</span>
-
-        {% else %}
-            <span class="badge info">{{ record.get_etapa_display }}</span>
         {% endif %}
-        </div>
         """,
         verbose_name="Etapa"
     )
@@ -553,7 +563,9 @@ class AcompanharVagasEmpresaTable(tables.Table):
     acoes = tables.TemplateColumn(
         template_code="""
         <div class="acoes-wrapper">
-            <a href="#etapa-{{ record.id }}" class="btn-table">Gerenciar</a>
+            <a href="#gerenciar-{{ record.id }}" class="btn-table">
+                Gerenciar
+            </a>
         </div>
         """,
         verbose_name="Ações",

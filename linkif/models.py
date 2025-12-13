@@ -41,10 +41,12 @@ class AreaAtuacaoPerfil(models.Model):
         return f"{self.titulo} ({self.perfil.nome})"
 
 
+
 # =====================================================
-# VAGAS
+# VAGA
 # =====================================================
 class Vaga(models.Model):
+
     ETAPA_CHOICES = [
         ("pendente_aprovacao", "Pendente aprovação"),
         ("publicada", "Publicada"),
@@ -53,7 +55,24 @@ class Vaga(models.Model):
         ("entrevistas", "Entrevistas"),
         ("finalizada", "Finalizada"),
     ]
-    
+
+    ETAPAS_COORDENACAO = [
+        "pendente_aprovacao",
+        "publicada",
+        "inscricoes_fechadas",
+        "analise_curriculos",
+        "entrevistas",
+        "finalizada",
+    ]
+
+    ETAPAS_EMPRESA = [
+        "inscricoes_fechadas",
+        "analise_curriculos",
+        "entrevistas",
+        "finalizada",
+    ]
+
+  
     TIPO_CHOICES = [
         ("estagio", "Estágio"),
         ("emprego", "Emprego"),
@@ -66,18 +85,18 @@ class Vaga(models.Model):
         ("remoto", "Remoto"),
     ]
 
+  
     STATUS_CHOICES = [
         ("pendente", "Pendente"),
         ("aprovada", "Aprovada"),
         ("reprovada", "Reprovada"),
         ("encerrada", "Encerrada"),
     ]
-    
-    etapa = models.CharField(
-        max_length=30,
-        choices=ETAPA_CHOICES,
-        default="pendente_aprovacao"
-    )
+
+  
+    titulo = models.CharField("Título da vaga", max_length=150)
+    descricao = models.TextField("Descrição detalhada da vaga")
+    requisitos = models.TextField("Requisitos", blank=True)
 
     empresa = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -87,27 +106,53 @@ class Vaga(models.Model):
         verbose_name="Empresa responsável",
     )
 
-    titulo = models.CharField("Título da vaga", max_length=150)
-    descricao = models.TextField("Descrição detalhada da vaga")
-    requisitos = models.TextField("Requisitos", blank=True)
-
     curso = models.ForeignKey(
         "PerfilFormacao",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="vagas",
-        verbose_name="Curso Alvo",
+        verbose_name="Curso alvo",
     )
 
-    tipo = models.CharField("Tipo de vaga", max_length=20, choices=TIPO_CHOICES, default="estagio")
-    modalidade = models.CharField("Modalidade", max_length=20, choices=MODALIDADE_CHOICES, default="presencial")
+    tipo = models.CharField(
+        "Tipo de vaga",
+        max_length=20,
+        choices=TIPO_CHOICES,
+        default="estagio",
+    )
 
-    remuneracao = models.DecimalField("Remuneração (R$)", max_digits=10, decimal_places=2, null=True, blank=True)
+    modalidade = models.CharField(
+        "Modalidade",
+        max_length=20,
+        choices=MODALIDADE_CHOICES,
+        default="presencial",
+    )
+
+    remuneracao = models.DecimalField(
+        "Remuneração (R$)",
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+
     cidade = models.CharField("Cidade", max_length=120, blank=True)
     bairro = models.CharField("Bairro", max_length=120, blank=True)
 
-    status = models.CharField("Status", max_length=20, choices=STATUS_CHOICES, default="pendente")
+    
+    etapa = models.CharField(
+        max_length=30,
+        choices=ETAPA_CHOICES,
+        default="pendente_aprovacao",
+    )
+
+    status = models.CharField(
+        "Status",
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pendente",
+    )
 
     data_publicacao = models.DateTimeField(null=True, blank=True)
     data_inicio = models.DateField("Data de início", null=True, blank=True)
@@ -124,17 +169,60 @@ class Vaga(models.Model):
     )
 
     class Meta:
-        ordering = ["-data_publicacao"]
+        ordering = ["-data_publicacao", "-id"]
         verbose_name = "Vaga"
         verbose_name_plural = "Vagas"
 
+  
     def __str__(self):
         return f"{self.titulo} — {self.empresa.username or self.empresa.email}"
 
     @property
     def is_disponivel(self):
-        return self.status == "aprovada"
+        """Disponível para alunos"""
+        return self.status == "aprovada" and self.etapa == "publicada"
 
+    def pode_mudar_etapa(self, usuario):
+        """
+        Verifica se o usuário pode alterar a etapa da vaga
+        """
+        if usuario.tipo == "coordenador":
+            return True
+
+        if usuario.tipo == "empresa" and self.empresa_id == usuario.id:
+            return True
+
+        return False
+
+    def etapas_permitidas_para(self, usuario):
+        """
+        Retorna a lista de etapas permitidas conforme o perfil
+        """
+        if usuario.tipo == "coordenador":
+            return self.ETAPAS_COORDENACAO
+
+        if usuario.tipo == "empresa" and self.empresa_id == usuario.id:
+            return self.ETAPAS_EMPRESA
+
+        return []
+
+    def publicar(self, coordenador):
+        """
+        Publica a vaga (apenas coordenação)
+        """
+        self.etapa = "publicada"
+        self.status = "aprovada"
+        self.data_publicacao = timezone.now()
+        self.aprovado_por = coordenador
+        self.save()
+
+    def reprovar(self, coordenador):
+        """
+        Reprova a vaga (apenas coordenação)
+        """
+        self.status = "reprovada"
+        self.aprovado_por = coordenador
+        self.save()
 
 # =====================================================
 # CANDIDATURAS

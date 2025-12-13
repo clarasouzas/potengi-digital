@@ -1495,6 +1495,43 @@ body {
     align-items: center;
     gap: 10px;
 }
+.acoes-wrapper-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-blue-light-3);
+    border-radius: 50%;
+    color: var(--branco) !important;
+    text-decoration: none !important;
+
+    transition: all .2s ease;
+}
+
+.btn-icon:hover {
+    background: var(--accent-blue);
+    transform: translateY(-1px);
+}
+
+.btn-icon-danger {
+    background: #f19999;
+}
+
+.btn-icon-danger:hover {
+    background: var(--accent-red);
+}
+
+.btn-icon i {
+    font-size: 18px;
+}
 
 .btn-table,
 .btn-delete {

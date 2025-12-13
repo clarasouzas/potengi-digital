@@ -19,6 +19,52 @@
 <div class="table-container">
     {% render_table table %}
 </div>
+{% for row in table.page.object_list %}
+{% with perfil=row.record %}
+
+<div id="excluir-perfil-{{ perfil.id }}" class="modal-vaga">
+
+    <div class="modal-content-vaga">
+
+        <a href="#" class="modal-close">
+            <i class="bi bi-x-lg"></i>
+        </a>
+
+        <h3 class="fw-bold mb-3" style="color: var(--accent-red);">
+            <i class="bi bi-trash me-2"></i>
+            Excluir Perfil de Formação
+        </h3>
+
+        <p class="text-muted">
+            Tem certeza que deseja excluir o perfil
+            <strong>{{ perfil.nome }}</strong>?
+            <br>
+            <span style="color: var(--accent-red); font-size: 14px;">
+                Esta ação não pode ser desfeita.
+            </span>
+        </p>
+
+        <div class="d-flex gap-3 mt-4">
+
+            <a href="{% url 'dashboard:excluir_perfil_formacao' perfil.id %}"
+               class="btn-delete btn-table flex-grow-1 text-center">
+                Excluir
+            </a>
+
+            <a href="#"
+               class="btn-table flex-grow-1 text-center"
+               style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
+                Cancelar
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+{% endwith %}
+{% endfor %}
+
 {% else %}
 <div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
 

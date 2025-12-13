@@ -50,19 +50,23 @@ from dashboard.tables import (
     UsuariosGeraisTable
 )
 
+from django.shortcuts import redirect
+from django.contrib import messages
+
 def requer_aprovacao(tipo):
     def decorator(view_func):
         def wrapper(request, *args, **kwargs):
             user = request.user
 
-            # garante que é o tipo correto
             if user.tipo != tipo:
                 messages.error(request, "Acesso negado.")
                 return redirect("dashboard:inicio")
 
-            # verifica aprovação
-            if not user.is_approved:
-                messages.warning(request, "Aguarde aprovação para acessar esta área.")
+            if user.status_aprovacao != "aprovado":
+                messages.warning(
+                    request,
+                    "Aguarde aprovação da coordenação para acessar esta área."
+                )
 
                 if tipo == "aluno":
                     return redirect("dashboard:aluno_painel")
@@ -71,6 +75,7 @@ def requer_aprovacao(tipo):
             return view_func(request, *args, **kwargs)
         return wrapper
     return decorator
+
 
 @login_required
 def inicio(request):
@@ -369,25 +374,21 @@ def ver_perfil_empresa(request, pk):
     empresa = get_object_or_404(Usuario, pk=pk, tipo="empresa")
     return render(request, "dashboard/empresa/perfil_empresa.html", {"empresa": empresa})
 
-
 @login_required
 @permission_required("usuarios.acesso_empresa", raise_exception=True)
 def empresa_acompanhar_vagas(request):
 
-    # empresa só gerencia vagas aprovadas/publicadas
     vagas = Vaga.objects.filter(
         empresa=request.user,
-        status="aprovada"  # só aparece quando coordenação aprova
+        status="aprovada"
     ).order_by("-data_publicacao")
 
-    table = AcompanharVagasEmpresaTable(vagas)
+    table = AcompanharVagasEmpresaTable(vagas, request=request)
     RequestConfig(request, paginate={"per_page": 10}).configure(table)
-
-    etapa_choices = Vaga.ETAPA_CHOICES
 
     return render(request, "dashboard/empresa/acompanhar_vagas.html", {
         "table": table,
-        "etapa_choices": etapa_choices,
+        "etapa_choices": Vaga.ETAPA_CHOICES,
     })
 @login_required
 @permission_required("usuarios.acesso_empresa", raise_exception=True)
@@ -397,57 +398,31 @@ def empresa_atualizar_etapa(request, vaga_id):
         Vaga,
         id=vaga_id,
         empresa=request.user,
-        status="aprovada"  # impedir mexer em vagas pendentes
+        status="aprovada"
     )
+
+    ETAPAS_PERMITIDAS = [
+        "inscricoes_fechadas",
+        "analise_curriculos",
+        "entrevistas",
+        "finalizada",
+    ]
 
     if request.method == "POST":
         nova = request.POST.get("nova_etapa")
-        if nova in dict(Vaga.ETAPA_CHOICES):
+
+        if nova not in ETAPAS_PERMITIDAS:
+            messages.error(
+                request,
+                "Você não tem permissão para definir essa etapa."
+            )
+        else:
             vaga.etapa = nova
             vaga.save()
             messages.success(request, "Etapa atualizada com sucesso!")
-        else:
-            messages.error(request, "Etapa inválida.")
 
     return redirect("dashboard:empresa_acompanhar_vagas")
 
-@login_required
-def atualizar_etapa_vaga(request, vaga_id):
-    vaga = get_object_or_404(Vaga, id=vaga_id)
-
-    user = request.user
-
-    # COORDENAÇÃO pode atualizar sempre
-    if user.tipo == "coordenador":
-        pode_editar = True
-
-    # EMPRESA só pode editar se a vaga estiver aprovada / publicada
-    elif user.tipo == "empresa":
-        pode_editar = vaga.status == "aprovada"
-    else:
-        pode_editar = False
-
-    if not pode_editar:
-        messages.error(request, "Você não tem permissão para alterar a etapa desta vaga.")
-        return redirect("dashboard:empresa_vagas")
-
-    # processa alteração
-    nova_etapa = request.POST.get("nova_etapa")
-    if nova_etapa not in dict(Vaga.ETAPA_CHOICES):
-        messages.error(request, "Etapa inválida.")
-        return redirect("dashboard:empresa_vagas")
-
-    vaga.etapa = nova_etapa
-
-    # se for publicada pela coordenação → também marca como aprovada
-    if nova_etapa == "publicada" and user.tipo == "coordenador":
-        vaga.status = "aprovada"
-        vaga.data_publicacao = timezone.now()
-
-    vaga.save()
-
-    messages.success(request, "Etapa da vaga atualizada com sucesso.")
-    return redirect(request.META.get("HTTP_REFERER", "dashboard:empresa_vagas"))
 # Coordenação 
 
 @login_required
@@ -491,32 +466,25 @@ def gerenciar_por_tipo(request, tipo):
     })
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+
 def usuario_mudar_status(request):
-    usuario_id = request.POST.get("usuario_id")
-    acao = request.POST.get("nova_acao")
+    acao = request.GET.get("acao")
+    usuario_id = request.GET.get("usuario_id")
 
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
-    if usuario.is_superuser:
-        messages.error(request, "Não é possível alterar o status da coordenação.")
-        return redirect(request.META.get("HTTP_REFERER", "/"))
-
     if acao == "aprovar":
         usuario.status_aprovacao = "aprovado"
-        usuario.is_approved = True
-        usuario.save()
-        messages.success(request, "Usuário aprovado com sucesso.")
 
     elif acao == "reprovar":
         usuario.status_aprovacao = "reprovado"
-        usuario.is_approved = False
-        usuario.save()
-        messages.error(request, "Usuário reprovado.")
 
-    else:
-        messages.error(request, "Ação inválida.")
+    usuario.save()
 
-    return redirect(request.META.get("HTTP_REFERER", "/"))
+    return redirect(
+        "dashboard:gerenciar_por_tipo",
+        tipo=usuario.tipo
+    )
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def usuario_excluir(request, pk):
@@ -647,15 +615,16 @@ def reprovar_vaga_action(request, vaga_id):
 
 
 # ---------------------------------------------------------
-#   ACOMPANHAR VAGAS (mantido)
+#   ACOMPANHAR VAGAS (empresa)
 # ---------------------------------------------------------
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+
 def acompanhar_vagas(request):
 
     qs = Vaga.objects.all().order_by('-data_publicacao', '-id')
 
-    table = AcompanharVagasTable(qs)
+    table = AcompanharVagasTable(qs, request=request)  
     RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     return render(request, "dashboard/coordenacao/acompanhar_vagas.html", {
@@ -663,12 +632,15 @@ def acompanhar_vagas(request):
         "etapa_choices": Vaga.ETAPA_CHOICES,
     })
 
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def atualizar_etapa_vaga(request, vaga_id):
 
-    vaga = get_object_or_404(Vaga, id=vaga_id)
+    vaga = get_object_or_404(
+        Vaga,
+        id=vaga_id,
+        empresa=request.user   
+    )
 
     if request.method == "POST":
         nova = request.POST.get("nova_etapa")
@@ -688,6 +660,7 @@ def atualizar_etapa_vaga(request, vaga_id):
         messages.success(request, "Etapa atualizada com sucesso.")
 
     return redirect("dashboard:acompanhar_vagas")
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def coordenacao_minhas_vagas(request):

@@ -39,27 +39,30 @@ Gerenciar {{ tipo|title }}
 {% for row in table.page.object_list %}
 {% with user=row.record %}
 
-<!-- ===== MODAL APROVAR ===== -->
-<div id="aprovar-{{ user.id }}" class="modal-vaga">
+<!-- MODAL APROVAR -->
+<div id="modal-aprovar-{{ user.id }}" class="modal-vaga">
+
     <div class="modal-content-vaga">
-        
+
         <a href="#" class="modal-close">
             <i class="bi bi-x-lg"></i>
         </a>
 
+        
         <h3 class="fw-bold mb-3" style="color: var(--accent-blue);">
             <i class="bi bi-check-circle me-2"></i>
             Aprovar {{ tipo|title }}
         </h3>
 
         <p class="text-muted">
-            Tem certeza que deseja aprovar  
+            Tem certeza que deseja aprovar
             <strong>{{ user.nome|default:user.email }}</strong>?
         </p>
 
         <div class="d-flex gap-3 mt-4">
+
             <a href="{% url 'dashboard:usuario_mudar_status' %}?acao=aprovar&usuario_id={{ user.id }}"
-                class="btn-table flex-grow-1 text-center">
+               class="btn-table flex-grow-1 text-center">
                 Aprovar
             </a>
 
@@ -67,15 +70,17 @@ Gerenciar {{ tipo|title }}
                style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
                 Cancelar
             </a>
-        </div>
 
+        </div>
     </div>
 </div>
 
-<!-- ===== MODAL REPROVAR ===== -->
-<div id="reprovar-{{ user.id }}" class="modal-vaga">
+
+<!-- MODAL REPROVAR -->
+<div id="modal-reprovar-{{ user.id }}" class="modal-vaga">
+
     <div class="modal-content-vaga">
-        
+
         <a href="#" class="modal-close">
             <i class="bi bi-x-lg"></i>
         </a>
@@ -86,11 +91,12 @@ Gerenciar {{ tipo|title }}
         </h3>
 
         <p class="text-muted">
-            Tem certeza que deseja reprovar  
+            Tem certeza que deseja reprovar
             <strong>{{ user.nome|default:user.email }}</strong>?
         </p>
 
         <div class="d-flex gap-3 mt-4">
+
             <a href="{% url 'dashboard:usuario_mudar_status' %}?acao=reprovar&usuario_id={{ user.id }}"
                class="btn-delete btn-table flex-grow-1 text-center">
                 Reprovar
@@ -100,8 +106,52 @@ Gerenciar {{ tipo|title }}
                style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
                 Cancelar
             </a>
-        </div>
 
+        </div>
+    </div>
+</div>
+
+{% endwith %}
+{% endfor %}
+{% for row in table.page.object_list %}
+{% with user=row.record %}
+
+<div id="excluir-{{ user.id }}" class="modal-vaga">
+
+    <div class="modal-content-vaga">
+
+        <a href="#" class="modal-close">
+            <i class="bi bi-x-lg"></i>
+        </a>
+
+        <h3 class="fw-bold mb-3" style="color: var(--accent-red);">
+            <i class="bi bi-trash me-2"></i>
+            Excluir {{ tipo|title }}
+        </h3>
+
+        <p class="text-muted">
+            Tem certeza que deseja excluir
+            <strong>{{ user.nome|default:user.email }}</strong>?
+            <br>
+            <span style="color: var(--accent-red); font-size: 14px;">
+                Esta ação não pode ser desfeita.
+            </span>
+        </p>
+
+        <div class="d-flex gap-3 mt-4">
+
+            <a href="{% url 'dashboard:usuario_excluir' user.id %}"
+               class="btn-delete btn-table flex-grow-1 text-center">
+                Excluir
+            </a>
+
+            <a href="#"
+               class="btn-table flex-grow-1 text-center"
+               style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
+                Cancelar
+            </a>
+
+        </div>
     </div>
 </div>
 

@@ -106,15 +106,16 @@ class Usuario(AbstractUser):
     # ================================
     def save(self, *args, **kwargs):
 
-        # SE FOR SUPERUSER → vira coordenação aprovada automaticamente
+        # sincroniza status -> boolean
+        self.is_approved = self.status_aprovacao == "aprovado"
+
         if self.is_superuser:
             self.tipo = "coordenador"
-            self.is_approved = True
             self.status_aprovacao = "aprovado"
+            self.is_approved = True
 
         super().save(*args, **kwargs)
 
-        # depois de salvar, aplica permissões
         self.aplicar_permissoes_por_tipo()
 
     def __str__(self):

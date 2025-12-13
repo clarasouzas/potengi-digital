@@ -5,75 +5,61 @@
 {% block conteudo %}
 
 <h2 class="title-dashboard mb-4">
-    <i class="bi bi-list-check me-2"></i>
-    Acompanhar Vagas
+    <i class="bi bi-briefcase me-2"></i>
+    Acompanhar vagas
 </h2>
 
-{% if table.page.object_list %}
 <div class="table-container">
     {% render_table table %}
 </div>
 
-
-
-<!-- =========================================================
-     MODAIS DE EDITAR ETAPA — UM POR VAGA
-========================================================= -->
+<!-- ================================
+     MODAIS — UM POR VAGA (EMPRESA)
+================================ -->
 {% for row in table.page.object_list %}
-    {% with vaga=row.record %}
-
-<div id="etapa-{{ vaga.id }}" class="modal-vaga">
+{% with vaga=row.record %}
+<div id="gerenciar-{{ vaga.id }}" class="modal-vaga">
 
     <div class="modal-content-vaga">
 
-        <!-- botão fechar -->
         <a href="#" class="modal-close">
             <i class="bi bi-x-lg"></i>
         </a>
 
-        <!-- título -->
         <h3 class="fw-bold mb-3" style="color: var(--accent-blue);">
             <i class="bi bi-gear me-2"></i>
-            Gerenciar Etapa da Vaga
+            Gerenciar vaga
         </h3>
 
-        <!-- nome da vaga -->
-        <p class="text-muted mb-3">
+        <p class="text-muted mb-2">
             <strong>{{ vaga.titulo }}</strong>
         </p>
 
-        <!-- formulário -->
         <form action="{% url 'dashboard:empresa_atualizar_etapa' vaga.id %}" method="post">
             {% csrf_token %}
 
-            <label class="form-label fw-semibold">Etapa</label>
-
+            <label class="form-label">Etapa da vaga</label>
             <select name="nova_etapa" class="form-select mb-3">
-
                 {% for valor, label in etapa_choices %}
-                    {% if valor != "pendente_aprovacao" and valor != "publicada" %}
+                    {% if valor in "inscricoes_fechadas analise_curriculos entrevistas finalizada" %}
                         <option value="{{ valor }}"
                             {% if valor == vaga.etapa %}selected{% endif %}>
                             {{ label }}
                         </option>
                     {% endif %}
                 {% endfor %}
-
             </select>
 
 
-            <button class="btn-apply w-100">
-                <i class="bi bi-save me-1"></i>
-                Atualizar
+            <button class="btn-apply w-100 mt-2">
+                <i class="bi bi-save2 me-1"></i> Salvar alterações
             </button>
-
         </form>
 
     </div>
-</div>
 
-    {% endwith %}
+</div>
+{% endwith %}
 {% endfor %}
-{% endif %}
 
 {% endblock %}
