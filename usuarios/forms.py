@@ -127,10 +127,17 @@ class EmpresaCreationForm(UsuarioCreationForm):
 #   EDIÇÃO — ALUNO
 # ============================================
 class AlunoEditForm(forms.ModelForm):
+    curso = forms.ChoiceField(choices=[])
+
     class Meta:
         model = Usuario
         fields = ["username", "curso", "foto", "curriculo", "portfolio", "resumo"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["curso"].choices = [
+            (p.nome, p.nome) for p in PerfilFormacao.objects.all()
+        ]
 
 # ============================================
 #   EDIÇÃO — EMPRESA

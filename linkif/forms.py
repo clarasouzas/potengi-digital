@@ -178,7 +178,8 @@ class CandidaturaForm(forms.ModelForm):
         fields = ["mensagem"]
         widgets = {
             "mensagem": forms.Textarea(
-                attrs={"rows": 4, "placeholder": "Fale brevemente sobre seu interesse..."}
+                attrs={"rows": 4, "placeholder": "Fale brevemente sobre seu interesse...",
+                        "class": "form-control w-100", }
             ),
         }
 
@@ -188,7 +189,7 @@ class CandidaturaForm(forms.ModelForm):
         self.helper.form_method = "post"
         self.helper.layout = Layout(
             "mensagem",
-            Submit("submit", "Enviar Candidatura", css_class="btn btn-success mt-3"),
+            Submit("submit", "Enviar Candidatura"),
         )
 
 

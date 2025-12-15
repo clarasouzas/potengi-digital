@@ -4,12 +4,12 @@
     "pk": 1,
     "fields": {
       "nome": "Informática para Internet",
-      "descricao": "Curso técnico voltado para o desenvolvimento de sistemas web, abrangendo programação, design digital, banco de dados, redes e implantação de soluções tecnológicas modernas. Forma profissionais capazes de atuar em todas as etapas da construção de aplicações digitais.",
-      "descricao_curta": "Desenvolvimento web e tecnologias digitais.",
-      "imagem": "",
-      "logo": "",
+      "descricao": "Curso técnico voltado para o desenvolvimento de soluções digitais, com foco em programação web, design de interfaces, bancos de dados, redes e implantação de sistemas. Forma profissionais capazes de planejar, desenvolver e manter aplicações modernas para a web.",
+      "descricao_curta": "Desenvolvimento de sistemas e tecnologias web.",
+      "imagem": "perfis/banner_info.jpg",
+      "logo": "perfis/logos/icon_info.jpg",
       "cor_titulo": "#1b1f5b",
-      "ordem": 1
+      "ordem": 2
     }
   },
   {
@@ -17,12 +17,12 @@
     "pk": 2,
     "fields": {
       "nome": "Edificações",
-      "descricao": "Curso focado na elaboração, execução e gestão de obras civis. O aluno desenvolve competências em desenho técnico, topografia, materiais de construção, normas, segurança e acompanhamento de projetos arquitetônicos e estruturais.",
-      "descricao_curta": "Construção civil e projetos estruturais.",
-      "imagem": "",
-      "logo": "",
+      "descricao": "Curso técnico direcionado à elaboração, execução e acompanhamento de obras civis. Desenvolve competências em desenho técnico, topografia, materiais de construção, normas técnicas, segurança do trabalho e leitura de projetos arquitetônicos e estruturais.",
+      "descricao_curta": "Projetos, obras e construção civil.",
+      "imagem": "perfis/banner_edif.jpg",
+      "logo": "perfis/logos/icon_edif.jpg",
       "cor_titulo": "#8b1b2c",
-      "ordem": 2
+      "ordem": 1
     }
   },
   {
@@ -30,10 +30,10 @@
     "pk": 3,
     "fields": {
       "nome": "Meio Ambiente",
-      "descricao": "Curso técnico voltado para análise ambiental, gestão de resíduos, licenciamento, sustentabilidade e preservação de recursos naturais. Prepara profissionais para atuar em instituições públicas, privadas e ONGs.",
-      "descricao_curta": "Gestão e proteção ambiental.",
-      "imagem": "",
-      "logo": "",
+      "descricao": "Curso técnico voltado para a análise e gestão ambiental, com atuação em sustentabilidade, licenciamento, gestão de resíduos e preservação de recursos naturais. Prepara profissionais para trabalhar em empresas, órgãos públicos e organizações socioambientais.",
+      "descricao_curta": "Sustentabilidade e gestão ambiental.",
+      "imagem": "perfis/banner_mamb.jpg",
+      "logo": "perfis/logos/icon_mamb.jpg",
       "cor_titulo": "#1b5b2f",
       "ordem": 3
     }
@@ -43,10 +43,10 @@
     "pk": 4,
     "fields": {
       "nome": "Licenciatura em Matemática",
-      "descricao": "Formação voltada para o desenvolvimento de habilidades pedagógicas e domínio de conteúdos matemáticos. O curso prepara profissionais para atuar na educação básica e projetos educacionais.",
-      "descricao_curta": "Educação matemática e prática docente.",
-      "imagem": "",
-      "logo": "",
+      "descricao": "Curso de formação docente com foco no domínio dos conteúdos matemáticos e no desenvolvimento de práticas pedagógicas. Prepara profissionais para atuar na educação básica, projetos educacionais e iniciativas de ensino e aprendizagem.",
+      "descricao_curta": "Formação docente em matemática.",
+      "imagem": "perfis/banner_licm.jpg",
+      "logo": "perfis/logos/icon_licm.jpg",
       "cor_titulo": "#5b1b5b",
       "ordem": 4
     }

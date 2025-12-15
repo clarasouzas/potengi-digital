@@ -80,7 +80,7 @@ def candidatar_vaga(request, vaga_id):
         candidatura.save()
 
         messages.success(request, "Candidatura enviada com sucesso!")
-        return redirect("linkif:para_estudantes")
+        return redirect("dashboard:aluno_candidaturas")
 
     return render(request, "linkif/candidatar.html", {
         "form": form,

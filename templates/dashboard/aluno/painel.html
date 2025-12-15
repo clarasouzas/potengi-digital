@@ -11,8 +11,8 @@ Painel do Aluno — {{ request.user.nome|default:request.user.email }}
 <div class="hero-dashboard rail-bleed mb-4">
   <div class="hero-text">
     <small class="hero-hello">Olá, {{ user.nome|default:user.email }}</small>
-    <h3 class="hero-title">Confira suas atividades e oportunidades de hoje</h3>
-    <p class="hero-subtitle">Acompanhe tarefas, prazos e vagas recomendadas.</p>
+    <h3 class="hero-title">Suas candidaturas e oportunidades</h3>
+    <p class="hero-subtitle">Acompanhe o andamento das vagas, prazos e novas recomendações para você.</p>
   </div>
 
   <div class="hero-illustration">
@@ -149,14 +149,12 @@ Painel do Aluno — {{ request.user.nome|default:request.user.email }}
             <div class="col-md-4">
                 <div class="vaga-card">
                     <h6 class="fw-bold">{{ v.titulo }}</h6>
-                    <p class="text-muted small">{{ v.empresa.nome|default:v.empresa.email }}</p>
+                    <p class="text-muted small">{{ v.empresa.username|default:v.empresa.email }}</p>
 
                     <p class="small"><i class="bi bi-geo-alt"></i> {{ v.cidade }}</p>
                     <p class="small mb-2"><i class="bi bi-briefcase"></i> {{ v.get_tipo_display }}</p>
 
-                    <a href="{% url 'linkif:vaga_detalhe' v.id %}" class="btn btn-sm w-100">
-                        Ver detalhes
-                    </a>
+                    
                 </div>
             </div>
             {% endfor %}

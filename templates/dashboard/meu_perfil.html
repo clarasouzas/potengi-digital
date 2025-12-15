@@ -25,7 +25,7 @@
             </div>
 
             <h5 class="mt-3 fw-semibold perfil-nome">
-                {{ user.nome|default:user.email }}
+                {{ user.username }}
             </h5>
 
             <p class="perfil-email">{{ user.email }}</p>
@@ -43,7 +43,7 @@
 
             <div class="perfil-info">
 
-                <!-- E-mail -->
+                <!-- EMAIL -->
                 <div class="perfil-item">
                     <span class="perfil-label">E-mail</span>
                     <div class="perfil-value">{{ user.email }}</div>
@@ -53,7 +53,7 @@
 
                     <div class="perfil-item">
                         <span class="perfil-label">Nome</span>
-                        <div class="perfil-value">{{ user.nome|default:"—" }}</div>
+                        <div class="perfil-value">{{ user.username }}</div>
                     </div>
 
                     <div class="perfil-item">
@@ -61,22 +61,20 @@
                         <div class="perfil-value">{{ user.curso|default:"—" }}</div>
                     </div>
 
-                    <!-- TELEFONE DO ALUNO -->
                     <div class="perfil-item">
                         <span class="perfil-label">Telefone</span>
                         <div class="perfil-value">
-                            {% if user.telefone %}{{ user.telefone }}{% else %}—{% endif %}
+                            {{ user.telefone|default:"—" }}
                         </div>
                     </div>
 
-                    <!-- RESUMO DO ALUNO -->
                     <div class="perfil-item">
                         <span class="perfil-label">Resumo</span>
                         <div class="perfil-value">
                             {% if user.resumo %}
                                 {{ user.resumo|linebreaksbr }}
                             {% else %}
-                                — 
+                                —
                             {% endif %}
                         </div>
                     </div>
@@ -85,7 +83,9 @@
                         <span class="perfil-label">Currículo</span>
                         <div class="perfil-value">
                             {% if user.curriculo %}
-                                <a href="{{ user.curriculo.url }}" class="perfil-link" target="_blank">Ver Currículo</a>
+                                <a href="{{ user.curriculo.url }}" class="perfil-link" target="_blank">
+                                    Ver currículo
+                                </a>
                             {% else %}
                                 —
                             {% endif %}
@@ -96,20 +96,20 @@
                         <span class="perfil-label">Portfólio</span>
                         <div class="perfil-value">
                             {% if user.portfolio %}
-                                <a href="{{ user.portfolio }}" class="perfil-link" target="_blank">Abrir portfólio</a>
+                                <a href="{{ user.portfolio }}" class="perfil-link" target="_blank">
+                                    Abrir portfólio
+                                </a>
                             {% else %}
                                 —
                             {% endif %}
                         </div>
                     </div>
 
-                {% endif %}
-
-                {% if user.tipo == "empresa" %}
+                {% elif user.tipo == "empresa" %}
 
                     <div class="perfil-item">
                         <span class="perfil-label">Nome da Empresa</span>
-                        <div class="perfil-value">{{ user.nome|default:"—" }}</div>
+                        <div class="perfil-value">{{ user.username }}</div>
                     </div>
 
                     <div class="perfil-item">
@@ -129,21 +129,21 @@
 
                     <div class="perfil-item">
                         <span class="perfil-label">Descrição</span>
-                        <div class="perfil-value">{{ user.descricao|default:"—" }}</div>
+                        <div class="perfil-value">
+                            {{ user.descricao|default:"—" }}
+                        </div>
                     </div>
 
-                {% endif %}
-
-                {% if user.tipo == "coordenador" %}
+                {% elif user.tipo == "coordenador" %}
 
                     <div class="perfil-item">
                         <span class="perfil-label">Nome</span>
-                        <div class="perfil-value">{{ user.nome|default:"—" }}</div>
+                        <div class="perfil-value">{{ user.username }}</div>
                     </div>
 
                     <div class="perfil-item">
                         <span class="perfil-label">Setor</span>
-                        <div class="perfil-value">{{ user.descricao|default:"—" }}</div>
+                        <div class="perfil-value">{{ user.setor|default:"—" }}</div>
                     </div>
 
                 {% endif %}

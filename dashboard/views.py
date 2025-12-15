@@ -176,7 +176,7 @@ def aluno_mensagens(request):
     ).order_by('-data_envio')
 
     table = AlunoMensagensTable(msgs)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     form = ContatoForm(initial={"nome": request.user.username , "email": request.user.email})
 
@@ -224,7 +224,7 @@ def empresa_mensagens(request):
     ).order_by('-data_envio')
 
     table = EmpresaMensagensTable(msgs)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     form = ContatoForm(initial={"nome": request.user.username , "email": request.user.email})
 
@@ -457,7 +457,7 @@ def gerenciar_por_tipo(request, tipo):
         usuarios = usuarios.filter(status_aprovacao=status)
 
     table = UsuariosGeraisTable(usuarios, request=request)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     return render(request, "dashboard/gerenciar_por_tipo.html", {
         "table": table,
@@ -574,7 +574,7 @@ def aprovar_vagas(request):
     vagas = Vaga.objects.filter(status="pendente")
 
     table = AprovarVagasTable(vagas)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     return render(request, "dashboard/coordenacao/aprovar_vagas.html", {
         "table": table,
@@ -764,7 +764,7 @@ def listar_perfis(request):
     perfis = PerfilFormacao.objects.all()
 
     table = PerfisFormacaoTable(perfis)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     return render(request, "dashboard/coordenacao/perfis_lista.html", {
         "table": table,
@@ -935,52 +935,59 @@ def site_config(request):
         "form": form,
         "config": config
     })
-    
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 @login_required
 def meu_perfil(request):
     user = request.user
 
-    foto = user.foto.url if hasattr(user, "foto") and user.foto else None
-
+    foto = user.foto.url if user.foto else None
     icone = "bi bi-person-circle"
 
     return render(request, "dashboard/meu_perfil.html", {
-        "perfil": user,
+        "user": user,  
         "foto": foto,
         "icone": icone,
     })
-    
 @login_required
 def editar_perfil(request):
-    u = request.user
+    user = request.user
 
-    if u.tipo == "aluno":
+    if user.tipo == "aluno":
         form_class = AlunoEditForm
-    elif u.tipo == "empresa":
+    elif user.tipo == "empresa":
         form_class = EmpresaEditForm
     else:
         form_class = CoordenadorEditForm
 
-    form = form_class(request.POST or None, request.FILES or None, instance=u)
+    form = form_class(
+        request.POST or None,
+        request.FILES or None,
+        instance=user
+    )
 
     if request.method == "POST":
         if form.is_valid():
             form.save()
             messages.success(request, "Perfil atualizado com sucesso.")
-            return redirect("dashboard:perfil")
-
-        messages.error(request, "Corrija os erros.")
+            return redirect("dashboard:perfil")  
+        else:
+            messages.error(request, "Corrija os erros abaixo.")
 
     return render(request, "dashboard/editar_perfil.html", {
         "form": form
     })
+
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def mensagens_contato(request):
     mensagens = MensagemContato.objects.all()
 
     table = MensagensContatoTable(mensagens)
-    RequestConfig(request, paginate={"per_page": 12}).configure(table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     return render(request, "dashboard/coordenacao/mensagens_contato.html", {
         "table": table,
