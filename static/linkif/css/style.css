@@ -556,6 +556,7 @@ a:hover {
 }
 
 .btn-hero:hover {
+  text-decoration: none;
   transform: translateY(-2px);
   box-shadow: inset 0 6px 18px rgba(86, 255, 117, 0.427);
 }

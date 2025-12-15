@@ -3,7 +3,7 @@
     "model": "linkif.vaga",
     "pk": 1,
     "fields": {
-      "empresa": 1,
+      "empresa": 8,
       "titulo": "Desenvolvedor Front-End Júnior",
       "descricao": "Atuar no desenvolvimento de interfaces web modernas, responsivas e acessíveis. Participará da criação de layouts, componentes visuais e integração com APIs.",
       "requisitos": "HTML, CSS, JavaScript, Git. Diferencial: experiência com React.",

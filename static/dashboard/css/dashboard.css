@@ -1149,15 +1149,20 @@ body {
 
 /* base */
 .badge {
-    border-radius: 30px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 6px 12px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    border: none;
+    gap: 4px;
+
+    white-space: nowrap;      /* nunca quebra linha */
+    word-break: keep-all;     /* 🔑 NÃO quebra palavra/letra */
+    overflow-wrap: normal;
+
+    min-width: max-content;   /* 🔑 impede esmagar o texto */
+    flex-shrink: 0;           /* 🔑 não deixa encolher */
+
+    line-height: 1;
 }
+
 
 
 .badge.pend {
@@ -1444,6 +1449,7 @@ body {
     padding: 14px 16px;
     text-align: left !important;
     vertical-align: middle;
+    white-space: nowrap;
     border-bottom: 1px solid var(--gray-300);
     border-right: 1px solid var(--gray-300);
 }
@@ -1901,6 +1907,11 @@ body {
     }
 
     .linkif-table tbody td {
+        
+        white-space: nowrap;
+        vertical-align: middle;
+
+
         font-size: 0.78rem !important;
         padding: 10px !important;
     }
@@ -2080,30 +2091,42 @@ body {
 /* Telas menores que 576px (celulares padrão) */
 @media (max-width: 576px) {
     .badge {
-        max-width: 300px;
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: nowrap;        /* 🔑 nunca quebra */
+
+        gap: 4px;
         padding: 4px 8px;
-        font-size: .66rem;
-        gap: 3px;
-        border-radius: 12px;
-        white-space: normal; /* permite quebrar em 2 linhas se necessário */
-        text-align: center;
+
+        font-size: 0.6rem;
+        line-height: 1;
+
+        border-radius: 999px;
+
+        white-space: nowrap;      /* texto em uma linha */
+        min-width: 0;             /* 🔑 evita empurrar pra baixo */
+        max-width: 100%;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .badge i {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
+        flex-shrink: 0;           /* ícone nunca desce */
     }
 }
 
-/* Telas muito pequenas (menos de 420px) */
+/* celulares muito pequenos */
 @media (max-width: 420px) {
     .badge {
+        font-size: 0.55rem;
         padding: 3px 6px;
-        font-size: .58rem;
-        border-radius: 10px;
+        gap: 3px;
     }
 
     .badge i {
-        font-size: 0.7rem;
+        font-size: 0.6rem;
     }
 }
 
