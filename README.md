@@ -16,7 +16,6 @@ Além da divulgação de vagas de estágio e jovem aprendiz, a plataforma fortal
 - Cadastro e autenticação de diferentes perfis (alunos, ex-alunos, empresas e coordenação).  
 - Aprovação de empresas e validação de vagas pela Coordenação de Extensão.  
 - Publicação e gerenciamento de vagas de estágio e jovem aprendiz.  
-- Criação e atualização de currículos digitais pelos estudantes.  
 - Pesquisa e filtros de oportunidades por curso, área e localização.  
 - Interface responsiva e moderna, adaptada a dispositivos móveis.  
 
