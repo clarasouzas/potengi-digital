@@ -13,6 +13,7 @@ app_name = "usuarios"
 
 urlpatterns = [
     path("cadastro/", cadastro, name="cadastro"),
+
     path("cadastro/aluno/", cadastro_aluno, name="cadastro_aluno"),
     path("cadastro/empresa/", cadastro_empresa, name="cadastro_empresa"),
     path("cadastro/completar/", completar_cadastro, name="completar_cadastro"),

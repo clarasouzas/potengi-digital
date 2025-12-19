@@ -8,13 +8,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from allauth.socialaccount.models import SocialAccount
 
-from .models import Usuario
 from .forms import (
     AlunoCreationForm,
     EmpresaCreationForm,
     AlunoEditForm,
     EmpresaEditForm,
 )
+from .models import Usuario
 
 User = get_user_model()
 
@@ -36,7 +36,7 @@ def cadastro_aluno(request):
             usuario.tipo = "aluno"
             usuario.save()
 
-            messages.success(request, "Cadastro de aluno realizado com sucesso!")
+            messages.success(request, "Cadastro realizado com sucesso!")
             return redirect("usuarios:login")
 
         return render(request, "registration/cadastro.html", {
@@ -58,7 +58,7 @@ def cadastro_empresa(request):
             usuario.tipo = "empresa"
             usuario.save()
 
-            messages.success(request, "Cadastro de empresa realizado com sucesso!")
+            messages.success(request, "Cadastro realizado com sucesso!")
             return redirect("usuarios:login")
 
         return render(request, "registration/cadastro.html", {
