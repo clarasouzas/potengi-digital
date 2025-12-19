@@ -1,30 +1,45 @@
 {% extends "dashboard/base_dashboard.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block titulo %}Cadastrar Vaga — Empresa{% endblock %}
 
 {% block conteudo %}
 
-<!-- Título da Página -->
-<div class="page-title mb-4">
-    <i class="bi bi-plus-circle me-2"></i>
-    <span>Cadastrar nova vaga</span>
-</div>
+<div class="vaga-wrapper">
 
-<div class="soft-card p-4">
+    <!-- TÍTULO -->
+    <div class="title-dashboard mb-4">
+        <i class="bi bi-plus-circle me-2"></i>
+        <span>Cadastrar nova vaga</span>
+    </div>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+    <!-- CARD DO FORMULÁRIO (mesmo estilo do candidatar) -->
+    <div class="candidatura-card mb-4">
 
-        <!-- Formulário -->
-        {{ form|crispy }}
+        <h5 class=" section-title">
+            <i class="bi bi-briefcase"></i> Informações da vaga
+        </h5>
 
-        <!-- Botão -->
-        <button type="submit" class="soft-btn-primary w-100 mt-3">
-            <i class="bi bi-send-check me-1"></i>
-            Salvar e enviar para aprovação
-        </button>
-    </form>
+        <form method="post" enctype="multipart/form-data" class="form-styled">
+            {% csrf_token %}
+
+            {{ form|crispy }}
+
+            <button type="submit" class="btn-apply w-100 mt-3">
+                <i class="bi bi-send-check me-1"></i>
+                Salvar e enviar para aprovação
+            </button>
+        </form>
+
+    </div>
+
+    <!-- VOLTAR -->
+    <div class="text-center mt-3">
+        <a href="{% url 'dashboard:empresa_vagas' %}" class="btn-go-back">
+            <i class="bi bi-arrow-left"></i> Voltar para minhas vagas
+        </a>
+    </div>
 
 </div>
 

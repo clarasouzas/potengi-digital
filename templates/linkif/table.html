@@ -1,0 +1,86 @@
+{% load django_tables2 %}
+
+<div class="linkif-table-wrapper">
+
+    <table {% render_attrs table.attrs %}>
+        <thead>
+            <tr>
+                {% for column in table.columns %}
+                    <th {{ column.attrs.th.as_html }}>
+                        {% if column.orderable %}
+                            <a href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}">
+                                {{ column.header }}
+                            </a>
+                        {% else %}
+                            {{ column.header }}
+                        {% endif %}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for row in table.rows %}
+                <tr>
+                    {% for column, cell in row.items %}
+                        <td {{ column.attrs.td.as_html }}>
+                            {{ cell }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="{{ table.columns|length }}" class="text-center py-4">
+                        Nenhum registro encontrado.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- PAGINAÇÃO -->
+   {% if table.page %}
+<div class="pagination-modern">
+
+    <!-- Botão anterior -->
+    {% if table.page.has_previous %}
+        <a href="?page={{ table.page.previous_page_number }}{% if request.GET %}&{{ request.GET.urlencode|cut:'page=' }}{% endif %}"
+           class="page-btn">
+            <i class="bi bi-chevron-left"></i>
+        </a>
+    {% else %}
+        <span class="page-btn disabled"><i class="bi bi-chevron-left"></i></span>
+    {% endif %}
+
+    <!-- Números -->
+    <div class="page-numbers">
+
+        {% for num in table.paginator.page_range %}
+            {% if num == table.page.number %}
+                <span class="page-number active">{{ num }}</span>
+
+            {% elif num >= table.page.number|add:-2 and num <= table.page.number|add:2 %}
+                <a href="?page={{ num }}{% if request.GET %}&{{ request.GET.urlencode|cut:'page=' }}{% endif %}"
+                   class="page-number">
+                    {{ num }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
+    <!-- Próximo -->
+    {% if table.page.has_next %}
+        <a href="?page={{ table.page.next_page_number }}{% if request.GET %}&{{ request.GET.urlencode|cut:'page=' }}{% endif %}"
+           class="page-btn">
+            <i class="bi bi-chevron-right"></i>
+        </a>
+    {% else %}
+        <span class="page-btn disabled"><i class="bi bi-chevron-right"></i></span>
+    {% endif %}
+
+</div>
+{% endif %}
+
+
+</div>

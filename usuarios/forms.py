@@ -1,12 +1,16 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from crispy_forms.helper import FormHelper
+from crispy_forms.helper import FormHelper 
+from crispy_forms.layout import Layout, Row, Column
 from .models import Usuario
+from linkif.models import PerfilFormacao
+from validate_docbr import CNPJ
+import re
 
 
-# ======================================
-# FORM BASE — EMAIL + SENHA
-# ======================================
+# ============================================
+#   FORMULÁRIO BASE DE USUÁRIO
+# ============================================
 class UsuarioCreationForm(UserCreationForm):
     class Meta:
         model = Usuario
@@ -18,69 +22,188 @@ class UsuarioCreationForm(UserCreationForm):
         self.helper.form_tag = False
 
 
-# ======================================
-# CADASTRO — ALUNO
-# ======================================
+# ============================================
+#   CADASTRO — ALUNO
+# ============================================
 class AlunoCreationForm(UsuarioCreationForm):
-    nome = forms.CharField(max_length=120)
-    curso = forms.CharField(max_length=100)
+
+    curso = forms.ChoiceField(
+        choices=[], 
+        required=True,
+        widget=forms.Select(attrs={"class": "form-select"})
+    )
 
     class Meta(UsuarioCreationForm.Meta):
-        fields = ["nome", "curso"] + UsuarioCreationForm.Meta.fields
+        fields = ["curso", "username"] + UsuarioCreationForm.Meta.fields
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # remove helptext
+        for field in self.fields.values():
+            field.help_text = None
+
+        # CARREGA OS CURSOS SOMENTE AGORA (evita erro de migração)
+        self.fields["curso"].choices = [
+            (p.nome, p.nome) for p in PerfilFormacao.objects.all()
+        ]
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False  
+
+        self.helper.layout = Layout(
+            Row(
+                Column("email", css_class="col-md-12"),
+            ),
+            Row(
+                Column("username", css_class="col-md-6"),
+                Column("curso", css_class="col-md-6"),
+            ),
+            Row(
+                Column("password1", css_class="col-md-6"),
+                Column("password2", css_class="col-md-6"),
+            )
+        )
 
 
-# ======================================
-# CADASTRO — EMPRESA
-# ======================================
+# ============================================
+#   CADASTRO — EMPRESA
+# ============================================
 class EmpresaCreationForm(UsuarioCreationForm):
-    nome = forms.CharField(label="Nome da empresa", max_length=150)
     cnpj = forms.CharField(max_length=18)
     telefone = forms.CharField(max_length=20)
-    cidade = forms.CharField(max_length=100)
-    descricao = forms.CharField(required=False, widget=forms.Textarea)
 
     class Meta(UsuarioCreationForm.Meta):
-        fields = [
-            "nome", "cnpj", "telefone", "cidade", "descricao"
-        ] + UsuarioCreationForm.Meta.fields
+        fields = ["username", "cnpj", "telefone"] + UsuarioCreationForm.Meta.fields
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.help_text = None
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+        self.helper.layout = Layout(
+            Row(
+                Column("username", css_class="col-md-6"),                
+                Column("telefone", css_class="col-md-6"),
+            ),
+            Row(
+                Column("email", css_class="col-md-12"),
+            ),
+            Row(
+                Column("cnpj", css_class="col-md-12"),
+            ),
+            Row(
+                Column("password1", css_class="col-md-6"),
+                Column("password2", css_class="col-md-6"),
+            ),
+        )
+
+    # VALIDAR CNPJ
+    def clean_cnpj(self):
+        cnpj = self.cleaned_data.get("cnpj")
+        validador = CNPJ()
+
+        if not validador.validate(cnpj):
+            raise forms.ValidationError("CNPJ inválido. Verifique e tente novamente.")
+
+        return validador.mask(cnpj)
+
+    # VALIDAR TELEFONE
+    def clean_telefone(self):
+        telefone = self.cleaned_data.get("telefone")
+        padrao = r"^\(?\d{2}\)?\s?\d{5}-?\d{4}$"
+
+        if not re.match(padrao, telefone):
+            raise forms.ValidationError("Telefone inválido. Use (84) 99999-9999.")
+
+        return telefone
 
 
-# ======================================
-# EDIÇÃO — ALUNO
-# ======================================
+# ============================================
+#   EDIÇÃO — ALUNO
+# ============================================
 class AlunoEditForm(forms.ModelForm):
+    curso = forms.ChoiceField(choices=[])
+
     class Meta:
         model = Usuario
-        fields = ["nome", "curso", "foto", "curriculo", "portfolio"]
+        fields = ["username", "curso", "foto", "curriculo", "portfolio", "resumo"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["curso"].choices = [
+            (p.nome, p.nome) for p in PerfilFormacao.objects.all()
+        ]
 
-# ======================================
-# EDIÇÃO — EMPRESA
-# ======================================
+# ============================================
+#   EDIÇÃO — EMPRESA
+# ============================================
 class EmpresaEditForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ["nome", "telefone", "cidade", "descricao", "foto"]
+        fields = ["username", "telefone", "cnpj", "cidade", "descricao", "foto"]
+
+    # VALIDAR CNPJ
+    def clean_cnpj(self):
+        cnpj = self.cleaned_data.get("cnpj")
+        validador = CNPJ()
+
+        if not validador.validate(cnpj):
+            raise forms.ValidationError("CNPJ inválido. Verifique e tente novamente.")
+
+        return validador.mask(cnpj)
+
+    # VALIDAR TELEFONE
+    def clean_telefone(self):
+        telefone = self.cleaned_data.get("telefone")
+        padrao = r"^\(?\d{2}\)?\s?\d{5}-?\d{4}$"
+
+        if not re.match(padrao, telefone):
+            raise forms.ValidationError("Telefone inválido. Use (84) 99999-9999.")
+
+        return telefone
 
 
-# ======================================
-# EDIÇÃO — COORDENAÇÃO
-# ======================================
+# ============================================
+#   EDIÇÃO — COORDENAÇÃO
+# ============================================
 class CoordenadorEditForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ["nome", "setor"]
+        fields = ["username", "setor"]
 
 
-# ======================================
-# EDIÇÃO — ADMIN (EMAIL | TIPO | APROVAÇÃO)
-# ======================================
 class UsuarioEditFormSimples(forms.ModelForm):
+
+    STATUS_CHOICES = [
+        (True, "Aprovado"),
+        (False, "Reprovado"),
+    ]
+
+    is_approved = forms.ChoiceField(
+        label="Status de aprovação",
+        choices=STATUS_CHOICES,
+        widget=forms.RadioSelect(attrs={"class": "status-radio"})
+    )
+
     class Meta:
         model = Usuario
         fields = ["email", "tipo", "is_approved"]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for f in self.fields.values():
-            f.widget.attrs.update({"class": "form-control"})
+    def save(self, commit=True):
+        instancia = super().save(commit=False)
+
+        aprovado = self.cleaned_data["is_approved"] == "True"
+
+        # === ATUALIZA AMBOS OS CAMPOS ===
+        instancia.is_approved = aprovado
+        instancia.status_aprovacao = "aprovado" if aprovado else "reprovado"
+
+        if commit:
+            instancia.save()
+
+        return instancia

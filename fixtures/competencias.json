@@ -1,0 +1,66 @@
+[
+  {
+    "model": "linkif.competencia",
+    "pk": 1,
+    "fields": { "perfil": 1, "texto": "Desenvolvimento de aplicações web utilizando HTML, CSS, JavaScript e frameworks modernos." }
+  },
+  {
+    "model": "linkif.competencia",
+    "pk": 2,
+    "fields": { "perfil": 1, "texto": "Modelagem e implementação de banco de dados relacionais." }
+  },
+  {
+    "model": "linkif.competencia",
+    "pk": 3,
+    "fields": { "perfil": 1, "texto": "Criação de interfaces responsivas e acessíveis." }
+  },
+
+  {
+    "model": "linkif.competencia",
+    "pk": 4,
+    "fields": { "perfil": 2, "texto": "Interpretação e elaboração de projetos arquitetônicos e estruturais." }
+  },
+  {
+    "model": "linkif.competencia",
+    "pk": 5,
+    "fields": { "perfil": 2, "texto": "Acompanhamento e fiscalização de obras." }
+  },
+  {
+    "model": "linkif.competencia",
+    "pk": 6,
+    "fields": { "perfil": 2, "texto": "Análise de materiais e técnicas construtivas." }
+  },
+
+  {
+    "model": "linkif.competencia",
+    "pk": 7,
+    "fields": { "perfil": 3, "texto": "Elaboração de relatórios e diagnósticos ambientais." }
+  },
+  {
+    "model": "linkif.competencia",
+    "pk": 8,
+    "fields": { "perfil": 3, "texto": "Gestão de resíduos sólidos e recursos hídricos." }
+  },
+  {
+    "model": "linkif.competencia",
+    "pk": 9,
+    "fields": { "perfil": 3, "texto": "Monitoramento da qualidade do ar, solo e água." }
+  },
+
+  {
+    "model": "linkif.competencia",
+    "pk": 10,
+    "fields": { "perfil": 4, "texto": "Domínio dos conteúdos fundamentais de Matemática." }
+  },
+  {
+    "model": "linkif.competencia",
+    "pk": 11,
+    "fields": { "perfil": 4, "texto": "Planejamento e execução de práticas pedagógicas." }
+  },
+  {
+    "model": "linkif.competencia",
+    "pk": 12,
+    "fields": { "perfil": 4, "texto": "Desenvolvimento de materiais e sequências didáticas." }
+  }
+
+]

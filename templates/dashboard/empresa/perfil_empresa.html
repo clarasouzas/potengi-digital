@@ -1,0 +1,105 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block titulo %}Perfil da Empresa — {{ empresa.nome|default:"Empresa" }}{% endblock %}
+
+{% block conteudo %}
+
+<h2 class="title-dashboard mb-4">
+    <i class="bi bi-building me-2"></i>
+    Perfil da Empresa
+</h2>
+
+<div class="row g-4">
+
+    <!-- ================================
+         CARD 1 — FOTO / LOGO + AÇÕES
+    ================================= -->
+    <div class="col-lg-4">
+
+        <div class="soft-card p-4 text-center">
+
+            <!-- LOGO DA EMPRESA (caso tenha futuramente) -->
+            <div class="perfil-foto-wrapper mx-auto">
+                {% if empresa.foto %}
+                    <img src="{{ empresa.foto.url }}" class="perfil-foto">
+                {% else %}
+                    <div class="perfil-foto-placeholder">
+                        <i class="bi bi-building fs-1"></i>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Nome -->
+            <h5 class="mt-3 fw-semibold perfil-nome">
+                {{ empresa.nome|default:"Empresa sem nome" }}
+            </h5>
+
+            <p class="perfil-email">{{ empresa.email }}</p>
+
+
+            <!-- Link do site/portfólio (opcional) -->
+            {% if empresa.portfolio %}
+            <div class="d-grid gap-2 mt-3">
+                <a href="{{ empresa.portfolio }}" target="_blank" class="btn perfil-btn-outline">
+                    <i class="bi bi-box-arrow-up-right me-1"></i> Visitar Site / Portfólio
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- ================================
+         COLUNA DIREITA — DEMAIS INFO
+    ================================= -->
+    <div class="col-lg-8">
+
+        <!-- INFORMAÇÕES PRINCIPAIS -->
+        <div class="soft-card p-4 mb-3">
+
+            <h5 class="section-title mb-3">Informações da Empresa</h5>
+
+            <div class="perfil-item">
+                <span class="perfil-label">CNPJ</span>
+                <div class="perfil-value">{{ empresa.cnpj|default:"—" }}</div>
+            </div>
+
+            <div class="perfil-item">
+                <span class="perfil-label">Cidade</span>
+                <div class="perfil-value">{{ empresa.cidade|default:"—" }}</div>
+            </div>
+
+    
+        </div>
+
+        <!-- DESCRIÇÃO / SOBRE -->
+        <div class="soft-card p-4 mb-3">
+            <h5 class="section-title mb-3">Sobre a Empresa</h5>
+
+            {% if empresa.descricao %}
+                <p class="perfil-value">{{ empresa.descricao|linebreaksbr }}</p>
+            {% else %}
+                <p class="text-muted">Esta empresa ainda não adicionou uma descrição.</p>
+            {% endif %}
+        </div>
+
+        <!-- CONTATO -->
+        <div class="soft-card p-4">
+            <h5 class="section-title mb-3">Contato</h5>
+
+            <div class="perfil-item">
+                <span class="perfil-label">E-mail</span>
+                <div class="perfil-value">{{ empresa.email }}</div>
+            </div>
+
+            <div class="perfil-item">
+                <span class="perfil-label">Telefone</span>
+                <div class="perfil-value">{{ empresa.telefone|default:"—" }}</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,304 @@
+[
+{
+    "model": "linkif.vaga",
+    "pk": 1,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Desenvolvedor Front-End Júnior",
+      "descricao": "Atuar no desenvolvimento de interfaces web modernas, responsivas e acessíveis. Participará da criação de layouts, componentes visuais e integração com APIs.",
+      "requisitos": "HTML, CSS, JavaScript, Git. Diferencial: experiência com React.",
+      "curso": 1,
+      "tipo": "estagio",
+      "modalidade": "hibrido",
+      "remuneracao": "800.00",
+      "cidade": "São Paulo do Potengi",
+      "bairro": "Centro",
+      "status": "aprovada",
+      "data_publicacao": "2025-01-10T12:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 2,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Auxiliar de Obras",
+      "descricao": "Auxiliar no acompanhamento de pequenas obras, controle de materiais e interpretação de projetos básicos.",
+      "requisitos": "Conhecimento em desenho técnico e materiais de construção.",
+      "curso": 2,
+      "tipo": "emprego",
+      "modalidade": "presencial",
+      "remuneracao": "1500.00",
+      "cidade": "São Paulo do Potengi",
+      "bairro": "Novo Juremal",
+      "status": "aprovada",
+      "data_publicacao": "2025-01-15T12:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 3,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Estagiário em Gestão Ambiental",
+      "descricao": "Atuar em análise de parâmetros ambientais, relatórios técnicos e acompanhamento de processos de licenciamento.",
+      "requisitos": "Conhecimentos em legislação ambiental e coleta de dados.",
+      "curso": 3,
+      "tipo": "estagio",
+      "modalidade": "presencial",
+      "remuneracao": "700.00",
+      "cidade": "Barcelona/RN",
+      "bairro": "",
+      "status": "aprovada",
+      "data_publicacao": "2025-01-20T12:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 4,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Estágio em Educação Matemática",
+      "descricao": "Auxiliar professores em atividades pedagógicas, elaboração de materiais e acompanhamento de práticas de ensino.",
+      "requisitos": "Boa comunicação, domínio básico de conteúdos matemáticos, interesse pela docência.",
+      "curso": 4,
+      "tipo": "estagio",
+      "modalidade": "presencial",
+      "remuneracao": "600.00",
+      "cidade": "São Paulo do Potengi",
+      "bairro": "Centro",
+      "status": "aprovada",
+      "data_publicacao": "2025-01-25T12:00:00Z"
+    }
+  },
+   {
+    "model": "linkif.vaga",
+    "pk": 5,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Desenvolvedor Back-End Júnior",
+      "descricao": "Auxiliar no desenvolvimento de APIs, integração de sistemas e manutenção de servidores. Participará da criação de endpoints, refatoração de código e implementação de boas práticas de segurança.",
+      "requisitos": "Python, Django ou Flask; noções de SQL; Git.",
+      "curso": 1,
+      "tipo": "estagio",
+      "modalidade": "hibrido",
+      "remuneracao": "900.00",
+      "cidade": "São Paulo do Potengi",
+      "bairro": "Centro",
+      "status": "aprovada",
+      "data_publicacao": "2025-02-02T08:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 6,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Designer UI/UX Júnior",
+      "descricao": "Trabalhar na criação de interfaces modernas, definição de identidade visual e construção de protótipos navegáveis. Participará de testes de usabilidade e aperfeiçoamento da experiência do usuário.",
+      "requisitos": "Figma, noções de design responsivo, boa organização visual.",
+      "curso": 1,
+      "tipo": "estagio",
+      "modalidade": "remoto",
+      "remuneracao": "850.00",
+      "cidade": "Natal",
+      "bairro": "Petrópolis",
+      "status": "aprovada",
+      "data_publicacao": "2025-02-05T09:30:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 7,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Técnico de Apoio em TI",
+      "descricao": "Atuar no suporte técnico de computadores, redes locais e sistemas corporativos. Auxiliar usuários, fazer manutenção preventiva e configurar equipamentos.",
+      "requisitos": "Conhecimento básico de redes, montagem de PCs, Windows e Linux.",
+      "curso": 1,
+      "tipo": "emprego",
+      "modalidade": "presencial",
+      "remuneracao": "1600.00",
+      "cidade": "São Paulo do Potengi",
+      "bairro": "Santa Clara",
+      "status": "aprovada",
+      "data_publicacao": "2025-02-10T10:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 8,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Desenhista Técnico em Edificações",
+      "descricao": "Elaboração de plantas, cortes, fachadas e detalhamentos técnicos conforme normas da ABNT. Suporte à equipe de engenharia e arquitetura.",
+      "requisitos": "AutoCAD, interpretação de projetos, noções de modelagem.",
+      "curso": 2,
+      "tipo": "estagio",
+      "modalidade": "hibrido",
+      "remuneracao": "700.00",
+      "cidade": "Santa Maria",
+      "bairro": "",
+      "status": "aprovada",
+      "data_publicacao": "2025-02-12T11:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 9,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Auxiliar de Topografia",
+      "descricao": "Atuar na coleta de dados topográficos, nivelamento, medição de terrenos e apoio em levantamentos planialtimétricos.",
+      "requisitos": "Conhecimentos em equipamentos topográficos e leitura de mapas.",
+      "curso": 2,
+      "tipo": "estagio",
+      "modalidade": "presencial",
+      "remuneracao": "750.00",
+      "cidade": "Riachuelo",
+      "bairro": "",
+      "status": "aprovada",
+      "data_publicacao": "2025-02-14T08:30:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 10,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Assistente de Planejamento de Obras",
+      "descricao": "Auxiliar na elaboração de cronogramas, controle de materiais e acompanhamento de etapas de execução.",
+      "requisitos": "Conhecimento básico de Excel, leitura de projetos e organização.",
+      "curso": 2,
+      "tipo": "emprego",
+      "modalidade": "presencial",
+      "remuneracao": "1800.00",
+      "cidade": "São Tomé",
+      "bairro": "",
+      "status": "aprovada",
+      "data_publicacao": "2025-02-18T13:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 11,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Auxiliar de Licenciamento Ambiental",
+      "descricao": "Apoiar a equipe na elaboração de relatórios, estudos ambientais e documentação para órgãos reguladores.",
+      "requisitos": "Noções de legislação ambiental e escrita técnica.",
+      "curso": 3,
+      "tipo": "estagio",
+      "modalidade": "hibrido",
+      "remuneracao": "650.00",
+      "cidade": "São Paulo do Potengi",
+      "bairro": "Centro",
+      "status": "aprovada",
+      "data_publicacao": "2025-02-20T08:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 12,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Monitor de Projetos Sustentáveis",
+      "descricao": "Atuação em campanhas educativas, coleta de resíduos, análise de dados ambientais e atividades de conscientização.",
+      "requisitos": "Boa comunicação e conhecimentos sobre práticas sustentáveis.",
+      "curso": 3,
+      "tipo": "bolsa",
+      "modalidade": "presencial",
+      "remuneracao": "500.00",
+      "cidade": "Lagoa de Velhos",
+      "bairro": "",
+      "status": "aprovada",
+      "data_publicacao": "2025-02-23T09:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 13,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Técnico em Monitoramento Ambiental",
+      "descricao": "Realizar coletas de campo, análises básicas e registro de indicadores ambientais.",
+      "requisitos": "Conhecimentos sobre qualidade da água, solo e ar.",
+      "curso": 3,
+      "tipo": "emprego",
+      "modalidade": "presencial",
+      "remuneracao": "1700.00",
+      "cidade": "São Paulo do Potengi",
+      "bairro": "Juremal",
+      "status": "aprovada",
+      "data_publicacao": "2025-02-26T10:30:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 14,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Monitor de Matemática — Ensino Fundamental",
+      "descricao": "Acompanhar alunos, reforçar conteúdos, produzir materiais didáticos e apoiar professores em sala de aula.",
+      "requisitos": "Boa comunicação, paciência e domínio dos conteúdos básicos.",
+      "curso": 4,
+      "tipo": "estagio",
+      "modalidade": "presencial",
+      "remuneracao": "600.00",
+      "cidade": "São Paulo do Potengi",
+      "bairro": "Centro",
+      "status": "aprovada",
+      "data_publicacao": "2025-03-01T07:45:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 15,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Auxiliar de Produção de Materiais Didáticos",
+      "descricao": "Criar exercícios, revisar textos, montar atividades e contribuir com projetos educacionais.",
+      "requisitos": "Escrita clara, domínio matemático e criatividade.",
+      "curso": 4,
+      "tipo": "bolsa",
+      "modalidade": "hibrido",
+      "remuneracao": "550.00",
+      "cidade": "Santa Maria",
+      "bairro": "",
+      "status": "aprovada",
+      "data_publicacao": "2025-03-05T14:00:00Z"
+    }
+  },
+
+  {
+    "model": "linkif.vaga",
+    "pk": 16,
+    "fields": {
+      "empresa": 1,
+      "titulo": "Assistente de Projetos Educacionais",
+      "descricao": "Atuar no desenvolvimento de oficinas, projetos de extensão e acompanhamento de iniciativas voltadas ao ensino de matemática para comunidades.",
+      "requisitos": "Boa comunicação, domínio matemático e interesse em práticas pedagógicas.",
+      "curso": 4,
+      "tipo": "estagio",
+      "modalidade": "remoto",
+      "remuneracao": "500.00",
+      "cidade": "Online",
+      "bairro": "",
+      "status": "aprovada",
+      "data_publicacao": "2025-03-10T10:00:00Z"
+    }
+  }
+]

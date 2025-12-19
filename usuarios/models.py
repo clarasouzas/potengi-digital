@@ -51,6 +51,7 @@ class Usuario(AbstractUser):
     curriculo = models.FileField(upload_to="curriculos/", blank=True, null=True)
     portfolio = models.URLField(blank=True, null=True)
     resumo = models.TextField(blank=True, null=True)
+    resumo = models.TextField(blank=True, null=True)
 
     # empresa
     cnpj = models.CharField(max_length=18, blank=True, null=True)
@@ -163,4 +164,5 @@ class Usuario(AbstractUser):
         self.aplicar_permissoes_por_tipo()
 
     def __str__(self):
+        return f"{self.username} — {self.email} ({self.tipo})"
         return f"{self.username} — {self.email} ({self.tipo})"
