@@ -1,160 +1,172 @@
 {% extends "dashboard/base_dashboard.html" %}
+{% load static %}
 
-{% block titulo %} Dashboard - {{ request.user.nome|default:request.user.email }} {% endblock %}
+{% block titulo %}
+Painel do Aluno — {{ request.user.nome|default:request.user.email }}
+{% endblock %}
 
 {% block conteudo %}
 
-<div class="container">
+<!-- HERO DO PAINEL -->
+<div class="hero-dashboard rail-bleed mb-4">
+  <div class="hero-text">
+    <small class="hero-hello">Olá, {{ user.nome|default:user.email }}</small>
+    <h3 class="hero-title">Suas candidaturas e oportunidades</h3>
+    <p class="hero-subtitle">Acompanhe o andamento das vagas, prazos e novas recomendações para você.</p>
+  </div>
 
-    <!-- Cabeçalho -->
-    <h2 class="mb-4 fw-bold">
-        Visão Geral
-    </h2>
+  <div class="hero-illustration">
+    <img src="{% static 'assets/img/hero-st-dash.svg' %}" alt="Aluno usando computador — LinkIF">
+  </div>
+</div>
 
-    <!-- Aviso sobre aprovação -->
-    {% if not request.user.is_approved %}
-    <div class="alert alert-warning d-flex align-items-center" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        Seu cadastro ainda não foi aprovado pela coordenação. 
-        Você poderá se candidatar às vagas assim que for aprovado.
+<div class="dashboard-wrapper">
+
+    <h2 class="title-dashboard mb-4">Visão Geral</h2>
+
+<!-- AVISO DE STATUS DE APROVAÇÃO -->
+{% if request.user.status_aprovacao == 'pendente' and not request.user.is_superuser %}
+<div class="approval-box shadow-sm">
+    <i class="bi bi-hourglass-split"></i>
+    <div>
+        Seu perfil está <b>em análise pela coordenação</b>.<br>
+        Assim que aprovado, todos os recursos serão desbloqueados.
     </div>
-    {% endif %}
+</div>
 
-    <!-- Resumo rápido -->
+{% elif request.user.status_aprovacao == 'reprovado' and not request.user.is_superuser %}
+<div class="reproval-box shadow-sm">
+    <i class="bi bi-x-circle"></i>
+    <div>
+        Seu cadastro foi <b>reprovado pela coordenação</b>.<br>
+        O acesso às funcionalidades permanece bloqueado.<br>
+        Caso necessário, entre em contato com o suporte.
+    </div>
+</div>
+{% endif %}
+
+{% if request.user.status_aprovacao == 'aprovado' %}
+    <!-- tudo que é liberado só para aprovados -->
+{% endif %}
+
+
+
+    {% if request.user.is_approved %}
+
+    <!-- CARDS DE MÉTRICAS -->
     <div class="row g-4 mb-4">
 
         <div class="col-md-4">
-            <div class="card shadow-sm p-4 h-100">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box bg-primary text-white me-3">
-                        <i class="bi bi-briefcase fs-4"></i>
-                    </div>
-                    <div>
-                        <h5 class="fw-bold mb-0">{{ vagas|length }}</h5>
-                        <small class="text-muted">Vagas Disponíveis</small>
-                    </div>
+            <div class="metric-card">
+                <div class="metric-icon"><i class="bi bi-briefcase-fill"></i></div>
+                <div>
+                    <h3>{{ vagas|length }}</h3>
+                    <p>Vagas Disponíveis</p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card shadow-sm p-4 h-100">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box bg-success text-white me-3">
-                        <i class="bi bi-file-earmark-check fs-4"></i>
-                    </div>
-                    <div>
-                        <h5 class="fw-bold mb-0">{{ candidaturas_ativas|length }}</h5>
-                        <small class="text-muted">Candidaturas Ativas</small>
-                    </div>
+            <div class="metric-card">
+                <div class="metric-icon"><i class="bi bi-check2-circle"></i></div>
+                <div>
+                    <h3>{{ candidaturas_ativas|length }}</h3>
+                    <p>Candidaturas Ativas</p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card shadow-sm p-4 h-100">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box bg-info text-white me-3">
-                        <i class="bi bi-bookmark-heart fs-4"></i>
-                    </div>
-                    <div>
-                        <h5 class="fw-bold mb-0">{{ recomendadas|length }}</h5>
-                        <small class="text-muted">Vagas Recomendadas</small>
-                    </div>
+            <div class="metric-card">
+                <div class="metric-icon"><i class="bi bi-stars"></i></div>
+                <div>
+                    <h3>{{ recomendadas|length }}</h3>
+                    <p>Recomendadas Para Você</p>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Últimas candidaturas -->
-    <div class="card shadow-sm p-4 mb-4">
-        <h5 class="fw-bold text-primary mb-3">
-            <i class="bi bi-send-check me-1"></i> Suas últimas candidaturas
+    <!-- ÚLTIMAS CANDIDATURAS -->
+    <div class="section-card mb-4">
+        <h5 class="section-title">
+            <i class="bi bi-send-check me-1"></i>
+            Suas últimas candidaturas
         </h5>
 
         {% if candidaturas_ultimas %}
-            <ul class="list-group list-group-flush">
-                {% for c in candidaturas_ultimas %}
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>
-                        <strong>{{ c.vaga.titulo }}</strong>
-                        <br>
-                        <small class="text-muted">
-                            {{ c.data_candidatura|date:"d/m/Y H:i" }} — {{ c.get_status_display }}
-                        </small>
-                    </span>
-                    <a href="{% url 'dashboard:aluno_candidaturas' %}" class="btn btn-outline-primary btn-sm">
-                        Ver
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="text-muted">Você ainda não se candidatou a nenhuma vaga.</p>
-        {% endif %}
-    </div>
+        <ul class="list-group list-group-flush">
 
-    <!-- Vagas recomendadas (com base no curso) -->
-    <div class="card shadow-sm p-4 mb-4">
-        <h5 class="fw-bold text-primary mb-3">
-            <i class="bi bi-stars me-1"></i> Vagas recomendadas para você
-        </h5>
-
-        {% if recomendadas %}
-        <div class="row g-3">
-            {% for v in recomendadas %}
-            <div class="col-md-6">
-                <div class="card border p-3 h-100">
-                    <h6 class="fw-bold">{{ v.titulo }}</h6>
-                    <p class="text-muted small">{{ v.empresa.nome|default:v.empresa.email }}</p>
-                    <p class="small mb-1"><i class="bi bi-geo-alt"></i> {{ v.cidade }}</p>
-                    <p class="small mb-2"><i class="bi bi-briefcase"></i> {{ v.get_tipo_display }}</p>
-
-                    <a href="{% url 'linkif:vaga_detalhe' v.id %}" class="btn btn-sm btn-primary w-100 mt-2">
-                        Ver detalhes
-                    </a>
+            {% for c in candidaturas_ultimas %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                
+                <div>
+                    <strong>{{ c.vaga.titulo }}</strong><br>
+                    <small class="text-muted">
+                        {{ c.data_candidatura|date:"d/m/Y H:i" }} — {{ c.get_status_display }}
+                    </small>
                 </div>
-            </div>
+            </li>
             {% endfor %}
-        </div>
+
+        </ul>
         {% else %}
-            <p class="text-muted">Nenhuma vaga recomendada no momento.</p>
-        {% endif %}
+
+<div class="empty-state-wrapper d-flex align-items-center gap-3 py-4">
+
+    <!-- ILUSTRAÇÃO -->
+    <div class="empty-state-image">
+        <img src="{% static 'assets/img/empty.svg' %}" 
+             alt="Nenhuma candidatura encontrada" 
+             class="empty-img">
     </div>
 
-    <!-- Atalhos rápidos -->
-    <div class="card shadow-sm p-4">
-        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-lightning-charge me-1"></i> Atalhos rápidos</h5>
-
-        <div class="d-flex flex-wrap gap-3">
-
-            <a href="{% url 'dashboard:aluno_candidaturas' %}" class="btn btn-outline-primary">
-                <i class="bi bi-file-earmark-check me-1"></i> Minhas candidaturas
-            </a>
-
-            <a href="{% url 'linkif:listar_vagas' %}" class="btn btn-outline-success">
-                <i class="bi bi-briefcase me-1"></i> Ver todas as vagas
-            </a>
-
-            <a href="{% url 'dashboard:perfil' %}" class="btn btn-outline-secondary">
-                <i class="bi bi-person-lines-fill me-1"></i> Editar perfil
-            </a>
-
-        </div>
+    <!-- TEXTO -->
+    <div class="empty-state-text">
+        <h5 class="fw-bold mb-1">Você ainda não se candidatou a nenhuma vaga!</h5>
+        <p class="text-muted m-0">
+            Explore as oportunidades e envie sua primeira candidatura.
+        </p>
     </div>
 
 </div>
 
-<style>
-.icon-box {
-    width: 48px;
-    height: 48px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:10px;
-}
-</style>
+{% endif %}
+
+    </div>
+
+    <!--  VAGAS RECOMENDADAS -->
+    <div class="section-card mb-4">
+        <h5 class="section-title">
+            <i class="bi bi-magic me-1"></i> Vagas recomendadas
+        </h5>
+
+        {% if recomendadas %}
+        <div class="row g-3">
+            
+            {% for v in recomendadas %}
+            <div class="col-md-4">
+                <div class="vaga-card">
+                    <h6 class="fw-bold">{{ v.titulo }}</h6>
+                    <p class="text-muted small">{{ v.empresa.username|default:v.empresa.email }}</p>
+
+                    <p class="small"><i class="bi bi-geo-alt"></i> {{ v.cidade }}</p>
+                    <p class="small mb-2"><i class="bi bi-briefcase"></i> {{ v.get_tipo_display }}</p>
+
+                    
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        {% else %}
+            <p class="text-muted">Nenhuma recomendação no momento.</p>
+        {% endif %}
+    </div>
+
+    {% endif %}
+
+</div>
 
 {% endblock %}

@@ -1,79 +1,131 @@
 {% extends "dashboard/base_dashboard.html" %}
+{% load django_tables2 %}
+{% load static %}
+
+{% block titulo %}Aprovar Vagas{% endblock %}
+
 {% block conteudo %}
 
-<h2 class="mb-4">Aprovar Vagas</h2>
+<h2 class="title-dashboard mb-4">
+    <i class="bi bi-clipboard-check me-2"></i>
+    Aprovar Vagas
+</h2>
 
-{% if vagas %}
-<div class="row g-3">
+{% if table.page.object_list %}
+<div class="table-container">
+    {% render_table table %}
+</div>
 
-    {% for v in vagas %}
-    <div class="col-12 col-md-6 col-lg-4">
+<!-- ========================
+     MODAIS — APROVAR & REPROVAR
+========================= -->
+{% for row in table.page.object_list %}
+{% with vaga=row.record %}
 
-        <div class="card-list">
+<div id="aprovar-{{ vaga.id }}" class="modal-vaga">
 
-            <!-- TÍTULO -->
-            <div class="card-title">
-                {{ v.titulo }}
-            </div>
+    <div class="modal-content-vaga">
 
-            <!-- EMPRESA -->
-            <div class="card-meta">
-                <strong>Empresa:</strong> {{ v.empresa.nome|default:v.empresa.email }}
-            </div>
+        <!-- Botão Fechar -->
+        <a href="#" class="modal-close">
+            <i class="bi bi-x-lg"></i>
+        </a>
 
-            <!-- TIPO / MODALIDADE -->
-            <div class="card-meta">
-                <strong>Tipo:</strong> {{ v.get_tipo_display }}
-            </div>
+        <!-- Título -->
+        <h3 class="fw-bold mb-3" style="color: var(--accent-blue)">
+             <i class="bi bi-check-circle me-2"></i>
+            Aprovar Vaga
+        </h3>
 
-            <div class="card-meta">
-                <strong>Modalidade:</strong> {{ v.get_modalidade_display }}
-            </div>
+        <!-- Texto -->
+        <p class="text-muted">
+            Deseja realmente aprovar a vaga
+            <strong>{{ vaga.titulo }}</strong> da empresa
+            <strong>{{ vaga.empresa.nome|default:vaga.empresa.email }}</strong>?
+        </p>
 
-            <!-- DATA DE INÍCIO -->
-            {% if v.data_inicio %}
-            <div class="card-meta">
-                <strong>Início:</strong> {{ v.data_inicio|date:"d/m/Y" }}
-            </div>
-            {% endif %}
+        <!-- Botões -->
+        <div class="d-flex gap-3 mt-4">
 
-            <!-- DESCRIÇÃO REDUZIDA -->
-            <div class="mt-2 text-muted small" style="min-height:60px;">
-                {{ v.descricao|truncatewords:18 }}
-            </div>
+            <a href="{% url 'dashboard:aprovar_vaga_action' vaga.id %}"
+               class="btn-table flex-grow-1 text-center">
+                Aprovar
+            </a>
 
-            <!-- STATUS -->
-            <div class="mt-2">
-                <span class="badge bg-secondary">Pendente</span>
-            </div>
-
-            <!-- AÇÕES -->
-            <div class="card-actions mt-3">
-
-                <!-- APROVAR -->
-                <a href="{% url 'dashboard:aprovar_vaga_action' v.id %}"
-                   class="btn-outline-action"
-                   onclick="return confirm('Aprovar esta vaga?');">
-                    <i class="bi bi-check-circle"></i> Aprovar
-                </a>
-
-                <!-- REPROVAR -->
-                <a href="{% url 'dashboard:reprovar_vaga_action' v.id %}"
-                   class="btn-delete"
-                   onclick="return confirm('Reprovar esta vaga?');">
-                    <i class="bi bi-x-circle"></i> Reprovar
-                </a>
-
-            </div>
+            <a href="#" 
+               class="btn-table flex-grow-1 text-center"
+               style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
+                Cancelar
+            </a>
 
         </div>
+
     </div>
-    {% endfor %}
+</div>
+
+<!-- MODAL REPROVAR -->
+<div id="reprovar-{{ vaga.id }}" class="modal-vaga">
+
+    <div class="modal-content-vaga">
+
+        <!-- Botão Fechar -->
+        <a href="#" class="modal-close">
+            <i class="bi bi-x-lg"></i>
+        </a>
+
+        <!-- Título -->
+        <h3 class="fw-bold mb-3 " style="color: var(--accent-red)">
+            <i class="bi bi-x-octagon me-2"></i>
+            Reprovar vaga
+        </h3>
+
+        <!-- Texto -->
+        <p class="text-muted">
+            Tem certeza que deseja reprovar
+            <strong>{{ vaga.titulo }}</strong>?
+        </p>
+
+        <!-- Botões -->
+        <div class="d-flex gap-3 mt-4">
+
+            <a href="{% url 'dashboard:reprovar_vaga_action' vaga.id %}"
+               class="btn-delete btn-table flex-grow-1 text-center">
+                Reprovar
+            </a>
+
+            <a href="#"
+               class="btn-table flex-grow-1 text-center"
+               style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
+                Cancelar
+            </a>
+
+        </div>
+
+    </div>
 
 </div>
 
+
+{% endwith %}
+{% endfor %}
+
 {% else %}
-<p class="text-muted">Nenhuma vaga aguardando aprovação.</p>
+
+<div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
+
+    <img src="{% static 'assets/img/empty.svg' %}"
+         class="empty-img"
+         style="width: 420px; max-width: 100%;">
+
+    <div class="empty-state-text" style="max-width: 380px;">
+        <h5 class="fw-bold mb-2">Nenhuma vaga aguardando aprovação</h5>
+        <p class="text-muted m-0">
+            Assim que novas vagas forem criadas, aparecerão aqui.
+        </p>
+    </div>
+
+</div>
+
 {% endif %}
 
 {% endblock %}

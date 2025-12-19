@@ -1,9 +1,59 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
-from .models import Vaga, Candidatura, MensagemContato, PerfilFormacao
+from .models import Vaga, Candidatura, MensagemContato, PerfilFormacao,Competencia, AreaAtuacaoPerfil,SiteConfig
+class PerfilFormacaoForm(forms.ModelForm):
+    class Meta:
+        model = PerfilFormacao
+        fields = [
+            "nome",
+            "descricao",
+            "descricao_curta",
+            "imagem",
+            "logo",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for f in self.fields.values():
+            f.widget.attrs.update({"class": "form-control mb-3"})
 
 
+class CompetenciaForm(forms.ModelForm):
+    class Meta:
+        model = Competencia
+        fields = ["texto"]
+        widgets = {
+            "texto": forms.TextInput(attrs={
+                "class": "form-control mb-2",
+                "placeholder": "Digite uma competência..."
+            })
+        }
+
+
+
+class AreaAtuacaoForm(forms.ModelForm):
+    class Meta:
+        model = AreaAtuacaoPerfil
+        fields = ["titulo", "descricao"]
+        widgets = {
+            "titulo": forms.TextInput(attrs={"class": "form-control mb-2"}),
+            "descricao": forms.Textarea(attrs={"class": "form-control mb-2", "rows": 3}),
+        }
+class SiteConfigForm(forms.ModelForm):
+    class Meta:
+        model = SiteConfig
+        exclude = ["logo", "nome_site", "imagem_banner"]
+        widgets = {
+            "titulo_banner": forms.TextInput(attrs={"class": "form-control mb-3"}),
+            "subtitulo_banner": forms.TextInput(attrs={"class": "form-control mb-3"}),
+            "descricao_curta": forms.Textarea(attrs={"class": "form-control mb-3", "rows": 3}),
+            "email_contato": forms.EmailInput(attrs={"class": "form-control mb-3"}),
+            "telefone": forms.TextInput(attrs={"class": "form-control mb-3"}),
+            "endereco": forms.TextInput(attrs={"class": "form-control mb-3"}),
+            "instagram": forms.URLInput(attrs={"class": "form-control mb-3"}),
+            "mapa_embed": forms.Textarea(attrs={"class": "form-control mb-3", "rows": 3}),
+        }
 # =====================================================
 # FORMULÁRIO DE VAGA (para empresas)
 # =====================================================
@@ -128,7 +178,8 @@ class CandidaturaForm(forms.ModelForm):
         fields = ["mensagem"]
         widgets = {
             "mensagem": forms.Textarea(
-                attrs={"rows": 4, "placeholder": "Fale brevemente sobre seu interesse..."}
+                attrs={"rows": 4, "placeholder": "Fale brevemente sobre seu interesse...",
+                        "class": "form-control w-100", }
             ),
         }
 
@@ -138,16 +189,9 @@ class CandidaturaForm(forms.ModelForm):
         self.helper.form_method = "post"
         self.helper.layout = Layout(
             "mensagem",
-            Submit("submit", "Enviar Candidatura", css_class="btn btn-success mt-3"),
+            Submit("submit", "Enviar Candidatura"),
         )
 
-
-# =====================================================
-# FORMULÁRIO DE MENSAGEM (para comunicação interna)
-# =====================================================
-
-from django import forms
-from .models import MensagemContato
 
 class ContatoForm(forms.ModelForm):
     class Meta:
@@ -161,5 +205,7 @@ class ContatoForm(forms.ModelForm):
         }
 
         widgets = {
+            'nome': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'email': forms.EmailInput(attrs={'readonly': 'readonly'}),
             'mensagem': forms.Textarea(attrs={'rows': 3}),
         }

@@ -41,10 +41,38 @@ class AreaAtuacaoPerfil(models.Model):
         return f"{self.titulo} ({self.perfil.nome})"
 
 
+
 # =====================================================
-# VAGAS
+# VAGA
 # =====================================================
 class Vaga(models.Model):
+
+    ETAPA_CHOICES = [
+        ("pendente_aprovacao", "Pendente aprovação"),
+        ("publicada", "Publicada"),
+        ("inscricoes_fechadas", "Inscrições fechadas"),
+        ("analise_curriculos", "Análise de currículos"),
+        ("entrevistas", "Entrevistas"),
+        ("finalizada", "Finalizada"),
+    ]
+
+    ETAPAS_COORDENACAO = [
+        "pendente_aprovacao",
+        "publicada",
+        "inscricoes_fechadas",
+        "analise_curriculos",
+        "entrevistas",
+        "finalizada",
+    ]
+
+    ETAPAS_EMPRESA = [
+        "inscricoes_fechadas",
+        "analise_curriculos",
+        "entrevistas",
+        "finalizada",
+    ]
+
+  
     TIPO_CHOICES = [
         ("estagio", "Estágio"),
         ("emprego", "Emprego"),
@@ -57,6 +85,7 @@ class Vaga(models.Model):
         ("remoto", "Remoto"),
     ]
 
+  
     STATUS_CHOICES = [
         ("pendente", "Pendente"),
         ("aprovada", "Aprovada"),
@@ -64,7 +93,11 @@ class Vaga(models.Model):
         ("encerrada", "Encerrada"),
     ]
 
-    # Empresa agora é Usuario(tipo="empresa")
+  
+    titulo = models.CharField("Título da vaga", max_length=150)
+    descricao = models.TextField("Descrição detalhada da vaga")
+    requisitos = models.TextField("Requisitos", blank=True)
+
     empresa = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -73,33 +106,58 @@ class Vaga(models.Model):
         verbose_name="Empresa responsável",
     )
 
-    titulo = models.CharField("Título da vaga", max_length=150)
-    descricao = models.TextField("Descrição detalhada da vaga")
-    requisitos = models.TextField("Requisitos", blank=True)
-
     curso = models.ForeignKey(
         "PerfilFormacao",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="vagas",
-        verbose_name="Curso Alvo",
+        verbose_name="Curso alvo",
     )
 
-    tipo = models.CharField("Tipo de vaga", max_length=20, choices=TIPO_CHOICES, default="estagio")
-    modalidade = models.CharField("Modalidade", max_length=20, choices=MODALIDADE_CHOICES, default="presencial")
+    tipo = models.CharField(
+        "Tipo de vaga",
+        max_length=20,
+        choices=TIPO_CHOICES,
+        default="estagio",
+    )
 
-    remuneracao = models.DecimalField("Remuneração (R$)", max_digits=10, decimal_places=2, null=True, blank=True)
+    modalidade = models.CharField(
+        "Modalidade",
+        max_length=20,
+        choices=MODALIDADE_CHOICES,
+        default="presencial",
+    )
+
+    remuneracao = models.DecimalField(
+        "Remuneração (R$)",
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+
     cidade = models.CharField("Cidade", max_length=120, blank=True)
     bairro = models.CharField("Bairro", max_length=120, blank=True)
 
-    status = models.CharField("Status", max_length=20, choices=STATUS_CHOICES, default="pendente")
+    
+    etapa = models.CharField(
+        max_length=30,
+        choices=ETAPA_CHOICES,
+        default="pendente_aprovacao",
+    )
+
+    status = models.CharField(
+        "Status",
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pendente",
+    )
 
     data_publicacao = models.DateTimeField(null=True, blank=True)
     data_inicio = models.DateField("Data de início", null=True, blank=True)
     data_fim = models.DateField("Data de término", null=True, blank=True)
 
-    # Coordenador agora é Usuario(tipo="coordenador")
     aprovado_por = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -111,18 +169,60 @@ class Vaga(models.Model):
     )
 
     class Meta:
-        ordering = ["-data_publicacao"]
+        ordering = ["-data_publicacao", "-id"]
         verbose_name = "Vaga"
         verbose_name_plural = "Vagas"
 
+  
     def __str__(self):
-        # empresa.nome é o campo "nome" do Usuario
-        return f"{self.titulo} — {self.empresa.nome or self.empresa.email}"
+        return f"{self.titulo} — {self.empresa.username or self.empresa.email}"
 
     @property
     def is_disponivel(self):
-        return self.status == "aprovada"
+        """Disponível para alunos"""
+        return self.status == "aprovada" and self.etapa == "publicada"
 
+    def pode_mudar_etapa(self, usuario):
+        """
+        Verifica se o usuário pode alterar a etapa da vaga
+        """
+        if usuario.tipo == "coordenador":
+            return True
+
+        if usuario.tipo == "empresa" and self.empresa_id == usuario.id:
+            return True
+
+        return False
+
+    def etapas_permitidas_para(self, usuario):
+        """
+        Retorna a lista de etapas permitidas conforme o perfil
+        """
+        if usuario.tipo == "coordenador":
+            return self.ETAPAS_COORDENACAO
+
+        if usuario.tipo == "empresa" and self.empresa_id == usuario.id:
+            return self.ETAPAS_EMPRESA
+
+        return []
+
+    def publicar(self, coordenador):
+        """
+        Publica a vaga (apenas coordenação)
+        """
+        self.etapa = "publicada"
+        self.status = "aprovada"
+        self.data_publicacao = timezone.now()
+        self.aprovado_por = coordenador
+        self.save()
+
+    def reprovar(self, coordenador):
+        """
+        Reprova a vaga (apenas coordenação)
+        """
+        self.status = "reprovada"
+        self.aprovado_por = coordenador
+        self.save()
 
 # =====================================================
 # CANDIDATURAS
@@ -130,14 +230,22 @@ class Vaga(models.Model):
 class Candidatura(models.Model):
     STATUS_CHOICES = [
         ("pendente", "Pendente"),
-        ("em_analise", "Em análise"),
+        ("analisando", "Currículo em análise"),
+        ("pre_selecionado", "Pré-selecionado"),
+        ("entrevista", "Entrevista agendada"),
+        ("finalista", "Finalista"),
         ("aprovado", "Aprovado"),
         ("recusado", "Recusado"),
     ]
 
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pendente"
+    )
+
     vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE, related_name="candidaturas")
 
-    # aluno agora é Usuario(tipo="aluno")
     aluno = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -146,7 +254,6 @@ class Candidatura(models.Model):
     )
 
     data_candidatura = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pendente")
     mensagem = models.TextField("Mensagem do candidato", blank=True)
 
     class Meta:
@@ -156,44 +263,18 @@ class Candidatura(models.Model):
         verbose_name_plural = "Candidaturas"
 
     def __str__(self):
-        return f"{self.aluno.nome or self.aluno.email} → {self.vaga.titulo}"
+        return f"{self.aluno.username or self.aluno.email} → {self.vaga.titulo}"
 
 
 # =====================================================
-# MENSAGENS INTERNAS
-# =====================================================
-class Mensagem(models.Model):
-    remetente = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="mensagens_enviadas",
-    )
-    destinatario = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="mensagens_recebidas",
-    )
-    conteudo = models.TextField()
-    data_envio = models.DateTimeField(default=timezone.now)
-    lida = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ["-data_envio"]
-        verbose_name = "Mensagem"
-        verbose_name_plural = "Mensagens"
-
-    def __str__(self):
-        return f"{self.remetente.email} → {self.destinatario.email}"
-
-
-# =====================================================
-# MENSAGENS DE CONTATO (formulário público)
+# MENSAGENS DE CONTATO
 # =====================================================
 class MensagemContato(models.Model):
     nome = models.CharField("Nome", max_length=150)
     email = models.EmailField("E-mail")
     mensagem = models.TextField("Mensagem")
     data_envio = models.DateTimeField(default=timezone.now)
+    resposta = models.TextField(blank=True, null=True)
     respondido = models.BooleanField(default=False)
 
     class Meta:
@@ -209,6 +290,10 @@ class MensagemContato(models.Model):
 # CONFIGURAÇÃO DO SITE
 # =====================================================
 class SiteConfig(models.Model):
+    titulo_banner = models.CharField(max_length=200, default="Da ideia à prática, do campus à carreira.")
+    subtitulo_banner = models.CharField(max_length=255, default="Aprender, se conectar e crescer: seu futuro começa aqui.")
+    imagem_banner = models.ImageField(upload_to="home/", blank=True, null=True)
+    
     nome_site = models.CharField("Nome do site", max_length=100, default="LinkIF")
     descricao_curta = models.TextField(
         default="Conectando talentos técnicos do IFRN às melhores oportunidades profissionais."
@@ -231,61 +316,4 @@ class SiteConfig(models.Model):
     def get_logo_url(self):
         if self.logo and hasattr(self.logo, "url"):
             return self.logo.url
-        return "/static/assets/img/logo.png"
-
-
-# =====================================================
-# CONTEÚDO DA HOME
-# =====================================================
-class HomeContent(models.Model):
-    titulo_banner = models.CharField(max_length=200, default="Da ideia à prática, do campus à carreira.")
-    subtitulo_banner = models.CharField(max_length=255, default="Seu futuro começa aqui.")
-    imagem_banner = models.ImageField(upload_to="home/", blank=True, null=True)
-
-    titulo_sobre = models.CharField(max_length=100, default="O que é o LinkIF?")
-    texto_sobre = models.TextField(default="O LinkIF conecta estudantes, ex-alunos e empresas.")
-
-    card1_titulo = models.CharField(max_length=100, default="Plataforma Integrada")
-    card1_texto = models.TextField(default="Um ambiente criado para centralizar oportunidades profissionais.")
-    card1_icon = models.ImageField(upload_to="home/icons/", blank=True, null=True)
-
-    card2_titulo = models.CharField(max_length=100, default="Conexão Estratégica")
-    card2_texto = models.TextField(default="Aproxima estudantes e empresas.")
-    card2_icon = models.ImageField(upload_to="home/icons/", blank=True, null=True)
-
-    card3_titulo = models.CharField(max_length=100, default="Porta de entrada")
-    card3_texto = models.TextField(default="Transforme formação técnica em experiência real.")
-    card3_icon = models.ImageField(upload_to="home/icons/", blank=True, null=True)
-
-    atualizado_em = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "Conteúdo da Home"
-        verbose_name_plural = "Conteúdos da Home"
-
-    def __str__(self):
-        return "Conteúdo da Home"
-
-
-# =====================================================
-# FEATURES (Estudantes e Empresas)
-# =====================================================
-class Feature(models.Model):
-    TIPO_CHOICES = [
-        ("estudante", "Para Estudantes"),
-        ("empresa", "Para Empresas"),
-    ]
-
-    tipo = models.CharField("Tipo", max_length=20, choices=TIPO_CHOICES)
-    icone = models.CharField("Ícone Bootstrap", max_length=50)
-    titulo = models.CharField(max_length=120)
-    descricao = models.TextField()
-    ordem = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        ordering = ["tipo", "ordem"]
-        verbose_name = "Feature"
-        verbose_name_plural = "Features"
-
-    def __str__(self):
-        return f"{self.titulo} — {self.get_tipo_display()}"
+        return "/static/assets/img/logo.svg"

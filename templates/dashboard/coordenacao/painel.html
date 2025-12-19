@@ -1,164 +1,111 @@
 {% extends "dashboard/base_dashboard.html" %}
+{% load static %}
 
-{% block titulo %}Dashboard da Coordenação{% endblock %}
+{% block titulo %}Painel da Coordenação{% endblock %}
 
 {% block conteudo %}
 
-<h2 class="mb-4">Painel da Coordenação</h2>
+<!-- =====================================
+     HERO IGUAL AO DO ALUNO
+====================================== -->
+<div class="hero-dashboard rail-bleed mb-4">
 
-<!-- ===================== CARDS DE ESTATÍSTICAS ===================== -->
-<div class="row g-3 mb-4">
+  <div class="hero-text">
+    <small class="hero-hello">Olá, {{ user.nome|default:user.email }}</small>
+    <h3 class="hero-title">Gerencie aprovações e acompanhe o funcionamento do sistema</h3>
+    <p class="hero-subtitle">Veja pendências, tome decisões rápidas e mantenha tudo organizado.</p>
+  </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm p-3 card-cord">
-            <h6 class="text-muted mb-1">Alunos Pendentes</h6>
-            <h3 class="fw-bold">{{ alunos_pendentes }}</h3>
-            <a href="{% url 'dashboard:aprovar_alunos' %}" class="text-decoration-none small">
-                Ver alunos pendentes →
-            </a>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card shadow-sm p-3 card-cord">
-            <h6 class="text-muted mb-1">Empresas Pendentes</h6>
-            <h3 class="fw-bold">{{ empresas_pendentes }}</h3>
-            <a href="{% url 'dashboard:aprovar_empresas' %}" class="text-decoration-none small">
-                Ver empresas pendentes →
-            </a>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card shadow-sm p-3 card-cord">
-            <h6 class="text-muted mb-1">Vagas Aguardando Aprovação</h6>
-            <h3 class="fw-bold">{{ vagas_pendentes }}</h3>
-            <a href="{% url 'dashboard:aprovar_vagas' %}" class="text-decoration-none small">
-                Ver vagas pendentes →
-            </a>
-        </div>
-    </div>
+  <div class="hero-illustration">
+    <img src="{% static 'assets/img/hero-co-dash.svg' %}" alt="Coordenação LinkIF">
+  </div>
 
 </div>
 
 
-<!-- ===================== AÇÕES RÁPIDAS ===================== -->
-<div class="card shadow-sm p-4 mb-4">
-    <h5 class="text-primary fw-bold mb-3">
-        <i class="bi bi-lightning-charge-fill me-1"></i> Ações Rápidas
-    </h5>
+<div class="dashboard-wrapper">
 
-    <div class="row g-3">
+    <h2 class="title-dashboard mb-4">Visão Geral</h2>
+
+    <!-- =====================================
+         CARDS MÉTRICOS (como no aluno)
+    ====================================== -->
+    <div class="row g-4 mb-4">
 
         <div class="col-md-4">
-            <a href="{% url 'dashboard:aprovar_alunos' %}" class="painel-btn">
-                <i class="bi bi-person-check-fill icon"></i>
-                Aprovar Alunos
-            </a>
+            <div class="metric-card">
+                <div class="metric-icon"><i class="bi bi-person-check-fill"></i></div>
+                <div>
+                    <h3 class="desc">{{ alunos_pendentes }}</h3>
+                    <p class="desc"> Alunos para Aprovar</p>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-4">
-            <a href="{% url 'dashboard:aprovar_empresas' %}" class="painel-btn">
-                <i class="bi bi-building-check icon"></i>
-                Aprovar Empresas
-            </a>
+            <div class="metric-card">
+                <div class="metric-icon"><i class="bi bi-building-check"></i></div>
+                <div>
+                    <h3 class="desc">{{ empresas_pendentes }}</h3>
+                    <p class="desc">Empresas para Aprovar</p>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-4">
-            <a href="{% url 'dashboard:aprovar_vagas' %}" class="painel-btn">
-                <i class="bi bi-clipboard-check icon"></i>
-                Aprovar Vagas
-            </a>
-        </div>
-
-        <div class="col-md-4">
-            <a href="{% url 'dashboard:usuarios' %}" class="painel-btn">
-                <i class="bi bi-people-fill icon"></i>
-                Gerenciar Usuários
-            </a>
-        </div>
-
-        <div class="col-md-4">
-            <a href="{% url 'dashboard:empresas' %}" class="painel-btn">
-                <i class="bi bi-building icon"></i>
-                Gerenciar Empresas
-            </a>
-        </div>
-
-        <div class="col-md-4">
-            <a href="{% url 'dashboard:relatorios' %}" class="painel-btn">
-                <i class="bi bi-bar-chart icon"></i>
-                Relatórios
-            </a>
+            <div class="metric-card">
+                <div class="metric-icon"><i class="bi bi-clipboard-check"></i></div>
+                <div >
+                    <h3 >{{ vagas_pendentes }}</h3>
+                    <p class="desc">Vagas para Aprovar</p>
+                </div>
+            </div>
         </div>
 
     </div>
+
+
+    <!-- =====================================
+         STATUS DO SISTEMA (section-card)
+    ====================================== -->
+    <div class="section-card-simple mb-4">
+
+        <h5 class="section-title">
+            <i class="bi bi-speedometer2 me-1"></i>
+            Status Geral do Sistema
+        </h5>
+
+        <ul class="list-group list-group-flush">
+
+            <li class="list-group-item desc">
+                <i class="bi bi-check-circle-fill me-2" style="color: #5936A3;"></i>
+                Sistema funcionando normalmente.
+            </li>
+
+            <li class="list-group-item desc">
+                <i class="bi bi-people-fill me-2" style="color: #5936A3;"></i>
+                Usuários cadastrados: <strong>{{ total_usuarios }}</strong>
+            </li>
+
+            <li class="list-group-item desc">
+                <i class="bi bi-briefcase-fill me-2" style="color: #5936A3;"></i>
+                Vagas publicadas: <strong>{{ total_vagas }}</strong>
+            </li>
+
+            <li class="list-group-item desc">
+                <i class="bi bi-mortarboard-fill me-2" style="color: #5936A3;"></i>
+                Alunos cadastrados: <strong>{{ total_alunos }}</strong>
+            </li>
+
+            <li class="list-group-item desc">
+                <i class="bi bi-building-fill me-2" style="color: #5936A3;"></i>
+                Empresas cadastradas: <strong>{{ total_empresas }}</strong>
+            </li>
+
+        </ul>
+
+    </div>
+
 </div>
-
-
-<!-- ===================== STATUS DO SISTEMA ===================== -->
-<div class="card shadow-sm p-4">
-    <h5 class="text-primary fw-bold mb-3">
-        <i class="bi bi-speedometer2 me-1"></i> Status Geral do Sistema
-    </h5>
-
-    <ul class="list-group list-group-flush">
-
-        <li class="list-group-item">
-            <i class="bi bi-check-circle-fill text-success me-2"></i>
-            Sistema funcionando normalmente.
-        </li>
-
-        <li class="list-group-item">
-            <i class="bi bi-people-fill text-primary me-2"></i>
-            Usuários cadastrados: <strong>{{ total_usuarios }}</strong>
-        </li>
-
-        <li class="list-group-item">
-            <i class="bi bi-briefcase-fill text-info me-2"></i>
-            Vagas publicadas: <strong>{{ total_vagas }}</strong>
-        </li>
-
-        <li class="list-group-item">
-            <i class="bi bi-mortarboard-fill text-success me-2"></i>
-            Alunos cadastrados: <strong>{{ total_alunos }}</strong>
-        </li>
-
-        <li class="list-group-item">
-            <i class="bi bi-building-fill text-warning me-2"></i>
-            Empresas cadastradas: <strong>{{ total_empresas }}</strong>
-        </li>
-
-    </ul>
-</div>
-
-
-<style>
-.card-cord {
-    border-left: 4px solid #2C7F67;
-    background: #f8f9ff;
-    border-radius: 10px;
-}
-.painel-btn {
-    display: block;
-    background: #e8f4ef;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    color: #205072;
-    font-weight: 600;
-    text-decoration: none;
-    transition: .2s;
-}
-.painel-btn:hover {
-    background: #d4eee4;
-    transform: translateY(-2px);
-}
-.painel-btn .icon {
-    font-size: 32px;
-    display: block;
-    margin-bottom: 10px;
-}
-</style>
 
 {% endblock %}

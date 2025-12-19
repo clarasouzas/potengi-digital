@@ -1,0 +1,61 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load django_tables2 %}
+{% load static %}
+
+{% block conteudo %}
+
+<h2 class="title-dashboard mb-4">
+    <i class="bi bi-flag me-2"></i>
+    Acompanhar vagas
+</h2>
+
+<div class="table-container">
+    {% render_table table %}
+</div>
+
+<!-- ================================
+     MODAIS — UM POR CADA VAGA
+================================= -->
+{% for row in table.page.object_list %}
+{% with vaga=row.record %}
+<div id="gerenciar-{{ vaga.id }}" class="modal-vaga">
+
+    <div class="modal-content-vaga">
+
+        <a href="#" class="modal-close">
+            <i class="bi bi-x-lg"></i>
+        </a>
+
+        <h3 class="fw-bold mb-3" style="color: var(--accent-blue);">
+            <i class="bi bi-gear me-2"></i>
+            Gerenciar vaga
+        </h3>
+
+        <form action="{% url 'dashboard:atualizar_etapa_vaga' vaga.id %}" method="post">
+            {% csrf_token %}
+
+            <label class="form-label">Etapa da vaga</label>
+
+            <select name="nova_etapa" class="form-select mb-3">
+                {% for valor, label in etapa_choices %}
+                    <option value="{{ valor }}"
+                        {% if valor == vaga.etapa %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button class="btn-apply w-100 mt-2">
+                <i class="bi bi-save2 me-1"></i> Salvar alterações
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+{% endwith %}
+{% endfor %}
+
+
+{% endblock %}

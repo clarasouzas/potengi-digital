@@ -5,40 +5,106 @@
 
 {% block conteudo %}
 
-<h2 class="page-title mb-4">
+<h2 class="title-dashboard mb-4">
     <i class="bi bi-person-vcard me-2"></i>
     Detalhes da Candidatura
 </h2>
 
 <div class="soft-card p-4">
 
-    <h4 class="fw-bold text-uppercase">{{ candidatura.vaga.titulo }}</h4>
+    <!-- Título da vaga -->
+    <h3 class="fw-bold mb-3 text-break" style="color:#205072">
+        {{ candidatura.vaga.titulo }}
+    </h3>
 
-    <p class="mb-2">
-        <strong>Aluno:</strong> {{ candidatura.aluno.nome|default:"Sem nome" }}
-    </p>
+    <!-- =====================================================
+         PERFIL DO CANDIDATO (RESPONSIVO)
+    ====================================================== -->
+    <h5 class="section-title mb-3">Informações do candidato</h5>
 
-    <p class="mb-2">
-        <strong>E-mail:</strong> {{ candidatura.aluno.email }}
-    </p>
+    <div class="soft-card p-3 mb-4 d-flex flex-column flex-md-row 
+                align-items-start align-items-md-center justify-content-between gap-3">
 
-    <p class="mb-2">
-        <strong>Data:</strong> {{ candidatura.data_candidatura|date:"d/m/Y H:i" }}
-    </p>
+        <!--  NOME -->
+        <div class="d-flex align-items-center gap-3">
+            <div class="text-break">
+                <h5 class="fw-semibold m-0 text-break">
+                    {{ candidatura.aluno.nome|default:candidatura.aluno.email }}
+                </h5>
+                <p class="text-muted small m-0 text-break">
+                    {{ candidatura.aluno.email }}
+                </p>
+            </div>
+        </div>
+<!-- BOTÃO VER PERFIL -->
+<div class="d-flex justify-content-end">
+    <a href="{% url 'dashboard:ver_perfil_aluno' candidatura.aluno.id %}"
+       class="btn-outline-action d-inline-flex align-items-center gap-1"
+       style="
+           width: 100%;
+           padding: 6px 12px;
+           font-size: 16px;
+           border-radius: 30px;
+           text-decoration: none;
+       ">
+        <i class="bi bi-person-vcard"></i>
+        Ver perfil
+    </a>
+</div>
 
-    <p class="mb-4">
-        <strong>Status atual:</strong>
-        <span class="badge bg-secondary">{{ candidatura.get_status_display }}</span>
-    </p>
+    </div>
 
-    <hr>
+    <!-- =====================================================
+         DADOS DA CANDIDATURA (RESPONSIVO)
+    ====================================================== -->
+    <div class="row g-3 mb-4">
 
-    <form method="post">
+        <div class="col-12 col-md-6">
+            <div class="perfil-item">
+                <span class="perfil-label">Data da candidatura</span>
+                <div class="perfil-value">
+                    {{ candidatura.data_candidatura|date:"d/m/Y H:i" }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="perfil-item">
+                <span class="perfil-label">Status atual</span>
+                <div class="perfil-value">
+                    <span class="tag-chip">
+                        <i class="bi bi-info-circle me-1"></i>
+                        {{ candidatura.get_status_display }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         MENSAGEM DO CANDIDATO
+    ====================================================== -->
+    <h5 class="section-title mb-3">Mensagem enviada</h5>
+
+    {% if candidatura.mensagem %}
+        <div class="soft-box p-3 mb-4"
+             style="background:#f8f9fc;border-radius:12px;word-break: break-word;">
+            {{ candidatura.mensagem|linebreaksbr }}
+        </div>
+    {% else %}
+        <p class="text-muted mb-4">Este aluno não enviou mensagem.</p>
+    {% endif %}
+
+    <!-- =====================================================
+         ALTERAR STATUS (RESPONSIVO)
+    ====================================================== -->
+    <h5 class="section-title mb-3">Alterar status da candidatura</h5>
+
+    <form method="post" class="mt-2">
         {% csrf_token %}
 
-        <label class="fw-semibold">Alterar status:</label>
-        <select name="status" class="form-select mt-2">
-
+        <select name="status" class="form-select shadow-sm">
             <option value="em_analise"
                 {% if candidatura.status == "em_analise" %}selected{% endif %}>
                 Em análise
@@ -53,10 +119,9 @@
                 {% if candidatura.status == "recusado" %}selected{% endif %}>
                 Reprovado
             </option>
-
         </select>
 
-        <button class="soft-btn-primary w-100 mt-3">
+        <button class="btn-apply w-100 mt-3">
             <i class="bi bi-check-circle me-1"></i>
             Atualizar Status
         </button>

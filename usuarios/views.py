@@ -37,6 +37,7 @@ def cadastro_aluno(request):
             usuario.save()
 
             messages.success(request, "Cadastro realizado com sucesso!")
+            messages.success(request, "Cadastro realizado com sucesso!")
             return redirect("usuarios:login")
 
         return render(request, "registration/cadastro.html", {
@@ -58,6 +59,7 @@ def cadastro_empresa(request):
             usuario.tipo = "empresa"
             usuario.save()
 
+            messages.success(request, "Cadastro realizado com sucesso!")
             messages.success(request, "Cadastro realizado com sucesso!")
             return redirect("usuarios:login")
 

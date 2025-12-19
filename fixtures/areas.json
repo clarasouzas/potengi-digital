@@ -1,0 +1,78 @@
+[
+{
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 1,
+    "fields": {
+      "perfil": 1,
+      "titulo": "Desenvolvimento Web",
+      "descricao": "Atuação em criação de sites, sistemas online e plataformas digitais."
+    }
+  },
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 2,
+    "fields": {
+      "perfil": 1,
+      "titulo": "Design Digital",
+      "descricao": "Criação de interfaces funcionais, intuitivas e responsivas."
+    }
+  },
+
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 3,
+    "fields": {
+      "perfil": 2,
+      "titulo": "Execução de Obras",
+      "descricao": "Acompanhamento de processos construtivos e controle técnico."
+    }
+  },
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 4,
+    "fields": {
+      "perfil": 2,
+      "titulo": "Desenho Técnico",
+      "descricao": "Elaboração e interpretação de plantas, cortes e detalhes."
+    }
+  },
+
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 5,
+    "fields": {
+      "perfil": 3,
+      "titulo": "Gestão Ambiental",
+      "descricao": "Implantação de práticas sustentáveis e monitoramento ambiental."
+    }
+  },
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 6,
+    "fields": {
+      "perfil": 3,
+      "titulo": "Licenciamento",
+      "descricao": "Apoio técnico na elaboração de estudos e processos regulatórios."
+    }
+  },
+
+
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 7,
+    "fields": {
+      "perfil": 4,
+      "titulo": "Ensino Básico",
+      "descricao": "Atuação como docente no ensino fundamental e médio."
+    }
+  },
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 8,
+    "fields": {
+      "perfil": 4,
+      "titulo": "Projetos Educacionais",
+      "descricao": "Participação em iniciativas de pesquisa e extensão na área educacional."
+    }
+  }
+]

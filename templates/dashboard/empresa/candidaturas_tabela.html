@@ -1,0 +1,37 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load django_tables2 %}
+{% load static %}
+
+{% block titulo %}Candidaturas Recebidas{% endblock %}
+
+{% block conteudo %}
+
+<h2 class="title-dashboard mb-4">
+    <i class="bi bi-people me-2"></i>
+    Candidaturas Recebidas
+</h2>
+
+{% if table.page.object_list %}
+<div class="table-container">
+    {% render_table table %}
+</div>
+
+{% else %}
+<div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
+
+    <img src="{% static 'assets/img/empty.svg' %}"
+         class="empty-img"
+         style="width: 420px; max-width: 100%;">
+
+    <div class="empty-state-text" style="max-width: 380px;">
+        <h5 class="fw-bold mb-2">Nenhuma candidatura recebida</h5>
+        <p class="text-muted m-0">
+            Quando alunos enviarem candidaturas, elas aparecerão aqui.
+        </p>
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
