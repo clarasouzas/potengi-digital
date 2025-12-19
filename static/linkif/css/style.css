@@ -182,7 +182,15 @@ a:hover {
 }
 
 .navbar-nav .nav-item {
-  padding: 0 8px;
+  padding: 0 5px;
+}
+
+.navbar-nav .nav-item:first-child {
+  padding-left: 10px;
+}
+
+.navbar-nav .nav-item:last-child {
+  padding-right: 0px !important ;
 }
 
 .navbar-nav .nav-link {
@@ -3138,4 +3146,9 @@ footer {
 }
 .tab-content{
   text-align: left;
+}
+
+.progress-bar,
+.bg-progress {
+  background-color: var(--accent-blue) !important;
 }
