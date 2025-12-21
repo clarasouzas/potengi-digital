@@ -19,7 +19,6 @@ class UsuarioCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = False
 
 
 # ============================================
@@ -34,7 +33,7 @@ class AlunoCreationForm(UsuarioCreationForm):
     )
 
     class Meta(UsuarioCreationForm.Meta):
-        fields = ["curso", "username"] + UsuarioCreationForm.Meta.fields
+        fields = ["curso", "nome"] + UsuarioCreationForm.Meta.fields
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -56,7 +55,7 @@ class AlunoCreationForm(UsuarioCreationForm):
                 Column("email", css_class="col-md-12"),
             ),
             Row(
-                Column("username", css_class="col-md-6"),
+                Column("nome", css_class="col-md-6"),
                 Column("curso", css_class="col-md-6"),
             ),
             Row(
@@ -74,7 +73,7 @@ class EmpresaCreationForm(UsuarioCreationForm):
     telefone = forms.CharField(max_length=20)
 
     class Meta(UsuarioCreationForm.Meta):
-        fields = ["username", "cnpj", "telefone"] + UsuarioCreationForm.Meta.fields
+        fields = ["nome", "cnpj", "telefone"] + UsuarioCreationForm.Meta.fields
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -87,7 +86,7 @@ class EmpresaCreationForm(UsuarioCreationForm):
 
         self.helper.layout = Layout(
             Row(
-                Column("username", css_class="col-md-6"),                
+                Column("nome", css_class="col-md-6"),                
                 Column("telefone", css_class="col-md-6"),
             ),
             Row(
@@ -131,7 +130,7 @@ class AlunoEditForm(forms.ModelForm):
 
     class Meta:
         model = Usuario
-        fields = ["username", "curso", "foto", "curriculo", "portfolio", "resumo"]
+        fields = ["nome", "curso", "foto", "curriculo", "portfolio", "resumo"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -145,7 +144,7 @@ class AlunoEditForm(forms.ModelForm):
 class EmpresaEditForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ["username", "telefone", "cnpj", "cidade", "descricao", "foto"]
+        fields = ["nome", "telefone", "cnpj", "cidade", "descricao", "foto"]
 
     # VALIDAR CNPJ
     def clean_cnpj(self):
@@ -174,7 +173,7 @@ class EmpresaEditForm(forms.ModelForm):
 class CoordenadorEditForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ["username", "setor"]
+        fields = ["nome", "setor"]
 
 
 class UsuarioEditFormSimples(forms.ModelForm):

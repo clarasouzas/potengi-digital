@@ -2,6 +2,8 @@ from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.urls import reverse
+from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
 import requests
 
 User = get_user_model()
@@ -29,6 +31,7 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         if provider == 'suap':
             user.tipo = 'aluno'
             user.is_approved = True
+            user.status_aprovacao = 'aprovado'
             user.nome = sociallogin.account.extra_data.get('nome_usual', '').strip()
             user.curso = ''
             
@@ -39,25 +42,33 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
                 user.tipo = tipo_from_state
                 
                 if tipo_from_state == 'aluno':
-                    user.is_approved = self._is_suap_email(email)
+                    is_suap_email = self._is_suap_email(email)
+                    user.is_approved = is_suap_email
+                    user.status_aprovacao = 'aprovado' if is_suap_email else 'pendente'
                 else:
                     user.is_approved = False
+                    user.status_aprovacao = 'pendente'
                     
             else:
                 tipo_sessao = request.session.get('social_login_type')
                 if tipo_sessao:
                     user.tipo = tipo_sessao
                     if tipo_sessao == 'aluno':
-                        user.is_approved = self._is_suap_email(email)
+                        is_suap_email = self._is_suap_email(email)
+                        user.is_approved = is_suap_email
+                        user.status_aprovacao = 'aprovado' if is_suap_email else 'pendente'
                     else:
                         user.is_approved = False
+                        user.status_aprovacao = 'pendente'
                 else:
                     if self._is_suap_email(email):
                         user.tipo = 'aluno'
                         user.is_approved = True
+                        user.status_aprovacao = 'aprovado'
                     else:
                         user.tipo = ''
                         user.is_approved = False
+                        user.status_aprovacao = 'pendente'
                         request.session['social_login_needs_type'] = True
             
             extra_data = sociallogin.account.extra_data
@@ -71,6 +82,7 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     
     def save_user(self, request, sociallogin, form=None):
         user = super().save_user(request, sociallogin, form=form)
+        
         user.save()
         
         if sociallogin.account.provider == 'google':
@@ -78,6 +90,8 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         elif sociallogin.account.provider == 'suap':
             self._download_suap_photo(user, sociallogin)
             self._buscar_curso(user, sociallogin)
+        
+        user.save()
         
         return user
     
@@ -98,14 +112,13 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         if 'social_login_type' in request.session:
             del request.session['social_login_type']
         
-        
         if provider == 'google':
             if user.tipo == 'aluno':
-                if not user.curso:
+                if not user.curso or not user.nome:
                     return reverse('usuarios:completar_cadastro')
             
             elif user.tipo == 'empresa':
-                if not user.telefone or not user.cidade:
+                if not user.telefone or not user.cidade or not user.nome:
                     return reverse('usuarios:completar_cadastro')
         
         return reverse('usuarios:redirecionar_dashboard')

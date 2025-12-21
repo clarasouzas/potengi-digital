@@ -48,18 +48,11 @@ INSTALLED_APPS = [
     'dashboard',
 
     # Formulários
-
-    # Formulários
     'crispy_forms',
     'crispy_bootstrap5',
 
     # Filtros
-
-    # Filtros
     'django_filters',
-
-    # Tabelas
-    'django_tables2',
 
     # Tabelas
     'django_tables2',

@@ -9,8 +9,6 @@
 
     <!-- FONT + BOOTSTRAP -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FONT + BOOTSTRAP -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -21,7 +19,6 @@
 <body>
 
 <section class="cadastro-page" style="text-align:center;">
-<section class="cadastro-page" style="text-align:center;">
 
 <div class="cadastro-container">
 
@@ -29,17 +26,12 @@
 
         <!-- ===========================
              LADO ESQUERDO (LOGO + ABAS)
-             LADO ESQUERDO (LOGO + ABAS)
         ============================ -->
         <aside class="left-panel">
             <a href="{% url 'linkif:index' %}">
                 <img src="{% static 'assets/img/logo.svg' %}" class="logo" alt="LinkIF">                
             </a>
-            <a href="{% url 'linkif:index' %}">
-                <img src="{% static 'assets/img/logo.svg' %}" class="logo" alt="LinkIF">                
-            </a>
 
-            <p class="subtitulo">Escolha o tipo de usuário</p>
             <p class="subtitulo">Escolha o tipo de usuário</p>
 
             <ul class="nav flex-column tabs-list">
@@ -49,8 +41,6 @@
                     <button class="tab-btn {% if active_tab == 'aluno' %}active{% endif %}"
                             data-bs-toggle="tab"
                             data-bs-target="#aba-aluno">
-                            data-bs-toggle="tab"
-                            data-bs-target="#aba-aluno">
                         <i class="bi bi-mortarboard-fill me-2"></i> Aluno
                     </button>
                 </li>
@@ -58,8 +48,6 @@
                 <!-- EMPRESA -->
                 <li class="nav-item">
                     <button class="tab-btn {% if active_tab == 'empresa' %}active{% endif %}"
-                            data-bs-toggle="tab"
-                            data-bs-target="#aba-empresa">
                             data-bs-toggle="tab"
                             data-bs-target="#aba-empresa">
                         <i class="bi bi-building-fill me-2"></i> Empresa
@@ -72,19 +60,13 @@
 
         <!-- ===========================
              LADO DIREITO — CONTENT-CARD
-             LADO DIREITO — CONTENT-CARD
         ============================ -->
         <section class="right-panel">
 
                 <div class="form-box">
 
-                <div class="form-box">
-
-                    <div class="tab-content">
                     <div class="tab-content">
 
-                        <!-- ===== ALUNO ===== -->
-                        <div class="tab-pane fade {% if active_tab == 'aluno' %}show active{% endif %}" id="aba-aluno">
                         <!-- ===== ALUNO ===== -->
                         <div class="tab-pane fade {% if active_tab == 'aluno' %}show active{% endif %}" id="aba-aluno">
 
@@ -103,12 +85,7 @@
 
                             <form method="POST" action="{% url 'usuarios:cadastro_aluno' %}">
                                 {% csrf_token %}
-                            <form method="POST" action="{% url 'usuarios:cadastro_aluno' %}">
-                                {% csrf_token %}
 
-                                {% if forms.0.1.errors %}
-                                    <div class="alert alert-danger py-2">Verifique os campos e tente novamente.</div>
-                                {% endif %}
                                 {% if forms.0.1.errors %}
                                     <div class="alert alert-danger py-2">Verifique os campos e tente novamente.</div>
                                 {% endif %}
@@ -117,13 +94,7 @@
                                 <button class="btn-enviar w-100 mt-3">Cadastrar Aluno</button>
                             </form>
                         </div>
-                                {% crispy forms.0.1 %}
-                                <button class="btn-enviar w-100 mt-3">Cadastrar Aluno</button>
-                            </form>
-                        </div>
 
-                        <!-- ===== EMPRESA ===== -->
-                        <div class="tab-pane fade {% if active_tab == 'empresa' %}show active{% endif %}" id="aba-empresa">
                         <!-- ===== EMPRESA ===== -->
                         <div class="tab-pane fade {% if active_tab == 'empresa' %}show active{% endif %}" id="aba-empresa">
 
@@ -141,12 +112,7 @@
 
                             <form method="POST" enctype="multipart/form-data" action="{% url 'usuarios:cadastro_empresa' %}">
                                 {% csrf_token %}
-                            <form method="POST" enctype="multipart/form-data" action="{% url 'usuarios:cadastro_empresa' %}">
-                                {% csrf_token %}
 
-                                {% if forms.1.1.errors %}
-                                    <div class="alert alert-danger py-2">Verifique os campos e tente novamente.</div>
-                                {% endif %}
                                 {% if forms.1.1.errors %}
                                     <div class="alert alert-danger py-2">Verifique os campos e tente novamente.</div>
                                 {% endif %}
@@ -155,12 +121,7 @@
                                 <button class="btn-enviar w-100 mt-3">Cadastrar Empresa</button>
                             </form>
                         </div>
-                                {% crispy forms.1.1 %}
-                                <button class="btn-enviar w-100 mt-3">Cadastrar Empresa</button>
-                            </form>
-                        </div>
 
-                    </div>
                     </div>
 
                     <p class="desc text-center mt-3">
@@ -169,15 +130,6 @@
                     </p>
 
                 </div> <!-- form-box -->
-
-                
-                    <p class="desc text-center mt-3">
-                        Já possui uma conta?
-                        <a href="{% url 'usuarios:login' %}" class="fw-semibold link-cadastro">Faça login</a>
-                    </p>
-
-                </div> <!-- form-box -->
-
                 
         </section>
 
