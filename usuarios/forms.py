@@ -173,7 +173,7 @@ class EmpresaEditForm(forms.ModelForm):
 class CoordenadorEditForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ["nome", "setor"]
+        fields = ["username", "setor"]
 
 
 class UsuarioEditFormSimples(forms.ModelForm):

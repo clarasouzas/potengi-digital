@@ -165,4 +165,3 @@ class Usuario(AbstractUser):
 
     def __str__(self):
         return f"{self.username} — {self.email} ({self.tipo})"
-        return f"{self.username} — {self.email} ({self.tipo})"

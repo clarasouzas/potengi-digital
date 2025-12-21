@@ -26,7 +26,6 @@ if os.getenv("CSRF_TRUSTED_ORIGINS"):
 # Aplicações instaladas
 INSTALLED_APPS = [
     # Django nativo
-    # Django nativo
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -82,13 +81,11 @@ MIDDLEWARE = [
 
 
 # Configuração de templates
-# Configuração de templates
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],
         'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -98,7 +95,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'linkif.context_processors.site_context',
                 'dashboard.context_processors.splash_screen_processor',
-                'dashboard.context_processors.splash_screen_processor',
             ],
         },
     },
@@ -106,11 +102,9 @@ TEMPLATES = [
 
 
 # WSGI
-# WSGI
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Banco de dados
 # Banco de dados
 DATABASES = {
     'default': {
@@ -120,7 +114,6 @@ DATABASES = {
 }
 
 
-# Validação de senhas
 # Validação de senhas
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -146,13 +139,10 @@ USE_TZ = True
 
 
 # Arquivos estáticos
-# Arquivos estáticos
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    BASE_DIR / "static",
 ]
-
 
 
 # Upload de arquivos
@@ -160,7 +150,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# Modelo de usuário customizado
 # Modelo de usuário customizado
 AUTH_USER_MODEL = "usuarios.Usuario"
 
@@ -212,10 +201,6 @@ LOGOUT_REDIRECT_URL = "linkif:index"
 
 # Mensagens
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# Email
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 # Email
