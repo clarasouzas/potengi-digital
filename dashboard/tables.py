@@ -409,8 +409,6 @@ class EmpresaMensagensTable(tables.Table):
         fields = ["mensagem", "data_envio", "resposta", "acoes"]
         template_name = "dashboard/table.html"
         attrs = {"class": "linkif-table"}
-import django_tables2 as tables
-from linkif.models import Vaga
 
 
 class AcompanharVagasTable(tables.Table):
