@@ -11,117 +11,447 @@
     Mensagens Recebidas
 </h2>
 
-{% if table.page.object_list %}
-<div class="table-container">
-    {% render_table table %}
+<!-- ===== TABS PARA NAVEGAÇÃO ===== -->
+<div class="mb-4">
+    <ul class="nav nav-tabs" id="mensagensTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" 
+                    id="pendentes-tab" 
+                    data-bs-toggle="tab" 
+                    data-bs-target="#pendentes" 
+                    type="button" 
+                    role="tab">
+                <i class="bi bi-hourglass-split me-1"></i>
+                Pendentes
+                <span class="badge bg-secondary ms-2">{{ table_pendentes.page.object_list|length }}</span>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" 
+                    id="respondidas-tab" 
+                    data-bs-toggle="tab" 
+                    data-bs-target="#respondidas" 
+                    type="button" 
+                    role="tab">
+                <i class="bi bi-check-circle me-1"></i>
+                Respondidas
+                <span class="badge bg-secondary ms-2">{{ table_respondidas.page.object_list|length }}</span>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" 
+                    id="todas-tab" 
+                    data-bs-toggle="tab" 
+                    data-bs-target="#todas" 
+                    type="button" 
+                    role="tab">
+                <i class="bi bi-list-ul me-1"></i>
+                Todas
+                <span class="badge bg-secondary ms-2">{{ table_todas.page.object_list|length }}</span>
+            </button>
+        </li>
+    </ul>
 </div>
 
-
-{% for row in table.page.object_list %}
-{% with msg=row.record %}
-<div id="mensagem-{{ msg.id }}" class="modal-vaga">
-
-    <div class="modal-content-vaga">
-
-        <a href="#" class="modal-close">
-            <i class="bi bi-x-lg"></i>
-        </a>
-
-        <h3 class="fw-bold mb-3">
-            <i class="bi bi-envelope-open me-2"></i>
-            Detalhes da Mensagem
-        </h3>
-
-        <p><strong>Nome:</strong> {{ msg.nome }}</p>
-        <p><strong>E-mail:</strong> {{ msg.email }}</p>
-        <p><strong>Data:</strong> {{ msg.data_envio|date:"d/m/Y H:i" }}</p>
-
-        <hr>
-
-        <p class="mt-3">{{ msg.mensagem }}</p>
-
-        <div class="d-flex gap-3 mt-4">
-
-            {% if not msg.respondido %}
-                <a href="#responder-{{ msg.id }}" class="btn-table">
-                    Responder
-                </a>
-            {% endif %}
-
-            <a href="#" class="btn-table"
-               style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
-                Fechar
-            </a>
-
+<div class="tab-content" id="mensagensTabContent">
+    <!-- ===== ABA: MENSAGENS PENDENTES ===== -->
+    <div class="tab-pane fade show active" 
+         id="pendentes" 
+         role="tabpanel" 
+         aria-labelledby="pendentes-tab">
+        
+        {% if table_pendentes.page.object_list %}
+        <div class="table-container">
+            {% render_table table_pendentes %}
         </div>
 
-    </div>
+        <!-- Modais para mensagens pendentes -->
+        {% for row in table_pendentes.page.object_list %}
+        {% with msg=row.record %}
+        <div id="mensagem-{{ msg.id }}" class="modal-vaga">
+            <div class="modal-content-vaga">
+                <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+                <h3 class="fw-bold mb-3">
+                    <i class="bi bi-envelope-open me-2"></i>
+                    Detalhes da Mensagem
+                </h3>
 
-</div>
-{% endwith %}
-{% endfor %}
+                <!-- Informações do remetente -->
+                <div class="mb-4">
+                    <p class="mb-1"><strong>Nome:</strong> {{ msg.nome }}</p>
+                    <p class="mb-1"><strong>E-mail:</strong> {{ msg.email }}</p>
+                    <p class="mb-1"><strong>Enviada em:</strong> {{ msg.data_envio|date:"d/m/Y H:i" }}</p>
+                    {% if msg.assunto %}
+                    <p class="mb-1"><strong>Assunto:</strong> {{ msg.assunto }}</p>
+                    {% endif %}
+                </div>
 
-{% for row in table.page.object_list %}
-{% with msg=row.record %}
-<div id="responder-{{ msg.id }}" class="modal-vaga">
+                <hr>
 
-    <div class="modal-content-vaga">
+                <!-- Mensagem original -->
+                <p><strong>Mensagem:</strong></p>
+                <div class="message-bubble received mb-4">
+                    <p>{{ msg.mensagem }}</p>
+                </div>
 
-        <a href="#" class="modal-close">
-            <i class="bi bi-x-lg"></i>
-        </a>
-
-        <h3 class="fw-bold mb-3">
-            <i class="bi bi-reply-fill me-2"></i>
-            Responder Mensagem
-        </h3>
-
-        <p><strong>Para:</strong> {{ msg.nome }} ({{ msg.email }})</p>
-
-        <form method="post" action="{% url 'dashboard:responder_mensagem' msg.id %}">
-            {% csrf_token %}
-
-            <div class="mb-3">
-                <label class="form-label">Sua resposta</label>
-                <textarea name="resposta" class="form-control" rows="6" required></textarea>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="#responder-{{ msg.id }}" class="btn-table">
+                        <i class="bi bi-reply-fill me-1"></i>
+                        Responder
+                    </a>
+                    
+                    <a href="#" class="btn-table"
+                       style="background: var(--gray-300); color: var(--gray-800);">
+                        Fechar
+                    </a>
+                </div>
             </div>
+        </div>
 
-            <div class="d-flex gap-3 mt-4">
-                <button class="btn-save">
-                    <i class="bi bi-send-check me-1"></i> Enviar
-                </button>
+        <!-- Modal para responder -->
+        <div id="responder-{{ msg.id }}" class="modal-vaga">
+            <div class="modal-content-vaga">
+                <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+                <h3 class="fw-bold mb-3">
+                    <i class="bi bi-reply-fill me-2"></i>
+                    Responder Mensagem
+                </h3>
 
-                <a href="#" class="btn-table"
-                   style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
-                    Cancelar
-                </a>
+                <div class="mb-4">
+                    <p class="mb-1"><strong>Para:</strong> {{ msg.nome }} ({{ msg.email }})</p>
+                    <p class="mb-1"><strong>Assunto:</strong> Re: {% if msg.assunto %}{{ msg.assunto }}{% else %}Mensagem recebida{% endif %}</p>
+                    <p class="mb-1"><strong>Enviada em:</strong> {{ msg.data_envio|date:"d/m/Y H:i" }}</p>
+                </div>
+
+                <form method="post" action="{% url 'dashboard:responder_mensagem' msg.id %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Sua resposta</label>
+                        <textarea name="resposta" 
+                                  class="form-control" 
+                                  rows="6" 
+                                  placeholder="Digite sua resposta aqui..." 
+                                  required></textarea>
+                    </div>
+
+                    <div class="d-flex gap-3 mt-4">
+                        <button type="submit" class="btn-save">
+                            <i class="bi bi-send-check me-1"></i> 
+                            Enviar Resposta
+                        </button>
+
+                        <a href="#" class="btn-table"
+                           style="background: var(--gray-300); color: var(--gray-800);">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
             </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
 
-        </form>
+        {% else %}
+        <div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
+            <img src="{% static 'assets/img/empty.svg' %}" 
+                 class="empty-img" 
+                 style="width: 320px; max-width: 100%;">
+            <div class="empty-state-text" style="max-width: 380px;">
+                <h5 class="fw-bold mb-2">Nenhuma mensagem pendente</h5>
+                <p class="text-muted m-0">
+                    Todas as mensagens recebidas foram respondidas.
+                </p>
+            </div>
+        </div>
+        {% endif %}
 
     </div>
 
-</div>
-{% endwith %}
-{% endfor %}
+    <!-- ===== ABA: MENSAGENS RESPONDIDAS ===== -->
+    <div class="tab-pane fade" 
+         id="respondidas" 
+         role="tabpanel" 
+         aria-labelledby="respondidas-tab">
+        
+        {% if table_respondidas.page.object_list %}
+        <div class="table-container">
+            {% render_table table_respondidas %}
+        </div>
 
-{% else %}
-<div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
+        <!-- Modais para mensagens respondidas -->
+        {% for row in table_respondidas.page.object_list %}
+        {% with msg=row.record %}
+        <div id="mensagem-respondida-{{ msg.id }}" class="modal-vaga">
+            <div class="modal-content-vaga">
+                <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+                <h3 class="fw-bold mb-3">
+                    <i class="bi bi-envelope-check me-2"></i>
+                    Mensagem Respondida
+                </h3>
 
-    <img src="{% static 'assets/img/empty.svg' %}"
-         class="empty-img"
-         style="width: 420px; max-width: 100%;">
+                <!-- Informações do remetente -->
+                <div class="mb-4">
+                    <p class="mb-1"><strong>Nome:</strong> {{ msg.nome }}</p>
+                    <p class="mb-1"><strong>E-mail:</strong> {{ msg.email }}</p>
+                    <p class="mb-1"><strong>Enviada em:</strong> {{ msg.data_envio|date:"d/m/Y H:i" }}</p>
+                    {% if msg.assunto %}
+                    <p class="mb-1"><strong>Assunto:</strong> {{ msg.assunto }}</p>
+                    {% endif %}
+                </div>
 
-    <div class="empty-state-text" style="max-width: 380px;">
-        <h5 class="fw-bold mb-2">Nenhuma mensagem recebida</h5>
-        <p class="text-muted m-0">
-            Assim que visitantes enviarem mensagens pelo formulário público,
-            elas aparecerão aqui.
-        </p>
+                <!-- Mensagem original -->
+                <p><strong>Mensagem original:</strong></p>
+                <div class="message-bubble received mb-3">
+                    <p>{{ msg.mensagem }}</p>
+                </div>
+
+                <!-- Resposta enviada -->
+                <p><strong>Sua resposta:</strong></p>
+                <div class="message-bubble sent">
+                    <p>{{ msg.resposta }}</p>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="#" class="btn-table"
+                       style="background: var(--gray-300); color: var(--gray-800);">
+                        Fechar
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
+
+        {% else %}
+        <div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
+            <img src="{% static 'assets/img/empty.svg' %}" 
+                 class="empty-img" 
+                 style="width: 320px; max-width: 100%;">
+            <div class="empty-state-text" style="max-width: 380px;">
+                <h5 class="fw-bold mb-2">Nenhuma mensagem respondida</h5>
+                <p class="text-muted m-0">
+                    Responda às mensagens pendentes para vê-las aqui.
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 
+    <!-- ===== ABA: TODAS AS MENSAGENS ===== -->
+    <div class="tab-pane fade" 
+         id="todas" 
+         role="tabpanel" 
+         aria-labelledby="todas-tab">
+        
+        {% if table_todas.page.object_list %}
+        <div class="table-container">
+            {% render_table table_todas %}
+        </div>
+
+        <!-- Modais para todas as mensagens -->
+        {% for row in table_todas.page.object_list %}
+        {% with msg=row.record %}
+        <div id="mensagem-todas-{{ msg.id }}" class="modal-vaga">
+            <div class="modal-content-vaga">
+                <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+                <h3 class="fw-bold mb-3">
+                    {% if msg.respondido %}
+                    <i class="bi bi-envelope-check me-2"></i>
+                    Mensagem Respondida
+                    {% else %}
+                    <i class="bi bi-envelope-open me-2"></i>
+                    Mensagem Pendente
+                    {% endif %}
+                </h3>
+
+                <!-- Informações do remetente -->
+                <div class="mb-4">
+                    <p class="mb-1"><strong>Nome:</strong> {{ msg.nome }}</p>
+                    <p class="mb-1"><strong>E-mail:</strong> {{ msg.email }}</p>
+                    <p class="mb-1"><strong>Enviada em:</strong> {{ msg.data_envio|date:"d/m/Y H:i" }}</p>
+                    {% if msg.assunto %}
+                    <p class="mb-1"><strong>Assunto:</strong> {{ msg.assunto }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Mensagem original -->
+                <p><strong>Mensagem original:</strong></p>
+                <div class="message-bubble received mb-3">
+                    <p>{{ msg.mensagem }}</p>
+                </div>
+
+                <!-- Se já foi respondida, mostra a resposta -->
+                {% if msg.respondido and msg.resposta %}
+                <p><strong>Sua resposta:</strong></p>
+                <div class="message-bubble sent">
+                    <p>{{ msg.resposta }}</p>
+                </div>
+                {% endif %}
+
+                <div class="d-flex gap-3 mt-4">
+                    {% if not msg.respondido %}
+                    <a href="#responder-todas-{{ msg.id }}" class="btn-table">
+                        <i class="bi bi-reply-fill me-1"></i>
+                        Responder
+                    </a>
+                    {% endif %}
+                    
+                    <a href="#" class="btn-table"
+                       style="background: var(--gray-300); color: var(--gray-800);">
+                        Fechar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para responder (para a aba "Todas") -->
+        {% if not msg.respondido %}
+        <div id="responder-todas-{{ msg.id }}" class="modal-vaga">
+            <div class="modal-content-vaga">
+                <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+                <h3 class="fw-bold mb-3">
+                    <i class="bi bi-reply-fill me-2"></i>
+                    Responder Mensagem
+                </h3>
+
+                <div class="mb-4">
+                    <p class="mb-1"><strong>Para:</strong> {{ msg.nome }} ({{ msg.email }})</p>
+                    <p class="mb-1"><strong>Assunto:</strong> Re: {% if msg.assunto %}{{ msg.assunto }}{% else %}Mensagem recebida{% endif %}</p>
+                    <p class="mb-1"><strong>Enviada em:</strong> {{ msg.data_envio|date:"d/m/Y H:i" }}</p>
+                </div>
+
+                <form method="post" action="{% url 'dashboard:responder_mensagem' msg.id %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Sua resposta</label>
+                        <textarea name="resposta" 
+                                  class="form-control" 
+                                  rows="6" 
+                                  placeholder="Digite sua resposta aqui..." 
+                                  required></textarea>
+                    </div>
+
+                    <div class="d-flex gap-3 mt-4">
+                        <button type="submit" class="btn-save">
+                            <i class="bi bi-send-check me-1"></i> 
+                            Enviar Resposta
+                        </button>
+
+                        <a href="#" class="btn-table"
+                           style="background: var(--gray-300); color: var(--gray-800);">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% endfor %}
+
+        {% else %}
+        <div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
+            <img src="{% static 'assets/img/empty.svg' %}" 
+                 class="empty-img" 
+                 style="width: 320px; max-width: 100%;">
+            <div class="empty-state-text" style="max-width: 380px;">
+                <h5 class="fw-bold mb-2">Nenhuma mensagem recebida</h5>
+                <p class="text-muted m-0">
+                    Assim que visitantes enviarem mensagens pelo formulário público,
+                    elas aparecerão aqui.
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
 </div>
 
-{% endif %}
+<!-- Adicione este CSS -->
+<style>
+    .message-bubble {
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        max-width: 80%;
+    }
+    
+    .message-bubble.sent {
+        background-color: #e3f2fd;
+        border: 1px solid #bbdefb;
+        margin-left: auto;
+    }
+    
+    .message-bubble.received {
+        background-color: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        margin-right: auto;
+    }
+    
+    .nav-tabs .nav-link {
+        color: var(--gray-600);
+        font-weight: 500;
+        border: none;
+        padding: 12px 24px;
+    }
+    
+    .nav-tabs .nav-link.active {
+        color: var(--primary);
+        border-bottom: 3px solid var(--primary);
+        background-color: transparent;
+    }
+    
+    .nav-tabs .nav-link:hover {
+        color: var(--primary-dark);
+    }
+    
+    /* Estilo para os modais de mensagens */
+    .modal-content-vaga .btn-save {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: background-color 0.3s;
+    }
+    
+    .modal-content-vaga .btn-save:hover {
+        background-color: var(--primary-dark);
+    }
+</style>
+
+<!-- JavaScript para alternar entre modais -->
+<script>
+    // Fechar modal ao clicar no botão "Fechar"
+    document.querySelectorAll('.modal-vaga .btn-table[style*="var(--gray-300)"]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const modal = this.closest('.modal-vaga');
+            modal.style.display = 'none';
+        });
+    });
+
+    // Fechar modal ao clicar no X
+    document.querySelectorAll('.modal-close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const modal = this.closest('.modal-vaga');
+            modal.style.display = 'none';
+        });
+    });
+
+    // Fechar modal ao clicar fora
+    document.querySelectorAll('.modal-vaga').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+    });
+</script>
 
 {% endblock %}

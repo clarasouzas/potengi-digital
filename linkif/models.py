@@ -272,10 +272,12 @@ class Candidatura(models.Model):
 class MensagemContato(models.Model):
     nome = models.CharField("Nome", max_length=150)
     email = models.EmailField("E-mail")
+    assunto = models.CharField(max_length=200, blank=True)
     mensagem = models.TextField("Mensagem")
     data_envio = models.DateTimeField(default=timezone.now)
     resposta = models.TextField(blank=True, null=True)
     respondido = models.BooleanField(default=False)
+    data_resposta = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Mensagem de Contato"

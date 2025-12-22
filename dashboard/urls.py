@@ -18,15 +18,19 @@ urlpatterns = [
         views.cancelar_candidatura,
         name="cancelar_candidatura"
     ),
-    path("aluno/mensagens/", views.aluno_mensagens, name="aluno_mensagens"),
-    path("aluno/mensagens/enviar/", views.enviar_mensagem, name="enviar_mensagem"),
+
+    # ---------------------------
+    #         ALUNO
+    # ---------------------------
+    path('aluno/mensagens/', views.aluno_mensagens, name='aluno_mensagens'),
+    path('aluno/mensagens/enviar', views.aluno_enviar_mensagem, name='aluno_enviar_mensagem'),
 
     # ---------------------------
     #         EMPRESA
     # ---------------------------
     path("empresa/", views.empresa_painel, name="empresa_painel"),
     path("empresa/mensagens/", views.empresa_mensagens, name="empresa_mensagens"),
-    path("empresa/mensagens/enviar/", views.enviar_mensagem, name="enviar_mensagem"),
+    path("empresa/mensagens/enviar/", views.empresa_enviar_mensagem, name='empresa_enviar_mensagem'),
 
     # VAGAS DA EMPRESA
     path("empresa/vagas/", views.empresa_vagas, name="empresa_vagas"),

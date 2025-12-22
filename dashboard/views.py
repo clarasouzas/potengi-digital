@@ -1,4 +1,12 @@
-# dashboard/views.py
+from django_tables2 import SingleTableView
+from .tables import (
+    AlunoMensagensRespondidasTable, 
+    AlunoMensagensEnviadasTable,
+    EmpresaMensagensRespondidasTable,
+    EmpresaMensagensEnviadasTable,
+    MensagensPendentesTable,
+    MensagensRespondidasTable
+)
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import (
@@ -169,28 +177,49 @@ def cancelar_candidatura(request, cand_id):
         "dashboard/aluno/cancelar_candidatura.html",
         {"candidatura": candidatura}
     )
+
+@login_required
+@permission_required("usuarios.acesso_aluno", raise_exception=True)
 def aluno_mensagens(request):
-    msgs = MensagemContato.objects.filter(
+    msgs_respondidas = MensagemContato.objects.filter(
         email=request.user.email,
         respondido=True
+    ).order_by('-data_resposta')
+
+    msgs_enviadas = MensagemContato.objects.filter(
+        email=request.user.email
     ).order_by('-data_envio')
 
-    table = AlunoMensagensTable(msgs)
-    RequestConfig(request, paginate={"per_page": 10}).configure(table)
-
-    form = ContatoForm(initial={"nome": request.user.username , "email": request.user.email})
+    table_respondidas = AlunoMensagensRespondidasTable(msgs_respondidas)
+    table_enviadas = AlunoMensagensEnviadasTable(msgs_enviadas)
+    
+    RequestConfig(request, paginate={"per_page": 10}).configure(table_respondidas)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table_enviadas)
 
     return render(request, "dashboard/aluno/mensagens.html", {
-        "table": table,
-        "form": form,
+        "table_respondidas": table_respondidas,
+        "table_enviadas": table_enviadas,
     })
 
-def enviar_mensagem(request):
+@login_required
+@permission_required("usuarios.acesso_aluno", raise_exception=True)
+def aluno_enviar_mensagem(request):
     if request.method == "POST":
-        form = ContatoForm(request.POST)
-        if form.is_valid():
-            form.save()
+        assunto = request.POST.get("assunto", "").strip()
+        mensagem = request.POST.get("mensagem", "").strip()
+        
+        if assunto and mensagem:
+            MensagemContato.objects.create(
+                nome=request.user.get_full_name() or request.user.username,
+                email=request.user.email,
+                assunto=assunto,
+                mensagem=mensagem,
+                respondido=False
+            )
             messages.success(request, "Mensagem enviada com sucesso!")
+        else:
+            messages.error(request, "Assunto e mensagem são obrigatórios.")
+    
     return redirect("dashboard:aluno_mensagens")
 
 # Empresa
@@ -217,21 +246,51 @@ def empresa_painel(request):
     }
 
     return render(request, "dashboard/empresa/painel.html", context)
+
+@login_required
+@permission_required("usuarios.acesso_empresa", raise_exception=True)
 def empresa_mensagens(request):
-    msgs = MensagemContato.objects.filter(
+    msgs_respondidas = MensagemContato.objects.filter(
         email=request.user.email,
         respondido=True
+    ).order_by('-data_resposta')
+
+    msgs_enviadas = MensagemContato.objects.filter(
+        email=request.user.email
     ).order_by('-data_envio')
 
-    table = EmpresaMensagensTable(msgs)
-    RequestConfig(request, paginate={"per_page": 10}).configure(table)
-
-    form = ContatoForm(initial={"nome": request.user.username , "email": request.user.email})
+    table_respondidas = EmpresaMensagensRespondidasTable(msgs_respondidas)
+    table_enviadas = EmpresaMensagensEnviadasTable(msgs_enviadas)
+    
+    RequestConfig(request, paginate={"per_page": 10}).configure(table_respondidas)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table_enviadas)
 
     return render(request, "dashboard/empresa/mensagens.html", {
-        "table": table,
-        "form": form,
+        "table_respondidas": table_respondidas,
+        "table_enviadas": table_enviadas,
     })
+
+@login_required
+@permission_required("usuarios.acesso_empresa", raise_exception=True)
+def empresa_enviar_mensagem(request):
+    if request.method == "POST":
+        assunto = request.POST.get("assunto", "").strip()
+        mensagem = request.POST.get("mensagem", "").strip()
+        
+        if assunto and mensagem:
+            MensagemContato.objects.create(
+                nome=request.user.get_full_name() or request.user.username,
+                email=request.user.email,
+                assunto=assunto,
+                mensagem=mensagem,
+                respondido=False
+            )
+            messages.success(request, "Mensagem enviada com sucesso!")
+        else:
+            messages.error(request, "Assunto e mensagem são obrigatórios.")
+    
+    return redirect("dashboard:empresa_mensagens")
+
 @login_required
 @permission_required("usuarios.acesso_empresa", raise_exception=True)
 @permission_required("usuarios.empresa_aprovada", raise_exception=True)
@@ -247,6 +306,7 @@ def empresa_vagas(request):
     return render(request, "dashboard/empresa/minhas_vagas.html", {
         "vagas": vagas,
     })
+
 @login_required
 @permission_required("usuarios.can_post_vaga", raise_exception=True)
 def empresa_cadastrar_vaga(request):
@@ -255,7 +315,6 @@ def empresa_cadastrar_vaga(request):
     if request.user.tipo == "empresa" and not request.user.is_approved:
         messages.warning(request, "Aguarde sua empresa ser aprovada pela coordenação.")
         return redirect("dashboard:empresa_painel")
-
 
     form = VagaForm(request.POST or None)
 
@@ -390,6 +449,7 @@ def empresa_acompanhar_vagas(request):
         "table": table,
         "etapa_choices": Vaga.ETAPA_CHOICES,
     })
+
 @login_required
 @permission_required("usuarios.acesso_empresa", raise_exception=True)
 def empresa_atualizar_etapa(request, vaga_id):
@@ -464,9 +524,9 @@ def gerenciar_por_tipo(request, tipo):
         "tipo": tipo,
         "total": usuarios.count(),
     })
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-
 def usuario_mudar_status(request):
     acao = request.GET.get("acao")
     usuario_id = request.GET.get("usuario_id")
@@ -485,6 +545,7 @@ def usuario_mudar_status(request):
         "dashboard:gerenciar_por_tipo",
         tipo=usuario.tipo
     )
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def usuario_excluir(request, pk):
@@ -497,6 +558,7 @@ def usuario_excluir(request, pk):
     usuario.delete()
     messages.success(request, "Usuário excluído com sucesso.")
     return redirect(request.META.get("HTTP_REFERER", "/"))
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def usuario_editar(request, pk):
@@ -516,6 +578,7 @@ def usuario_editar(request, pk):
         "form": form,
         "usuario": usuario
     })
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_empresa_action(request, user_id):
@@ -539,6 +602,7 @@ def reprovar_empresa_action(request, user_id):
 
     messages.error(request, "Empresa reprovada. O cadastro será mantido, porém sem acesso às funcionalidades.")
     return redirect("dashboard:aprovar_empresas")
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_aluno_action(request, user_id):
@@ -563,7 +627,6 @@ def reprovar_aluno_action(request, user_id):
     messages.error(request, "Aluno reprovado pela coordenação.")
     return redirect("dashboard:aprovar_alunos")
 
-
 # ---------------------------------------------------------
 #   APROVAR VAGAS (mantido como estava)
 # ---------------------------------------------------------
@@ -581,7 +644,6 @@ def aprovar_vagas(request):
         "total": vagas.count(),
     })
 
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def aprovar_vaga_action(request, vaga_id):
@@ -598,7 +660,6 @@ def aprovar_vaga_action(request, vaga_id):
     messages.success(request, "Vaga aprovada e publicada com sucesso!")
     return redirect("dashboard:aprovar_vagas")
 
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def reprovar_vaga_action(request, vaga_id):
@@ -613,13 +674,11 @@ def reprovar_vaga_action(request, vaga_id):
     messages.warning(request, "Vaga reprovada.")
     return redirect("dashboard:aprovar_vagas")
 
-
 # ---------------------------------------------------------
-#   ACOMPANHAR VAGAS (empresa)
+#   ACOMPANHAR VAGAS (coordenacao)
 # ---------------------------------------------------------
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-
 def acompanhar_vagas(request):
 
     qs = Vaga.objects.all().order_by('-data_publicacao', '-id')
@@ -669,6 +728,7 @@ def coordenacao_minhas_vagas(request):
     return render(request, "dashboard/coordenacao/minhas_vagas.html", {
         "vagas": vagas
     })
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def coordenacao_editar_vaga(request, vaga_id):
@@ -695,6 +755,7 @@ def coordenacao_editar_vaga(request, vaga_id):
         "form": form,
         "vaga": vaga
     })
+
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def coordenacao_excluir_vaga(request, vaga_id):
@@ -739,7 +800,6 @@ def coordenacao_cadastrar_vaga(request):
         "form": form,
     })
 
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def tornar_admin(request, user_id):
@@ -771,7 +831,6 @@ def listar_perfis(request):
         "total": perfis.count(),
     })
 
-    
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def editar_perfil_formacao(request, pk=None):
@@ -935,6 +994,7 @@ def site_config(request):
         "form": form,
         "config": config
     })
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -951,6 +1011,7 @@ def meu_perfil(request):
         "foto": foto,
         "icone": icone,
     })
+
 @login_required
 def editar_perfil(request):
     user = request.user
@@ -980,18 +1041,33 @@ def editar_perfil(request):
         "form": form
     })
 
-
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
 def mensagens_contato(request):
-    mensagens = MensagemContato.objects.all()
+    mensagens_todas = MensagemContato.objects.all().order_by('-data_envio')
+    
+    mensagens_pendentes = MensagemContato.objects.filter(
+        respondido=False
+    ).order_by('-data_envio')
+    
+    mensagens_respondidas = MensagemContato.objects.filter(
+        respondido=True
+    ).order_by('-data_envio')
 
-    table = MensagensContatoTable(mensagens)
-    RequestConfig(request, paginate={"per_page": 10}).configure(table)
+    table_todas = MensagensContatoTable(mensagens_todas)
+    table_pendentes = MensagensPendentesTable(mensagens_pendentes)
+    table_respondidas = MensagensRespondidasTable(mensagens_respondidas)
+    
+    RequestConfig(request, paginate={"per_page": 10}).configure(table_todas)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table_pendentes)
+    RequestConfig(request, paginate={"per_page": 10}).configure(table_respondidas)
 
     return render(request, "dashboard/coordenacao/mensagens_contato.html", {
-        "table": table,
+        "table_todas": table_todas,
+        "table_pendentes": table_pendentes,
+        "table_respondidas": table_respondidas,
     })
+
 def responder_mensagem(request, pk):
     msg = get_object_or_404(MensagemContato, id=pk)
 

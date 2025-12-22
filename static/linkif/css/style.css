@@ -234,8 +234,9 @@ a:hover {
 
 /* botoes entrar e cadastre-se */
 .btn-entrar,
-.btn-cadastrese {
-  border-radius: 40px;
+.btn-cadastrese,
+.btn-auth {
+  border-radius: 40px !important;
   padding: 8px 22px;
   font-weight: 600;
   display: inline-flex;
@@ -262,7 +263,8 @@ a:hover {
   color: #fff;
 }
 
-.btn-cadastrese:hover {
+.btn-cadastrese:hover,
+.btn-auth:hover {
   transform: translateY(-1px);
 }
 
@@ -271,6 +273,12 @@ a:hover {
   font-size: 1.1rem;
   margin-right: 6px;
 }
+
+.btn-auth {
+  color: var(--accent-blue) !important;
+  border-color: var(--accent-blue) !important;
+}
+
 
 .avatar {
   width: 70px;

@@ -196,16 +196,18 @@ class CandidaturaForm(forms.ModelForm):
 class ContatoForm(forms.ModelForm):
     class Meta:
         model = MensagemContato
-        fields = ['nome', 'email', 'mensagem']
+        fields = ['nome', 'email', 'assunto', 'mensagem']
 
         labels = {
             'nome': 'Nome',
             'email': 'E-mail',
+            'assunto': 'Assunto',
             'mensagem': 'Mensagem',
         }
 
         widgets = {
             'nome': forms.TextInput(attrs={'readonly': 'readonly'}),
             'email': forms.EmailInput(attrs={'readonly': 'readonly'}),
+            'assunto': forms.Textarea(attrs={'rows': 1}),
             'mensagem': forms.Textarea(attrs={'rows': 3}),
         }
