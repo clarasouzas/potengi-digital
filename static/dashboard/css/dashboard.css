@@ -485,10 +485,10 @@ body {
 }
 
 .title-dashboard-danger {
-    margin-left: 20px;
     font-size: 28px;
     font-weight: 700;
     color: var(--accent-red);
+
     margin-bottom: 25px;
 }
 
@@ -699,138 +699,6 @@ body {
     .vaga-card {
         padding: 16px;
     }
-}
-
-/* Modal Vagas */
-
-.modal-vaga {
-    position: fixed;
-    inset: 0;
-
-    background: rgba(15, 27, 40, 0.55);
-    backdrop-filter: blur(6px);
-
-    padding: 20px;
-    display: none;
-
-    justify-content: center;
-    align-items: center;
-
-    z-index: 9999;
-}
-
-.modal-vaga:target {
-    display: flex;
-}
-
-.modal-content-vaga {
-    width: 100%;
-    max-width: 700px;
-
-    background: var(--branco);
-    border-radius: 22px;
-    padding: 40px;
-    padding-bottom: 60px;
-
-    position: relative;
-    animation: modalIn .25s ease;
-
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-}
-
-@keyframes modalIn {
-    0% {
-        transform: scale(.85);
-        opacity: 0;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.modal-close {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-
-    width: 44px;
-    height: 44px;
-
-    border-radius: 50%;
-    background: var(--branco);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 1.3rem;
-    color: var(--gray-800);
-    transition: 0.2s;
-}
-
-.modal-close:hover {
-    background: var(--primary-light-4);
-}
-
-.modal-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 10px;
-}
-
-.tag-chip {
-    background: var(--primary-light-5);
-
-    padding: 6px 12px;
-    border-radius: 20px;
-
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--primary-dark-3);
-}
-
-.modal-date-chip {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-
-    font-size: 15px;
-    font-style: italic;
-    color: var(--gray-600);
-
-
-    padding: 6px 14px;
-    border-radius: 50px;
-
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.modal-btn-apply {
-    display: block;
-    margin-top: 28px;
-
-    padding: 13px 16px;
-    background: var(--accent-blue);
-    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
-
-
-    color: var(--branco);
-    border-radius: 30px;
-
-    font-weight: 700;
-    text-align: center;
-    transition: .25s ease;
-}
-
-
-.modal-btn-apply:hover {
-    text-decoration: none;
-    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35);
 }
 
 
@@ -2209,4 +2077,163 @@ body {
         max-width: 150px;
         border-radius: 20px;
     }
+}
+/* =====================================================
+   MODAL VAGA — CONTROLE VIA JS (AJAX)
+===================================================== */
+.modal-vaga {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(15, 27, 40, 0.55);
+    backdrop-filter: blur(6px);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+    z-index: 9999;
+}
+
+.modal-vaga.ativo {
+    display: flex;
+}
+
+/* ===== CONTEÚDO ===== */
+.modal-content-vaga {
+    width: 100%;
+    max-width: 760px;
+
+    background: var(--branco);
+    border-radius: 22px;
+
+    padding: 48px;
+    padding-bottom: 56px;
+
+    position: relative;
+    animation: modalIn .25s ease;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* ===== ANIMAÇÃO ===== */
+@keyframes modalIn {
+    0% {
+        transform: scale(.85);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ===== BOTÃO FECHAR ===== */
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+    background: var(--branco);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.3rem;
+    color: var(--gray-800);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-close:hover {
+    background: var(--primary-light-4);
+}
+
+/* ===== BADGES ===== */
+.modal-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.tag-chip {
+    background: var(--primary-light-5);
+    padding: 6px 12px;
+    border-radius: 20px;
+
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary-dark-3);
+}
+
+/* ===== DATA ===== */
+.modal-date-chip {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+
+    font-size: 15px;
+    font-style: italic;
+    color: var(--gray-600);
+
+    padding: 6px 14px;
+    border-radius: 50px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ===== BOTÃO PRINCIPAL ===== */
+.modal-btn-apply {
+    display: block;
+    margin-top: 28px;
+
+    padding: 13px 16px;
+    background: var(--accent-blue);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+
+    color: var(--branco);
+    border-radius: 30px;
+
+    font-weight: 700;
+    text-align: center;
+    transition: .25s ease;
+}
+
+.modal-btn-apply:hover {
+    text-decoration: none;
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 576px) {
+    .modal-content-vaga {
+        padding: 28px;
+        padding-bottom: 50px;
+    }
+}
+/* ===============================
+   MODAL — SCROLL INTERNO
+================================ */
+
+.modal-vaga {
+    align-items: flex-start; /* evita centralizar verticalmente */
+    overflow-y: auto;        /* permite rolar se necessário */
+}
+
+.modal-content-vaga {
+    max-height: 90vh;        /* nunca passa da tela */
+    overflow-y: auto;        /* SCROLL AQUI */
+    margin: 40px auto;       /* respiro em cima e embaixo */
 }

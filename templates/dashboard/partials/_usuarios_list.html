@@ -1,0 +1,21 @@
+{% for user in users %}
+    <div class="card-list">
+        <div class="card-title">
+            {{ user.nome|default:user.email }}
+        </div>
+
+        <div class="card-meta">
+            <i class="bi bi-person-circle me-1"></i> {{ user.tipo|title }}
+        </div>
+
+        <div class="card-actions">
+            <a href="#" class="btn-outline-action" data-vaga-form="{% url 'dashboard:ajax_usuario_editar' user.id %}" data-modal="modal-global">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+
+            <a href="#" class="btn-outline-action btn-danger" data-vaga-excluir="{% url 'dashboard:ajax_usuario_excluir' user.id %}" data-modal="modal-global">
+                <i class="bi bi-trash"></i> Excluir
+            </a>
+        </div>
+    </div>
+{% endfor %}

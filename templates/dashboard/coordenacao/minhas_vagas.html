@@ -6,143 +6,81 @@
 {% block conteudo %}
 
 <h2 class="title-dashboard mb-4">
-    <i class="bi bi-briefcase me-2"></i>Minhas Vagas (Coordenação)
+    <i class="bi bi-briefcase me-2"></i> Minhas Vagas
 </h2>
+
+<!-- CRIAR VAGA (NÃO AJAX) -->
+<div class="mb-3">
+    <a href="{% url 'dashboard:coordenacao_cadastrar_vaga' %}"
+       class="btn-table">
+        <i class="bi bi-plus-circle me-1"></i> Nova vaga
+    </a>
+</div>
 
 {% if vagas %}
 
 <div class="row g-3">
+{% for vaga in vagas %}
+<div class="col-12 col-md-6 col-lg-4">
 
-    {% for vaga in vagas %}
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="card-list">
 
-        <div class="card-list">
+        <div class="card-title">{{ vaga.titulo }}</div>
 
-            <!-- Título -->
-            <div class="card-title">{{ vaga.titulo }}</div>
-
-            <!-- Dono da vaga -->
-            <div class="card-meta">
-                <i class="bi bi-building me-1"></i>
-                {{ vaga.empresa.nome|default:"Coordenação" }}
-            </div>
-
-            <!-- Cidade -->
-            <div class="card-meta">
-                <i class="bi bi-geo-alt me-1"></i>
-                {{ vaga.cidade|default:"Cidade não informada" }}
-            </div>
-
-            <!-- Status -->
-            <div class="mt-2">
-                {% if vaga.status == "pendente" %}
-                    <span class="badge pend"><i class="bi bi-hourglass-split me-1"></i>Pendente</span>
-
-                {% elif vaga.status == "aprovada" %}
-                    <span class="badge aprov"><i class="bi bi-check2-circle me-1"></i>Aprovada</span>
-
-                {% elif vaga.status == "reprovada" %}
-                    <span class="badge recs"><i class="bi bi-x-circle me-1"></i>Reprovada</span>
-
-                {% elif vaga.status == "encerrada" %}
-                    <span class="badge anls"><i class="bi bi-slash-circle me-1"></i>Encerrada</span>
-                {% endif %}
-            </div>
-
-            <!-- Ações -->
-            <div class="card-actions">
-
-                <a href="#modal-vaga-{{ vaga.id }}" class="btn-outline-action">
-                    <i class="bi bi-eye"></i> Ver
-                </a>
-
-                <a href="{% url 'dashboard:coordenacao_editar_vaga' vaga.id %}"
-                    class="btn-outline-action">
-                        <i class="bi bi-pencil"></i> Editar
-                </a>
-
-                <a href="{% url 'dashboard:coordenacao_excluir_vaga' vaga.id %}"
-                    class="btn-outline-action">
-                        <i class="bi bi-trash"></i> Excluir
-                </a>
-
-            </div>
-
+        <div class="card-meta">
+            <i class="bi bi-geo-alt me-1"></i>
+            {{ vaga.cidade|default:"Cidade não informada" }}
         </div>
-    </div>
 
+        <div class="mt-2">
+            <span class="badge aprov">{{ vaga.get_status_display }}</span>
+        </div>
 
-    <!-- MODAL -->
-    <div id="modal-vaga-{{ vaga.id }}" class="modal-vaga">
+        <div class="card-actions">
 
-        <div class="modal-content-vaga">
+            <!-- DETALHAR (AJAX) -->
+            <a href="#"
+               class="btn-outline-action"
+               data-vaga-detalhe="{% url 'dashboard:ajax_vaga_detalhe' vaga.id %}"
+               data-modal="modal-vaga">
+                <i class="bi bi-eye"></i> Ver
+            </a>
 
-            <a href="#" class="modal-close"><i class="bi bi-x-lg"></i></a>
+            <!-- EDITAR (AJAX – ID OBRIGATÓRIO) -->
+            <a href="#"
+               class="btn-outline-action"
+               data-vaga-form="{% url 'dashboard:ajax_vaga_form' vaga.id %}"
+               data-modal="modal-vaga">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
 
-            <h3 class="title-section fw-bold">{{ vaga.titulo }}</h3>
-
-            <div class="modal-badges">
-
-                <span class="tag-chip">
-                    <i class="bi bi-buildings"></i>
-                    {{ vaga.empresa.nome|default:"COORDENAÇÃO" }}
-                </span>
-
-                <span class="tag-chip">
-                    <i class="bi bi-geo-alt"></i> {{ vaga.cidade|default:"-" }}/RN
-                </span>
-
-                <span class="tag-chip">
-                    <i class="bi bi-briefcase"></i> {{ vaga.get_tipo_display }}
-                </span>
-
-                {% if vaga.remuneracao %}
-                <span class="tag-chip">
-                    <i class="bi bi-cash"></i> R$ {{ vaga.remuneracao }}
-                </span>
-                {% endif %}
-
-            </div>
-
-            <hr>
-
-            <h5 class="title-section">Descrição</h5>
-            <p>{{ vaga.descricao|default:"Sem descrição informada." }}</p>
-
-            {% if vaga.requisitos %}
-            <h5 class="title-section">Requisitos</h5>
-            <p>{{ vaga.requisitos }}</p>
-            {% endif %}
-
-            {% if vaga.data_publicacao %}
-            <span class="modal-date-chip">
-                Publicada em {{ vaga.data_publicacao|date:"d/m/Y" }}
-            </span>
-            {% endif %}
+            <!-- EXCLUIR (AJAX) -->
+            <a href="#"
+               class="btn-outline-action text-danger"
+               data-vaga-excluir="{% url 'dashboard:ajax_vaga_excluir' vaga.id %}"
+               data-modal="modal-vaga">
+                <i class="bi bi-trash"></i> Excluir
+            </a>
 
         </div>
 
     </div>
 
-    {% endfor %}
-
+</div>
+{% endfor %}
 </div>
 
 {% else %}
 
-<div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
-
-    <img src="{% static 'assets/img/empty.svg' %}"
-         class="empty-img"
-         style="width: 420px; max-width: 100%;">
-
-    <div class="empty-state-text" style="max-width: 380px;">
-        <h5 class="fw-bold mb-2">Nenhuma vaga criada pela coordenação</h5>
-        <p class="text-muted m-0">Crie uma nova vaga para começar.</p>
-    </div>
-
-</div>
-
 {% endif %}
 
+<!-- MODAL ÚNICO REUTILIZÁVEL -->
+<div id="modal-vaga" class="modal-vaga">
+    <div class="modal-content-vaga"></div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

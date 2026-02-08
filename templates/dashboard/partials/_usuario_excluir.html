@@ -1,0 +1,6 @@
+<p>Tem certeza que deseja excluir o usuário <strong>{{ usuario.nome }}</strong>?</p>
+<form method="post" action="{% url 'dashboard:ajax_usuario_excluir' usuario.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger w-100">Excluir</button>
+    <button type="button" class="btn btn-secondary w-100" data-modal-close>Cancelar</button>
+</form>

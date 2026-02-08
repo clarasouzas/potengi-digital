@@ -1,0 +1,5 @@
+<form method="post" action="{% url 'dashboard:ajax_usuario_editar' usuario.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- Aqui usamos o crispy_forms_tags para estilizar o formulário -->
+    <button type="submit" class="btn btn-primary w-100">Salvar alterações</button>
+</form>

@@ -1,0 +1,36 @@
+{% load crispy_forms_tags %}
+
+<form id="form-vaga-ajax"
+      method="post"
+      action="{% if vaga %}
+                 {% url 'dashboard:ajax_vaga_form' vaga.id %}
+              {% else %}
+                 {% url 'dashboard:ajax_vaga_form' %}
+              {% endif %}">
+    {% csrf_token %}
+
+    <h4 class="fw-bold mb-3 section-title">
+        {% if vaga %}
+            <i class="bi bi-pencil-square me-2 "></i> Editar vaga
+        {% else %}
+            <i class="bi bi-plus-circle me-2"></i> Nova vaga
+        {% endif %}
+    </h4>
+
+    {{ form|crispy }}
+
+    <div class="d-flex gap-2 mt-4">
+    <button type="submit"
+            class="btn-table w-100 rounded-4">
+        <i class="bi bi-check-circle me-1"></i> Salvar
+    </button>
+
+    <button type="button"
+            class="btn btn-secondary w-100 rounded-4"
+            data-bs-dismiss="modal"
+            data-modal-close>
+        Cancelar
+    </button>
+</div>
+
+</form>

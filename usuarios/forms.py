@@ -22,6 +22,10 @@ class UsuarioCreationForm(UserCreationForm):
         self.helper.form_tag = False
 
 
+class UsuarioForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['email', 'telefone', 'status_aprovacao']
 # ============================================
 #   CADASTRO — ALUNO
 # ============================================

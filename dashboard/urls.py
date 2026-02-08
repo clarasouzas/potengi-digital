@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from . import views_ajax
 app_name = "dashboard"
 
 urlpatterns = [
@@ -138,4 +138,39 @@ path("coordenacao/excluir-vaga/<int:vaga_id>/",
     # ---------------------------
     path("coordenacao/mensagens/", views.mensagens_contato, name="mensagens_contato"),
     path("mensagens/<int:pk>/responder/", views.responder_mensagem, name="responder_mensagem"),
+ # Detalhe da vaga (modal)
+    path(
+        "ajax/vaga/<int:vaga_id>/detalhe/",
+        views_ajax.ajax_vaga_detalhe,
+        name="ajax_vaga_detalhe"
+    ),
+
+    # Formulário EDITAR vaga (ID OBRIGATÓRIO)
+    path(
+        "ajax/vaga/<int:vaga_id>/form/",
+        views_ajax.ajax_vaga_form,
+        name="ajax_vaga_form"
+    ),
+
+    # Excluir vaga
+    path(
+        "ajax/vaga/<int:vaga_id>/excluir/",
+        views_ajax.ajax_vaga_excluir,
+        name="ajax_vaga_excluir"
+    ),
+# Aprovar vaga
+    path(
+        'aprovar_vaga/<int:vaga_id>/',
+        views_ajax.ajax_aprovar_vaga,
+        name='ajax_aprovar_vaga'
+    ),
+
+    # Reprovar vaga
+    path(
+        'reprovar_vaga/<int:vaga_id>/',
+        views_ajax.ajax_reprovar_vaga,
+        name='ajax_reprovar_vaga'
+    ),
+    # Ajax - Mensagens
+path('ajax/mensagens/', views_ajax.ajax_mensagens, name='ajax_mensagens'),
 ]

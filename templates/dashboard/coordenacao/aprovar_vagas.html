@@ -22,12 +22,13 @@
 {% for row in table.page.object_list %}
 {% with vaga=row.record %}
 
+<!-- Modal de Aprovação -->
 <div id="aprovar-{{ vaga.id }}" class="modal-vaga">
 
     <div class="modal-content-vaga">
 
         <!-- Botão Fechar -->
-        <a href="#" class="modal-close">
+        <a href="#" class="modal-close" onclick="fecharModal('aprovar-{{ vaga.id }}')">
             <i class="bi bi-x-lg"></i>
         </a>
 
@@ -46,30 +47,28 @@
 
         <!-- Botões -->
         <div class="d-flex gap-3 mt-4">
-
-            <a href="{% url 'dashboard:aprovar_vaga_action' vaga.id %}"
-               class="btn-table flex-grow-1 text-center">
+            <a href="#"
+               class="btn-table flex-grow-1 text-center approve-vaga"
+               data-vaga-id="{{ vaga.id }}" data-action="aprovar"
+               data-url="{% url 'dashboard:ajax_aprovar_vaga' vaga.id %}">
                 Aprovar
             </a>
-
-            <a href="#" 
-               class="btn-table flex-grow-1 text-center"
+            <a href="#" class="btn-table flex-grow-1 text-center cancel-action" onclick="fecharModal('aprovar-{{ vaga.id }}')"
                style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
                 Cancelar
             </a>
-
         </div>
 
     </div>
 </div>
 
-<!-- MODAL REPROVAR -->
+<!-- Modal de Reprovação -->
 <div id="reprovar-{{ vaga.id }}" class="modal-vaga">
 
     <div class="modal-content-vaga">
 
         <!-- Botão Fechar -->
-        <a href="#" class="modal-close">
+        <a href="#" class="modal-close" onclick="fecharModal('reprovar-{{ vaga.id }}')">
             <i class="bi bi-x-lg"></i>
         </a>
 
@@ -87,24 +86,20 @@
 
         <!-- Botões -->
         <div class="d-flex gap-3 mt-4">
-
-            <a href="{% url 'dashboard:reprovar_vaga_action' vaga.id %}"
-               class="btn-delete btn-table flex-grow-1 text-center">
+            <a href="#" class="btn-delete btn-table flex-grow-1 text-center reprovar-vaga"
+               data-vaga-id="{{ vaga.id }}" data-action="reprovar"
+               data-url="{% url 'dashboard:ajax_reprovar_vaga' vaga.id %}">
                 Reprovar
             </a>
-
-            <a href="#"
-               class="btn-table flex-grow-1 text-center"
+            <a href="#" class="btn-table flex-grow-1 text-center cancel-action" onclick="fecharModal('reprovar-{{ vaga.id }}')"
                style="background: var(--gray-300); color: var(--gray-800); box-shadow:none;">
                 Cancelar
             </a>
-
         </div>
 
     </div>
 
 </div>
-
 
 {% endwith %}
 {% endfor %}
@@ -112,20 +107,17 @@
 {% else %}
 
 <div class="empty-state-wrapper d-flex align-items-center justify-content-center gap-4 py-5">
-
-    <img src="{% static 'assets/img/empty.svg' %}"
-         class="empty-img"
-         style="width: 420px; max-width: 100%;">
-
+    <img src="{% static 'assets/img/empty.svg' %}" class="empty-img" style="width: 420px; max-width: 100%;">
     <div class="empty-state-text" style="max-width: 380px;">
         <h5 class="fw-bold mb-2">Nenhuma vaga aguardando aprovação</h5>
-        <p class="text-muted m-0">
-            Assim que novas vagas forem criadas, aparecerão aqui.
-        </p>
+        <p class="text-muted m-0">Assim que novas vagas forem criadas, aparecerão aqui.</p>
     </div>
-
 </div>
 
 {% endif %}
 
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

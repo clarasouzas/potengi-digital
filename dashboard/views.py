@@ -39,14 +39,11 @@ from usuarios.forms import (
 )
 
 from dashboard.tables import (
+    AcompanharVagasTable,
     CandidaturasRecebidasTable,
     AprovarVagasTable,
     PerfisFormacaoTable,
     MensagensContatoTable,
-    AlunoMensagensTable,
-    EmpresaMensagensTable,
-    AcompanharVagasTable,
-    AcompanharVagasEmpresaTable,
     UsuariosGeraisTable
 )
 
@@ -175,7 +172,7 @@ def aluno_mensagens(request):
         respondido=True
     ).order_by('-data_envio')
 
-    table = AlunoMensagensTable(msgs)
+    table = MensagensContatoTable(msgs)
     RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     form = ContatoForm(initial={"nome": request.user.username , "email": request.user.email})
@@ -223,7 +220,7 @@ def empresa_mensagens(request):
         respondido=True
     ).order_by('-data_envio')
 
-    table = EmpresaMensagensTable(msgs)
+    table = MensagensContatoTable(msgs)
     RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     form = ContatoForm(initial={"nome": request.user.username , "email": request.user.email})
@@ -383,7 +380,7 @@ def empresa_acompanhar_vagas(request):
         status="aprovada"
     ).order_by("-data_publicacao")
 
-    table = AcompanharVagasEmpresaTable(vagas, request=request)
+    table = AcompanharVagasTable(vagas, request=request)
     RequestConfig(request, paginate={"per_page": 10}).configure(table)
 
     return render(request, "dashboard/empresa/acompanhar_vagas.html", {

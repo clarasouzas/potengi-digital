@@ -1,0 +1,46 @@
+<h3 class="fw-bold mb-3 section-title">{{ vaga.titulo }}</h3>
+
+<div class="modal-badges mb-3">
+
+    <span class="tag-chip">
+        <i class="bi bi-building"></i> {{ vaga.empresa.nome }}
+    </span>
+
+    <span class="tag-chip">
+        <i class="bi bi-geo-alt"></i>
+        {{ vaga.cidade|default:"-" }}
+    </span>
+
+    <span class="tag-chip">
+        <i class="bi bi-briefcase"></i>
+        {{ vaga.get_tipo_display }}
+    </span>
+
+    <span class="tag-chip">
+        <i class="bi bi-laptop"></i>
+        {{ vaga.get_modalidade_display }}
+    </span>
+
+</div>
+
+<hr>
+
+<h5 class="fw-bold mb-3">Descrição</h5>
+<p>{{ vaga.descricao|linebreaks }}</p>
+
+{% if vaga.requisitos %}
+<h5 class="fw-bold mb-3">Requisitos</h5>
+<p>{{ vaga.requisitos|linebreaks }}</p>
+{% endif %}
+
+{% if vaga.remuneracao %}
+<p class="mt-3 fw-semibold">
+    <i class="bi bi-cash"></i> R$ {{ vaga.remuneracao }}
+</p>
+{% endif %}
+
+{% if vaga.data_publicacao %}
+<span class="modal-date-chip">
+    Publicada em {{ vaga.data_publicacao|date:"d/m/Y" }}
+</span>
+{% endif %}
