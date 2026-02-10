@@ -1,38 +1,100 @@
-from django.http import JsonResponse, HttpResponseForbidden
-from django.shortcuts import get_object_or_404, render
-from django.contrib.auth.decorators import login_required, permission_required
-from django.template.loader import render_to_string
-from linkif.models import Vaga, Candidatura
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils import timezone
+
+from linkif.models import Vaga
 from linkif.forms import VagaForm
-import time
-from django.contrib.messages import get_messages
 
+
+# ===================== LISTAR =====================
 @login_required
-@permission_required("usuarios.acesso_empresa", raise_exception=True)
-def ajax_vaga_detalhe(request, vaga_id):
-    vaga = get_object_or_404(Vaga, id=vaga_id)
-    html = render_to_string(
-        "dashboard/partials/_vaga_detalhe.html",
-        {"vaga": vaga},
-        request=request
+def ajax_listar_vagas(request):
+
+    if request.user.tipo == "empresa":
+        vagas = Vaga.objects.filter(empresa=request.user)
+    elif request.user.tipo == "coordenador":
+        vagas = Vaga.objects.all()
+    else:
+        vagas = Vaga.objects.none()
+
+    vagas = vagas.order_by("-id")
+
+    context = {
+        "objects": vagas,
+        "url_detalhar": "dashboard:ajax_detalhar_vaga",
+        "url_editar": "dashboard:ajax_editar_vaga",
+        "url_remover": "dashboard:ajax_remover_vaga",
+    }
+
+    return render(
+        request,
+        "dashboard/partials/vagas/_lista_vagas_cards.html",
+        context
     )
-    return JsonResponse({"html": html})
 
+
+# ===================== CRIAR =====================
 @login_required
-@permission_required("usuarios.can_post_vaga", raise_exception=True)
-def ajax_vaga_form(request, vaga_id=None):
-    """
-    GET  -> retorna formulário (criar ou editar)
-    POST -> salva vaga
-    """
-    vaga = None
+def ajax_criar_vaga(request):
 
-    if vaga_id:
-        vaga = get_object_or_404(Vaga, id=vaga_id)
+    if request.method == "POST":
+        form = VagaForm(request.POST)
 
-        # empresa só edita a própria vaga
-        if request.user.tipo == "empresa" and vaga.empresa != request.user:
-            return HttpResponseForbidden()
+        if form.is_valid():
+            vaga = form.save(commit=False)
+            vaga.empresa = request.user
+
+            if request.user.tipo == "coordenador":
+                vaga.status = "aprovada"
+                vaga.etapa = "publicada"
+                vaga.data_publicacao = timezone.now()
+                vaga.aprovado_por = request.user
+                messages.success(
+                    request,
+                    "Vaga criada e publicada com sucesso."
+                )
+            else:
+                vaga.status = "pendente"
+                vaga.etapa = "pendente_aprovacao"
+                messages.info(
+                    request,
+                    "Vaga criada e enviada para aprovação."
+                )
+
+            vaga.save()
+            return JsonResponse({"ok": True}, status=201)
+
+        # formulário inválido → devolve HTML do form
+        return render(
+            request,
+            "dashboard/partials/vagas/_vaga_form.html",
+            {
+                "form": form,
+                "nome": "vaga",
+                "erro": "Erro ao criar vaga. Verifique os dados.",
+            },
+            status=400
+        )
+
+    return render(
+        request,
+        "dashboard/partials/vagas/_vaga_form.html",
+        {
+            "form": VagaForm(),
+            "nome": "vaga",
+        }
+    )
+
+
+# ===================== EDITAR =====================
+@login_required
+def ajax_editar_vaga(request, id):
+    vaga = get_object_or_404(Vaga, id=id)
+
+    if request.user.tipo == "empresa" and vaga.empresa != request.user:
+        return JsonResponse({"ok": False}, status=403)
 
     if request.method == "POST":
         form = VagaForm(request.POST, instance=vaga)
@@ -40,83 +102,97 @@ def ajax_vaga_form(request, vaga_id=None):
         if form.is_valid():
             vaga = form.save(commit=False)
 
-            if not vaga_id:
-                vaga.empresa = request.user
+            if request.user.tipo == "empresa":
                 vaga.status = "pendente"
-            else:
-                vaga.status = "pendente"
+                vaga.etapa = "pendente_aprovacao"
+                vaga.aprovado_por = None
+                vaga.data_publicacao = None
+                messages.info(
+                    request,
+                    "Alterações enviadas para nova aprovação."
+                )
+
+            elif request.user.tipo == "coordenador":
+                if vaga.status != "aprovada":
+                    vaga.status = "aprovada"
+                    vaga.etapa = "publicada"
+                    vaga.data_publicacao = timezone.now()
+                    vaga.aprovado_por = request.user
+
+                messages.success(
+                    request,
+                    "Vaga atualizada com sucesso."
+                )
 
             vaga.save()
+            return JsonResponse({"ok": True})
 
-            return JsonResponse({"success": True})
-
-        html = render_to_string(
-            "dashboard/partials/_vaga_form.html",
-            {"form": form, "vaga": vaga},
-            request=request
-        )
-        return JsonResponse({"success": False, "html": html})
-
-    else:
-        form = VagaForm(instance=vaga)
-
-        html = render_to_string(
-            "dashboard/partials/_vaga_form.html",
-            {"form": form, "vaga": vaga},
-            request=request
+        # formulário inválido → devolve HTML do form
+        return render(
+            request,
+            "dashboard/partials/vagas/_vaga_form.html",
+            {
+                "form": form,
+                "vaga": vaga,
+                "nome": "vaga",
+                "erro": "Erro ao atualizar vaga.",
+            },
+            status=400
         )
 
-        return JsonResponse({"html": html})
+    return render(
+        request,
+        "dashboard/partials/vagas/_vaga_form.html",
+        {
+            "form": VagaForm(instance=vaga),
+            "vaga": vaga,
+            "nome": "vaga",
+        }
+    )
 
+
+# ===================== DETALHAR =====================
 @login_required
-@permission_required("usuarios.acesso_empresa", raise_exception=True)
-def ajax_vaga_excluir(request, vaga_id):
-    vaga = get_object_or_404(Vaga, id=vaga_id)
+def ajax_detalhar_vaga(request, id):
+    vaga = get_object_or_404(Vaga, id=id)
+
+    return render(
+        request,
+        "dashboard/partials/vagas/_vaga_detalhe.html",
+        {"vaga": vaga}
+    )
+
+
+# ===================== REMOVER =====================
+@login_required
+def ajax_remover_vaga(request, id):
+    vaga = get_object_or_404(Vaga, id=id)
 
     if request.user.tipo == "empresa" and vaga.empresa != request.user:
-        return JsonResponse({"erro": "Sem permissão"}, status=403)
+        messages.error(
+            request,
+            "Você não tem permissão para excluir esta vaga."
+        )
+        return JsonResponse({"ok": False}, status=403)
 
     if request.method == "POST":
-        Candidatura.objects.filter(vaga=vaga).delete()
         vaga.delete()
-        return JsonResponse({"success": True})
+        messages.success(request, "Vaga removida com sucesso.")
+        return JsonResponse({"ok": True})
 
-    html = render_to_string(
-        "dashboard/partials/_vaga_excluir.html",
-        {
-            "vaga": vaga,
-            "action_url": request.path
-        },
-        request=request
+    return render(
+        request,
+        "dashboard/partials/vagas/_vaga_excluir.html",
+        {"vaga": vaga}
     )
-    return JsonResponse({"html": html})
 
-from django.http import JsonResponse
 
+# ===================== MENSAGENS =====================
 @login_required
-@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def ajax_aprovar_vaga(request, vaga_id):
-    vaga = get_object_or_404(Vaga, id=vaga_id)
-
-    if request.method == "POST":
-        vaga.status = "aprovada"
-        vaga.save()
-        return JsonResponse({"success": True})
-
-    return JsonResponse({"success": False})
-
-@login_required
-@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def ajax_reprovar_vaga(request, vaga_id):
-    vaga = get_object_or_404(Vaga, id=vaga_id)
-
-    if request.method == "POST":
-        vaga.status = "reprovada"
-        vaga.save()
-        return JsonResponse({"success": True})
-
-    return JsonResponse({"success": False})
-
 def ajax_mensagens(request):
-    messages = get_messages(request)
-    return render(request, 'partials/_messages.html', {'messages': messages})
+    return render(
+        request,
+        "partials/_messages.html"
+    )
+
+

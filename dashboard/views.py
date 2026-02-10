@@ -229,6 +229,11 @@ def empresa_mensagens(request):
         "table": table,
         "form": form,
     })
+from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import render
+from linkif.models import Vaga
+
+
 @login_required
 @permission_required("usuarios.acesso_empresa", raise_exception=True)
 @permission_required("usuarios.empresa_aprovada", raise_exception=True)
@@ -241,9 +246,24 @@ def empresa_vagas(request):
         .order_by("-id")
     )
 
-    return render(request, "dashboard/empresa/minhas_vagas.html", {
-        "vagas": vagas,
-    })
+    context = {
+        "titulo_pagina": "Minhas Vagas",
+        "subtitulo_pagina": "Vagas cadastradas por sua empresa.",
+        "nome": "vaga",
+
+        # urls ajax (as mesmas)
+        "url_criar": "dashboard:ajax_criar_vaga",
+        "url_detalhar": "dashboard:ajax_detalhar_vaga",
+        "url_editar": "dashboard:ajax_editar_vaga",
+        "url_remover": "dashboard:ajax_remover_vaga",
+
+        # cards
+        "partial": "dashboard/partials/_lista_vagas_cards.html",
+        "objects": vagas,
+    }
+
+    return render(request, "listar.html", context)
+
 @login_required
 @permission_required("usuarios.can_post_vaga", raise_exception=True)
 def empresa_cadastrar_vaga(request):
@@ -663,49 +683,23 @@ def atualizar_etapa_vaga(request, vaga_id):
 def coordenacao_minhas_vagas(request):
     vagas = Vaga.objects.filter(empresa=request.user).order_by("-id")
 
-    return render(request, "dashboard/coordenacao/minhas_vagas.html", {
-        "vagas": vagas
-    })
-@login_required
-@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def coordenacao_editar_vaga(request, vaga_id):
+    context = {
+        "titulo_pagina": "Minhas Vagas",
+        "subtitulo_pagina": "Vagas cadastradas por você.",
+        "nome": "vaga",
 
-    vaga = get_object_or_404(Vaga, id=vaga_id)
+        "url_criar": "dashboard:ajax_criar_vaga",
+        "url_detalhar": "dashboard:ajax_detalhar_vaga",
+        "url_editar": "dashboard:ajax_editar_vaga",
+        "url_remover": "dashboard:ajax_remover_vaga",
 
-    form = VagaForm(request.POST or None, instance=vaga)
+        "partial": "dashboard/partials/vagas/_lista_vagas_cards.html",
+        "objects": vagas,
+    }
 
-    if request.method == "POST":
-        if form.is_valid():
-            vaga = form.save(commit=False)
+    return render(request, "listar.html", context)
 
-            # coordenação pode atualizar sem alterar status
-            vaga.status = "aprovada"
-            vaga.etapa = vaga.etapa or "publicada"
-            vaga.save()
 
-            messages.success(request, "Vaga atualizada com sucesso!")
-            return redirect("dashboard:coordenacao_minhas_vagas")
-
-        messages.error(request, "Corrija os erros do formulário.")
-
-    return render(request, "dashboard/coordenacao/editar_vaga.html", {
-        "form": form,
-        "vaga": vaga
-    })
-@login_required
-@permission_required("usuarios.acesso_coordenacao", raise_exception=True)
-def coordenacao_excluir_vaga(request, vaga_id):
-
-    vaga = get_object_or_404(Vaga, id=vaga_id)
-
-    if request.method == "POST":
-        vaga.delete()
-        messages.success(request, "Vaga excluída com sucesso.")
-        return redirect("dashboard:coordenacao_minhas_vagas")
-
-    return render(request, "dashboard/coordenacao/confirmar_exclusao.html", {
-        "vaga": vaga,
-    })
 
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)

@@ -90,28 +90,9 @@
 
 
 <!-- ===================== MESSAGES ===================== -->
- {% if messages %}
-<div class="global-alert-container">
-
-    {% for message in messages %}
-        <div class="global-alert 
-            {% if 'success' in message.tags %}success{% endif %}
-            {% if 'error' in message.tags %}error{% endif %}
-            {% if 'warning' in message.tags %}warning{% endif %}
-            {% if 'info' in message.tags %}info{% endif %}
-        ">
-            
-            <span class="alert-text">
-                <i class="bi bi-info-circle me-2"></i>
-                {{ message }}
-            </span>
-
-            <span class="close-btn" onclick="this.parentElement.remove()">×</span>
-        </div>
-    {% endfor %}
-
+<div id="div-mensagens">
+    {% include "partials/_messages.html" %}
 </div>
-{% endif %}
 
 
 
@@ -250,44 +231,33 @@
     </main>
 
 </div>
+<!-- ===================== MODAL ÚNICO (AJAX) ===================== -->
+<div class="modal fade" id="modalPadrao" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
 
-<!-- Modal de Exclusão -->
-<div class="modal fade" id="modalExclusaoVaga" tabindex="-1" aria-labelledby="modalExclusaoVagaLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Cabeçalho -->
-            <div class="modal-header">
-                <h5 class="modal-title text-danger" id="modalExclusaoVagaLabel">
-                    <i class="bi bi-trash me-2"></i> Excluir Vaga
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <!-- Corpo do modal -->
-            <div class="modal-body">
-                <p class="fw-semibold fs-5 mb-1">
-                    Tem certeza que deseja excluir?
-                </p>
-                <p class="text-secondary mb-4">
-                    <strong id="vagaTitulo"></strong><br>
-                    Esta ação é permanente e removerá todas as candidaturas relacionadas.
-                </p>
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitulo"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
 
-                <form method="post" id="formExclusaoVaga">
-                    {% csrf_token %}
-                    <div class="d-flex gap-3">
-                        <button type="submit" class="soft-btn-danger flex-fill">
-                            <i class="bi bi-trash-fill me-1"></i> Excluir Vaga
-                        </button>
-                        <button type="button" class="soft-btn-outline-secondary flex-fill" data-bs-dismiss="modal">
-                            Cancelar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+      <div class="modal-body" id="modalBody">
+        <!-- conteúdo AJAX -->
+      </div>
+
+      <div class="modal-footer">
+        
+
+        <button type="button"
+                class="btn btn-primary btn-salvar d-none">
+          Salvar
+        </button>
+      </div>
+
     </div>
+  </div>
 </div>
+
 
 <!-- ===================== SCRIPTS ===================== -->
 <script>

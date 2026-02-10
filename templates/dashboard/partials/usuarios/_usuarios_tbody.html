@@ -1,0 +1,9 @@
+{% for row in table.rows %}
+    {% include "dashboard/partials/_linha_tabela.html" with row=row %}
+{% empty %}
+    <tr>
+        <td colspan="{{ table.columns|length }}" class="text-center py-4">
+            Nenhum usuário encontrado.
+        </td>
+    </tr>
+{% endfor %}

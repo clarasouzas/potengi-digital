@@ -1,0 +1,13 @@
+<form method="post" class="form-remover">
+    {% csrf_token %}
+
+    <p class="text-muted">
+        Tem certeza que deseja excluir
+        <strong>{{ usuario.email }}</strong>?
+        <br>
+        <span class="text-danger">
+            Esta ação não pode ser desfeita.
+        </span>
+    </p>
+
+</form>

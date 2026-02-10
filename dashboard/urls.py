@@ -94,13 +94,7 @@ urlpatterns = [
     path("coordenacao/cadastrar_vaga/",
      views.coordenacao_cadastrar_vaga,
      name="coordenacao_cadastrar_vaga"),
-    path("coordenacao/editar-vaga/<int:vaga_id>/",
-     views.coordenacao_editar_vaga,
-     name="coordenacao_editar_vaga"),
-
-path("coordenacao/excluir-vaga/<int:vaga_id>/",
-     views.coordenacao_excluir_vaga,
-     name="coordenacao_excluir_vaga"),
+    
 
 
     # ---------------------------
@@ -138,39 +132,18 @@ path("coordenacao/excluir-vaga/<int:vaga_id>/",
     # ---------------------------
     path("coordenacao/mensagens/", views.mensagens_contato, name="mensagens_contato"),
     path("mensagens/<int:pk>/responder/", views.responder_mensagem, name="responder_mensagem"),
- # Detalhe da vaga (modal)
+    
+    path("vagas/ajax/", views_ajax.ajax_listar_vagas, name="ajax_listar_vagas"),
+    path("vagas/criar/", views_ajax.ajax_criar_vaga, name="ajax_criar_vaga"),
+    path("vagas/<int:id>/detalhar/", views_ajax.ajax_detalhar_vaga, name="ajax_detalhar_vaga"),
+    path("vagas/<int:id>/editar/", views_ajax.ajax_editar_vaga, name="ajax_editar_vaga"),
+    path("vagas/<int:id>/remover/", views_ajax.ajax_remover_vaga, name="ajax_remover_vaga"),
     path(
-        "ajax/vaga/<int:vaga_id>/detalhe/",
-        views_ajax.ajax_vaga_detalhe,
-        name="ajax_vaga_detalhe"
-    ),
+    "ajax/mensagens/",
+    views_ajax.ajax_mensagens,
+    name="ajax_mensagens"
+),
+    
 
-    # Formulário EDITAR vaga (ID OBRIGATÓRIO)
-    path(
-        "ajax/vaga/<int:vaga_id>/form/",
-        views_ajax.ajax_vaga_form,
-        name="ajax_vaga_form"
-    ),
 
-    # Excluir vaga
-    path(
-        "ajax/vaga/<int:vaga_id>/excluir/",
-        views_ajax.ajax_vaga_excluir,
-        name="ajax_vaga_excluir"
-    ),
-# Aprovar vaga
-    path(
-        'aprovar_vaga/<int:vaga_id>/',
-        views_ajax.ajax_aprovar_vaga,
-        name='ajax_aprovar_vaga'
-    ),
-
-    # Reprovar vaga
-    path(
-        'reprovar_vaga/<int:vaga_id>/',
-        views_ajax.ajax_reprovar_vaga,
-        name='ajax_reprovar_vaga'
-    ),
-    # Ajax - Mensagens
-path('ajax/mensagens/', views_ajax.ajax_mensagens, name='ajax_mensagens'),
 ]
