@@ -2,6 +2,13 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
 from .models import Vaga, Candidatura, MensagemContato, PerfilFormacao,Competencia, AreaAtuacaoPerfil,SiteConfig
+from .models import Noticia
+
+class NoticiaForm(forms.ModelForm):
+    class Meta:
+        model = Noticia
+        fields = ["titulo", "resumo", "conteudo", "imagem", "publicada"]
+
 class PerfilFormacaoForm(forms.ModelForm):
     class Meta:
         model = PerfilFormacao

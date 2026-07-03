@@ -1,0 +1,25 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between mb-3">
+    <h2>Notícias</h2>
+    <a href="{% url 'dashboard:coord_noticia_novo' %}" class="btn btn-primary">+ Nova notícia</a>
+  </div>
+  <table class="table">
+    <thead><tr><th>Título</th><th>Data</th><th>Publicada</th><th></th></tr></thead>
+    <tbody>
+      {% for n in noticias %}
+      <tr>
+        <td>{{ n.titulo }}</td>
+        <td>{{ n.data_publicacao|date:"d/m/Y" }}</td>
+        <td>{{ n.publicada|yesno:"Sim,Não" }}</td>
+        <td>
+          <a href="{% url 'dashboard:coord_noticia_editar' n.id %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+          <a href="{% url 'dashboard:coord_noticia_excluir' n.id %}" class="btn btn-sm btn-outline-danger">Excluir</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

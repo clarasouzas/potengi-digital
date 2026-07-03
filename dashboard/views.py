@@ -1,6 +1,8 @@
 # dashboard/views.py
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
+from linkif.models import Noticia
+from linkif.forms import NoticiaForm
 from django.contrib.auth.decorators import (
     login_required,
     permission_required
@@ -997,3 +999,34 @@ def responder_mensagem(request, pk):
         return redirect("dashboard:mensagens_contato")
 
     return redirect("dashboard:mensagens_contato")
+
+
+@login_required
+def coord_noticias(request):
+    if request.user.tipo != "coordenador":
+        return redirect("dashboard:inicio")
+    noticias = Noticia.objects.all()
+    return render(request, "dashboard/coordenacao/noticias_lista.html",
+                  {"noticias": noticias})
+
+@login_required
+def coord_noticia_form(request, pk=None):
+    if request.user.tipo != "coordenador":
+        return redirect("dashboard:inicio")
+    noticia = get_object_or_404(Noticia, pk=pk) if pk else None
+    form = NoticiaForm(request.POST or None, request.FILES or None, instance=noticia)
+    if request.method == "POST" and form.is_valid():
+        obj = form.save(commit=False)
+        if not obj.autor_id:
+            obj.autor = request.user
+        obj.save()
+        messages.success(request, "Notícia salva!")
+        return redirect("dashboard:coord_noticias")
+    return render(request, "dashboard/coordenacao/noticia_form.html", {"form": form})
+
+@login_required
+def coord_noticia_excluir(request, pk):
+    if request.user.tipo != "coordenador":
+        return redirect("dashboard:inicio")
+    Noticia.objects.filter(pk=pk).delete()
+    return redirect("dashboard:coord_noticias")

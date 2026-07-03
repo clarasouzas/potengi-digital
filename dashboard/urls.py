@@ -123,6 +123,16 @@ urlpatterns = [
     path("perfil/editar/", views.editar_perfil, name="editar_perfil"),
 
     # ---------------------------
+    #     Noticia
+    # ---------------------------
+
+    path("coordenacao/noticias/", views.coord_noticias, name="coord_noticias"),
+    path("coordenacao/noticias/novo/", views.coord_noticia_form, name="coord_noticia_novo"),
+    path("coordenacao/noticias/<int:pk>/editar/", views.coord_noticia_form, name="coord_noticia_editar"),
+    path("coordenacao/noticias/<int:pk>/excluir/", views.coord_noticia_excluir, name="coord_noticia_excluir"),
+
+
+    # ---------------------------
     #       RELATÓRIOS
     # ---------------------------
     path("coordenacao/relatorios/", views.relatorios, name="relatorios"),
@@ -143,6 +153,8 @@ urlpatterns = [
     views_ajax.ajax_mensagens,
     name="ajax_mensagens"
 ),
+
+
     
 
 

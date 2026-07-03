@@ -1,4 +1,7 @@
 from django.contrib import admin
+from .models import Noticia
+admin.site.register(Noticia)
+
 from .models import (
     Vaga,
     Candidatura,
@@ -15,4 +18,5 @@ admin.site.register(Vaga)
 admin.site.register(Candidatura)
 admin.site.register(SiteConfig)
 admin.site.register(MensagemContato)
+
 

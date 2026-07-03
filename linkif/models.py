@@ -317,3 +317,29 @@ class SiteConfig(models.Model):
         if self.logo and hasattr(self.logo, "url"):
             return self.logo.url
         return "/static/assets/img/logo.svg"
+
+class Noticia(models.Model):
+    titulo = models.CharField("Título", max_length=200)
+    resumo = models.CharField("Resumo", max_length=300,
+        help_text="Aparece no card da home")
+    conteudo = models.TextField("Conteúdo completo")
+    imagem = models.ImageField("Imagem de capa",
+        upload_to="noticias/", blank=True, null=True)
+    autor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL, null=True, blank=True,
+        related_name="noticias",
+        limit_choices_to={"tipo": "coordenador"},
+    )
+    publicada = models.BooleanField(default=True)
+    data_publicacao = models.DateTimeField(default=timezone.now)
+    criada_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-data_publicacao"]
+        verbose_name = "Notícia"
+        verbose_name_plural = "Notícias"
+
+    def __str__(self):
+        return self.titulo
+
