@@ -2237,3 +2237,8 @@ body {
     overflow-y: auto;        /* SCROLL AQUI */
     margin: 40px auto;       /* respiro em cima e embaixo */
 }
+
+.modal-vaga:target {
+    display: flex;
+}
+
