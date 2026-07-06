@@ -1,25 +1,79 @@
 {% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block titulo %}Notícias — Coordenação{% endblock %}
+
 {% block conteudo %}
-<div class="container py-4">
-  <div class="d-flex justify-content-between mb-3">
-    <h2>Notícias</h2>
-    <a href="{% url 'dashboard:coord_noticia_novo' %}" class="btn btn-primary">+ Nova notícia</a>
-  </div>
-  <table class="table">
-    <thead><tr><th>Título</th><th>Data</th><th>Publicada</th><th></th></tr></thead>
-    <tbody>
-      {% for n in noticias %}
-      <tr>
-        <td>{{ n.titulo }}</td>
-        <td>{{ n.data_publicacao|date:"d/m/Y" }}</td>
-        <td>{{ n.publicada|yesno:"Sim,Não" }}</td>
-        <td>
-          <a href="{% url 'dashboard:coord_noticia_editar' n.id %}" class="btn btn-sm btn-outline-secondary">Editar</a>
-          <a href="{% url 'dashboard:coord_noticia_excluir' n.id %}" class="btn btn-sm btn-outline-danger">Excluir</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+
+<div class="vaga-wrapper">
+
+    <!-- TÍTULO E BOTÃO NOVO -->
+    <div class="title-dashboard mb-4">
+        <i class="bi bi-newspaper me-2"></i>
+        <span>Notícias (Coordenação)</span>
+    </div>
+
+    <!-- CARD DA LISTA -->
+    <div class="candidatura-card mb-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="section-title mb-0">
+                <i class="bi bi-list-ul"></i> Lista de notícias
+            </h5>
+            <a href="{% url 'dashboard:coord_noticia_novo' %}" class="btn-apply" style="width: auto; padding: 8px 20px; text-decoration: none; border-bottom: none;">
+                <i class="bi bi-plus-circle me-1"></i> Nova notícia
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Título</th>
+                        <th>Data</th>
+                        <th>Publicada</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for n in noticias %}
+                    <tr>
+                        <td>{{ n.titulo }}</td>
+                        <td>{{ n.data_publicacao|date:"d/m/Y" }}</td>
+                        <td>{{ n.publicada|yesno:"Sim,Não" }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'dashboard:coord_noticia_editar' n.id %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'dashboard:coord_noticia_excluir' n.id %}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-4">
+                            <i class="bi bi-newspaper" style="font-size: 2rem; color: #ccc;"></i>
+                            <p class="text-muted mt-2">Nenhuma notícia cadastrada ainda.</p>
+                            <a href="{% url 'dashboard:coord_noticia_novo' %}" class="btn-apply" style="width: auto; padding: 8px 20px; font-size: 0.9rem; text-decoration: none; border-bottom: none;">
+                                <i class="bi bi-plus-circle me-1"></i> Criar primeira notícia
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- BOTÃO VOLTAR SEM LISTRAS -->
+    <div class="text-center mt-3">
+        <a href="javascript:history.back()" class="btn-go-back" style="text-decoration: none; border-bottom: none;">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+    </div>
+
 </div>
+
 {% endblock %}
