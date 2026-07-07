@@ -2,7 +2,7 @@
 {% block content %}
 <section class="py-5">
   <div class="container">
-    <a href="{% url 'linkif:noticias_lista' %}" class="btn btn-link mb-3">← Voltar</a>
+    <a href="{% url 'linkif:noticias_lista' %}" class="btn-dupla btn-link mb-3">← Voltar</a>
     <h1 class="fw-bold">{{ noticia.titulo }}</h1>
     <p class="text-muted">
       Publicado em {{ noticia.data_publicacao|date:"d/m/Y H:i" }}

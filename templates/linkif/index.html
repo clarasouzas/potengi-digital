@@ -249,7 +249,7 @@
             <p class="text-muted small mb-2">{{ n.data_publicacao|date:"d/m/Y" }}</p>
             <p class="card-text">{{ n.resumo }}</p>
             <a href="{% url 'linkif:noticia_detalhe' n.id %}"
-               class="btn btn-outline-primary mt-auto">
+               class="btn-dupla text-center">
               Detalhar notícia
             </a>
           </div>
@@ -262,7 +262,7 @@
 
     {% if noticias %}
     <div class="text-center mt-4">
-      <a href="{% url 'linkif:noticias_lista' %}" class="btn btn-primary">
+      <a href="{% url 'linkif:noticias_lista' %}" class="btn-dupla text-center">
         Saiba mais
       </a>
     </div>
