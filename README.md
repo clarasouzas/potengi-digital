@@ -7,7 +7,7 @@ O **Potengi Digital** é uma plataforma desenvolvida como projeto de extensão d
 
 Seu objetivo é aproximar a formação técnica do mercado de trabalho, conectando alunos e ex-alunos do curso Técnico em Informática para Internet às empresas e instituições parceiras da região do Potengi.
 
-Além da divulgação de vagas de estágio e jovem aprendiz, a plataforma fortalece a visibilidade do curso, contribui para a inserção profissional dos estudantes egressos e apoia o desenvolvimento socioeconômico local por meio da tecnologia.
+Além da divulgação de vagas de estágio e jovem aprendiz, a plataforma fortalece a visibilidade do curso, contribui para a inserção profissional dos estudantes egressos e apoia o desenvolvimento socioeconômico local por meio da tecnologiaa.
 
 ---
 
