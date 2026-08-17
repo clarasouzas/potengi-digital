@@ -17,8 +17,8 @@ Além da divulgação de vagas de estágio e jovem aprendiz, a plataforma fortal
 - Aprovação de empresas e validação de vagas pela Coordenação de Extensão.  
 - Publicação e gerenciamento de vagas de estágio e jovem aprendiz.  
 - Pesquisa e filtros de oportunidades por curso, área e localização.  
-- Interface responsiva e moderna, adaptada a dispositivos móveis.  
-
+- interface responsiva e moderna, adaptada a dispositivos móveis.  
+- Aprovação de empresas e validação de vagas pela Coordenação de Extensão.
 ---
 
 ## Tecnologias Utilizadas
