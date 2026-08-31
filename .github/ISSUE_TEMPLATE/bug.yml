@@ -1,0 +1,52 @@
+name: Bug
+description: Relate um erro ou comportamento inesperado do sistema.
+title: "[BUG] "
+labels: ["bug"]
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Descreva o bug
+      description: O que aconteceu de errado?
+      placeholder: "Quando eu faço X, acontece Y, mas o esperado era Z."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Passos para reproduzir
+      description: Liste o passo a passo para reproduzir o erro.
+      placeholder: |
+        1. Acesse a página X
+        2. Clique no botão Y
+        3. Observe o erro Z
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento esperado
+      description: O que deveria acontecer?
+      placeholder: "O sistema deveria exibir a mensagem de sucesso."
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Ambiente
+      description: Navegador, sistema operacional, dispositivo usado.
+      placeholder: "Chrome 120, Windows 11, Desktop"
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidências
+      description: Anexe prints, logs ou vídeos que ajudem a identificar o erro.
+    validations:
+      required: false
