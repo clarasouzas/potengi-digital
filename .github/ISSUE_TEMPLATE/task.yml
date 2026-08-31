@@ -1,0 +1,43 @@
+name: Tarefa Técnica
+description: Registre uma tarefa técnica que não é funcionalidade nem erro.
+title: "[TASK] "
+labels: ["task"]
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição
+      description: O que precisa ser feito?
+      placeholder: "Descreva a tarefa técnica a ser realizada."
+    validations:
+      required: true
+
+  - type: textarea
+    id: justification
+    attributes:
+      label: Justificativa
+      description: Por que essa tarefa é necessária?
+      placeholder: "Essa atualização é necessária para..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: Entregáveis
+      description: O que será produzido ao final?
+      placeholder: |
+        - [ ] Atualizar biblioteca X
+        - [ ] Refatorar função Y
+        - [ ] Criar documentação Z
+    validations:
+      required: true
+
+  - type: textarea
+    id: observations
+    attributes:
+      label: Observações
+      description: Informações adicionais relevantes.
+    validations:
+      required: false
