@@ -122,15 +122,7 @@ urlpatterns = [
     path("perfil/", views.meu_perfil, name="perfil"),
     path("perfil/editar/", views.editar_perfil, name="editar_perfil"),
 
-    # ---------------------------
-    #     Noticia
-    # ---------------------------
-
-    path("coordenacao/noticias/", views.coord_noticias, name="coord_noticias"),
-    path("coordenacao/noticias/novo/", views.coord_noticia_form, name="coord_noticia_novo"),
-    path("coordenacao/noticias/<int:pk>/editar/", views.coord_noticia_form, name="coord_noticia_editar"),
-    path("coordenacao/noticias/<int:pk>/excluir/", views.coord_noticia_excluir, name="coord_noticia_excluir"),
-
+    
 
     # ---------------------------
     #       RELATÓRIOS

@@ -7,7 +7,7 @@ from django_tables2 import RequestConfig
 
 from .filters import VagaFilter, AlunoFilter
 from .tables import UsuarioTabela
-from .models import Vaga, Candidatura, SiteConfig, PerfilFormacao, Noticia
+from .models import Vaga, Candidatura, SiteConfig, PerfilFormacao
 from .forms import VagaForm, CandidaturaForm, ContatoForm
 from usuarios.models import Usuario
 
@@ -15,7 +15,7 @@ def index(request):
     site_config = SiteConfig.objects.first()
     vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")[:6]
     perfis = PerfilFormacao.objects.all().order_by("ordem", "nome")
-    noticias = Noticia.objects.filter(publicada=True)[:3]
+   
 
 
     # SE O USUÁRIO ESTIVER LOGADO → preenche automaticamente
@@ -56,7 +56,7 @@ def index(request):
         "vagas": vagas,
         "perfis": perfis,
         "form": form,
-        "noticias": noticias,
+       
 
 
     })
@@ -162,20 +162,6 @@ def vaga_detalhe(request, vaga_id):
     return render(request, "linkif/vaga_detalhe.html", {
         "vaga": vaga,
         "site_config": site_config,
-    })
-
-def noticias_lista(request):
-    noticias = Noticia.objects.filter(publicada=True)
-    site_config = SiteConfig.objects.first()
-    return render(request, "linkif/noticias_lista.html", {
-        "noticias": noticias, "site": site_config,
-    })
-
-def noticia_detalhe(request, noticia_id):
-    noticia = get_object_or_404(Noticia, id=noticia_id, publicada=True)
-    site_config = SiteConfig.objects.first()
-    return render(request, "linkif/noticia_detalhe.html", {
-        "noticia": noticia, "site": site_config,
     })
 
 
