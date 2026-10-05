@@ -94,6 +94,10 @@ urlpatterns = [
     path("coordenacao/cadastrar_vaga/",
      views.coordenacao_cadastrar_vaga,
      name="coordenacao_cadastrar_vaga"),
+     path("coordenacao/noticias/novo/",
+    views.coord_noticia_form,
+    name="coord_noticia_novo"),
+     
     
 
 
