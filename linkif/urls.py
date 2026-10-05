@@ -18,10 +18,6 @@ urlpatterns = [
     # Vagas Públicas (listagem)
     path("vagas/<int:vaga_id>/", views.vaga_detalhe, name="vaga_detalhe"),
 
-    path("noticias/<int:noticia_id>/",
-        views.noticia_detalhe,
-        name="noticia_detalhe",
-    ),
 
 
     # candidatura (somente aluno)
@@ -30,10 +26,6 @@ urlpatterns = [
     # Vizualizar Alunos (coordenação e empresas)
     path("explorar/", views.explorar_perfis, name="explorar"),
     path("alunos/<int:pk>/", views.ver_perfil_aluno, name="ver_perfil_aluno"),
-
-    # Noticia 
-    path("noticias/", views.noticias_lista, name="noticias_lista"),
-    path("noticias/<int:noticia_id>/", views.noticia_detalhe, name="noticia_detalhe"),
 
 
 ]
