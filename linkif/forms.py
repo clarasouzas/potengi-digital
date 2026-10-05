@@ -216,3 +216,8 @@ class ContatoForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'readonly': 'readonly'}),
             'mensagem': forms.Textarea(attrs={'rows': 3}),
         }
+   
+class NoticiaForm(forms.ModelForm):
+    class Meta:
+        model = Noticia
+        fields = ["titulo", "resumo", "conteudo", "imagem", "publicada"]
