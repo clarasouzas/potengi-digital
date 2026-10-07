@@ -998,8 +998,7 @@ def responder_mensagem(request, pk):
         return redirect("dashboard:mensagens_contato")
 
     return redirect("dashboard:mensagens_contato")
-
-    @login_required
+@login_required
 def coord_noticia_form(request, pk=None):
     if request.user.tipo != "coordenador":
         return redirect("dashboard:inicio")
@@ -1029,3 +1028,24 @@ def coord_noticia_form(request, pk=None):
         {"form": form}
     )
 
+@login_required
+def coord_noticias(request):
+    if request.user.tipo != "coordenador":
+        return redirect("dashboard:inicio")
+
+    noticias = Noticia.objects.all()
+
+    return render(
+        request,
+        "dashboard/coordenacao/noticias_lista.html",
+        {"noticias": noticias}
+    )
+
+@login_required
+def coord_noticia_excluir(request, pk):
+    if request.user.tipo != "coordenador":
+        return redirect("dashboard:inicio")
+
+    Noticia.objects.filter(pk=pk).delete()
+
+    return redirect("dashboard:coord_noticias")
