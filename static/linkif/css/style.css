@@ -2286,9 +2286,13 @@ footer {
    SEÇÃO DE CONTATO — estilo LinkIF
 ======================================= */
 .contato {
-  background: #ffffff;
+  background: var(--primary-light-5);
   padding: 60px 20px;
   border-radius: 10px;
+}
+
+#contato {
+  background-color: var(--primary-light-5);
 }
 
 
@@ -3138,4 +3142,43 @@ footer {
 }
 .tab-content{
   text-align: left;
+}/* Switch do campo Publicada no formulário de notícias */
+.form-styled .form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding-left: 0;
+}
+
+.form-styled .form-check-input[type="checkbox"] {
+  appearance: none;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 1.5rem;
+  margin: 0;
+  border: 1px solid var(--gray-400);
+  border-radius: 1rem;
+  background-color: var(--gray-300);
+  background-image: radial-gradient(circle, var(--branco) 0 0.48rem, transparent 0.5rem);
+  background-repeat: no-repeat;
+  background-position: 0.12rem center;
+  background-size: 1.15rem 1.15rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, background-position 0.2s ease, border-color 0.2s ease;
+}
+
+.form-styled .form-check-input[type="checkbox"]:checked {
+  border-color: var(--primary-dark-2);
+  background-color: var(--primary-dark-2);
+  background-position: 1.38rem center;
+}
+
+.form-styled .form-check-input[type="checkbox"]:focus-visible {
+  outline: 3px solid rgba(28, 167, 75, 0.25);
+  outline-offset: 2px;
+}
+
+.form-styled .form-check-label {
+  margin: 0;
+  cursor: pointer;
 }
