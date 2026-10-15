@@ -7,6 +7,7 @@ urlpatterns = [
 
     # Início
     path("", views.index, name="index"),
+    path("noticias/", views.noticias_lista, name="noticias_lista"),
 
     # Páginas públicas
     path("para-estudantes/", views.para_estudantes, name="para_estudantes"),

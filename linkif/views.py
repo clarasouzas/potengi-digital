@@ -7,7 +7,7 @@ from django_tables2 import RequestConfig
 
 from .filters import VagaFilter, AlunoFilter
 from .tables import UsuarioTabela
-from .models import Vaga, Candidatura, SiteConfig, PerfilFormacao
+from .models import Vaga, Candidatura, SiteConfig, PerfilFormacao, Noticia
 from .forms import VagaForm, CandidaturaForm, ContatoForm
 from usuarios.models import Usuario
 
@@ -15,6 +15,7 @@ def index(request):
     site_config = SiteConfig.objects.first()
     vagas = Vaga.objects.filter(status="aprovada").order_by("-data_publicacao")[:6]
     perfis = PerfilFormacao.objects.all().order_by("ordem", "nome")
+    noticias = Noticia.objects.filter(publicada=True)[:3]
    
 
 
@@ -56,10 +57,20 @@ def index(request):
         "vagas": vagas,
         "perfis": perfis,
         "form": form,
-       
+        "noticias": noticias,
 
 
     })
+
+
+def noticias_lista(request):
+    noticias = Noticia.objects.filter(publicada=True)
+    site_config = SiteConfig.objects.first()
+    return render(request, "linkif/noticias_lista.html", {
+        "noticias": noticias,
+        "site": site_config,
+    })
+
 @login_required
 @permission_required("usuarios.can_candidatar", raise_exception=True)
 def candidatar_vaga(request, vaga_id):
