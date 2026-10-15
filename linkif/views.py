@@ -174,5 +174,11 @@ def vaga_detalhe(request, vaga_id):
         "vaga": vaga,
         "site_config": site_config,
     })
-
+def noticia_detalhe(request, noticia_id):
+    noticia = get_object_or_404(Noticia, id=noticia_id, publicada=True)
+    site_config = SiteConfig.objects.first()
+    return render(request, "noticia_detalhe.html", {
+        "noticia": noticia,
+        "site": site_config,
+    })
 

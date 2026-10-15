@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 app_name = "linkif"
 
 urlpatterns = [
@@ -27,6 +28,11 @@ urlpatterns = [
     # Vizualizar Alunos (coordenação e empresas)
     path("explorar/", views.explorar_perfis, name="explorar"),
     path("alunos/<int:pk>/", views.ver_perfil_aluno, name="ver_perfil_aluno"),
+    # noticias
+     path("noticias/<int:noticia_id>/", views.noticia_detalhe, name="noticia_detalhe"),
 
 
 ]
+
+     
+
