@@ -19,7 +19,8 @@ from linkif.models import (
     Vaga,
     Candidatura,
     SiteConfig,
-    MensagemContato
+    MensagemContato,
+    Noticia
 )
 
 from linkif.forms import (
@@ -28,7 +29,8 @@ from linkif.forms import (
     AreaAtuacaoForm,
     VagaForm,
     SiteConfigForm,
-    ContatoForm
+    ContatoForm,
+    NoticiaForm 
 )
 
 from usuarios.models import Usuario
