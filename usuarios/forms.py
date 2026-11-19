@@ -48,8 +48,8 @@ class AlunoCreationForm(UsuarioCreationForm):
             field.help_text = None
 
         # CARREGA OS CURSOS SOMENTE AGORA (evita erro de migração)
-        self.fields["curso"].choices = [
-            (p.nome, p.nome) for p in PerfilFormacao.objects.all()
+        self.fields["curso"].choices = [("", "Selecione seu curso")] + [
+            (p.nome, p.nome) for p in PerfilFormacao.objects.all().order_by("nome")
         ]
 
         self.helper = FormHelper()
@@ -139,8 +139,8 @@ class AlunoEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["curso"].choices = [
-            (p.nome, p.nome) for p in PerfilFormacao.objects.all()
+        self.fields["curso"].choices = [("", "Selecione seu curso")] + [
+            (p.nome, p.nome) for p in PerfilFormacao.objects.all().order_by("nome")
         ]
 
 # ============================================

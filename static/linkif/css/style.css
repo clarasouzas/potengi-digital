@@ -2293,6 +2293,7 @@ footer {
 
 #contato {
   background-color: var(--primary-light-5);
+  border-radius: 0;
 }
 
 
@@ -3142,43 +3143,34 @@ footer {
 }
 .tab-content{
   text-align: left;
-}/* Switch do campo Publicada no formulário de notícias */
+}/* Checkbox de publicação de notícia */
 .form-styled .form-check {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 8px;
   padding-left: 0;
 }
 
 .form-styled .form-check-input[type="checkbox"] {
-  appearance: none;
-  flex: 0 0 auto;
-  width: 2.75rem;
-  height: 1.5rem;
+  flex: 0 0 1.1em;
+  width: 1.1em;
+  height: 1.1em;
   margin: 0;
   border: 1px solid var(--gray-400);
-  border-radius: 1rem;
-  background-color: var(--gray-300);
-  background-image: radial-gradient(circle, var(--branco) 0 0.48rem, transparent 0.5rem);
-  background-repeat: no-repeat;
-  background-position: 0.12rem center;
-  background-size: 1.15rem 1.15rem;
+  border-radius: 0.25em;
   cursor: pointer;
-  transition: background-color 0.2s ease, background-position 0.2s ease, border-color 0.2s ease;
 }
 
 .form-styled .form-check-input[type="checkbox"]:checked {
-  border-color: var(--primary-dark-2);
   background-color: var(--primary-dark-2);
-  background-position: 1.38rem center;
-}
-
-.form-styled .form-check-input[type="checkbox"]:focus-visible {
-  outline: 3px solid rgba(28, 167, 75, 0.25);
-  outline-offset: 2px;
+  border-color: var(--primary-dark-2);
 }
 
 .form-styled .form-check-label {
+  display: inline-block;
   margin: 0;
-  cursor: pointer;
+}
+.cadastro-card .form-select option {
+  color: var(--gray-700);
+  background-color: #fff;
 }

@@ -933,7 +933,7 @@ body {
     display: block;
 }
 
-.form-styled input,
+.form-styled input:not([type="checkbox"]):not([type="radio"]),
 .form-styled textarea,
 .form-styled select {
     padding: 10px 12px;
@@ -943,13 +943,40 @@ body {
     transition: 0.2s ease;
 }
 
-.form-styled input:focus,
+.form-styled input:not([type="checkbox"]):not([type="radio"]):focus,
 .form-styled textarea:focus,
 .form-styled select:focus {
     outline: none;
     border-color: var(--accent-blue);
     background: var(--branco);
     box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.form-styled .form-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 0;
+}
+
+.form-styled .form-check-input[type="checkbox"] {
+    flex: 0 0 1.1em;
+    width: 1.1em;
+    height: 1.1em;
+    margin: 0;
+    border: 1px solid var(--gray-400);
+    border-radius: 0.25em;
+    cursor: pointer;
+}
+
+.form-styled .form-check-input[type="checkbox"]:checked {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+.form-styled .form-check-label {
+    display: inline-block;
+    margin: 0;
 }
 
 .btn-apply {
@@ -1378,6 +1405,9 @@ body {
 .btn-icon {
     width: 40px;
     height: 40px;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
 
     display: flex;
     align-items: center;

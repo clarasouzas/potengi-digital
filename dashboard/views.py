@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import (
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.utils import timezone
+from django.views.decorators.http import require_POST
 
 from django_tables2 import RequestConfig
 
@@ -507,6 +508,7 @@ def usuario_mudar_status(request):
     )
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+@require_POST
 def usuario_excluir(request, pk):
     usuario = get_object_or_404(Usuario, id=pk)
 
@@ -794,12 +796,13 @@ def editar_perfil_formacao(request, pk=None):
     
 @login_required
 @permission_required("usuarios.acesso_coordenacao", raise_exception=True)
+@require_POST
 def excluir_perfil_formacao(request, pk):
 
     perfil = get_object_or_404(PerfilFormacao, pk=pk)
     perfil.delete()
 
-    messages.error(request, "Perfil removido com sucesso.")
+    messages.success(request, "Perfil removido com sucesso.")
     return redirect("dashboard:listar_perfis")
 
 @login_required
@@ -1044,10 +1047,12 @@ def coord_noticias(request):
     )
 
 @login_required
+@require_POST
 def coord_noticia_excluir(request, pk):
     if request.user.tipo != "coordenador":
         return redirect("dashboard:inicio")
 
-    Noticia.objects.filter(pk=pk).delete()
-
+    noticia = get_object_or_404(Noticia, pk=pk)
+    noticia.delete()
+    messages.success(request, "Notícia excluída com sucesso.")
     return redirect("dashboard:coord_noticias")

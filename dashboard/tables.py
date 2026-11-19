@@ -208,11 +208,15 @@ class UsuariosGeraisTable(BaseLinkIFTable):
                 <i class="bi bi-pencil-square"></i>
             </a>
 
-            <a href="#excluir-{{ record.id }}"
+            <button type="button"
                class="btn-icon btn-icon-danger"
-               title="Excluir">
+               title="Excluir"
+               data-bs-toggle="modal"
+               data-bs-target="#confirmarExclusaoModal"
+               data-titulo="{{ record.nome|default:record.email }}"
+               data-url="{% url 'dashboard:usuario_excluir' record.id %}">
                 <i class="bi bi-trash"></i>
-            </a>
+            </button>
 
         </div>
         """,
@@ -249,11 +253,15 @@ class PerfisFormacaoTable(BaseLinkIFTable):
                 <i class="bi bi-pencil-square"></i>
             </a>
 
-            <a href="#excluir-perfil-{{ record.id }}"
+            <button type="button"
                class="btn-icon btn-icon-danger"
-               title="Excluir">
+               title="Excluir"
+               data-bs-toggle="modal"
+               data-bs-target="#confirmarExclusaoModal"
+               data-titulo="{{ record.nome }}"
+               data-url="{% url 'dashboard:excluir_perfil_formacao' record.id %}">
                 <i class="bi bi-trash"></i>
-            </a>
+            </button>
         </div>
         """,
         verbose_name="Ações",
