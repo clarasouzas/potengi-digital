@@ -1,5 +1,5 @@
 [
-{
+  {
     "model": "linkif.areaatuacaoperfil",
     "pk": 1,
     "fields": {
@@ -17,7 +17,6 @@
       "descricao": "Criação de interfaces funcionais, intuitivas e responsivas."
     }
   },
-
   {
     "model": "linkif.areaatuacaoperfil",
     "pk": 3,
@@ -36,7 +35,6 @@
       "descricao": "Elaboração e interpretação de plantas, cortes e detalhes."
     }
   },
-
   {
     "model": "linkif.areaatuacaoperfil",
     "pk": 5,
@@ -55,8 +53,6 @@
       "descricao": "Apoio técnico na elaboração de estudos e processos regulatórios."
     }
   },
-
-
   {
     "model": "linkif.areaatuacaoperfil",
     "pk": 7,
@@ -73,6 +69,42 @@
       "perfil": 4,
       "titulo": "Projetos Educacionais",
       "descricao": "Participação em iniciativas de pesquisa e extensão na área educacional."
+    }
+  },
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 9,
+    "fields": {
+      "perfil": 1,
+      "titulo": "Banco de Dados e Redes",
+      "descricao": "Atua????o na organiza????o de bancos de dados, administra????o de redes e suporte ?? infraestrutura de sistemas."
+    }
+  },
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 10,
+    "fields": {
+      "perfil": 2,
+      "titulo": "Topografia e Or??amento de Obras",
+      "descricao": "Levantamento de terrenos, medi????es e apoio ao planejamento de custos e materiais de constru????o."
+    }
+  },
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 11,
+    "fields": {
+      "perfil": 3,
+      "titulo": "Gest??o de Res??duos",
+      "descricao": "Planejamento de coleta seletiva, destina????o adequada de res??duos e educa????o ambiental."
+    }
+  },
+  {
+    "model": "linkif.areaatuacaoperfil",
+    "pk": 12,
+    "fields": {
+      "perfil": 4,
+      "titulo": "Ensino e Aprendizagem",
+      "descricao": "Desenvolvimento de estrat??gias did??ticas e recursos para o ensino de matem??tica."
     }
   }
 ]

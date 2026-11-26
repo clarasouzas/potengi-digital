@@ -1,0 +1,86 @@
+[
+  {
+    "model": "linkif.noticia",
+    "pk": 1,
+    "fields": {
+      "titulo": "Feira de estágios aproxima estudantes e empresas do Potengi",
+      "resumo": "Estudantes conheceram oportunidades, conversaram com empresas e receberam orientações sobre currículo e processos seletivos.",
+      "conteudo": "O IFRN campus São Paulo do Potengi promoveu uma feira de estágios para aproximar estudantes dos cursos técnicos e representantes de empresas da região. A programação apresentou áreas de atuação e possibilidades para quem está iniciando a carreira.\n\nDurante o encontro, os participantes puderam tirar dúvidas sobre processos seletivos, rotina profissional e competências valorizadas pelas equipes. Também houve espaço para conhecer iniciativas de integração entre formação técnica e mundo do trabalho.\n\nA organização destacou que a feira fortalece o diálogo entre escola e comunidade. Novas atividades de orientação profissional serão divulgadas pelos canais institucionais do campus.",
+      "imagem": "perfis/banner_info.jpg",
+      "autor": 1,
+      "publicada": true,
+      "data_publicacao": "2025-01-24T12:00:00Z",
+      "criada_em": "2025-01-22T14:30:00Z"
+    }
+  },
+  {
+    "model": "linkif.noticia",
+    "pk": 2,
+    "fields": {
+      "titulo": "Parcerias com empresas fortalecem a formação técnica",
+      "resumo": "Reunião com representantes locais discutiu visitas técnicas, palestras profissionais e atividades ligadas aos cursos do IFRN.",
+      "conteudo": "Representantes do IFRN campus São Paulo do Potengi e de empresas da região se reuniram para conversar sobre formas de aproximar a formação técnica das necessidades locais. O encontro reuniu contribuições de diferentes setores.\n\nEntre os temas discutidos estiveram visitas técnicas, palestras com profissionais e atividades baseadas em situações reais de trabalho. As propostas serão avaliadas pelas equipes dos cursos, considerando objetivos pedagógicos e disponibilidade dos parceiros.\n\nA iniciativa busca criar oportunidades de troca de conhecimento para estudantes e comunidade. O campus seguirá articulando ações que valorizem a educação pública e o desenvolvimento regional.",
+      "imagem": "perfis/banner_edif.jpg",
+      "autor": 1,
+      "publicada": true,
+      "data_publicacao": "2025-02-03T12:00:00Z",
+      "criada_em": "2025-01-31T15:00:00Z"
+    }
+  },
+  {
+    "model": "linkif.noticia",
+    "pk": 3,
+    "fields": {
+      "titulo": "Palestra orienta estudantes sobre carreira e primeiro emprego",
+      "resumo": "Encontro no campus abordou comunicação profissional, planejamento de objetivos e preparação para entrevistas.",
+      "conteudo": "Estudantes do campus São Paulo do Potengi participaram de uma palestra sobre planejamento de carreira e ingresso no mundo do trabalho. A atividade apresentou caminhos para transformar conhecimentos do curso em objetivos profissionais.\n\nA conversa abordou comunicação, postura em entrevistas, elaboração de currículo e importância de buscar experiências de aprendizagem. Os participantes também puderam fazer perguntas e compartilhar expectativas sobre o futuro profissional.\n\nA palestra integrou as ações de orientação e preparação para o trabalho desenvolvidas no campus. A equipe reforçou que a construção da carreira é um processo contínuo, apoiado por estudo, prática e diálogo.",
+      "imagem": "perfis/banner_licm.jpg",
+      "autor": 1,
+      "publicada": true,
+      "data_publicacao": "2025-02-12T13:00:00Z",
+      "criada_em": "2025-02-10T10:00:00Z"
+    }
+  },
+  {
+    "model": "linkif.noticia",
+    "pk": 4,
+    "fields": {
+      "titulo": "Alunos apresentam projetos e recebem destaque em mostra acadêmica",
+      "resumo": "Trabalhos foram reconhecidos pela pesquisa aplicada, colaboração em equipe e atenção a desafios da comunidade.",
+      "conteudo": "Alunos do IFRN campus São Paulo do Potengi receberam destaque em uma mostra de projetos estudantis, apresentando soluções desenvolvidas ao longo das atividades letivas. Os trabalhos reuniram pesquisa, planejamento e aplicação de conhecimentos técnicos.\n\nAs equipes compartilharam seus processos, desde a identificação dos problemas até a organização dos resultados. Professores e visitantes acompanharam as apresentações e conversaram com os estudantes sobre os próximos passos de cada iniciativa.\n\nA participação valoriza o empenho dos alunos e o trabalho coletivo realizado no campus. A comunidade escolar celebrou o resultado e incentivou a continuidade das experiências de pesquisa e inovação.",
+      "imagem": "perfis/banner_info.jpg",
+      "autor": 1,
+      "publicada": true,
+      "data_publicacao": "2025-02-21T12:00:00Z",
+      "criada_em": "2025-02-19T16:00:00Z"
+    }
+  },
+  {
+    "model": "linkif.noticia",
+    "pk": 5,
+    "fields": {
+      "titulo": "Tecnologia e sustentabilidade inspiram atividade interdisciplinar",
+      "resumo": "Oficina reuniu estudantes para explorar ferramentas digitais e propostas de cuidado ambiental ligadas ao cotidiano do campus.",
+      "conteudo": "Uma atividade interdisciplinar no campus São Paulo do Potengi aproximou tecnologia e meio ambiente. Estudantes exploraram como recursos digitais podem ajudar a observar questões ambientais e organizar informações úteis para a comunidade.\n\nA oficina incluiu troca de ideias sobre consumo responsável, descarte de resíduos e uso consciente de recursos. Em grupos, os participantes esboçaram propostas que podem ser desenvolvidas em projetos escolares.\n\nA ação mostrou como diferentes áreas do conhecimento podem colaborar diante de desafios do dia a dia. O campus pretende incentivar atividades que unam aprendizagem prática, inovação e sustentabilidade.",
+      "imagem": "perfis/banner_mamb.jpg",
+      "autor": 1,
+      "publicada": true,
+      "data_publicacao": "2025-03-05T12:00:00Z",
+      "criada_em": "2025-03-03T09:00:00Z"
+    }
+  },
+  {
+    "model": "linkif.noticia",
+    "pk": 6,
+    "fields": {
+      "titulo": "Edificações e matemática ganham espaço em mostra de atividades",
+      "resumo": "Exposições e desafios práticos destacaram a matemática no desenho, nas medidas e na leitura de projetos de edificações.",
+      "conteudo": "O campus São Paulo do Potengi realizou uma atividade que aproximou edificações e matemática por meio de exposições e desafios práticos. Estudantes apresentaram exemplos de como conceitos matemáticos aparecem em projetos e situações cotidianas.\n\nA programação explorou medidas, escalas, formas geométricas e leitura de representações técnicas. As atividades estimularam a participação dos visitantes e mostraram conexões entre conteúdos estudados em diferentes componentes curriculares.\n\nA mostra valorizou a aprendizagem aplicada e a colaboração entre turmas. Professores ressaltaram que relacionar conceitos com problemas concretos ajuda a ampliar a compreensão e o interesse dos estudantes.",
+      "imagem": "perfis/banner_edif.jpg",
+      "autor": 1,
+      "publicada": true,
+      "data_publicacao": "2025-03-18T12:00:00Z",
+      "criada_em": "2025-03-14T15:30:00Z"
+    }
+  }
+]

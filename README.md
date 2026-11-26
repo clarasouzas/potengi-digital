@@ -64,7 +64,12 @@ python manage.py migrate
 
 ### 4. Criando um Superusuário
 ```bash
-python manage.py createsuperuser  
+python manage.py createsuperuser 
+```
+
+### 4. Carregando demonstrações
+```bash
+python manage.py carregar_demo
 ```
 
 Siga as instruções e defina um nome de usuário, e-mail e senha.
@@ -86,3 +91,18 @@ http://127.0.0.1:8000/usuarios/login
 Faça login com o superusuário criado anteriormente.
 
 Agora o **LinkIF** está pronto para ser utilizado!
+
+## Dados de demonstração
+
+Para preparar uma base SQLite local, crie primeiro sua conta de coordenação pelo terminal. O comando `createsuperuser` define o perfil como coordenador:
+
+```bash
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py carregar_demo
+python manage.py runserver
+```
+
+Informe seu e-mail, nome de usuário e senha quando solicitado. O comando `carregar_demo` importa cursos, competências, áreas, empresas, vagas e notícias, nessa ordem. As notícias usam o coordenador criado (ID 1) como autor. Por isso, crie a conta antes de carregar as fixtures.
+
+Para refazer a base do zero no SQLite, pare o servidor e remova `db.sqlite3` na raiz do projeto. Em seguida, rode os comandos acima. Nenhuma conta de coordenação é criada pelas fixtures.
